@@ -59,7 +59,7 @@
         justify-content: space-between;
         margin-left: auto;
         margin-right: auto;
-        padding: 20px 16px;
+        padding: 0;
         position: relative;
         width: 100%;
         z-index: $toolbarZ;
@@ -73,6 +73,7 @@
 
         .button-group-center {
             justify-content: center;
+            margin:12px 0 0;
 
             .toolbox-button {
 
@@ -80,9 +81,9 @@
                     background-color: #fff;
                     border-radius: 50%;
                     border: 1px solid #d1dbe8;
-                    margin: 0px 4px;
-                    width: 38px;
-                    height: 38px;
+                    margin: 8px;
+                    width: 50px;
+                    height: 50px;
         
                     &:hover {
                         background-color: #daebfa;
@@ -90,8 +91,7 @@
                     }
         
                     &.toggled {
-                        background: #2a3a4b;
-                        border: 1px solid #5e6d7a;
+                        background: #e95d5d;
     
                         svg {
                             fill: #fff;
@@ -117,15 +117,15 @@
                     .toolbox-icon {
                         background-color: $hangupColor;
                         border: 1px solid $hangupColor;
-                        width: 40px;
-                        height: 40px;
+                        width: 50px;
+                        height: 50px;
                 
                         &:hover {
                             background-color: $hangupColor;
                         }
 
                         svg {
-                            fill: #fff;
+                            fill: #e95d5d;
                         }
                     }
                 }
@@ -223,8 +223,8 @@
             cursor: pointer;
             display: inline-block;
             line-height: $newToolbarSize;
-            margin: 0 8px;
             text-align: center;
+
         }
 
         .toolbar-button-with-badge {
@@ -254,8 +254,12 @@
             justify-content: center;
             width: $newToolbarSize;
 
-            &:hover, &.toggled {
-                background: $newToolbarButtonHoverColor;
+
+            &:hover {
+                -webkit-mask-image: none;
+                -webkit-box-shadow: 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12), 0 5px 5px -3px rgba(0,0,0,.2);
+                box-shadow: 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12), 0 5px 5px -3px rgba(0,0,0,.2);
+                background: #ecf2f5;
             }
     
             &.disabled {
