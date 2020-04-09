@@ -191,6 +191,7 @@ class Conference extends AbstractConference<Props, *> {
                 <Notice />
                 <Subject />
                 <div id = 'videospace'>
+                    <div id="white-b-wrapper"></div>
                     <LargeVideo />
                     { hideVideoQualityLabel
                         || <Labels /> }
