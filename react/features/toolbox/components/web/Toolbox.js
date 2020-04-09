@@ -892,12 +892,15 @@ class Toolbox extends Component<Props, State> {
     showWhiteboard()
     {
         var designer = new CanvasDesigner();
+        
+        var htmlPath = window.location.origin+'/static/draw/widget.html';
+        var jsPath = window.location.origin+'/static/draw/widget.js';
         // both links are mandatory
         // widget.html will internally use widget.js
-        // designer.widgetHtmlURL = './assets/html/widget.html'; // you can place this file anywhere
-        // designer.widgetJsURL = '../js/widget.js';       // you can place this file anywhere
-        designer.widgetHtmlURL = 'https://www.webrtc-experiment.com/Canvas-Designer/widget.html'; // you can place this file anywhere
-        designer.widgetJsURL = 'https://www.webrtc-experiment.com/Canvas-Designer/widget.js';     // you can place this file anywhere
+        designer.widgetHtmlURL = htmlPath; // you can place this file anywhere
+        designer.widgetJsURL = jsPath;       // you can place this file anywhere
+        // designer.widgetHtmlURL = 'https://www.webrtc-experiment.com/Canvas-Designer/widget.html'; // you can place this file anywhere
+        // designer.widgetJsURL = 'https://www.webrtc-experiment.com/Canvas-Designer/widget.js';     // you can place this file anywhere
 
         designer.setTools({
             pencil: true,
