@@ -115,6 +115,9 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
 
         // Bind event handler so it is only bound once for every instance.
         this._onShowRemoteMenu = this._onShowRemoteMenu.bind(this);
+        this.state = {
+            show:false
+        }
     }
 
     /**
@@ -177,10 +180,24 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
             remoteControlState,
             participantID
         } = this.props;
-
+          const _T = this;
+            var TimIN = setInterval(function(){
+                const isAdmin = APP.conference._room.isAdmin;
+                if(isAdmin=='true') {
+                    if(_T.state.show==false) {
+                        _T.setState({'show':true})
+                        }
+                    }
+                 else {
+                    if(_T.state.show==true) {
+                        _T.setState({'show':false})
+                    }
+                }
+             }, 1000);
         const buttons = [];
+        
 
-        if (_isModerator) {
+        if (this.state.show == true) {
             if (!_disableRemoteMute) {
                 buttons.push(
                     <MuteButton
@@ -188,11 +205,11 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
                         key = 'mute'
                         participantID = { participantID } />
                 );
-                buttons.push(
-                    <MuteEveryoneElseButton
-                        key = 'mute-others'
-                        participantID = { participantID } />
-                );
+                // buttons.push(
+                //     <MuteEveryoneElseButton
+                //         key = 'mute-others'
+                //         participantID = { participantID } />
+                // );
             }
 
             if (!_disableKick) {

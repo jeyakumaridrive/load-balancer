@@ -132,7 +132,7 @@ const eventEmitter = new EventEmitter();
 
 let room;
 let connection;
-
+localStorage.setItem('mutede','false');
 /**
  * This promise is used for chaining mutePresenterVideo calls in order to avoid  calling GUM multiple times if it takes
  * a while to finish.
@@ -184,6 +184,64 @@ function connect(roomName) {
     });
 }
 
+function mute_all(userID) {
+
+    if(APP.conference._room.isAdmin == "true") {
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1001;
+        conntrolMessage.userID = userID;
+        conntrolMessage.Message = 'Toggle mute All!!';
+        conntrolMessage.FromParticipantID = userID;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);
+
+    }
+
+   
+}
+function unmuteAll(userID) {
+    if(APP.conference._room.isAdmin == "true") {
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1002;
+        conntrolMessage.userID = userID;
+        conntrolMessage.Message = 'Toggle unmuteAll!!';
+        conntrolMessage.FromParticipantID = userID;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);
+    }
+
+   
+}
+function Kickout(userID) {
+    var to = localStorage.getItem('kickuser');
+   
+    if(APP.conference._room.isAdmin == "true") {
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1003;
+        conntrolMessage.userID = userID;
+        conntrolMessage.Message = 'Kick him!!';
+        conntrolMessage.ToParticipantID = to;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);
+    }
+
+   
+}
+function mute_single(userID) {
+    var to = localStorage.getItem('kickuser');
+    if(APP.conference._room.isAdmin == "true") {
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1004;
+        conntrolMessage.userID = userID;
+        conntrolMessage.Message = 'Toggle mute!!';
+         conntrolMessage.ToParticipantID = to;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);
+
+    }
+
+   
+}
 /**
  * Share data to other users.
  * @param command the command
@@ -1916,6 +1974,13 @@ export default {
      * Setup interaction between conference and UI.
      */
     _setupListeners() {
+        var localParticipantIDs = getLocalParticipant(APP.store.getState());
+        var localParticipantIDs = localParticipantIDs.id;
+        localStorage.setItem('userPid', localParticipantIDs);
+      document.getElementById("muteAll").addEventListener("click", function() { mute_all(localParticipantIDs)});
+      document.getElementById("unmuteAll").addEventListener("click", function() { unmuteAll(localParticipantIDs)});
+      document.getElementById("Kickout").addEventListener("click", function() { Kickout(localParticipantIDs)});
+      document.getElementById("mute_single").addEventListener("click", function() { mute_single(localParticipantIDs)});
         // add local streams when joined to the conference
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
             this._onConferenceJoined();
@@ -2141,6 +2206,70 @@ export default {
             APP.store.dispatch(kickedOut(room, participant));
 
             // FIXME close
+        });
+        room.on(JitsiConferenceEvents.MESSAGE_RECEIVED , ( id, text, ts ) => {
+            let messageObj = JSON.parse( text );
+            console.log(messageObj);
+            if( messageObj.EventType == 1001 )
+            {   
+                var new1=localStorage.getItem('userPid');
+                if(new1 != messageObj.userID){
+                    
+                  APP.store.dispatch(showNotification({
+                        descriptionKey: 'Muted',
+                        titleKey: 'You are muted by host'
+                    }));
+                    // if(localStorage.getItem('moderator') =='false'){
+                        muteLocalAudio(true);
+                      //$('.button-group-audio').hide();
+                }
+                 
+            } else if( messageObj.EventType == 1002) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 != messageObj.userID){
+                     APP.store.dispatch(showNotification({
+                        descriptionKey: 'Unmuted',
+                        titleKey: 'You are unmuted by host'
+                    }));
+                    // if(localStorage.getItem('moderator') =='false'){
+                        muteLocalAudio(false);
+                      //$('.button-group-audio').hide();
+                }
+            
+           
+            //console.log(id);
+            }else if( messageObj.EventType == 1003) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.ToParticipantID){
+                    APP.store.dispatch(showNotification({
+                        descriptionKey: 'Kicked',
+                        titleKey: 'You are Kicked by host'
+                    }));
+                    // if(localStorage.getItem('moderator') =='false'){
+                        this.hangup(true);
+                      //$('.button-group-audio').hide();
+                }
+            
+           
+            //console.log(id);
+            }else if( messageObj.EventType == 1004) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.ToParticipantID){
+                     APP.store.dispatch(showNotification({
+                        descriptionKey: 'Muted',
+                        titleKey: 'You are muted by host'
+                    }));
+                    // if(localStorage.getItem('moderator') =='false'){
+                        muteLocalAudio(true);
+                      //$('.button-group-audio').hide();
+                }
+            
+           
+            //console.log(id);
+            }
         });
 
         room.on(JitsiConferenceEvents.PARTICIPANT_KICKED, (kicker, kicked) => {

@@ -14,6 +14,7 @@ import { Filmstrip } from '../../../filmstrip';
 import { CalleeInfoContainer } from '../../../invite';
 import { LargeVideo } from '../../../large-video';
 import { LAYOUTS, getCurrentLayout } from '../../../video-layout';
+import { updateSettings } from '../../../base/settings';
 
 import {
     Toolbox,
@@ -32,6 +33,7 @@ import {
     abstractMapStateToProps
 } from '../AbstractConference';
 import type { AbstractProps } from '../AbstractConference';
+import socketIOClient from "socket.io-client";
 
 declare var APP: Object;
 declare var config: Object;
@@ -118,6 +120,8 @@ class Conference extends AbstractConference<Props, *> {
 
         // Bind event handler so it is only bound once for every instance.
         this._onFullScreenChange = this._onFullScreenChange.bind(this);
+        this.pendingUsers = [];
+        this.admit_user;
     }
 
     /**
@@ -128,6 +132,72 @@ class Conference extends AbstractConference<Props, *> {
     componentDidMount() {
         document.title = `${this.props._roomName} | ${interfaceConfig.APP_NAME}`;
         this._start();
+        var _t = this;
+        var interval = setInterval(function() {
+            console.log('Interval is running!');
+            if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
+                console.log('implemented the event');
+                const socket = socketIOClient('https://meet.olecons.com');
+                APP.conference._socket = socket;
+                const room_id = APP.conference.roomName;
+                console.log('This is your room id =>>>',room_id,socket.id);
+                    socket.on("want_to_join", data => {
+                        if(sessionStorage.isAdmin) {
+                            _t.pendingUsers.push(data);
+                            _t.askForJoin();
+                            console.log('Request came but i am moderator!',_t);
+                        }
+                        console.log('Request came but i am not moderator!');
+                    });
+                    if(sessionStorage.socket_id != undefined && sessionStorage.user == undefined) {
+                        console.log('Emited the replace_id event =>>>',room_id);
+                        socket.emit('replace_id',{room:room_id,old_socket_id:sessionStorage.socket_id});
+                    } else if(sessionStorage.user != undefined){
+                        var waitForSocketId = setInterval(function() {
+                            if(socket.id != undefined && socket.id != '') {
+                                console.log('user =>>>>',user,socket.id);
+                                var user = JSON.parse(sessionStorage.user);
+                                user.id = socket.id;
+                                user.user.socket_id = socket.id;
+                                sessionStorage.user = JSON.stringify(user);
+                                if(!sessionStorage.isAdmin) {
+                                    socket.emit('join_room',{room:room_id, user:user.user, id:socket.id});
+                                } else {
+                                    socket.emit('join',{id:room_id,name:sessionStorage.room_name},{id:user.user.id,socket_id:socket.id,name:user.user.name,presenter:true});
+                                }
+                                socket.on('user_joined', data => {
+                                    console.log('User joined =>>>',data);
+                                })
+                                console.log('user =>>>> after update',user);
+                                clearInterval(waitForSocketId);
+                            }
+                        },500);
+                    }
+                    socket.on('open',data => {
+                        console.log('Request came open!');
+                        sessionStorage.socket_id = socket.id;
+                        socket.emit('info',room_id);
+                    });
+                    socket.on('info', data => {
+                        console.log('info about the room =>>>>',data);
+                        var admin = data.members.find(member => member.presenter);
+                        if(sessionStorage.user != undefined) {
+                            var user = JSON.parse(sessionStorage.user);
+                            var isAdminCheck = user.user.presenter;
+                        }
+                        sessionStorage.isAdmin = typeof isAdminCheck !== "undefined" && isAdminCheck != null ? isAdminCheck : admin && admin.id == socket.id ? true : false;
+                        sessionStorage.room_name = data.name;
+                        APP.conference._room.isAdmin = sessionStorage.isAdmin;
+                        sessionStorage.user = sessionStorage.user == undefined ? JSON.stringify(data.members.find(member => member.id = socket.id)) : sessionStorage.user;
+                        var user = JSON.parse(sessionStorage.user);
+                        _t.props.dispatch(updateSettings({
+                            displayName: user.user.name
+                        }));
+                        localStorage.isAdmin = sessionStorage.isAdmin;
+                    })
+                    clearInterval(interval);
+                }
+        },1000);
     }
 
     /**
@@ -195,6 +265,7 @@ class Conference extends AbstractConference<Props, *> {
                     { hideVideoQualityLabel
                         || <Labels /> }
                     <Filmstrip filmstripOnly = { filmstripOnly } />
+                    { this._renderJoinRequest() }
                 </div>
 
                 { filmstripOnly || <Toolbox /> }
@@ -216,6 +287,77 @@ class Conference extends AbstractConference<Props, *> {
      */
     _onFullScreenChange() {
         this.props.dispatch(fullScreenChanged(APP.UI.isFullScreen()));
+    }
+    _renderJoinRequest() {
+        return (
+            <div id="join-this-meeting" class="joinMeetingRequest hidden">
+                <div class="modal-body">
+                    <h2>Someone wants to join this meeting</h2>
+                    <div class="sw_new_user">
+                        <span class="sw_user_profile">J
+                        </span>
+                        <span class="sw_user_name">jhghgh</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="sw_deny btn jm_fancy-button" onClick={this.denyUser}>deny  </button> <button type="button" class="sw_allow btn jm_fancy-button" onClick={this.allowUser}>allow </button>
+                </div>
+            </div>
+        )
+    }
+
+    allowUser = () => {
+        console.log('allow user =>>>',this);
+        APP.conference._socket.emit('allow_user', this.admit_user);
+        $('#join-this-meeting').hide();
+        if(this.pendingUsers.length) {
+            setTimeout(() => {
+                this.admit_user = null;
+                this.askForJoin();
+            }, 1000);
+        } else {
+            this.admit_user = null;
+        }
+    }
+
+    denyUser = () => {
+        APP.conference._socket.emit('deny_user', this.admit_user);
+        $("#join-this-meeting").hide();
+        if(this.pendingUsers.length) {
+            setTimeout(() => {
+                this.admit_user = null;
+                this.askForJoin();
+            }, 1000);
+        } else {
+            this.admit_user = null;
+        }
+    }
+
+    askForJoin() {
+        console.log('ask for join ->>>',this);
+        if(!this.admit_user) {
+            var data = this.pendingUsers.shift();
+            console.log('inside the ask user ->>>>',data,sessionStorage.isAdmin);
+            if(sessionStorage.isAdmin) {
+                $("#join-this-meeting").show().removeClass('hidden');
+            }
+            this.admit_user = data;
+            if(data.user.name && !data.user._name) {
+                data.user._name = data.user.name;
+            }
+            $("#join-this-meeting .sw_user_profile").html(data.user._name.slice(0,1));
+            $("#join-this-meeting .sw_user_name").html(data.user._name + ' <!--<i>Unverified</i>-->');
+            // if(__alert.setSinkId) {
+            //     __alert.setSinkId(setting.data.defaults.speaker).then(() => {
+            //         __alert.play();
+            //     });
+            // } else {
+            //     __alert.play();
+            // }
+            if(!sessionStorage.isAdmin) {
+                this.allowUser();
+            }
+        }
     }
 
     /**

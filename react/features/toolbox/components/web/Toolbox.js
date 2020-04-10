@@ -11,6 +11,7 @@ import {
 import { openDialog, toggleDialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import {
+    Icon,
     IconChat,
     IconExitFullScreen,
     IconFeedback,
@@ -201,7 +202,9 @@ type State = {
     /**
      * The width of the browser's window.
      */
-    windowWidth: number
+    windowWidth: number,
+    togglePresent: false,
+    toggleSettingsMenu: false
 };
 
 declare var APP: Object;
@@ -437,7 +440,7 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
     _doToggleProfile() {
-        this.props.dispatch(openSettingsDialog(SETTINGS_TABS.PROFILE));
+        this.props.dispatch(openSettingsDialog(SETTINGS_TABS.DEVICES));
     }
 
     /**
@@ -1136,54 +1139,80 @@ class Toolbox extends Component<Props, State> {
     */
     _renderMeetingInfoButton() {
         return (
-            <div className="meeting-info-box">
-                <a type="button" id="meeting-info-box" onClick={this.toggleInfobox}>
-                    Nitesh's Meeting
-                        <span className="dropdown-icon">
-                            <svg fill="none" height="9" width="9" viewBox="0 0 10 6"><path fillRule="evenodd" clipRule="evenodd" d="M8.07.248a.75.75 0 111.115 1.004L5.656 5.193a.75.75 0 01-1.115 0L1.068 1.252A.75.75 0 012.182.248L5.1 3.571 8.07.248z" fill="#5E6D7A"></path></svg>
-                        </span>
-                    </a>
-                <div className="dropdown-menu">
-                    <div className="cw_title">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 841.889 595.281">
-                            <path d="M718.584 297.647C718.584 133.251 585.326.003 420.949.003c-164.386 0-297.645 133.247-297.645 297.644 0 164.371 133.259 297.63 297.645 297.63 164.377 0 297.635-133.259 297.635-297.63z"></path>
-                            <g fill="#FFF">
-                                <path d="M501.533 431.387a6 6 0 00-7.522-2.042c-29.493 13.961-62.967 28.723-69.537 30.012-.165-.147-.428-.417-.772-.884-.89-1.206-1.323-2.781-1.323-4.817 0-16.683 12.592-67.434 37.424-150.835 20.938-70.074 23.358-84.584 23.358-89.4 0-7.437-2.847-13.72-8.236-18.172-5.12-4.223-12.272-6.361-21.259-6.361-14.948 0-32.273 5.675-52.966 17.35-20.052 11.317-42.414 30.486-66.463 56.975a6 6 0 006.708 9.588c8.443-3.445 50.873-20.826 57.058-24.712 5.064-3.174 9.448-4.785 13.031-4.785a4.4 4.4 0 01.331.012c.043.237.084.6.084 1.119 0 3.656-.752 7.983-2.227 12.842C373.066 374.424 355.49 446.24 355.49 476.83c0 10.795 3.001 19.486 8.917 25.828 6.029 6.471 14.161 9.751 24.171 9.751 10.667 0 23.649-4.456 39.688-13.622 15.521-8.869 39.209-28.379 72.422-59.649a6 6 0 00.845-7.751zM500.373 91.99c-5.908-6.049-13.47-9.115-22.471-9.115-11.206 0-20.966 4.429-29.006 13.163-7.911 8.59-11.923 19.132-11.923 31.329 0 9.639 2.955 17.625 8.782 23.738 5.905 6.205 13.364 9.351 22.167 9.351 10.748 0 20.455-4.677 28.852-13.9 8.249-9.062 12.433-19.716 12.433-31.666.002-9.183-2.97-16.887-8.834-22.9z">
-                                </path>
-                            </g>
-                        </svg> Details
-                    </div>
-                    <div className="cw_meeting-info">
-                        <div className="cw_info">
-                            <h2>Nitesh's Meeting</h2>
-                            <span className="cw_meeting-name"></span>
-                        </div>
-                        <div className="cw_info_1">
-                            <h2>Joining info</h2>
-                            <div className="cw_meeting-url">
-                                https://meet.remotepc.com/meet/22kxgmpedr3
+            <ul className="cw_bottom-left-menu-list"> 
+
+                <li>
+                    <div className="meeting-info-box">
+                        <a type="button" className='js-open-modal present-tab' id="meeting-info-box" onClick={this.toggleInfobox}>
+                        Nitesh's Meeting
+                            <span className="dropdown-icon">
+                                <svg fill="none" height="9" width="9" viewBox="0 0 10 6"><path fillRule="evenodd" clipRule="evenodd" d="M8.07.248a.75.75 0 111.115 1.004L5.656 5.193a.75.75 0 01-1.115 0L1.068 1.252A.75.75 0 012.182.248L5.1 3.571 8.07.248z" fill="#5E6D7A"></path></svg>
+                            </span>
+                        </a>
+                        <div className="dropdown-menu">
+                            <div className="cw_title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 841.889 595.281">
+                                    <path d="M718.584 297.647C718.584 133.251 585.326.003 420.949.003c-164.386 0-297.645 133.247-297.645 297.644 0 164.371 133.259 297.63 297.645 297.63 164.377 0 297.635-133.259 297.635-297.63z"></path>
+                                    <g fill="#FFF">
+                                        <path d="M501.533 431.387a6 6 0 00-7.522-2.042c-29.493 13.961-62.967 28.723-69.537 30.012-.165-.147-.428-.417-.772-.884-.89-1.206-1.323-2.781-1.323-4.817 0-16.683 12.592-67.434 37.424-150.835 20.938-70.074 23.358-84.584 23.358-89.4 0-7.437-2.847-13.72-8.236-18.172-5.12-4.223-12.272-6.361-21.259-6.361-14.948 0-32.273 5.675-52.966 17.35-20.052 11.317-42.414 30.486-66.463 56.975a6 6 0 006.708 9.588c8.443-3.445 50.873-20.826 57.058-24.712 5.064-3.174 9.448-4.785 13.031-4.785a4.4 4.4 0 01.331.012c.043.237.084.6.084 1.119 0 3.656-.752 7.983-2.227 12.842C373.066 374.424 355.49 446.24 355.49 476.83c0 10.795 3.001 19.486 8.917 25.828 6.029 6.471 14.161 9.751 24.171 9.751 10.667 0 23.649-4.456 39.688-13.622 15.521-8.869 39.209-28.379 72.422-59.649a6 6 0 00.845-7.751zM500.373 91.99c-5.908-6.049-13.47-9.115-22.471-9.115-11.206 0-20.966 4.429-29.006 13.163-7.911 8.59-11.923 19.132-11.923 31.329 0 9.639 2.955 17.625 8.782 23.738 5.905 6.205 13.364 9.351 22.167 9.351 10.748 0 20.455-4.677 28.852-13.9 8.249-9.062 12.433-19.716 12.433-31.666.002-9.183-2.97-16.887-8.834-22.9z">
+                                        </path>
+                                    </g>
+                                </svg> Details
                             </div>
-                            <div className="cw_dial_meeting">
-                                <span>Dial-in:</span> (US) +1 786-420-6628 <span>PIN:</span> 943 986 165 # 
+                            <div className="cw_meeting-info">
+                                <div className="cw_info">
+                                    <h2>Nitesh's Meeting</h2>
+                                    <span className="cw_meeting-name"></span>
+                                </div>
+                                <div className="cw_info_1">
+                                    <h2>Joining info</h2>
+                                    <div className="cw_meeting-url">
+                                        https://meet.remotepc.com/meet/22kxgmpedr3
+                                    </div>
+                                    <div className="cw_dial_meeting">
+                                        <span>Dial-in:</span> (US) +1 786-420-6628 <span>PIN:</span> 943 986 165 # 
+                                    </div>
+                                </div>
+                                <div className="cw_copy-text">
+                                    <h3>
+                                        <a onClick={this.copyMeetingInfo}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="#383838" viewBox="0 0 841.889 595.281" overflow="visible"><g><g><path d="M506.403 104.11H229.67c-25.967 0-47.057 21.09-47.057 47.057v397.057c0 25.967 21.09 47.058 47.057 47.058h276.732c25.967 0 47.057-21.091 47.057-47.058V151.167c-.122-25.967-21.212-47.057-47.056-47.057zm14.019 443.992c0 7.802-6.339 14.141-14.142 14.141H229.548c-7.802 0-14.142-6.339-14.142-14.141V151.167c0-7.802 6.34-14.142 14.142-14.142H506.28c7.803 0 14.142 6.34 14.142 14.142v396.935z"></path><path d="M612.219 0H335.487C309.52 0 288.43 21.091 288.43 47.056a16.389 16.389 0 0016.458 16.458 16.389 16.389 0 0016.457-16.458c0-7.802 6.34-14.141 14.142-14.141h276.732c7.803 0 14.142 6.339 14.142 14.141v397.058c0 7.802-6.339 14.142-14.142 14.142a16.388 16.388 0 00-16.457 16.457 16.389 16.389 0 0016.457 16.458c25.967 0 47.057-21.091 47.057-47.057V47.056C659.276 21.091 638.186 0 612.219 0z"></path></g></g></svg>
+                                            Copy joining info
+                                        </a>
+                                    </h3>
+                                </div>
                             </div>
                         </div>
-                        <div className="cw_copy-text">
-                            <h3>
-                                <a onClick={this.copyMeetingInfo}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="#383838" viewBox="0 0 841.889 595.281" overflow="visible"><g><g><path d="M506.403 104.11H229.67c-25.967 0-47.057 21.09-47.057 47.057v397.057c0 25.967 21.09 47.058 47.057 47.058h276.732c25.967 0 47.057-21.091 47.057-47.058V151.167c-.122-25.967-21.212-47.057-47.056-47.057zm14.019 443.992c0 7.802-6.339 14.141-14.142 14.141H229.548c-7.802 0-14.142-6.339-14.142-14.141V151.167c0-7.802 6.34-14.142 14.142-14.142H506.28c7.803 0 14.142 6.34 14.142 14.142v396.935z"></path><path d="M612.219 0H335.487C309.52 0 288.43 21.091 288.43 47.056a16.389 16.389 0 0016.458 16.458 16.389 16.389 0 0016.457-16.458c0-7.802 6.34-14.141 14.142-14.141h276.732c7.803 0 14.142 6.339 14.142 14.141v397.058c0 7.802-6.339 14.142-14.142 14.142a16.388 16.388 0 00-16.457 16.457 16.389 16.389 0 0016.457 16.458c25.967 0 47.057-21.091 47.057-47.057V47.056C659.276 21.091 638.186 0 612.219 0z"></path></g></g></svg>
-                                    Copy joining info
-                                </a>
-                            </h3>
-                        </div>
                     </div>
-                </div>
-            </div>
+                </li>
+                    <RecordButton
+                        key = 'record'
+                        showLabel = { true } />
+            </ul>
+            
             )
     }
 
     _renderRightSideButton() {
+        const {
+            _chatOpen,
+            _hideInviteButton,
+            _overflowMenuVisible,
+            _raisedHand,
+            t
+        } = this.props;
+
         return (
             <ul className="cw_bottom-right-menu-list">
+                        
+                <li>
+                    <div className = 'toolbar-button-with-badge'>
+                        <a onClick={this._onToolbarToggleChat} type="button" className="js-open-modal present-tab"> 
+                            <Icon src = { IconChat } />   
+                            <span>Chat</span>
+                        </a>
+                    </div>
+                </li>
                 <li id="present-tab-li">
                     <a onClick={this.togglePresentTab} type="button" className="js-open-modal present-tab">
                         <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="32" viewBox="0 0 841.889 595.281">
@@ -1221,6 +1250,33 @@ class Toolbox extends Component<Props, State> {
                 </div>
             )
     }
+
+    _renderSettingsTab() {
+        return (
+                <div className="cw_present-menu cw_settings-menu" id="cw_settings_menu">
+                    <ul> 
+                        {/* <li>
+                            <a>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 512 512"><path d="M493.713 0H18.286C8.178 0 0 8.178 0 18.286v475.43c0 10.106 8.178 18.286 18.286 18.286h475.429c10.106 0 18.286-8.178 18.286-18.286V18.286C511.999 8.178 503.821 0 493.713 0zM36.572 475.428V36.571h109.714v438.857H36.572zm438.856 0H182.857V274.286h292.57l.001 201.142zm0-237.713H182.857V36.571h292.57l.001 201.144z"></path></svg> 
+                                    Change Layout
+                                </a>
+                            </li> */}
+                            <li>
+                                <a onClick={this._onToolbarToggleFullScreen}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 512 512"><path d="M0 18.286v128h36.571V36.572h109.715V0h-128C8.178 0 0 8.178 0 18.286zM493.714 0h-128v36.572h109.714v109.714H512v-128C512 8.178 503.822 0 493.714 0zM475.428 475.428H365.714V512h128c10.107 0 18.286-8.178 18.286-18.285V365.714h-36.572v109.714zM36.572 365.714H0v128.001C0 503.822 8.178 512 18.286 512h128v-36.571H36.572V365.714z"></path></svg>
+                                    <span class="fullscreen_text">Full Screen</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a onClick={this._onToolbarToggleProfile}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 48.352 48.352"><g><g><g><path d="M47.369 20.046l-5.824-1.092a17.799 17.799 0 00-1.394-3.371l3.37-4.927c.313-.456.247-1.143-.144-1.532l-4.155-4.156c-.391-.391-1.076-.454-1.53-.143l-4.93 3.372a18.009 18.009 0 00-3.474-1.421L28.202.982C28.101.44 27.573 0 27.019 0h-5.876c-.553 0-1.082.439-1.185.982L18.86 6.834a17.854 17.854 0 00-3.334 1.392L10.66 4.897c-.456-.312-1.142-.248-1.532.143L4.972 9.196c-.391.392-.454 1.076-.143 1.532l3.35 4.896a18.125 18.125 0 00-1.371 3.331L.984 20.046c-.542.103-.981.632-.981 1.185v5.876c0 .554.439 1.082.981 1.187l5.82 1.091a18.013 18.013 0 001.401 3.399l-3.313 4.842c-.312.456-.248 1.142.144 1.531l4.154 4.154c.392.393 1.076.454 1.532.146l4.84-3.313a18.086 18.086 0 003.299 1.375l1.098 5.854c.103.543.632.98 1.185.98h5.877c.555 0 1.081-.438 1.186-.98l1.087-5.795c1.2-.354 2.354-.821 3.438-1.401l4.901 3.354c.456.313 1.142.248 1.532-.145l4.152-4.153c.394-.392.455-1.074.146-1.531l-3.335-4.873a18.08 18.08 0 001.423-3.44l5.819-1.091c.541-.104.979-.633.979-1.187v-5.876c.004-.557-.437-1.086-.98-1.189zM24.178 34.261c-5.568 0-10.083-4.515-10.083-10.086 0-5.567 4.515-10.083 10.083-10.083 5.57 0 10.086 4.516 10.086 10.083 0 5.571-4.518 10.086-10.086 10.086z"></path></g></g></g></svg> Settings
+                                </a>
+                            </li>
+                        </ul>
+                </div>
+            )
+    }
+
 
     /**
      * Renders the Video controlling button.
@@ -1401,7 +1457,8 @@ class Toolbox extends Component<Props, State> {
                         buttonsRight.indexOf('rightsidemenu') !== -1
                         && this._renderRightSideButton()
                     }
-                    {this._renderPresentTab()}
+                    {this.state.togglePresent ? this._renderPresentTab() : ''}
+                    {this.state.toggleSettingsMenu ? this._renderSettingsTab() : ''}
                 </div>
             </div>);
     }
@@ -1431,14 +1488,20 @@ class Toolbox extends Component<Props, State> {
     }
     togglePresentTab:() => boolean;
 
-    togglePresentTab() {
-
+    togglePresentTab = () => {
+        this.setState({
+            togglePresent: !this.state.togglePresent,
+            toggleSettingsMenu: false
+        })
     }
 
     togglemoreOptions:() => boolean;
 
-    togglemoreOptions() {
-
+    togglemoreOptions = () => {
+        this.setState({
+            togglePresent: false,
+            toggleSettingsMenu: !this.state.toggleSettingsMenu
+        })
     }
 
 

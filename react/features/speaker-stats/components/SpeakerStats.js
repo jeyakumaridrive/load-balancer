@@ -67,7 +67,24 @@ class SpeakerStats extends Component<Props, State> {
 
         // Bind event handlers so they are only bound once per instance.
         this._updateStats = this._updateStats.bind(this);
+        this.muteall = this.muteall.bind(this);
+        this.unmuteall = this.unmuteall.bind(this);
+        
     }
+      muteall(){
+        localStorage.setItem('mutede','true');
+        document.getElementById('muteAll').click();
+        console.log(APP.conference._room.isAdmin);
+        $('#mute_all').hide();
+        $('#unmuteall_').show();
+     }
+     unmuteall(){
+        localStorage.setItem('mutede','false');
+       document.getElementById('unmuteAll').click();
+       $('#mute_all').show();
+       $('#unmuteall_').hide();
+        console.log(APP.conference._room.isAdmin);
+     }
 
     /**
      * Begin polling for speaker stats updates.
@@ -76,6 +93,11 @@ class SpeakerStats extends Component<Props, State> {
      */
     componentDidMount() {
         this._updateInterval = setInterval(this._updateStats, 1000);
+
+    }
+    componentWillMount() {
+        setInterval(this._updateStats2, 100);
+
     }
 
     /**
@@ -97,13 +119,15 @@ class SpeakerStats extends Component<Props, State> {
     render() {
         const userIds = Object.keys(this.state.stats);
         const items = userIds.map(userId => this._createStatsItem(userId));
-
+          const isAdmin = APP.conference._room.isAdmin;
         return (
             <Dialog
                 cancelKey = { 'dialog.close' }
                 submitDisabled = { true }
                 titleKey = 'speakerStats.speakerStats'>
                 <div className = 'speaker-stats'>
+                   { isAdmin == "true" ? (
+                        <div className="" ><a href="javascript:void(0)" onClick={ ()=>{ this.muteall() } } id='mute_all'>Mute All</a><a  onClick={ ()=>{ this.unmuteall() } } href="javascript:void(0)" style={{'display':'none'}} id='unmuteall_'>unMute All</a></div>) : '' } 
                     <SpeakerStatsLabels />
                     { items }
                 </div>
@@ -156,6 +180,7 @@ class SpeakerStats extends Component<Props, State> {
     }
 
     _updateStats: () => void;
+    _updateStats2: () => void;
 
     /**
      * Update the internal state with the latest speaker stats.
@@ -164,9 +189,19 @@ class SpeakerStats extends Component<Props, State> {
      * @private
      */
     _updateStats() {
+
         const stats = this.props.conference.getSpeakerStats();
 
         this.setState({ stats });
+    } _updateStats2() {
+       
+         if(localStorage.mutede=='true'){
+            $('#mute_all').hide();
+            $('#unmuteall_').show();
+        } else {
+             $('#mute_all').show();
+            $('#unmuteall_').hide();
+        }
     }
 }
 

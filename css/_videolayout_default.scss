@@ -299,6 +299,8 @@
 .videocontainer .displayname {
     pointer-events: none;
     padding: 0 3px 0 3px;
+    top: 88%;
+    left: 0%;
 }
 
 .videocontainer .editdisplayname {
@@ -307,6 +309,8 @@
 
 #localDisplayName {
     pointer-events: auto !important;
+    top:80%;
+    left:-10px;
 }
 
 .videocontainer>a.displayname {

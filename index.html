@@ -7,6 +7,12 @@
     <!--#include virtual="base.html" -->
 
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <button style="display: none;" id="muteAll"></button>
+    <button style="display: none;" id="unmuteAll"></button>
+    <button style="display: none;" id="Kickout"></button>
+    <button style="display: none;" id="mute_single"></button>
+
     <link rel="stylesheet" href="css/all.css">
 
     <script>
@@ -158,3 +164,17 @@
     <div id="react"></div>
   </body>
 </html>
+<script type="text/javascript">
+    setInterval(function(){
+        let divs = document.getElementsByClassName('styled__NavItem-sc-716rt7-5');
+
+            for (let x = 0; x < divs.length; x++) {
+                let div = divs[x];
+                let content = div.innerHTML.trim();
+
+                if (content == 'Profile' || content == 'More') {
+                    div.style.display = 'none';
+                }
+            }
+    },100)
+</script>

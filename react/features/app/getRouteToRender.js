@@ -43,6 +43,10 @@ export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
     if (navigator.product === 'ReactNative') {
         return _getMobileRoute(state);
     }
+    const { locationURL } = state['features/base/connection'];
+    let id = locationURL.searchParams.has('id') ? locationURL.searchParams.get('id') : '';
+    if(id != '')
+        sessionStorage.setItem('socket_id',id);
 
     return _getWebConferenceRoute(state) || _getWebWelcomePageRoute(state);
 }

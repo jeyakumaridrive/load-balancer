@@ -208,6 +208,16 @@ function _handleChatError({ dispatch }, error) {
  * @param {Object} message - The message object.
  * @returns {void}
  */
+function parseJSONSafely(str) {
+   try {
+      return JSON.parse(str);
+   }
+   catch (e) {
+      //console.err(e);
+      // Return a default object, or null based on use case.
+      return 'false'
+   }
+}
 function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, privateMessage, timestamp }) {
     // Logic for all platforms:
     const state = getState();
@@ -226,17 +236,20 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
     const timestampToDate = timestamp
         ? new Date(timestamp) : new Date();
     const millisecondsTimestamp = timestampToDate.getTime();
-
-    dispatch(addMessage({
-        displayName,
-        hasRead,
-        id,
-        messageType: participant.local ? MESSAGE_TYPE_LOCAL : MESSAGE_TYPE_REMOTE,
-        message,
-        privateMessage,
-        recipient: getParticipantDisplayName(state, localParticipant.id),
-        timestamp: millisecondsTimestamp
-    }));
+    let messageObj = parseJSONSafely(message);
+    if(messageObj=='false')
+    {
+        dispatch(addMessage({
+            displayName,
+            hasRead,
+            id,
+            messageType: participant.local ? MESSAGE_TYPE_LOCAL : MESSAGE_TYPE_REMOTE,
+            message,
+            privateMessage,
+            recipient: getParticipantDisplayName(state, localParticipant.id),
+            timestamp: millisecondsTimestamp
+        }));
+    }
 
     if (typeof APP !== 'undefined') {
         // Logic for web only:
