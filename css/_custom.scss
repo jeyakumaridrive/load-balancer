@@ -252,7 +252,6 @@
 } 
 
 
-
 #videoResolutionLabel, .subject-text, .videocontainer__toptoolbar, .filmstrip__toolbar, #toggleFilmstripButton {
     display: none;
 }
@@ -336,4 +335,12 @@
 
 }
 
+#white-b-wrapper{
+	display: none;
+	position: relative;
+	z-index: 99999;
+}
 
+#myId{
+	display: none;
+}

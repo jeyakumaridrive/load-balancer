@@ -242,6 +242,10 @@ function mute_single(userID) {
 
    
 }
+
+function showBoard() {
+    //alert("dfdfd");
+}
 /**
  * Share data to other users.
  * @param command the command
@@ -1982,6 +1986,9 @@ export default {
       document.getElementById("Kickout").addEventListener("click", function() { Kickout(localParticipantIDs)});
       document.getElementById("mute_single").addEventListener("click", function() { mute_single(localParticipantIDs)});
         // add local streams when joined to the conference
+
+        document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(); });
+
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
             this._onConferenceJoined();
         });
@@ -2611,6 +2618,18 @@ export default {
             = APP.store.getState()['features/base/settings'].displayName;
 
         APP.UI.changeDisplayName('localVideoContainer', displayName);
+
+
+        window.sessionStorage.setItem('white-board', this.roomName);
+        var htmlPath = window.location.origin+'/static/draw/canvas.html#'+this.roomName;
+        //var htmlPath = '/static/draw/canvas.html#'+this.roomName;
+        var $iframe = $('#myId');
+        $iframe.attr('src',htmlPath);
+
+        // setTimeout(function(){ 
+        //     document.getElementById('myId').contentDocument.location.reload(true);
+        // }, 3000);
+        
     },
 
     /**
