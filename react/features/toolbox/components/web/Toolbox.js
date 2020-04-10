@@ -891,7 +891,6 @@ class Toolbox extends Component<Props, State> {
 
     showWhiteboard()
     {
-        alert("dsfdsfds");
         //document.getElementById("myId").style.display = 'block';
         document.getElementById("ShowMyBoard").click();
     }

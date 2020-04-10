@@ -185,7 +185,7 @@ function connect(roomName) {
 }
 
 function showBoard() {
-    alert("dfdfd");
+    //alert("dfdfd");
 }
 
 
