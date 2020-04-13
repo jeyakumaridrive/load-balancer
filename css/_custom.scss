@@ -695,3 +695,9 @@ form[class^="device-select"]{
 .tile-view .filmstrip {
 	background: #000 !important;
 }
+.atlaskit-portal div[class^="Wrapper-"] {
+	right: 31px;
+    display: block;
+    position: fixed;
+    bottom: 20px;
+}
