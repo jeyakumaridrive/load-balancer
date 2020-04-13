@@ -6,6 +6,11 @@ import { Dialog } from '../../base/dialog';
 import { translate } from '../../base/i18n';
 import { getLocalParticipant } from '../../base/participants';
 import { connect } from '../../base/redux';
+import {
+    Icon,
+    IconMuteEveryone
+} from '../../base/icons';
+
 
 import SpeakerStatsItem from './SpeakerStatsItem';
 import SpeakerStatsLabels from './SpeakerStatsLabels';
@@ -71,14 +76,17 @@ class SpeakerStats extends Component<Props, State> {
         this.unmuteall = this.unmuteall.bind(this);
         
     }
-      muteall(){
+      muteall = (e) => {
+        e.preventDefault();
+
         localStorage.setItem('mutede','true');
         document.getElementById('muteAll').click();
         console.log(APP.conference._room.isAdmin);
         $('#mute_all').hide();
         $('#unmuteall_').show();
      }
-     unmuteall(){
+     unmuteall = (e) => {
+        e.preventDefault();
         localStorage.setItem('mutede','false');
        document.getElementById('unmuteAll').click();
        $('#mute_all').show();
@@ -124,13 +132,25 @@ class SpeakerStats extends Component<Props, State> {
             <Dialog
                 cancelKey = { 'dialog.close' }
                 submitDisabled = { true }
-                titleKey = 'speakerStats.speakerStats'>
+                titleKey = 'People'>
                 <div className = 'speaker-stats'>
-                   { isAdmin == "true" ? (
-                        <div className="" ><a href="javascript:void(0)" onClick={ ()=>{ this.muteall() } } id='mute_all'>Mute All</a><a  onClick={ ()=>{ this.unmuteall() } } href="javascript:void(0)" style={{'display':'none'}} id='unmuteall_'>unMute All</a></div>) : '' } 
                     <SpeakerStatsLabels />
                     { items }
                 </div>
+
+                { isAdmin == "true" ? (
+                <div className="mute-controller" >
+                    <button className='btn-mute-all'
+                        onClick={ this.muteall }
+                        id='mute_all'>Mute All
+                    </button>
+                    <button className='btn-unmute-all'
+                        onClick={ this.unmuteall }
+                        style={{'display':'none'}}
+                        id='unmuteall_'>Unmute All
+                    </button>
+                </div>) : '' }
+
             </Dialog>
         );
     }
@@ -193,7 +213,9 @@ class SpeakerStats extends Component<Props, State> {
         const stats = this.props.conference.getSpeakerStats();
 
         this.setState({ stats });
-    } _updateStats2() {
+    }
+    
+    _updateStats2() {
        
          if(localStorage.mutede=='true'){
             $('#mute_all').hide();

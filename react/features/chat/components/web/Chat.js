@@ -4,7 +4,7 @@ import React from 'react';
 import Transition from 'react-transition-group/Transition';
 
 import { translate } from '../../../base/i18n';
-import { Icon, IconClose } from '../../../base/icons';
+import { Icon, IconClose, IconChat } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 
 import AbstractChat, {
@@ -136,6 +136,8 @@ class Chat extends AbstractChat<Props> {
     _renderChatHeader() {
         return (
             <div className = 'chat-header'>
+                <Icon src = { IconChat } /> 
+                <span>Chat</span>
                 <div
                     className = 'chat-close'
                     onClick = { this.props._onToggleChat }>

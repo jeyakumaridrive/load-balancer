@@ -229,19 +229,22 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
         return (
             <div className = 'device-selection'>
                 <div className = 'device-selection-column column-video'>
+                    
+                        <div className = 'device-selectors'>
+                            { this._renderSelectors() }
+                        </div>
+                       
+                </div>
+                <div className = 'device-selection-column column-selectors'>
                     <div className = 'device-selection-video-container'>
                         <VideoInputPreview
-                            error = { this.state.previewVideoTrackError }
-                            track = { this.state.previewVideoTrack } />
-                    </div>
+                                error = { this.state.previewVideoTrackError }
+                                track = { this.state.previewVideoTrack } />
+                         </div>
                     { !hideAudioInputPreview
                         && <AudioInputPreview
                             track = { this.state.previewAudioTrack } /> }
-                </div>
-                <div className = 'device-selection-column column-selectors'>
-                    <div className = 'device-selectors'>
-                        { this._renderSelectors() }
-                    </div>
+
                     { !hideAudioOutputSelect
                         && <AudioOutputPreview
                             deviceId = { selectedAudioOutputId } /> }

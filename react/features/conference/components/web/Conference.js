@@ -122,6 +122,7 @@ class Conference extends AbstractConference<Props, *> {
         this._onFullScreenChange = this._onFullScreenChange.bind(this);
         this.pendingUsers = [];
         this.admit_user;
+        this.closeWboard;
     }
 
     /**
@@ -261,6 +262,9 @@ class Conference extends AbstractConference<Props, *> {
                 <Notice />
                 <Subject />
                 <div id = 'videospace'>
+                    <div id="w-board-wrapper" onClick={ ()=>{ this.closeWboard() } }>
+                        <svg height="24" width="24" viewBox="0 0 24 24"><path d="M18.984 6.422L13.406 12l5.578 5.578-1.406 1.406L12 13.406l-5.578 5.578-1.406-1.406L10.594 12 5.016 6.422l1.406-1.406L12 10.594l5.578-5.578z"></path></svg>
+                    </div>
                     <iframe src="" id="myId" width="100%" height="100%" position="relative"></iframe>
                     
                     <LargeVideo />
@@ -287,6 +291,10 @@ class Conference extends AbstractConference<Props, *> {
      * @private
      * @returns {void}
      */
+    closeWboard()
+    {
+        document.getElementById("closeMyBoard").click();
+    }
     _onFullScreenChange() {
         this.props.dispatch(fullScreenChanged(APP.UI.isFullScreen()));
     }

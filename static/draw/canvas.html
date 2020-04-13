@@ -27,7 +27,7 @@ window.onload = function () {
     document.getElementById('room-id').value = roomID;
     setTimeout(function(){
         document.getElementById('open-room').click();
-    }, 1000);
+    }, 2000);
 }   
 document.getElementById('open-room').onclick = function() {
     var roomid = document.getElementById('room-id').value;
@@ -55,7 +55,7 @@ connection.sdpConstraints.mandatory = {
 };
 if(location.hash.replace('#', '').length) {
     var roomid = location.hash.replace('#', '');
-    connection.join(roomid);
+    connection.openOrJoin(roomid);
    // connection.openOrJoin(roomid);
 }
 

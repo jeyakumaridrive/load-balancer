@@ -12,6 +12,9 @@
     &__item {
         list-style-type: none;
         height: 35px;
+        &:hover{
+            background-color: #ebebeb;
+        }
     }
 
     // Link Appearance
@@ -33,7 +36,7 @@
         }
 
         &.disabled {
-            pointer-events: none;
+            // pointer-events: none;
         }
     }
 

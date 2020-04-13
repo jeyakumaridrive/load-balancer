@@ -72,7 +72,7 @@
 
         .indicator-container {
             display: inline-block;
-            float: left;
+            float: right;
             pointer-events: all;
         }
     }
@@ -298,9 +298,12 @@
 
 .videocontainer .displayname {
     pointer-events: none;
-    padding: 0 3px 0 3px;
-    top: 88%;
-    left: 0%;
+    padding: 0 3px;
+    bottom: 2px;
+    left: 15px;
+    transform: none;
+    top: auto;
+    text-align: left;
 }
 
 .videocontainer .editdisplayname {
@@ -308,9 +311,12 @@
 }
 
 #localDisplayName {
-    pointer-events: auto !important;
-    top:80%;
-    left:-10px;
+    pointer-events: none !important;
+    transform: none;
+    top: auto;
+    bottom: 2px;
+    left: 5px;
+    text-align: left;
 }
 
 .videocontainer>a.displayname {

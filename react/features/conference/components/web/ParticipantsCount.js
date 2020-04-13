@@ -70,14 +70,16 @@ class ParticipantsCount extends PureComponent<Props> {
      */
     render() {
         return (
-            <div
-                className = 'participants-count'
+            <a
+                type="button" 
+                className="js-open-modal present-tab"
                 onClick = { this._onClick }>
-                <span className = 'participants-count-number'>
+                <div className = 'participants-count-number'>
                     {this.props.count}
-                </span>
-                <span className = 'participants-count-icon' />
-            </div>
+                </div>
+                <div className = 'participants-count-icon' />
+                <span>People</span>
+            </a>
         );
     }
 }

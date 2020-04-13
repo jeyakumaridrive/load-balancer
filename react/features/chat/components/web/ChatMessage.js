@@ -44,11 +44,14 @@ class ChatMessage extends AbstractChatMessage<Props> {
                 <div className = { `chatmessage ${message.privateMessage ? 'privatemessage' : ''}` }>
                     <div className = 'replywrapper'>
                         <div className = 'messagecontent'>
-                            { this.props.showDisplayName && this._renderDisplayName() }
+                            { this._renderDisplayName() }
+                            {/* { this.props.showDisplayName && this._renderDisplayName() } */}
                             <div className = 'usermessage'>
                                 { processedMessage }
                             </div>
                             { message.privateMessage && this._renderPrivateNotice() }
+                            { this._renderTimestamp() }
+                            {/* { this.props.showTimestamp && this._renderTimestamp() } */}
                         </div>
                         { message.privateMessage && message.messageType !== MESSAGE_TYPE_LOCAL
                             && (
@@ -61,7 +64,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
                             ) }
                     </div>
                 </div>
-                { this.props.showTimestamp && this._renderTimestamp() }
+                
             </div>
         );
     }

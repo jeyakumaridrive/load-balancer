@@ -169,6 +169,18 @@ const commands = {
  * @param roomName the room name to use
  * @returns Promise<JitsiConnection>
  */
+
+function parseJSONSafely(str) {
+try {
+    return JSON.parse(str);
+}
+catch (e) {
+    //console.err(e);
+    // Return a default object, or null based on use case.
+    return 'false'
+}
+}
+
 function connect(roomName) {
     return openConnection({
         retry: true,
@@ -243,8 +255,26 @@ function mute_single(userID) {
    
 }
 
-function showBoard() {
-    //alert("dfdfd");
+function showBoard(userID)
+{
+    let conntrolMessage = new Object();
+    conntrolMessage.EventType = 1005
+    conntrolMessage.userID = userID;
+    conntrolMessage.Message = 'show-board';
+    conntrolMessage.FromParticipantID = userID;
+    let message = JSON.stringify( conntrolMessage );
+    room.sendTextMessage(message);
+}
+
+function closeBoard(userID)
+{
+    let conntrolMessage = new Object();
+    conntrolMessage.EventType = 1006
+    conntrolMessage.userID = userID;
+    conntrolMessage.Message = 'close-board';
+    conntrolMessage.FromParticipantID = userID;
+    let message = JSON.stringify( conntrolMessage );
+    room.sendTextMessage(message);    
 }
 /**
  * Share data to other users.
@@ -1987,7 +2017,8 @@ export default {
       document.getElementById("mute_single").addEventListener("click", function() { mute_single(localParticipantIDs)});
         // add local streams when joined to the conference
 
-        document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(); });
+        document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(localParticipantIDs); });
+        document.getElementById("closeMyBoard").addEventListener("click", function() { closeBoard(localParticipantIDs); });
 
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
             this._onConferenceJoined();
@@ -2215,7 +2246,13 @@ export default {
             // FIXME close
         });
         room.on(JitsiConferenceEvents.MESSAGE_RECEIVED , ( id, text, ts ) => {
-            let messageObj = JSON.parse( text );
+            let messageCheck = parseJSONSafely(text);
+
+            if(messageCheck != 'false')
+            {
+                let messageObj = JSON.parse( text );
+            
+            
             console.log(messageObj);
             if( messageObj.EventType == 1001 )
             {   
@@ -2277,6 +2314,28 @@ export default {
            
             //console.log(id);
             }
+
+            else if(messageObj.EventType == 1005)
+            {
+                var new1=localStorage.getItem('userPid');
+
+                
+                 if(new1 != messageObj.userID){
+                    setTimeout(function(){ 
+                        document.getElementById('myId').contentDocument.location.reload(true);
+                    }, 2000);
+                }
+                document.getElementById("myId").style.display = 'block';
+                document.getElementById("w-board-wrapper").style.display = 'block';
+                // document.getElementById('myId').contentDocument.location.reload(true);
+            }
+            else if(messageObj.EventType == 1006)
+            {
+                document.getElementById("myId").style.display = 'none';
+                document.getElementById("w-board-wrapper").style.display = 'none';
+                // document.getElementById('myId').contentDocument.location.reload(true);
+            }
+        }
         });
 
         room.on(JitsiConferenceEvents.PARTICIPANT_KICKED, (kicker, kicked) => {

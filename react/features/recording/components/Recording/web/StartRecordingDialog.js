@@ -48,7 +48,7 @@ class StartRecordingDialog extends AbstractStartRecordingDialog {
                 okKey = 'dialog.startRecording'
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.startRecording'
-                width = 'small'>
+                width = 'medium'>
                 <StartRecordingDialogContent
                     fileRecordingsServiceEnabled = { _fileRecordingsServiceEnabled }
                     fileRecordingsServiceSharingEnabled = { _fileRecordingsServiceSharingEnabled }

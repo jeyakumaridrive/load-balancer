@@ -85,7 +85,7 @@ import VideoSettingsButton from './VideoSettingsButton';
 import {
     ClosedCaptionButton
 } from '../../../subtitles';
-
+import ParticipantsCount from '../../../conference/components/web/ParticipantsCount';
 /**
  * The type of the React {@code Component} props of {@link Toolbox}.
  */
@@ -253,7 +253,6 @@ class Toolbox extends Component<Props, State> {
         this._onToolbarToggleSharedVideo = this._onToolbarToggleSharedVideo.bind(this);
         this._onToolbarOpenLocalRecordingInfoDialog = this._onToolbarOpenLocalRecordingInfoDialog.bind(this);
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
-        this.showWhiteboard = this.showWhiteboard.bind(this);
 
         this.state = {
             windowWidth: window.innerWidth
@@ -267,12 +266,6 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
     componentDidMount() {
-       //  const script = document.createElement("script");    
-
-       // script.src = "https://www.webrtc-experiment.com/Canvas-Designer/canvas-designer-widget.js";
-       // script.async = true;
-
-       //document.body.appendChild(script);
         const KEYBOARD_SHORTCUTS = [
             this._shouldShowButton('videoquality') && {
                 character: 'A',
@@ -637,8 +630,9 @@ class Toolbox extends Component<Props, State> {
             {
                 enable: !this.props._fullScreen
             }));
-
+        
         this._doToggleFullScreen();
+
     }
 
     _onShortcutToggleRaiseHand: () => void;
@@ -762,12 +756,12 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
     _onToolbarToggleChat() {
+        const { _visible } = this.props;
         sendAnalytics(createToolbarEvent(
             'toggle.chat',
             {
                 enable: !this.props._chatOpen
             }));
-
         this._doToggleChat();
     }
 
@@ -788,6 +782,10 @@ class Toolbox extends Component<Props, State> {
                 }));
 
         this._doToggleFullScreen();
+
+        this.setState({
+            toggleSettingsMenu: false
+        })
     }
 
     _onToolbarToggleProfile: () => void;
@@ -803,6 +801,10 @@ class Toolbox extends Component<Props, State> {
         sendAnalytics(createToolbarEvent('profile'));
 
         this._doToggleProfile();
+        this.setState({
+            toggleSettingsMenu: false
+        })
+        
     }
 
     _onToolbarToggleRaiseHand: () => void;
@@ -889,13 +891,6 @@ class Toolbox extends Component<Props, State> {
         } = this.props;
 
         return _desktopSharingEnabled || _desktopSharingDisabledTooltipKey;
-    }
-
-
-    showWhiteboard()
-    {
-        //document.getElementById("myId").style.display = 'block';
-        document.getElementById("ShowMyBoard").click();
     }
 
     /**
@@ -1160,7 +1155,10 @@ class Toolbox extends Component<Props, State> {
                         <a type="button" className='js-open-modal present-tab' id="meeting-info-box" onClick={this.toggleInfobox}>
                         Nitesh's Meeting
                             <span className="dropdown-icon">
-                                <svg fill="none" height="9" width="9" viewBox="0 0 10 6"><path fillRule="evenodd" clipRule="evenodd" d="M8.07.248a.75.75 0 111.115 1.004L5.656 5.193a.75.75 0 01-1.115 0L1.068 1.252A.75.75 0 012.182.248L5.1 3.571 8.07.248z" fill="#5E6D7A"></path></svg>
+                                <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDQ5Mi4wMDIgNDkyLjAwMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDkyLjAwMiA0OTIuMDAyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Zz4NCgkJPHBhdGggZD0iTTQ4NC4xMzYsMzI4LjQ3M0wyNjQuOTg4LDEwOS4zMjljLTUuMDY0LTUuMDY0LTExLjgxNi03Ljg0NC0xOS4xNzItNy44NDRjLTcuMjA4LDAtMTMuOTY0LDIuNzgtMTkuMDIsNy44NDQNCgkJCUw3Ljg1MiwzMjguMjY1QzIuNzg4LDMzMy4zMzMsMCwzNDAuMDg5LDAsMzQ3LjI5N2MwLDcuMjA4LDIuNzg0LDEzLjk2OCw3Ljg1MiwxOS4wMzJsMTYuMTI0LDE2LjEyNA0KCQkJYzUuMDY0LDUuMDY0LDExLjgyNCw3Ljg2LDE5LjAzMiw3Ljg2czEzLjk2NC0yLjc5NiwxOS4wMzItNy44NmwxODMuODUyLTE4My44NTJsMTg0LjA1NiwxODQuMDY0DQoJCQljNS4wNjQsNS4wNiwxMS44Miw3Ljg1MiwxOS4wMzIsNy44NTJjNy4yMDgsMCwxMy45Ni0yLjc5MiwxOS4wMjgtNy44NTJsMTYuMTI4LTE2LjEzMg0KCQkJQzQ5NC42MjQsMzU2LjA0MSw0OTQuNjI0LDMzOC45NjUsNDg0LjEzNiwzMjguNDczeiIvPg0KCTwvZz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjwvc3ZnPg0K"  />
+                            </span>
+                            <span className="dropdown-icon" style={{'display': 'none'}}>
+                                <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDQ5MS45OTYgNDkxLjk5NiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDkxLjk5NiA0OTEuOTk2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Zz4NCgkJPHBhdGggZD0iTTQ4NC4xMzIsMTI0Ljk4NmwtMTYuMTE2LTE2LjIyOGMtNS4wNzItNS4wNjgtMTEuODItNy44Ni0xOS4wMzItNy44NmMtNy4yMDgsMC0xMy45NjQsMi43OTItMTkuMDM2LDcuODZsLTE4My44NCwxODMuODQ4DQoJCQlMNjIuMDU2LDEwOC41NTRjLTUuMDY0LTUuMDY4LTExLjgyLTcuODU2LTE5LjAyOC03Ljg1NnMtMTMuOTY4LDIuNzg4LTE5LjAzNiw3Ljg1NmwtMTYuMTIsMTYuMTI4DQoJCQljLTEwLjQ5NiwxMC40ODgtMTAuNDk2LDI3LjU3MiwwLDM4LjA2bDIxOS4xMzYsMjE5LjkyNGM1LjA2NCw1LjA2NCwxMS44MTIsOC42MzIsMTkuMDg0LDguNjMyaDAuMDg0DQoJCQljNy4yMTIsMCwxMy45Ni0zLjU3MiwxOS4wMjQtOC42MzJsMjE4LjkzMi0yMTkuMzI4YzUuMDcyLTUuMDY0LDcuODU2LTEyLjAxNiw3Ljg2NC0xOS4yMjQNCgkJCUM0OTEuOTk2LDEzNi45MDIsNDg5LjIwNCwxMzAuMDQ2LDQ4NC4xMzIsMTI0Ljk4NnoiLz4NCgk8L2c+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8L3N2Zz4NCg==" />
                             </span>
                         </a>
                         <div className="dropdown-menu">
@@ -1218,12 +1216,17 @@ class Toolbox extends Component<Props, State> {
 
         return (
             <ul className="cw_bottom-right-menu-list">
-                        
+               <li>
+                    <div className = 'toolbar-button-with-badge'>
+                            <ParticipantsCount />
+                    </div>
+                </li>         
                 <li>
                     <div className = 'toolbar-button-with-badge'>
                         <a onClick={this._onToolbarToggleChat} type="button" className="js-open-modal present-tab"> 
                             <Icon src = { IconChat } />   
                             <span>Chat</span>
+                            <ChatCounter />
                         </a>
                     </div>
                 </li>
@@ -1254,7 +1257,7 @@ class Toolbox extends Component<Props, State> {
                                         <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
                                     </g>
                                 </svg> Your Screen</a> </li>
-                                    <li><a onClick={ ()=>{ this.showWhiteboard() } }> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                        <li><a onClick={this.showWhiteboard}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
                                     <g>
                                         <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
                                     </g>
@@ -1266,6 +1269,13 @@ class Toolbox extends Component<Props, State> {
     }
 
     _renderSettingsTab() {
+        const {
+            _feedbackConfigured,
+            _fullScreen,
+            _screensharing,
+            _sharingVideo,
+            t
+        } = this.props;
         return (
                 <div className="cw_present-menu cw_settings-menu" id="cw_settings_menu">
                     <ul> 
@@ -1278,7 +1288,10 @@ class Toolbox extends Component<Props, State> {
                             <li>
                                 <a onClick={this._onToolbarToggleFullScreen}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 512 512"><path d="M0 18.286v128h36.571V36.572h109.715V0h-128C8.178 0 0 8.178 0 18.286zM493.714 0h-128v36.572h109.714v109.714H512v-128C512 8.178 503.822 0 493.714 0zM475.428 475.428H365.714V512h128c10.107 0 18.286-8.178 18.286-18.285V365.714h-36.572v109.714zM36.572 365.714H0v128.001C0 503.822 8.178 512 18.286 512h128v-36.571H36.572V365.714z"></path></svg>
-                                    <span class="fullscreen_text">Full Screen</span>
+                                    <span class="fullscreen_text">
+                                        
+                                    {_fullScreen ? 'Exit Full Screen' :'Full Screen' }
+                                    </span>
                                 </a>
                             </li>
                             <li>
@@ -1499,6 +1512,7 @@ class Toolbox extends Component<Props, State> {
      */
     toggleInfobox() {
         $(document.querySelector('.dropdown-menu')).fadeToggle('fast');
+        $('#meeting-info-box span.dropdown-icon').toggle();
     }
     togglePresentTab:() => boolean;
 

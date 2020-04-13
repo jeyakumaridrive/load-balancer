@@ -110,7 +110,7 @@
         flex-direction: column-reverse;
         height: auto;
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
 
         #filmstripRemoteVideosContainer {
             @include minHWAutoFix();

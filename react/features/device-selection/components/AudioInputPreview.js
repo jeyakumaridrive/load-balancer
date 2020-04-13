@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 import JitsiMeetJS from '../../base/lib-jitsi-meet/_';
-
+import {Icon, IconMicrophone} from '../../base/icons/';
 const JitsiTrackEvents = JitsiMeetJS.events.track;
 
 /**
@@ -94,10 +94,13 @@ class AudioInputPreview extends Component<Props, State> {
         };
 
         return (
-            <div className = 'audio-input-preview' >
-                <div
-                    className = 'audio-input-preview-level'
-                    style = { audioMeterFill } />
+            <div className='audio-preview-container'>
+                <Icon src={IconMicrophone} />
+                <div className = 'audio-input-preview' >
+                    <div
+                        className = 'audio-input-preview-level'
+                        style = { audioMeterFill } />
+                </div>
             </div>
         );
     }

@@ -61,18 +61,15 @@ class Subject extends Component<Props> {
             galleryView: !this.state.galleryView
         })
     }
-
-
     render() {
         const { _showParticipantCount, _subject, _visible } = this.props;
-
         return (
             <div className = { `subject ${_visible ? 'visible' : ''}` }>
                 <span className = 'subject-text'>{ _subject }</span>
-                <ConferenceTimer />
-
+                {/* <ConferenceTimer /> */}
+                {/* { _showParticipantCount && <ParticipantsCount /> } */}
                 <div className='view-settings'>
-                    { _showParticipantCount && <ParticipantsCount /> }
+                    
                     <div className='toggle-view' onClick={this._doToggleTileView}>
                        {this.state.galleryView ? 
                         <React.Fragment>
@@ -263,7 +260,7 @@ function _mapStateToProps(state) {
     const participantCount = getParticipantCount(state);
 
     return {
-        _showParticipantCount: participantCount >= 1,
+        _showParticipantCount: participantCount > 1,
         _subject: getConferenceName(state),
         _visible: isToolboxVisible(state)
     };

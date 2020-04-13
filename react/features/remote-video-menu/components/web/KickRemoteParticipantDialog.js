@@ -25,7 +25,7 @@ class KickRemoteParticipantDialog extends AbstractKickRemoteParticipantDialog {
                 okKey = 'dialog.kickParticipantButton'
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.kickParticipantTitle'
-                width = 'small'>
+                width = 'medium'>
                 <div>
                     { this.props.t('dialog.kickParticipantDialog') }
                 </div>

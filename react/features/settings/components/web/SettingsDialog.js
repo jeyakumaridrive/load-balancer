@@ -97,7 +97,7 @@ class SettingsDialog extends Component<Props> {
                 }
                 onSubmit = { onSubmit }
                 tabs = { tabs }
-                titleKey = 'settings.title' />
+                />
         );
     }
 

@@ -31,7 +31,7 @@ export class App extends AbstractApp {
      */
     _createMainElement(component, props) {
         return (
-            <AtlasKitThemeProvider mode = 'dark'>
+            <AtlasKitThemeProvider mode = 'light'>
                 <ChromeExtensionBanner />
                 { super._createMainElement(component, props) }
             </AtlasKitThemeProvider>
@@ -45,7 +45,7 @@ export class App extends AbstractApp {
      */
     _renderDialogContainer() {
         return (
-            <AtlasKitThemeProvider mode = 'dark'>
+            <AtlasKitThemeProvider mode = 'light'>
                 <DialogContainer />
             </AtlasKitThemeProvider>
         );

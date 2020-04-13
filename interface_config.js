@@ -3,7 +3,7 @@
 var interfaceConfig = {
     // TO FIX: this needs to be handled from SASS variables. There are some
     // methods allowing to use variables both in css and js.
-    DEFAULT_BACKGROUND: '#474747',
+    DEFAULT_BACKGROUND: '#000000',
 
     /**
      * Whether or not the blurred video background for large video should be
@@ -15,7 +15,7 @@ var interfaceConfig = {
     TOOLBAR_TIMEOUT: 4000,
     TOOLBAR_ALWAYS_VISIBLE: false,
     DEFAULT_REMOTE_DISPLAY_NAME: 'RemotePC Participant',
-    DEFAULT_LOCAL_DISPLAY_NAME: 'me',
+    DEFAULT_LOCAL_DISPLAY_NAME: 'You',
     SHOW_JITSI_WATERMARK: false,
     JITSI_WATERMARK_LINK: 'https://www.remotepc.com/',
 

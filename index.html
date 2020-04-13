@@ -15,6 +15,7 @@
 
     <link rel="stylesheet" href="css/all.css">
     <button style="display: none;" id="ShowMyBoard"></button> 
+    <button style="display: none;" id="closeMyBoard"></button> 
     <script>
         // IE11 and earlier can be identified via their user agent and be
         // redirected to a page that is known to have no newer js syntax.
@@ -176,5 +177,8 @@
                     div.style.display = 'none';
                 }
             }
+            $('#localDisplayName').text('').append('You');
     },100)
+
+    
 </script>

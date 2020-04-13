@@ -47,4 +47,13 @@
     border-radius: 3px;
     margin: -16px -24px;
     padding: 16px 24px;
+    background-color: #fff;
+    svg{
+        fill: #666;
+    }
+    .popupmenu__text {
+        display: inline-block;
+        vertical-align: middle;
+        color: #666;
+    }
 }
