@@ -202,6 +202,7 @@ function mute_all(userID) {
         let conntrolMessage = new Object();
         conntrolMessage.EventType = 1001;
         conntrolMessage.userID = userID;
+        conntrolMessage.name = APP.store.getState()['features/base/settings'].displayName;
         conntrolMessage.Message = 'Toggle mute All!!';
         conntrolMessage.FromParticipantID = userID;
         let message = JSON.stringify( conntrolMessage );
@@ -216,6 +217,7 @@ function unmuteAll(userID) {
         let conntrolMessage = new Object();
         conntrolMessage.EventType = 1002;
         conntrolMessage.userID = userID;
+        conntrolMessage.name = APP.store.getState()['features/base/settings'].displayName;
         conntrolMessage.Message = 'Toggle unmuteAll!!';
         conntrolMessage.FromParticipantID = userID;
         let message = JSON.stringify( conntrolMessage );
@@ -232,6 +234,7 @@ function Kickout(userID) {
         conntrolMessage.EventType = 1003;
         conntrolMessage.userID = userID;
         conntrolMessage.Message = 'Kick him!!';
+        conntrolMessage.name = APP.store.getState()['features/base/settings'].displayName;
         conntrolMessage.ToParticipantID = to;
         let message = JSON.stringify( conntrolMessage );
         room.sendTextMessage(message);
@@ -241,10 +244,13 @@ function Kickout(userID) {
 }
 function mute_single(userID) {
     var to = localStorage.getItem('kickuser');
+    var from = localStorage.getItem('kickuserName');
     if(APP.conference._room.isAdmin == "true") {
         let conntrolMessage = new Object();
         conntrolMessage.EventType = 1004;
         conntrolMessage.userID = userID;
+        conntrolMessage.name = APP.store.getState()['features/base/settings'].displayName;
+        conntrolMessage.from = from;
         conntrolMessage.Message = 'Toggle mute!!';
          conntrolMessage.ToParticipantID = to;
         let message = JSON.stringify( conntrolMessage );
@@ -2021,6 +2027,15 @@ export default {
         document.getElementById("closeMyBoard").addEventListener("click", function() { closeBoard(localParticipantIDs); });
 
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
+            var pp = room.getParticipants().length + 1;
+           //alert(pp)
+            if(pp==3) {
+                //alert(pp)
+             if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+                    $('.toggle-view').click()
+                }
+
+            }
             this._onConferenceJoined();
         });
 
@@ -2045,7 +2060,16 @@ export default {
             if (user.isHidden()) {
                 return;
             }
+            var pp = room.getParticipants().length + 1;
+           // alert(pp)
+            if(pp==3) {
+             //   alert()
+               // APP.store.getState()['features/video-layout'].tileViewEnabled = true
+               if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+                    $('.toggle-view').click()
+                }
 
+            }
             logger.log(`USER ${id} connnected:`, user);
             APP.UI.addUser(user);
         });
@@ -2258,10 +2282,11 @@ export default {
             {   
                 var new1=localStorage.getItem('userPid');
                 if(new1 != messageObj.userID){
-                    
+                    var nn = messageObj.name+' muted everyone';
                   APP.store.dispatch(showNotification({
-                        descriptionKey: 'Muted',
-                        titleKey: 'You are muted by host'
+                       descriptionKey:nn,
+                        //title: messageObj.name,
+                        titleKey:  messageObj.name
                     }));
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(true);
@@ -2272,9 +2297,11 @@ export default {
 
                 var new1=localStorage.getItem('userPid');
                 if(new1 != messageObj.userID){
+                    var nn = messageObj.name+' unmuted everyone';
                      APP.store.dispatch(showNotification({
-                        descriptionKey: 'Unmuted',
-                        titleKey: 'You are unmuted by host'
+                        descriptionKey: nn,
+                       // title: messageObj.name,
+                        titleKey:  messageObj.name
                     }));
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(false);
@@ -2287,9 +2314,12 @@ export default {
 
                 var new1=localStorage.getItem('userPid');
                 if(new1 == messageObj.ToParticipantID){
+                    var nn = messageObj.name+' Kicked out you';
                     APP.store.dispatch(showNotification({
-                        descriptionKey: 'Kicked',
-                        titleKey: 'You are Kicked by host'
+                        descriptionKey: nn,
+                        //title: messageObj.name,
+                        //titleKey: 'You are Kicked by host'
+                        titleKey: messageObj.name
                     }));
                     // if(localStorage.getItem('moderator') =='false'){
                         this.hangup(true);
@@ -2301,10 +2331,16 @@ export default {
             }else if( messageObj.EventType == 1004) {
 
                 var new1=localStorage.getItem('userPid');
-                if(new1 == messageObj.ToParticipantID){
+               // if(new1 == messageObj.ToParticipantID){
+                if(new1 != messageObj.userID){
+                    var nn = messageObj.name+' muted '+messageObj.from+ ' for everyone';
                      APP.store.dispatch(showNotification({
-                        descriptionKey: 'Muted',
-                        titleKey: 'You are muted by host'
+                        // descriptionKey: 'Muted',
+                        // title: messageObj.name,
+                        // titleKey: 'You are muted by host'
+                        descriptionKey: nn,
+                       // title: messageObj.name,
+                        titleKey: messageObj.name
                     }));
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(true);

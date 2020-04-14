@@ -744,3 +744,31 @@ form[class^="device-select"]{
     position: fixed;
     bottom: 20px;
 }
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: green;
+    color: #fff;
+    text-align: left;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 9999;
+    right: 5%;
+    top: 30px;
+    font-size: 17px;
+    background: rgb(49, 49, 49);top: auto;right: auto;left: 20px;margin-left: 0px;bottom: -50px;color: rgb(255, 255, 255);opacity: 1;visibility: visible;font-size: 15px;padding: 10px;
+    transition: all 0.5s ease-in;
+}
+
+#snackbar.show {
+    bottom: 50px;
+    /* visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s; */
+}
+#snackbar{
+	text-align: center;
+    text-transform: capitalize;
+}
