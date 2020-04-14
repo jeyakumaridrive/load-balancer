@@ -58,6 +58,8 @@ export default class AbstractMuteRemoteParticipantDialog<P:Props = Props>
 
         const { dispatch, participantID } = this.props;
          localStorage.setItem('kickuser',participantID);
+         alert(APP.store.getState()['features/base/settings'].displayName);
+         localStorage.setItem('kickuserName',APP.store.getState()['features/base/settings'].displayName);
         document.getElementById('mute_single').click();
         dispatch(muteRemote(participantID));
 

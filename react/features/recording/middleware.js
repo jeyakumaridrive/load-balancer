@@ -75,29 +75,29 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
 
     switch (action.type) {
     case APP_WILL_MOUNT:
-        dispatch(registerSound(
-            LIVE_STREAMING_OFF_SOUND_ID,
-            LIVE_STREAMING_OFF_SOUND_FILE));
+        // dispatch(registerSound(
+        //     LIVE_STREAMING_OFF_SOUND_ID,
+        //     LIVE_STREAMING_OFF_SOUND_FILE));
 
-        dispatch(registerSound(
-            LIVE_STREAMING_ON_SOUND_ID,
-            LIVE_STREAMING_ON_SOUND_FILE));
+        // dispatch(registerSound(
+        //     LIVE_STREAMING_ON_SOUND_ID,
+        //     LIVE_STREAMING_ON_SOUND_FILE));
 
-        dispatch(registerSound(
-            RECORDING_OFF_SOUND_ID,
-            RECORDING_OFF_SOUND_FILE));
+       // dispatch(registerSound(
+          //  RECORDING_OFF_SOUND_ID,
+            //RECORDING_OFF_SOUND_FILE));
 
-        dispatch(registerSound(
-            RECORDING_ON_SOUND_ID,
-            RECORDING_ON_SOUND_FILE));
+        // dispatch(registerSound(
+        //     RECORDING_ON_SOUND_ID,
+        //     RECORDING_ON_SOUND_FILE));
 
         break;
 
     case APP_WILL_UNMOUNT:
-        dispatch(unregisterSound(LIVE_STREAMING_OFF_SOUND_ID));
-        dispatch(unregisterSound(LIVE_STREAMING_ON_SOUND_ID));
-        dispatch(unregisterSound(RECORDING_OFF_SOUND_ID));
-        dispatch(unregisterSound(RECORDING_ON_SOUND_ID));
+        // dispatch(unregisterSound(LIVE_STREAMING_OFF_SOUND_ID));
+        // dispatch(unregisterSound(LIVE_STREAMING_ON_SOUND_ID));
+        // dispatch(unregisterSound(RECORDING_OFF_SOUND_ID));
+        // dispatch(unregisterSound(RECORDING_ON_SOUND_ID));
 
         break;
 
@@ -169,7 +169,7 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
                 }
 
                 if (soundID) {
-                    dispatch(playSound(soundID));
+                   // dispatch(playSound(soundID));
                 }
             } else if (updatedSessionData.status === OFF
                 && (!oldSessionData || oldSessionData.status !== OFF)) {
@@ -196,8 +196,8 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
                 }
 
                 if (soundOff && soundOn) {
-                    dispatch(stopSound(soundOn));
-                    dispatch(playSound(soundOff));
+                   // dispatch(stopSound(soundOn));
+                   /// dispatch(playSound(soundOff));
                 }
             }
         }
