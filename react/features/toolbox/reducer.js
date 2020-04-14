@@ -39,7 +39,7 @@ function _getInitialState() {
     let visible = false;
 
     // Default toolbox timeout for mobile app.
-    let timeoutMS = 5000;
+    let timeoutMS = 500;
 
     if (typeof interfaceConfig !== 'undefined') {
         if (interfaceConfig.INITIAL_TOOLBAR_TIMEOUT) {
