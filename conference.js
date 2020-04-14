@@ -2021,6 +2021,15 @@ export default {
         document.getElementById("closeMyBoard").addEventListener("click", function() { closeBoard(localParticipantIDs); });
 
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
+            var pp = room.getParticipants().length + 1;
+           //alert(pp)
+            if(pp==3) {
+                //alert(pp)
+             if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+                    $('.toggle-view').click()
+                }
+
+            }
             this._onConferenceJoined();
         });
 
@@ -2045,7 +2054,16 @@ export default {
             if (user.isHidden()) {
                 return;
             }
+            var pp = room.getParticipants().length + 1;
+           // alert(pp)
+            if(pp==3) {
+             //   alert()
+               // APP.store.getState()['features/video-layout'].tileViewEnabled = true
+               if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+                    $('.toggle-view').click()
+                }
 
+            }
             logger.log(`USER ${id} connnected:`, user);
             APP.UI.addUser(user);
         });
