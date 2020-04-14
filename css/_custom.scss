@@ -135,7 +135,13 @@
 							right: 25px;
 							width: 20px;
 							height: 20px;
-							color: #ffffff;
+							padding: 0;
+							span{
+								color: #ffffff;
+								font-size: 12px;
+								font-weight: 400;
+								line-height: 0;
+							}
 						}
 					}
 					.participants-count-number {
@@ -398,15 +404,20 @@ span[class^="styled__NavLine"] {
 	background: #ffffff !important;
   }
 
-div[class^=Content__Header] {
+div[class^="Content__Header"] {
     padding: 0;
     border-bottom: 1px solid #e5e5e5;
 	margin-bottom: 5px;
 	box-shadow: none;
+	display: none;
 }
+
+
+
 
   div[class^="Modal__Dialog"]{
 	  position: relative;
+	  border-radius: 6px !important;
 	  .mute-controller{
 		  position: absolute;
 		  bottom: 20px;
@@ -452,6 +463,24 @@ div[class^=Content__Header] {
 		text-align: center;
 		position: relative;
 		margin: -7px -20px 2px;
+		.close-settings {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			outline: 0;
+			background-color: #656565;
+			border-radius: 50%;
+			padding: 5px;
+			z-index: 100;
+			cursor: pointer;
+			img{
+				width: 9px;
+				height: 9px;
+			}
+			&:hover{
+				background-color: #1896c6;
+			}
+		}
 	}
 	 .modal-header:before {
 		content: "";
@@ -521,9 +550,9 @@ width: 75%;
 	}
 }
 
-#modal-dialog-cancel-button{
-	display: none;
-}
+// #modal-dialog-cancel-button{
+// 	display: none;
+// }
 .btn-mute-all{
 	background: #1896c6 !important;
     color: #fff !important;
@@ -582,11 +611,18 @@ width: 75%;
 	}
 	&.mutelink{
 		&.disabled{
-			
 			cursor: not-allowed;
 			a {
 				pointer-events: none !important;
-				
+			}
+			.popupmenu__text{
+				color: #ff0000 !important;
+			}
+			svg{
+				fill: #ff0000 !important;
+			}
+			&:hover{
+				background-color: #fff;
 			}
 		}
 	}
@@ -693,6 +729,13 @@ form[class^="device-select"]{
 }
 
 .tile-view .filmstrip {
+	background: #222222 !important;
+}
+
+.alert-dialog{
+	padding: 20px 10px;
+    font-size: 18px;
+    line-height: 34px;
 	background: #000 !important;
 }
 .atlaskit-portal div[class^="Wrapper-"] {
@@ -701,7 +744,6 @@ form[class^="device-select"]{
     position: fixed;
     bottom: 20px;
 }
-
 #snackbar {
     visibility: hidden;
     min-width: 250px;

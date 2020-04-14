@@ -215,7 +215,7 @@
         "muteEveryoneTitle": "Mute everyone?",
         "muteEveryoneSelf": "yourself",
         "muteEveryoneStartMuted": "Everyone starts muted from now on",
-        "muteParticipantBody": "You won't be able to unmute them, but they can unmute themselves at any time.",
+        "muteParticipantBody": "Mute {{participantDisplayName}} for everyone in the meeting? {{participantDisplayName}} can unmute themselves.",
         "muteParticipantButton": "Mute",
         "muteParticipantDialog": "Are you sure you want to mute this participant? You won't be able to unmute them, but they can unmute themselves at any time.",
         "muteParticipantTitle": "Mute this participant?",

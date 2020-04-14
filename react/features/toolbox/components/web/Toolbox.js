@@ -254,8 +254,8 @@ class Toolbox extends Component<Props, State> {
         this._onToolbarToggleSharedVideo = this._onToolbarToggleSharedVideo.bind(this);
         this._onToolbarOpenLocalRecordingInfoDialog = this._onToolbarOpenLocalRecordingInfoDialog.bind(this);
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
+        this.showWhiteboard = this.showWhiteboard.bind(this);
         this.updateMeetingInfo = this.updateMeetingInfo.bind(this);
-
         this.state = {
             windowWidth: window.innerWidth,
         };
@@ -619,7 +619,28 @@ class Toolbox extends Component<Props, State> {
     }
 
     _onShortcutToggleFullScreen: () => void;
-
+    
+    showWhiteboard()
+    {
+        if(localStorage.getItem('canvasRef') != 1)
+        {
+            localStorage.setItem('canvasRef', 1)
+        }
+        //document.getElementById("myId").style.display = 'block';
+        
+        if(localStorage.getItem('canvasRef') != 1)
+        {
+            setTimeout(function(){ 
+                document.getElementById('myId').contentDocument.location.reload(true);
+            }, 800);
+        }
+        
+        setTimeout(function(){
+            document.getElementById("myId").style.display = 'block';
+            document.getElementById("w-board-wrapper").style.display = 'block';
+        },1500);
+        document.getElementById("ShowMyBoard").click();
+    }
     /**
      * Creates an analytics keyboard shortcut event and dispatches an action for
      * toggling full screen mode.
@@ -1307,7 +1328,47 @@ class Toolbox extends Component<Props, State> {
     }
 
     _renderPresentTab() {
-        return (
+        console.log(APP.conference._room.isAdmin);
+        if(APP.conference._room.isAdmin !== undefined && typeof APP.conference._room.isAdmin !== undefined)
+        {
+            if(APP.conference._room.isAdmin !== undefined && typeof APP.conference._room.isAdmin !== undefined && APP.conference._room.isAdmin == "true")
+            {
+                return (
+                    <div className="cw_present-menu" id="cw_present-menu_setting">
+                        <ul>
+                            <li> <a onClick={this.startScreenShare}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
+                                        <g>
+                                            <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
+                                        </g>
+                                    </svg> Your Screen</a> </li>
+                            <li><a onClick={ ()=>{ this.showWhiteboard() } }> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                                        <g>
+                                            <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
+                                        </g>
+                                        <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
+                                    </svg> Whiteboard</a></li>
+                        </ul>
+                    </div>
+                ) 
+            }
+            else
+            {
+                return (
+                    <div className="cw_present-menu" id="cw_present-menu_setting">
+                        <ul>
+                            <li> <a onClick={this.startScreenShare}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
+                                        <g>
+                                            <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
+                                        </g>
+                                    </svg> Your Screen</a> </li>
+                        </ul>
+                    </div>
+                )                 
+            }
+        }
+        else
+        {
+            return (
                 <div className="cw_present-menu" id="cw_present-menu_setting">
                     <ul>
                         <li> <a onClick={this.startScreenShare}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
@@ -1315,15 +1376,11 @@ class Toolbox extends Component<Props, State> {
                                         <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
                                     </g>
                                 </svg> Your Screen</a> </li>
-                        <li><a onClick={this.showWhiteboard}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
-                                    <g>
-                                        <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
-                                    </g>
-                                    <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
-                                </svg> Whiteboard</a></li>
                     </ul>
                 </div>
-            )
+            )            
+        }
+
     }
 
     _renderSettingsTab() {

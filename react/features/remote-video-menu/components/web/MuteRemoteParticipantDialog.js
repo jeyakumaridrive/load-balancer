@@ -16,6 +16,7 @@ import AbstractMuteRemoteParticipantDialog
  * @extends Component
  */
 class MuteRemoteParticipantDialog extends AbstractMuteRemoteParticipantDialog {
+    
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -29,7 +30,7 @@ class MuteRemoteParticipantDialog extends AbstractMuteRemoteParticipantDialog {
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.muteParticipantTitle'
                 width = 'medium'>
-                <div>
+                <div className='alert-dialog'>
                     { this.props.t('dialog.muteParticipantBody') }
                 </div>
             </Dialog>

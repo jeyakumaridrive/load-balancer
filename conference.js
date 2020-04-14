@@ -2321,12 +2321,18 @@ export default {
 
                 
                  if(new1 != messageObj.userID){
-                    setTimeout(function(){ 
-                        document.getElementById('myId').contentDocument.location.reload(true);
-                    }, 2000);
+                    if(localStorage.getItem('canvasRef') != 1)
+                    {
+                        setTimeout(function(){ 
+                            document.getElementById('myId').contentDocument.location.reload(true);
+                        }, 1500);                       
+                    }
+
+                    document.getElementById("myId").style.pointerEvents = 'none';
                 }
+
                 document.getElementById("myId").style.display = 'block';
-                document.getElementById("w-board-wrapper").style.display = 'block';
+                //document.getElementById("w-board-wrapper").style.display = 'block';
                 // document.getElementById('myId').contentDocument.location.reload(true);
             }
             else if(messageObj.EventType == 1006)

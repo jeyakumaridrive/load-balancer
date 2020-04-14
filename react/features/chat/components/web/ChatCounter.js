@@ -32,12 +32,17 @@ class ChatCounter extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
+         
         return (
-            <span className = 'badge-round'>
-                <span>
-                    { this.props._count || null }
-                </span>
-            </span>
+            <React.Fragment>
+            {
+                this.props._count >= 1 ? <span className = 'badge-round'>
+                                            <span>
+                                                { this.props._count || null }
+                                            </span>
+                                        </span> : ''
+            }
+            </React.Fragment>
         );
     }
 }
