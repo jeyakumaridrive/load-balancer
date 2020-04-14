@@ -70,7 +70,7 @@ import {
 import {
     setFullScreen,
     setOverflowMenuVisible,
-    setToolbarHovered
+    setToolbarHovered,
 } from '../../actions';
 import AudioSettingsButton from './AudioSettingsButton';
 import DownloadButton from '../DownloadButton';
@@ -188,6 +188,7 @@ type Props = {
      */
     dispatch: Function,
 
+
     /**
      * Invoked to obtain translated strings.
      */
@@ -254,8 +255,9 @@ class Toolbox extends Component<Props, State> {
         this._onToolbarOpenLocalRecordingInfoDialog = this._onToolbarOpenLocalRecordingInfoDialog.bind(this);
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
         this.showWhiteboard = this.showWhiteboard.bind(this);
+        this.updateMeetingInfo = this.updateMeetingInfo.bind(this);
         this.state = {
-            windowWidth: window.innerWidth
+            windowWidth: window.innerWidth,
         };
     }
 
@@ -310,6 +312,7 @@ class Toolbox extends Component<Props, State> {
         });
 
         window.addEventListener('resize', this._onResize);
+        this.updateMeetingInfo();
     }
 
     /**
@@ -914,6 +917,50 @@ class Toolbox extends Component<Props, State> {
         return _desktopSharingEnabled || _desktopSharingDisabledTooltipKey;
     }
 
+    updateMeetingInfo() {
+        var v = 0, x = setInterval(() => {
+            if(APP && APP.conference) {
+                var roomName = APP.conference.roomName;
+                this.getMeetingPin(roomName)
+                this.getMeetingInfo(roomName);
+                this.getSIP();
+                clearInterval(x);
+            }
+        },1000);
+    }
+
+    getMeetingPin(meetingId: string) {
+        const fullUrl = `https://jitsi-api.jitsi.net/conferenceMapper?conference=${meetingId}@conference.meeting.remotepc.com`;
+        $.get(fullUrl)
+        .then(resolve => {
+            $('#pin').text(resolve.id);
+        })
+        .catch(reject => {
+            console.log('=>>> reject ->>',reject);
+        });
+    }
+
+    getMeetingInfo(meetingId: string) {
+        const fullUrl = `https://meet.olecons.com/api/v1/get-meeting-by-slug?slug=${meetingId}`;
+        $.get(fullUrl)
+        .then(resolve => {
+            console.log('=>>> resolve ->>',resolve);
+        })
+        .catch(reject => {
+            console.log('=>>> reject ->>',reject);
+        });
+    }
+    getSIP() {
+        const fullUrl = `https://api-meeting.remotepc.com/`;
+        $.get(fullUrl)
+        .then(resolve => {
+            console.log('=>>> resolve ->>',resolve);
+        })
+        .catch(reject => {
+            console.log('=>>> reject ->>',reject);
+        });
+    }
+
     /**
      * Renders a button for toggleing screen sharing.
      *
@@ -1203,7 +1250,7 @@ class Toolbox extends Component<Props, State> {
                                         https://meet.remotepc.com/meet/22kxgmpedr3
                                     </div>
                                     <div className="cw_dial_meeting">
-                                        <span>Dial-in:</span> (US) +1 786-420-6628 <span>PIN:</span> 943 986 165 # 
+                                        <span>Dial-in:</span> (US) +1 786-420-6628 <span>PIN:</span> <span id="pin">943 986 165 #</span> 
                                     </div>
                                 </div>
                                 <div className="cw_copy-text">
@@ -1497,8 +1544,7 @@ class Toolbox extends Component<Props, State> {
                             && <ClosedCaptionButton />
                     }
                     {
-                        buttonsLeft.indexOf('meetinginfo') !== -1
-                            && this._renderMeetingInfoButton()
+                        buttonsLeft.indexOf('meetinginfo') !== -1 && this._renderMeetingInfoButton()
                     }
                 </div>
                 <div className = 'button-group-center'>
@@ -1611,7 +1657,7 @@ function _mapStateToProps(state) {
     const sharedVideoStatus = state['features/shared-video'].status;
     const {
         fullScreen,
-        overflowMenuVisible
+        overflowMenuVisible,
     } = state['features/toolbox'];
     const localParticipant = getLocalParticipant(state);
     const localRecordingStates = state['features/local-recording'];
@@ -1637,6 +1683,7 @@ function _mapStateToProps(state) {
                 = 'dialog.shareYourScreenDisabled';
         }
     }
+
 
     // NB: We compute the buttons again here because if URL parameters were used to
     // override them we'd miss it.
