@@ -175,6 +175,8 @@ class Chat extends AbstractChat<Props> {
 
         if (_isOpen) {
             className = 'slideInExt';
+            var element = document.getElementById("new-toolbox");
+            element.classList.remove("visible");
         } else if (this._isExited) {
             className = 'invisible';
         }

@@ -256,6 +256,8 @@ class Toolbox extends Component<Props, State> {
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
         this.showWhiteboard = this.showWhiteboard.bind(this);
         this.updateMeetingInfo = this.updateMeetingInfo.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
         this.state = {
             windowWidth: window.innerWidth,
         };
@@ -268,6 +270,7 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
     componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
         const KEYBOARD_SHORTCUTS = [
             this._shouldShowButton('videoquality') && {
                 character: 'A',
@@ -321,6 +324,7 @@ class Toolbox extends Component<Props, State> {
      * @inheritdoc
      */
     componentDidUpdate(prevProps) {
+        document.addEventListener('mousedown', this.handleClickOutside);
         // Ensure the dialog is closed when the toolbox becomes hidden.
         if (prevProps._overflowMenuVisible && !this.props._visible) {
             this._onSetOverflowVisible(false);
@@ -341,10 +345,34 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
     componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
         [ 'A', 'C', 'D', 'R', 'S' ].forEach(letter =>
             APP.keyboardshortcut.unregisterShortcut(letter));
 
         window.removeEventListener('resize', this._onResize);
+    }
+    /**
+    * Set the wrapper ref
+    */
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+    }
+    /**
+    * check if clicked on outside of chat
+    */
+    handleClickOutside(event)
+    {
+        if (document.getElementById('sideToolbarContainer').contains(event.target) || document.getElementById('new-toolbox').contains(event.target))
+        {
+        }
+        else
+        {
+            var isAvailable = document.getElementsByClassName('chat-close');
+            if (isAvailable.length > 0)
+            {
+                document.querySelector('.chat-close').click();
+            }
+        }   
     }
 
     /**
@@ -434,6 +462,10 @@ class Toolbox extends Component<Props, State> {
         const fullScreen = !this.props._fullScreen;
 
         this.props.dispatch(setFullScreen(fullScreen));
+        this.props.dispatch(setToolbarHovered(false));
+
+        
+        
     }
 
     /**
