@@ -5,6 +5,7 @@
 .recording-dialog {
     flex: 0;
     flex-direction: column;
+    margin-top: 15px;
 
     .recording-header {
         display: flex;
@@ -15,8 +16,7 @@
         .recording-title {
             display: inline-flex;
             align-items: center;
-            font-size: 16px;
-            margin-left: 16px;
+            font-size: 18x;
         }
     }
 

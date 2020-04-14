@@ -194,7 +194,7 @@
         "micNotSendingDataTitle": "Unable to access microphone",
         "micPermissionDeniedError": "You have not granted permission to use your microphone. You can still join the conference but others won't hear you. Use the camera button in the address bar to fix this.",
         "micUnknownError": "Cannot use microphone for an unknown reason.",
-        "muteParticipantBody": "You won't be able to unmute them, but they can unmute themselves at any time.",
+        "muteParticipantBody": "Mute {{participantDisplayName}} for everyone in the meeting? {{participantDisplayName}} can unmute themselves.",
         "muteParticipantButton": "Mute",
         "muteParticipantDialog": "Are you sure you want to mute this participant? You won't be able to unmute them, but they can unmute themselves at any time.",
         "muteParticipantTitle": "Mute this member?",

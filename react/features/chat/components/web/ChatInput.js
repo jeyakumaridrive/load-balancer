@@ -107,7 +107,9 @@ class ChatInput extends Component<Props, State> {
     render() {
         const smileysPanelClassName = `${this.state.showSmileysPanel
             ? 'show-smileys' : 'hide-smileys'} smileys-panel`;
-
+            const { message } = this.props;
+            console.log(message);
+            
         return (
             <React.Fragment>
                 <div id = 'chat-input' >
@@ -122,7 +124,7 @@ class ChatInput extends Component<Props, State> {
                             placeholder = { 'Send a message to everyone' }
                             value = { this.state.message } />
                     </div>
-                    <div className = 'smiley-input'>
+                    {/* <div className = 'smiley-input'>
                         <div id = 'smileysarea'>
                             <div id = 'smileys'>
                                 <Emoji
@@ -134,7 +136,7 @@ class ChatInput extends Component<Props, State> {
                             <SmileysPanel
                                 onSmileySelect = { this._onSmileySelect } />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className='chat-actions'>
                     <div class="upload-btn-wrapper">
