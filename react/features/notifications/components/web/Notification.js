@@ -52,17 +52,26 @@ class Notification extends AbstractNotification<Props> {
             title,
             titleArguments,
             titleKey,
-            uid
+            uid,
+            logoIconCustom
         } = this.props;
-        var tt = title || t(titleKey, titleArguments);
-        var matches = tt.match(/\b(\w)/g); 
-        var acronym = matches.join('');
+       
+       
+        var acronym ='';
+        if(logoIconCustom != undefined) {
+            if(logoIconCustom!=''){
+                var matches = logoIconCustom.match(/\b(\w)/g); 
+                 acronym = matches.join('');
+
+            }
+
+        } 
         return (
             <Flag
                 actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
                 appearance = { appearance }
                 description = { this._renderDescription() }
-                icon = { this._mapAppearanceToIcon(acronym) }
+                icon = { this._mapAppearanceToIcon(acronym,logoIconCustom) }
                 id = { uid }
                 isDismissAllowed = { isDismissAllowed }
                 onDismissed = { onDismissed }
@@ -162,7 +171,7 @@ class Notification extends AbstractNotification<Props> {
      * @private
      * @returns {ReactElement}
      */
-    _mapAppearanceToIcon(tt) {
+    _mapAppearanceToIcon(tt,logoIconCustom) {
         const appearance = this.props.appearance;
         const secIconColor = ICON_COLOR[this.props.appearance];
         const iconSize = 'medium';
@@ -187,8 +196,8 @@ class Notification extends AbstractNotification<Props> {
         default:
             return (
              <div>
-                { tt!='' ? 
-                 <div className="notification_logo">{tt}</div> :
+                { tt!='' ? (
+                 <div className="notification_logo">{tt}</div>) :
                    <EditorInfoIcon
                     label = { appearance }
                     secondaryColor = { secIconColor }

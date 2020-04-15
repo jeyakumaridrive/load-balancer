@@ -27,7 +27,8 @@ type Props = {
     /**
      * True if the participant is currently the dominant speaker.
      */
-    isDominantSpeaker: boolean
+    isDominantSpeaker: boolean,
+    audio_status: string
 };
 
 /**
@@ -61,6 +62,9 @@ class SpeakerStatsItem extends Component<Props> {
                 <div className = 'speaker-stats-item__time'>
                     <TimeElapsed
                         time = { this.props.dominantSpeakerTime } />
+                </div> 
+                <div className = 'speaker-stats-item__audio_stat audio_status'>
+                   { this.props.audio_status } 
                 </div>
             </div>
         );
