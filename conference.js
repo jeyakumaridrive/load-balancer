@@ -2331,8 +2331,14 @@ export default {
             }else if( messageObj.EventType == 1004) {
 
                 var new1=localStorage.getItem('userPid');
-               // if(new1 == messageObj.ToParticipantID){
-                if(new1 != messageObj.userID){
+                 if(new1 == messageObj.ToParticipantID){
+               
+                    // if(localStorage.getItem('moderator') =='false'){
+                        muteLocalAudio(true);
+                      //$('.button-group-audio').hide();
+                }
+                 if(new1 != messageObj.userID){
+                    
                     var nn = messageObj.name+' muted '+messageObj.from+ ' for everyone';
                      APP.store.dispatch(showNotification({
                         // descriptionKey: 'Muted',
@@ -2342,10 +2348,7 @@ export default {
                        // title: messageObj.name,
                         titleKey: messageObj.name
                     }));
-                    // if(localStorage.getItem('moderator') =='false'){
-                        muteLocalAudio(true);
-                      //$('.button-group-audio').hide();
-                }
+                 }
             
            
             //console.log(id);
