@@ -155,6 +155,17 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.MESSAGE_RECEIVED,
         (id, message, timestamp, nick) => {
+            
+            let cTye = parseJSONSafely(message);
+            if(cTye != 'false')
+            {
+                let messageObj = JSON.parse( message );
+                
+                if(messageObj.EventType == 1005 || messageObj.EventType == 1006)
+                {
+                    return false;
+                }
+            }
             var element =  document.getElementById('chatconversation');
             if (!element)
             {
@@ -182,6 +193,16 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.PRIVATE_MESSAGE_RECEIVED,
         (id, message, timestamp) => {
+            let cTye = parseJSONSafely(message);
+            if(cTye != 'false')
+            {
+                let messageObj = JSON.parse( message );
+                
+                if(messageObj.EventType == 1005 || messageObj.EventType == 1006)
+                {
+                    return false;
+                }
+            }
             var element =  document.getElementById('chatconversation');
             if (!element)
             {
