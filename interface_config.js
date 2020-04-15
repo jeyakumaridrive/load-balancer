@@ -3,7 +3,7 @@
 var interfaceConfig = {
     // TO FIX: this needs to be handled from SASS variables. There are some
     // methods allowing to use variables both in css and js.
-    DEFAULT_BACKGROUND: '#000000',
+    DEFAULT_BACKGROUND: '#222222',
 
     /**
      * Whether or not the blurred video background for large video should be

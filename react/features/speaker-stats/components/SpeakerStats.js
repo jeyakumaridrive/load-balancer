@@ -129,10 +129,10 @@ class SpeakerStats extends Component<Props, State> {
         const items = userIds.map(userId => this._createStatsItem(userId));
           const isAdmin = APP.conference._room.isAdmin;
         return (
-            <Dialog
-                cancelKey = { 'dialog.close' }
-                submitDisabled = { true }
-                titleKey = 'People'>
+                <Dialog
+                    cancelKey = { 'dialog.close' }
+                    submitDisabled = { true }
+                    titleKey = 'People'>
                 <div className = 'speaker-stats'>
                     <SpeakerStatsLabels />
                     { items }
@@ -150,7 +150,6 @@ class SpeakerStats extends Component<Props, State> {
                         id='unmuteall_'>Unmute All
                     </button>
                 </div>) : '' }
-
             </Dialog>
         );
     }
