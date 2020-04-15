@@ -150,7 +150,8 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: Dispatch<any>) 
             titleArguments: {
                 name: joinedParticipantsNames[0]
             },
-            titleKey: 'notify.connectedOneMember'
+            titleKey: 'notify.connectedOneMember',
+            logoIconCustom: joinedParticipantsNames[0]
         };
     }
 

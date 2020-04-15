@@ -2286,8 +2286,9 @@ export default {
                   APP.store.dispatch(showNotification({
                        descriptionKey:nn,
                         //title: messageObj.name,
+                         titleKey:  messageObj.name,
                         logoIconCustom: messageObj.name
-                    },1500));
+                    },2500));
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(true);
                       //$('.button-group-audio').hide();
@@ -2300,9 +2301,10 @@ export default {
                     var nn = messageObj.name+' unmuted everyone';
                      APP.store.dispatch(showNotification({
                         descriptionKey: nn,
+                         titleKey:  messageObj.name,
                        // title: messageObj.name,
                          logoIconCustom: messageObj.name
-                    },1500));
+                    },2500));
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(false);
                       //$('.button-group-audio').hide();
@@ -2317,10 +2319,11 @@ export default {
                     var nn = messageObj.name+' Kicked out you';
                     APP.store.dispatch(showNotification({
                         descriptionKey: nn,
+                         titleKey:  messageObj.name,
                         //title: messageObj.name,
                         //titleKey: 'You are Kicked by host'
                          logoIconCustom: messageObj.name
-                     },1500));
+                     },2500));
                     // if(localStorage.getItem('moderator') =='false'){
                         this.hangup(true);
                       //$('.button-group-audio').hide();
@@ -2341,13 +2344,10 @@ export default {
                     
                     var nn = messageObj.name+' muted '+messageObj.from+ ' for everyone';
                      APP.store.dispatch(showNotification({
-                        // descriptionKey: 'Muted',
-                        // title: messageObj.name,
-                        // titleKey: 'You are muted by host'
                         descriptionKey: nn,
-                       // title: messageObj.name,
+                        titleKey: messageObj.name,
                         logoIconCustom: messageObj.name
-                    },1500));
+                    },2500));
                  }
             
            

@@ -155,6 +155,17 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.MESSAGE_RECEIVED,
         (id, message, timestamp, nick) => {
+            
+            let cTye = parseJSONSafely(message);
+            if(cTye != 'false')
+            {
+                let messageObj = JSON.parse( message );
+                
+                if(messageObj.EventType == 1005 || messageObj.EventType == 1006)
+                {
+                    return false;
+                }
+            }
             var element =  document.getElementById('chatconversation');
             if (!element)
             {
@@ -163,7 +174,8 @@ function _addChatMsgListener(conference, store) {
               
                 APP.store.dispatch(showNotification({
                        descriptionKey:username._displayName+" sent a message.",
-                        logoIconCustom:  username._displayName
+                        logoIconCustom:  username._displayName,
+                        titleKey: username._displayName
                 },1500));
                 //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
                 
@@ -181,6 +193,16 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.PRIVATE_MESSAGE_RECEIVED,
         (id, message, timestamp) => {
+            let cTye = parseJSONSafely(message);
+            if(cTye != 'false')
+            {
+                let messageObj = JSON.parse( message );
+                
+                if(messageObj.EventType == 1005 || messageObj.EventType == 1006)
+                {
+                    return false;
+                }
+            }
             var element =  document.getElementById('chatconversation');
             if (!element)
             {
@@ -189,7 +211,8 @@ function _addChatMsgListener(conference, store) {
               
                 APP.store.dispatch(showNotification({
                        descriptionKey:username._displayName+" sent you a private message.",
-                        logoIconCustom:  username._displayName
+                        logoIconCustom:  username._displayName,
+                        titleKey: username._displayName
                 },1500));
                 //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
               
