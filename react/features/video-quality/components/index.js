@@ -6,3 +6,6 @@ export { default as VideoQualityLabel } from './VideoQualityLabel';
 export {
     default as VideoQualityExpandedLabel
 } from './VideoQualityExpandedLabel';
+export {
+    default as VideoQualitySlider
+} from './VideoQualitySlider';
