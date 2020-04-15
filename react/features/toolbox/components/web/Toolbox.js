@@ -985,6 +985,7 @@ class Toolbox extends Component<Props, State> {
         const fullUrl = `https://meet.olecons.com/api/v1/get-meeting-by-slug?slug=${meetingId}`;
         $.get(fullUrl)
         .then(resolve => {
+            console.log('=>>>> meeting info =>>>>',resolve);
             $('.cw_meeting-url').text('https://meet.remotepc.com/meet/'+resolve.slug);
             $('.meeting-name').text(resolve.name);
             $('.cw_meeting-name').text(resolve.description);
