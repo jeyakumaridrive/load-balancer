@@ -58,7 +58,7 @@ class ParticipantsCount extends PureComponent<Props> {
      */
     _onClick() {
         const { dispatch, conference } = this.props;
-
+        console.log(SpeakerStats)
         dispatch(openDialog(SpeakerStats, { conference }));
         document.getElementById('people_sidebar').classList.toggle('show-people-list');
     }

@@ -174,8 +174,25 @@ class SpeakerStats extends Component<Props, State> {
         const hasLeft = statsModel.hasLeft();
 
         let displayName;
-
+        let audio_status = '';
+        console.log("meooooo2");
+       // console.log(this.state.stats[userId]);
+        var ac = false;
+        if(APP.conference.getParticipantById(userId)!=undefined) {
+            console.log(APP.conference.getParticipantById(userId)._tracks[0]);
+            if(APP.conference.getParticipantById(userId)._tracks[0]  != undefined){
+              ac = APP.conference.getParticipantById(userId)._tracks[0].muted;
+            } 
+            if(ac==true) {
+                 audio_status = "Muted";
+            } else{
+                audio_status = "Active";
+            }
+        } else {
+            audio_status = 'In Active';
+        }
         if (statsModel.isLocalStats()) {
+            audio_status = '-';
             const { t } = this.props;
             const meString = t('me');
 
@@ -187,11 +204,14 @@ class SpeakerStats extends Component<Props, State> {
                 = this.state.stats[userId].getDisplayName()
                     || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME;
         }
-
+        //var muted = APP.conference.getParticipantById(userId)._tracks[0].muted;
+       
+      //  var muted = 'tru';
         return (
             <SpeakerStatsItem
                 displayName = { displayName }
                 dominantSpeakerTime = { dominantSpeakerTime }
+                audio_status ={audio_status}
                 hasLeft = { hasLeft }
                 isDominantSpeaker = { isDominantSpeaker }
                 key = { userId } />
