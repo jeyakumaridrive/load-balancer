@@ -2364,7 +2364,7 @@ export default {
                         }, 1500);                       
                     }
 
-                    document.getElementById("myId").style.pointerEvents = 'none';
+                    //document.getElementById("myId").style.pointerEvents = 'none';
                 }
 
                 document.getElementById("myId").style.display = 'block';
