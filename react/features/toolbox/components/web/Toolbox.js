@@ -74,7 +74,7 @@ import {
 } from '../../actions';
 import AudioSettingsButton from './AudioSettingsButton';
 import DownloadButton from '../DownloadButton';
-import { isToolboxVisible } from '../../functions';
+import { isToolboxVisible, showToaster } from '../../functions';
 import HangupButton from '../HangupButton';
 import HelpButton from '../HelpButton';
 import OverflowMenuButton from './OverflowMenuButton';
@@ -256,6 +256,8 @@ class Toolbox extends Component<Props, State> {
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
         this.showWhiteboard = this.showWhiteboard.bind(this);
         this.updateMeetingInfo = this.updateMeetingInfo.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
         this.state = {
             windowWidth: window.innerWidth,
         };
@@ -268,6 +270,7 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
     componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
         const KEYBOARD_SHORTCUTS = [
             this._shouldShowButton('videoquality') && {
                 character: 'A',
@@ -321,6 +324,7 @@ class Toolbox extends Component<Props, State> {
      * @inheritdoc
      */
     componentDidUpdate(prevProps) {
+        document.addEventListener('mousedown', this.handleClickOutside);
         // Ensure the dialog is closed when the toolbox becomes hidden.
         if (prevProps._overflowMenuVisible && !this.props._visible) {
             this._onSetOverflowVisible(false);
@@ -341,10 +345,34 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
     componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
         [ 'A', 'C', 'D', 'R', 'S' ].forEach(letter =>
             APP.keyboardshortcut.unregisterShortcut(letter));
 
         window.removeEventListener('resize', this._onResize);
+    }
+    /**
+    * Set the wrapper ref
+    */
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+    }
+    /**
+    * check if clicked on outside of chat
+    */
+    handleClickOutside(event)
+    {
+        if (document.getElementById('sideToolbarContainer').contains(event.target) || document.getElementById('new-toolbox').contains(event.target))
+        {
+        }
+        else
+        {
+            var isAvailable = document.getElementsByClassName('chat-close');
+            if (isAvailable.length > 0)
+            {
+                document.querySelector('.chat-close').click();
+            }
+        }   
     }
 
     /**
@@ -434,6 +462,10 @@ class Toolbox extends Component<Props, State> {
         const fullScreen = !this.props._fullScreen;
 
         this.props.dispatch(setFullScreen(fullScreen));
+        this.props.dispatch(setToolbarHovered(false));
+
+        
+        
     }
 
     /**
@@ -925,6 +957,9 @@ class Toolbox extends Component<Props, State> {
                 this.getMeetingInfo(roomName);
                 this.getSIP();
                 clearInterval(x);
+                var el = document.createElement('div');
+                el.id = 'snackbar';
+                document.body.appendChild(el);
             }
         },1000);
     }
@@ -944,7 +979,10 @@ class Toolbox extends Component<Props, State> {
         const fullUrl = `https://meet.olecons.com/api/v1/get-meeting-by-slug?slug=${meetingId}`;
         $.get(fullUrl)
         .then(resolve => {
-            console.log('=>>> resolve ->>',resolve);
+            $('.cw_meeting-url').text('https://meet.remotepc.com/meet/'+resolve.slug);
+            $('.meeting-name').text(resolve.name);
+            $('.cw_meeting-name').text(resolve.description);
+            sessionStorage.setItem('meetingInfo',JSON.stringify(resolve));
         })
         .catch(reject => {
             console.log('=>>> reject ->>',reject);
@@ -954,7 +992,14 @@ class Toolbox extends Component<Props, State> {
         const fullUrl = `https://api-meeting.remotepc.com/`;
         $.get(fullUrl)
         .then(resolve => {
-            console.log('=>>> resolve ->>',resolve);
+            var n = '';
+            for ( var num in resolve.numbers) {
+                if(resolve.numbers[num][0] != "+NA")
+                n += '('+num+')'+' '+resolve.numbers[num][0].replace(/[.]/g,'-');
+                console.log('=>>>>',n,num,resolve.numbers[num][0]);
+            }
+            console.log('help =>..',n);
+            $('.phone').text(n);
         })
         .catch(reject => {
             console.log('=>>> reject ->>',reject);
@@ -1221,7 +1266,7 @@ class Toolbox extends Component<Props, State> {
                 <li>
                     <div className="meeting-info-box">
                         <a type="button" className='js-open-modal present-tab' id="meeting-info-box" onClick={this.toggleInfobox}>
-                        Nitesh's Meeting
+                            <span className="meeting-name"></span>
                             <span className="dropdown-icon">
                                 <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDQ5Mi4wMDIgNDkyLjAwMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDkyLjAwMiA0OTIuMDAyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Zz4NCgkJPHBhdGggZD0iTTQ4NC4xMzYsMzI4LjQ3M0wyNjQuOTg4LDEwOS4zMjljLTUuMDY0LTUuMDY0LTExLjgxNi03Ljg0NC0xOS4xNzItNy44NDRjLTcuMjA4LDAtMTMuOTY0LDIuNzgtMTkuMDIsNy44NDQNCgkJCUw3Ljg1MiwzMjguMjY1QzIuNzg4LDMzMy4zMzMsMCwzNDAuMDg5LDAsMzQ3LjI5N2MwLDcuMjA4LDIuNzg0LDEzLjk2OCw3Ljg1MiwxOS4wMzJsMTYuMTI0LDE2LjEyNA0KCQkJYzUuMDY0LDUuMDY0LDExLjgyNCw3Ljg2LDE5LjAzMiw3Ljg2czEzLjk2NC0yLjc5NiwxOS4wMzItNy44NmwxODMuODUyLTE4My44NTJsMTg0LjA1NiwxODQuMDY0DQoJCQljNS4wNjQsNS4wNiwxMS44Miw3Ljg1MiwxOS4wMzIsNy44NTJjNy4yMDgsMCwxMy45Ni0yLjc5MiwxOS4wMjgtNy44NTJsMTYuMTI4LTE2LjEzMg0KCQkJQzQ5NC42MjQsMzU2LjA0MSw0OTQuNjI0LDMzOC45NjUsNDg0LjEzNiwzMjguNDczeiIvPg0KCTwvZz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjwvc3ZnPg0K"  />
                             </span>
@@ -1241,16 +1286,14 @@ class Toolbox extends Component<Props, State> {
                             </div>
                             <div className="cw_meeting-info">
                                 <div className="cw_info">
-                                    <h2>Nitesh's Meeting</h2>
+                                    <h2 className="meeting-name"></h2>
                                     <span className="cw_meeting-name"></span>
                                 </div>
                                 <div className="cw_info_1">
                                     <h2>Joining info</h2>
-                                    <div className="cw_meeting-url">
-                                        https://meet.remotepc.com/meet/22kxgmpedr3
-                                    </div>
+                                    <div className="cw_meeting-url"></div>
                                     <div className="cw_dial_meeting">
-                                        <span>Dial-in:</span> (US) +1 786-420-6628 <span>PIN:</span> <span id="pin">943 986 165 #</span> 
+                                        <span>Dial-in:</span> <span className="phone"></span> <span>PIN:</span> <span id="pin">943 986 165 #</span> 
                                     </div>
                                 </div>
                                 <div className="cw_copy-text">
@@ -1408,6 +1451,48 @@ class Toolbox extends Component<Props, State> {
             )
     }
 
+    copyMeetingInfo() {
+        var meetingInfo = JSON.parse(sessionStorage.meetingInfo);
+        console.log('=>>>> meeting info =>>>>',meetingInfo);
+        var pin = $('#pin').text(),phone = $('.phone').text();
+        var text = APP.conference.getLocalDisplayName()+` is inviting you to a scheduled RemotePC Meeting.` + '\n' +
+            `` + '\n' +
+            `Topic: ${meetingInfo.name}` + '\n' +
+            `Time: Oct 30, 2019 02:00 AM India` + '\n' +
+            `` + '\n' +
+            `Join RemotePC Meeting` + '\n' +
+            `https://meet.remotepc.com/meet/${meetingInfo.slug}` + '\n' +
+            `` + '\n' +
+            `Meeting Pin: ${pin}` + '\n' +
+            `` + '\n' +
+            `One tap mobile` + '\n' +
+            `${phone.replace(/([-])|([A-Z() ])/g,'')},,${pin.replace(/ /g,'')}# (US)` + '\n' +
+            `` + '\n' +
+            `Or Call ` + '\n' +
+            `  ${phone}` + '\n' +
+            `Use Meeting Pin: ${pin}` + '\n' +
+            ``;
+        event.preventDefault();
+
+        const el = document.createElement('textarea');
+        el.value = text;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';                 
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;                                    // Mark as false to know no selection existed before
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        showToaster('Joining info has been copied to the clipboard');
+    }
+
+    // showToaster(message) {
+    //     var x = document.getElementById("snackbar");
+    //     x.className = "show";
+    //     x.innerText = message;
+    //     setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+    // }
 
     /**
      * Renders the Video controlling button.
