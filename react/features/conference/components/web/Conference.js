@@ -192,7 +192,7 @@ class Conference extends AbstractConference<Props, *> {
                         sessionStorage.user = sessionStorage.user == undefined ? JSON.stringify(data.members.find(member => member.id = socket.id)) : sessionStorage.user;
                         var user = JSON.parse(sessionStorage.user);
                         _t.props.dispatch(updateSettings({
-                            displayName: user.user.name
+                            displayName: sessionStorage.isAdmin ? user.user.name : sessionStorage.name
                         }));
                         localStorage.isAdmin = sessionStorage.isAdmin;
                     })
