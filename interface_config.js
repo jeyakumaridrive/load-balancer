@@ -28,9 +28,9 @@ var interfaceConfig = {
     GENERATE_ROOMNAMES_ON_WELCOME_PAGE: false,
     DISPLAY_WELCOME_PAGE_CONTENT: false,
     DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
-    APP_NAME: 'RemotePC',
-    NATIVE_APP_NAME: 'RemotePC',
-    PROVIDER_NAME: 'RemotePC',
+    APP_NAME: 'RemotePC Meeting',
+    NATIVE_APP_NAME: 'RemotePC Meeting',
+    PROVIDER_NAME: 'RemotePC Meeting',
     LANG_DETECTION: true, // Allow i18n to detect the system language
     INVITATION_POWERED_BY: false,
 

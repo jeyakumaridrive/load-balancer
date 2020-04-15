@@ -220,7 +220,7 @@
 					    color: #223942;
 					    font-size: 14px;
 					    font-weight: 600;
-					    padding: 10px 0 0;
+					    //padding: 10px 0 0;
 					    display: inline-block;
 					}
 				}
@@ -785,4 +785,12 @@ form[class^="device-select"]{
 	&.show-people-list{
 		right: 0
 	}
+}
+
+#largeVideoBackgroundContainer {
+	display: none !important;
+}
+
+#largeVideoContainer{
+	background-color: #222222 !important;
 }
