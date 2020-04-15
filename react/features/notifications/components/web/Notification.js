@@ -54,13 +54,15 @@ class Notification extends AbstractNotification<Props> {
             titleKey,
             uid
         } = this.props;
-
+        var tt = title || t(titleKey, titleArguments);
+        var matches = tt.match(/\b(\w)/g); 
+        var acronym = matches.join('');
         return (
             <Flag
                 actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
                 appearance = { appearance }
                 description = { this._renderDescription() }
-                icon = { this._mapAppearanceToIcon() }
+                icon = { this._mapAppearanceToIcon(acronym) }
                 id = { uid }
                 isDismissAllowed = { isDismissAllowed }
                 onDismissed = { onDismissed }
@@ -160,7 +162,7 @@ class Notification extends AbstractNotification<Props> {
      * @private
      * @returns {ReactElement}
      */
-    _mapAppearanceToIcon() {
+    _mapAppearanceToIcon(tt) {
         const appearance = this.props.appearance;
         const secIconColor = ICON_COLOR[this.props.appearance];
         const iconSize = 'medium';
@@ -184,7 +186,15 @@ class Notification extends AbstractNotification<Props> {
 
         default:
             return (
-                <div>Gya nai</div>
+             <div>
+                { tt!='' ? 
+                 <div className="notification_logo">{tt}</div> :
+                   <EditorInfoIcon
+                    label = { appearance }
+                    secondaryColor = { secIconColor }
+                    size = { iconSize } />
+                }
+                </div>
             );
         }
     }
