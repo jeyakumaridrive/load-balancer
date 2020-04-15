@@ -161,10 +161,10 @@ class Conference extends AbstractConference<Props, *> {
                                 user.id = socket.id;
                                 user.user.socket_id = socket.id;
                                 sessionStorage.user = JSON.stringify(user);
-                                if(!sessionStorage.isAdmin) {
-                                    socket.emit('join_room',{room:room_id, user:user.user, id:socket.id});
-                                } else {
+                                if(sessionStorage.isAdmin) {
                                     socket.emit('join',{id:room_id,name:sessionStorage.room_name},{id:user.user.id,socket_id:socket.id,name:user.user.name,presenter:true});
+                                } else {
+                                    socket.emit('join_room',{room:room_id, user:user.user, id:socket.id});
                                 }
                                 socket.on('user_joined', data => {
                                     console.log('User joined =>>>',data);
@@ -182,17 +182,13 @@ class Conference extends AbstractConference<Props, *> {
                     socket.on('info', data => {
                         console.log('info about the room =>>>>',data);
                         var admin = data.members.find(member => member.presenter);
-                        if(sessionStorage.user != undefined) {
-                            var user = JSON.parse(sessionStorage.user);
-                            var isAdminCheck = user.user.presenter;
-                        }
-                        sessionStorage.isAdmin = typeof isAdminCheck !== "undefined" && isAdminCheck != null ? isAdminCheck : admin && admin.id == socket.id ? true : false;
+                        sessionStorage.isAdmin = sessionStorage.isAdmin !== undefined && sessionStorage.isAdmin ? sessionStorage.isAdmin : admin && admin.id == socket.id ? true : false;
                         sessionStorage.room_name = data.name;
                         APP.conference._room.isAdmin = sessionStorage.isAdmin;
                         sessionStorage.user = sessionStorage.user == undefined ? JSON.stringify(data.members.find(member => member.id = socket.id)) : sessionStorage.user;
                         var user = JSON.parse(sessionStorage.user);
                         _t.props.dispatch(updateSettings({
-                            displayName: sessionStorage.isAdmin ? user.user.name : sessionStorage.name
+                            displayName:sessionStorage.name
                         }));
                         localStorage.isAdmin = sessionStorage.isAdmin;
                     })
@@ -364,7 +360,7 @@ class Conference extends AbstractConference<Props, *> {
             // } else {
             //     __alert.play();
             // }
-            if(!sessionStorage.isAdmin) {
+            if(!(sessionStorage.meetingInfo != undefined && JSON.parse(sessionStorage.meetingInfo).permission)) {
                 this.allowUser();
             }
         }
