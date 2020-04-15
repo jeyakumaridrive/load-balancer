@@ -24,7 +24,7 @@ import { addMessage, clearMessages, toggleChat } from './actions';
 import { ChatPrivacyDialog } from './components';
 import { INCOMING_MSG_SOUND_ID, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_LOCAL, MESSAGE_TYPE_REMOTE } from './constants';
 import { INCOMING_MSG_SOUND_FILE } from './sounds';
-
+import { showNotification } from '../../features/notifications';
 declare var APP: Object;
 declare var interfaceConfig : Object;
 
@@ -155,6 +155,18 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.MESSAGE_RECEIVED,
         (id, message, timestamp, nick) => {
+            var element =  document.getElementById('chatconversation');
+            if (!element)
+            {
+                var username = APP.conference.getParticipantById(id);
+              
+                APP.store.dispatch(showNotification({
+                       descriptionKey:username._displayName+" sent a message.",
+                        titleKey:  username._displayName
+                },1500));
+              // Exists.
+              //console.log('chatbox is closed');
+            }
             _handleReceivedMessage(store, {
                 id,
                 message,
@@ -168,6 +180,18 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.PRIVATE_MESSAGE_RECEIVED,
         (id, message, timestamp) => {
+            var element =  document.getElementById('chatconversation');
+            if (!element)
+            {
+                var username = APP.conference.getParticipantById(id);
+              
+                APP.store.dispatch(showNotification({
+                       descriptionKey:username._displayName+" sent you a private message.",
+                        titleKey:  username._displayName
+                },1500));
+              // Exists.
+              //console.log('chatbox is closed');
+            }
             _handleReceivedMessage(store, {
                 id,
                 message,
