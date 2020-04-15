@@ -132,6 +132,9 @@ class Conference extends AbstractConference<Props, *> {
      */
     componentDidMount() {
         document.title = `${this.props._roomName} | ${interfaceConfig.APP_NAME}`;
+        this.props.dispatch(updateSettings({
+            displayName:sessionStorage.name
+        }));
         this._start();
         var _t = this;
         var interval = setInterval(function() {
@@ -186,10 +189,6 @@ class Conference extends AbstractConference<Props, *> {
                         sessionStorage.room_name = data.name;
                         APP.conference._room.isAdmin = sessionStorage.isAdmin;
                         sessionStorage.user = sessionStorage.user == undefined ? JSON.stringify(data.members.find(member => member.id = socket.id)) : sessionStorage.user;
-                        var user = JSON.parse(sessionStorage.user);
-                        _t.props.dispatch(updateSettings({
-                            displayName:sessionStorage.name
-                        }));
                         localStorage.isAdmin = sessionStorage.isAdmin;
                     })
                     clearInterval(interval);
