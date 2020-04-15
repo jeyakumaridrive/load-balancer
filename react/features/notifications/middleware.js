@@ -69,7 +69,8 @@ MiddlewareRegistry.register(store => next => action => {
                 store.dispatch(showNotification({
                     descriptionKey: 'notify.disconnected',
                     titleKey: 'notify.somebody',
-                    title: participant.name
+                    title: participant.name,
+                    logoIconCustom:participant.name
                 }, NOTIFICATION_TIMEOUT));
             }
         }
