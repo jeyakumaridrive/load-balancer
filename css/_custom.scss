@@ -827,3 +827,14 @@ form[class^="device-select"]{
 #largeVideoContainer{
 	background-color: #222222 !important;
 }
+
+.video-quality-section{
+	font-size: 14px;
+	padding: 10px 15px;
+	.video-quality-selector-label{
+		margin-bottom: 15px;
+		color: #1896c6;
+		font-weight: 600;
+		font-size: 14px;
+	}
+}
