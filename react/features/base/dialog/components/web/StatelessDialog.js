@@ -114,6 +114,7 @@ class StatelessDialog extends Component<Props> {
         } = this.props;
 
         return (
+
             <Modal
                 className= { this.props.modalClass }
                 autoFocus = { true }

@@ -31,7 +31,7 @@ class MuteRemoteParticipantDialog extends AbstractMuteRemoteParticipantDialog {
                 titleKey = 'dialog.muteParticipantTitle'
                 width = 'medium'>
                 <div className='alert-dialog'>
-                    { this.props.t('dialog.muteParticipantBody') }
+                    { 'Mute <participantDisplayName> for everyone in the meeting? <participantDisplayName> can unmute themselves.'}
                 </div>
             </Dialog>
         );

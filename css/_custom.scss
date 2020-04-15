@@ -220,7 +220,7 @@
 					    color: #223942;
 					    font-size: 14px;
 					    font-weight: 600;
-					    padding: 10px 0 0;
+					    //padding: 10px 0 0;
 					    display: inline-block;
 					}
 				}
@@ -329,7 +329,7 @@
     position: absolute;
     right: 0;
     top: 20px;
-    margin-right: 150px;
+	right: 20px;
 	.toggle-view{
 		margin: 0px;
 		padding: 5px;
@@ -341,6 +341,7 @@
 		align-items: center;
 		border-radius: 2px;
 		font-size: 12px;
+		min-width: 108px;
 		cursor: pointer;
 		font-weight: 400;
 		svg{
@@ -736,7 +737,6 @@ form[class^="device-select"]{
 	padding: 20px 10px;
     font-size: 18px;
     line-height: 34px;
-	background: #000 !important;
 }
 .atlaskit-portal div[class^="Wrapper-"] {
 	right: 31px;
@@ -744,6 +744,7 @@ form[class^="device-select"]{
     position: fixed;
     bottom: 20px;
 }
+
 #snackbar {
     visibility: hidden;
     min-width: 250px;
@@ -770,5 +771,26 @@ form[class^="device-select"]{
 }
 #snackbar{
 	text-align: center;
-    text-transform: capitalize;
+	text-transform: capitalize;
+}
+
+.peoplesidebar{
+	position: fixed;
+    top: 0;
+    right: -300px;
+    z-index: 100;
+    background: #fff;
+    width: 300px;
+	bottom: 0;
+	&.show-people-list{
+		right: 0
+	}
+}
+
+#largeVideoBackgroundContainer {
+	display: none !important;
+}
+
+#largeVideoContainer{
+	background-color: #222222 !important;
 }
