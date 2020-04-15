@@ -459,6 +459,7 @@ class Toolbox extends Component<Props, State> {
      */
     _doToggleChat() {
         this.props.dispatch(toggleChat());
+        
     }
 
     /**

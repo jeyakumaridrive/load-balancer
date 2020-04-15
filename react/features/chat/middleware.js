@@ -158,15 +158,15 @@ function _addChatMsgListener(conference, store) {
             var element =  document.getElementById('chatconversation');
             if (!element)
             {
+                console.log('reNd&&ID');
                 var username = APP.conference.getParticipantById(id);
               
                 APP.store.dispatch(showNotification({
                        descriptionKey:username._displayName+" sent a message.",
                         titleKey:  username._displayName
                 },1500));
-                dispatch(playSound(INCOMING_MSG_SOUND_FILE));
-              // Exists.
-              //console.log('chatbox is closed');
+                //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
+                
             }
             _handleReceivedMessage(store, {
                 id,
@@ -184,15 +184,15 @@ function _addChatMsgListener(conference, store) {
             var element =  document.getElementById('chatconversation');
             if (!element)
             {
+                console.log('reNd&&ID');
                 var username = APP.conference.getParticipantById(id);
               
                 APP.store.dispatch(showNotification({
                        descriptionKey:username._displayName+" sent you a private message.",
                         titleKey:  username._displayName
                 },1500));
-                dispatch(playSound(INCOMING_MSG_SOUND_FILE));
-              // Exists.
-              //console.log('chatbox is closed');
+                //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
+              
             }
             _handleReceivedMessage(store, {
                 id,
