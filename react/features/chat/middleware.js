@@ -163,7 +163,8 @@ function _addChatMsgListener(conference, store) {
               
                 APP.store.dispatch(showNotification({
                        descriptionKey:username._displayName+" sent a message.",
-                        logoIconCustom:  username._displayName
+                        logoIconCustom:  username._displayName,
+                        titleKey: username._displayName
                 },1500));
                 //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
                 
@@ -189,7 +190,8 @@ function _addChatMsgListener(conference, store) {
               
                 APP.store.dispatch(showNotification({
                        descriptionKey:username._displayName+" sent you a private message.",
-                        logoIconCustom:  username._displayName
+                        logoIconCustom:  username._displayName,
+                        titleKey: username._displayName
                 },1500));
                 //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
               
