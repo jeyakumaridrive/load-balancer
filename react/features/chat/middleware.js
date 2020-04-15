@@ -158,7 +158,7 @@ function _addChatMsgListener(conference, store) {
             var element =  document.getElementById('chatconversation');
             if (!element)
             {
-                console.log('reNd&&ID');
+                //console.log('reNd&&ID');
                 var username = APP.conference.getParticipantById(id);
               
                 APP.store.dispatch(showNotification({
@@ -184,7 +184,7 @@ function _addChatMsgListener(conference, store) {
             var element =  document.getElementById('chatconversation');
             if (!element)
             {
-                console.log('reNd&&ID');
+                //console.log('reNd&&ID');
                 var username = APP.conference.getParticipantById(id);
               
                 APP.store.dispatch(showNotification({
