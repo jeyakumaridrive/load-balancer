@@ -164,6 +164,7 @@ function _addChatMsgListener(conference, store) {
                        descriptionKey:username._displayName+" sent a message.",
                         titleKey:  username._displayName
                 },1500));
+                dispatch(playSound(INCOMING_MSG_SOUND_FILE));
               // Exists.
               //console.log('chatbox is closed');
             }
@@ -189,6 +190,7 @@ function _addChatMsgListener(conference, store) {
                        descriptionKey:username._displayName+" sent you a private message.",
                         titleKey:  username._displayName
                 },1500));
+                dispatch(playSound(INCOMING_MSG_SOUND_FILE));
               // Exists.
               //console.log('chatbox is closed');
             }

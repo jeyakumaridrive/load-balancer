@@ -372,6 +372,9 @@ class Toolbox extends Component<Props, State> {
             if (isAvailable.length > 0)
             {
                 document.querySelector('.chat-close').click();
+                var element = document.getElementById("new-toolbox");
+                element.classList.add("visible");
+
             }
             var ele = document.querySelector('.dropdown-menu.active');
             if(ele != null) {
