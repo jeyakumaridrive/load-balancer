@@ -184,10 +184,7 @@ class Notification extends AbstractNotification<Props> {
 
         default:
             return (
-                <EditorInfoIcon
-                    label = { appearance }
-                    secondaryColor = { secIconColor }
-                    size = { iconSize } />
+                <div>Gya nai</div>
             );
         }
     }
