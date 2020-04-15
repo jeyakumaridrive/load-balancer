@@ -2286,8 +2286,8 @@ export default {
                   APP.store.dispatch(showNotification({
                        descriptionKey:nn,
                         //title: messageObj.name,
-                        titleKey:  messageObj.name
-                    }));
+                        logoIconCustom: messageObj.name
+                    },1500));
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(true);
                       //$('.button-group-audio').hide();
@@ -2301,8 +2301,8 @@ export default {
                      APP.store.dispatch(showNotification({
                         descriptionKey: nn,
                        // title: messageObj.name,
-                        titleKey:  messageObj.name
-                    }));
+                         logoIconCustom: messageObj.name
+                    },1500));
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(false);
                       //$('.button-group-audio').hide();
@@ -2319,8 +2319,8 @@ export default {
                         descriptionKey: nn,
                         //title: messageObj.name,
                         //titleKey: 'You are Kicked by host'
-                        titleKey: messageObj.name
-                    }));
+                         logoIconCustom: messageObj.name
+                     },1500));
                     // if(localStorage.getItem('moderator') =='false'){
                         this.hangup(true);
                       //$('.button-group-audio').hide();
@@ -2346,8 +2346,8 @@ export default {
                         // titleKey: 'You are muted by host'
                         descriptionKey: nn,
                        // title: messageObj.name,
-                        titleKey: messageObj.name
-                    }));
+                        logoIconCustom: messageObj.name
+                    },1500));
                  }
             
            
@@ -2367,7 +2367,7 @@ export default {
                         }, 1500);                       
                     }
 
-                    document.getElementById("myId").style.pointerEvents = 'none';
+                    //document.getElementById("myId").style.pointerEvents = 'none';
                 }
 
                 document.getElementById("myId").style.display = 'block';

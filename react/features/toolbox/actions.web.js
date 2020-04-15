@@ -93,7 +93,7 @@ export function hideToolbox(force: boolean = false): Function {
             dispatch(
                 setToolboxTimeout(
                     () => dispatch(hideToolbox()),
-                    2500));
+                    2900));
         } else {
             dispatch(setToolboxVisible(false));
         }
@@ -141,7 +141,7 @@ export function showToolbox(timeout: number = 0): Object {
                 dispatch(
                     setToolboxTimeout(
                         () => dispatch(hideToolbox()),
-                        timeout || 2500));
+                        timeout || 2900));
                 dispatch(setToolboxTimeoutMS(interfaceConfig.TOOLBAR_TIMEOUT));
             }
         }
