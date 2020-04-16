@@ -11,6 +11,9 @@ import {
     getDeviceSelectionDialogProps,
     submitDeviceSelectionTab
 } from '../../../device-selection';
+import VideoQualitySlider from '../../../video-quality/components/VideoQualitySlider.web.js';
+
+VideoQualitySlider
 
 import CalendarTab from './CalendarTab';
 import MoreTab from './MoreTab';
@@ -97,7 +100,12 @@ class SettingsDialog extends Component<Props> {
                 }
                 onSubmit = { onSubmit }
                 tabs = { tabs }
-                />
+                >   
+                <div className='video-quality-section'>
+                    <div class="video-quality-selector-label">Video Quality</div>
+                    <VideoQualitySlider />
+                </div>
+            </DialogWithTabs>
         );
     }
 
