@@ -132,7 +132,7 @@ class SpeakerStats extends Component<Props, State> {
                 console.log("isAdmin");
                 console.log(isAdmin);
         return (
-
+            <div>
                 <Dialog>
                     cancelKey = { 'dialog.close' }
                     submitDisabled = { true }
@@ -155,7 +155,7 @@ class SpeakerStats extends Component<Props, State> {
                     </button>
                 </div>) : '' }
             </Dialog>
-
+            
                 <div className='spear-status-sidebar' id='people_sidebar'>
                     <div className='people-title'>
                         <span>People</span>
@@ -179,7 +179,7 @@ class SpeakerStats extends Component<Props, State> {
                     </div>
 
             </div>
-
+            </div>
         );
     }
 
