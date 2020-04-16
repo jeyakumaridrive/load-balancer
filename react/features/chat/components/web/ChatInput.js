@@ -83,6 +83,7 @@ class ChatInput extends Component<Props, State> {
         this._onSmileySelect = this._onSmileySelect.bind(this);
         this._onToggleSmileysPanel = this._onToggleSmileysPanel.bind(this);
         this._setTextAreaRef = this._setTextAreaRef.bind(this);
+        this.sendMsg = this.sendMsg.bind(this);
     }
 
     /**
@@ -145,7 +146,7 @@ class ChatInput extends Component<Props, State> {
                         </button>
                         <input type="file" name="myfile" />
                     </div>
-                    <a onClick={ this.props.onSend } className='btn-send'>SEND</a>
+                    <a onClick={ ()=>{ this.sendMsg() } } className='btn-send'>SEND</a>
                 </div>
             </React.Fragment>
                 
@@ -186,7 +187,18 @@ class ChatInput extends Component<Props, State> {
             }
         }
     }
+    sendMsg(event)
+    {
+        const trimmed = this.state.message.trim();
 
+        if(trimmed)
+        {
+            this.props.onSend(trimmed);
+
+            this.setState({ message: '' });
+        }
+
+    }
     _onMessageChange: (Object) => void;
 
     /**
