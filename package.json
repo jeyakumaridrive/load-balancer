@@ -88,6 +88,8 @@
     "redux": "4.0.4",
     "redux-thunk": "2.2.0",
     "rnnoise-wasm": "github:jitsi/rnnoise-wasm.git#db96d11f175a22ef56c7db1ba9550835b716e615",
+    "rtcmulticonnection-server": "^1.3.2",
+    "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "styled-components": "3.4.9",
     "util": "0.12.1",
