@@ -8,7 +8,7 @@ import { getLocalParticipant } from '../../base/participants';
 import { connect } from '../../base/redux';
 import {
     Icon,
-    IconMuteEveryone
+     IconMicrophone, IconMicDisabled 
 } from '../../base/icons';
 
 
@@ -132,6 +132,7 @@ class SpeakerStats extends Component<Props, State> {
                 console.log("isAdmin");
                 console.log(isAdmin);
         return (
+
                 <Dialog
                     cancelKey = { 'dialog.close' }
                     submitDisabled = { true }
@@ -154,6 +155,31 @@ class SpeakerStats extends Component<Props, State> {
                     </button>
                 </div>) : '' }
             </Dialog>
+=======
+                <div className='spear-status-sidebar' id='people_sidebar'>
+                    <div className='people-title'>
+                        <span>People</span>
+                        { isAdmin == "true" ? (
+                            <div className="mute-controller" >
+                                <button className='btn-mute-all'
+                                    onClick={ this.muteall }
+                                    id='mute_all'>Mute All
+                                </button>
+                                <button className='btn-unmute-all'
+                                    onClick={ this.unmuteall }
+                                    style={{'display':'none'}}
+                                    id='unmuteall_'>Unmute All
+                                </button>
+                            </div>) : '' }
+
+                    </div>
+                    <div className = 'speaker-stats'>
+
+                        { items }
+                    </div>
+
+            </div>
+>>>>>>> master
         );
     }
 
@@ -187,9 +213,17 @@ class SpeakerStats extends Component<Props, State> {
               ac = APP.conference.getParticipantById(userId)._tracks[0].muted;
             } 
             if(ac==true) {
-                 audio_status = "Muted";
+                 audio_status = (
+                     <div className='audio-muted'>
+                        <Icon src={IconMicDisabled} />
+                     </div>
+                 );
             } else{
-                audio_status = "Active";
+                audio_status = (
+                    <div className='audio-active'>
+                       <Icon src={IconMicrophone} />
+                    </div>
+                );
             }
         } else {
             audio_status = 'In Active';
