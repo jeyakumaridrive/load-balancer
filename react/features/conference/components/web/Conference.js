@@ -158,8 +158,8 @@ class Conference extends AbstractConference<Props, *> {
                         console.log('Request came but i am not moderator!');
                     });
                     var waitForSocketId = setInterval(function() {
-                        console.log('user =>>>>',user,socket.id);
-                        if(socket.id != undefined && socket.id != '') {
+                        if(socket.id != undefined && socket.id != '' && user != undefined && user != '') {
+                            console.log('user =>>>>',user,socket.id);
                             var isAdmin = user.type == 'user' && user.userType == 'Super Admin' ? true : false ;
                             socket.emit('join',{id:room_id,name:sessionStorage.room_name},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
                             socket.on('user_joined', data => {
