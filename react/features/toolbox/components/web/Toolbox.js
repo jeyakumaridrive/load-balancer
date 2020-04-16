@@ -670,17 +670,17 @@ class Toolbox extends Component<Props, State> {
         }
         //document.getElementById("myId").style.display = 'block';
         
-        if(localStorage.getItem('canvasRef') != 1)
-        {
-            setTimeout(function(){ 
-                document.getElementById('myId').contentDocument.location.reload(true);
-            }, 800);
-        }
+        // if(localStorage.getItem('canvasRef') != 1)
+        // {
+        //     setTimeout(function(){ 
+        //         document.getElementById('myId').contentDocument.location.reload(true);
+        //     }, 800);
+        // }
         
         setTimeout(function(){
             document.getElementById("myId").style.display = 'block';
-            document.getElementById("w-board-wrapper").style.display = 'block';
-        },1500);
+           // document.getElementById("w-board-wrapper").style.display = 'block';
+        },800);
         document.getElementById("ShowMyBoard").click();
     }
     /**
@@ -1419,6 +1419,12 @@ class Toolbox extends Component<Props, State> {
                                             <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
                                         </g>
                                     </svg> Your Screen</a> </li>
+                                                                <li><a onClick={ ()=>{ this.showWhiteboard() } }> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                                        <g>
+                                            <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
+                                        </g>
+                                        <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
+                                    </svg> Whiteboard</a></li>
                         </ul>
                     </div>
                 )                 
@@ -1434,6 +1440,12 @@ class Toolbox extends Component<Props, State> {
                                         <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
                                     </g>
                                 </svg> Your Screen</a> </li>
+                                <li><a onClick={ ()=>{ this.showWhiteboard() } }> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                                        <g>
+                                            <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
+                                        </g>
+                                        <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
+                                    </svg> Whiteboard</a></li>
                     </ul>
                 </div>
             )            
@@ -1452,12 +1464,6 @@ class Toolbox extends Component<Props, State> {
         return (
                 <div className="cw_present-menu cw_settings-menu" id="cw_settings_menu">
                     <ul> 
-                        {/* <li>
-                            <a>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 512 512"><path d="M493.713 0H18.286C8.178 0 0 8.178 0 18.286v475.43c0 10.106 8.178 18.286 18.286 18.286h475.429c10.106 0 18.286-8.178 18.286-18.286V18.286C511.999 8.178 503.821 0 493.713 0zM36.572 475.428V36.571h109.714v438.857H36.572zm438.856 0H182.857V274.286h292.57l.001 201.142zm0-237.713H182.857V36.571h292.57l.001 201.144z"></path></svg> 
-                                    Change Layout
-                                </a>
-                            </li> */}
                             <li>
                                 <a onClick={this._onToolbarToggleFullScreen}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 512 512"><path d="M0 18.286v128h36.571V36.572h109.715V0h-128C8.178 0 0 8.178 0 18.286zM493.714 0h-128v36.572h109.714v109.714H512v-128C512 8.178 503.822 0 493.714 0zM475.428 475.428H365.714V512h128c10.107 0 18.286-8.178 18.286-18.285V365.714h-36.572v109.714zM36.572 365.714H0v128.001C0 503.822 8.178 512 18.286 512h128v-36.571H36.572V365.714z"></path></svg>

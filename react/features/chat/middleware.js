@@ -155,19 +155,31 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.MESSAGE_RECEIVED,
         (id, message, timestamp, nick) => {
-            var element =  document.getElementById('chatconversation');
-            if (!element)
-            {
-                //console.log('reNd&&ID');
-                var username = APP.conference.getParticipantById(id);
-              
-                APP.store.dispatch(showNotification({
-                       descriptionKey:username._displayName+" sent a message.",
-                        logoIconCustom:  username._displayName
-                },1500));
-                //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
+            
+            // let cTye = parseJSONSafely(message);
+            // if(cTye != 'false')
+            // {
+            //     let messageObj = JSON.parse( message );
                 
-            }
+            //     if(messageObj.EventType == 1005 || messageObj.EventType == 1006)
+            //     {
+            //         return false;
+            //     }
+            // }
+            // var element =  document.getElementById('chatconversation');
+            // if (!element)
+            // {
+            //     //console.log('reNd&&ID');
+            //     var username = APP.conference.getParticipantById(id);
+              
+            //     APP.store.dispatch(showNotification({
+            //            descriptionKey:username._displayName+" sent a message.",
+            //             logoIconCustom:  username._displayName,
+            //             titleKey: username._displayName
+            //     },1500));
+            //     //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
+                
+            // }
             _handleReceivedMessage(store, {
                 id,
                 message,
@@ -181,19 +193,30 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.PRIVATE_MESSAGE_RECEIVED,
         (id, message, timestamp) => {
-            var element =  document.getElementById('chatconversation');
-            if (!element)
-            {
-                //console.log('reNd&&ID');
-                var username = APP.conference.getParticipantById(id);
+            // let cTye = parseJSONSafely(message);
+            // if(cTye != 'false')
+            // {
+            //     let messageObj = JSON.parse( message );
+                
+            //     if(messageObj.EventType == 1005 || messageObj.EventType == 1006)
+            //     {
+            //         return false;
+            //     }
+            // }
+            // var element =  document.getElementById('chatconversation');
+            // if (!element)
+            // {
+            //     //console.log('reNd&&ID');
+            //     var username = APP.conference.getParticipantById(id);
               
-                APP.store.dispatch(showNotification({
-                       descriptionKey:username._displayName+" sent you a private message.",
-                        logoIconCustom:  username._displayName
-                },1500));
-                //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
+            //     APP.store.dispatch(showNotification({
+            //            descriptionKey:username._displayName+" sent you a private message.",
+            //             logoIconCustom:  username._displayName,
+            //             titleKey: username._displayName
+            //     },1500));
+            //     //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
               
-            }
+            // }
             _handleReceivedMessage(store, {
                 id,
                 message,
@@ -249,9 +272,6 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
     const state = getState();
     const { isOpen: isChatOpen } = state['features/chat'];
 
-    if (!isChatOpen) {
-        dispatch(playSound(INCOMING_MSG_SOUND_ID));
-    }
 
     // Provide a default for for the case when a message is being
     // backfilled for a participant that has left the conference.
@@ -265,6 +285,22 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
     let messageObj = parseJSONSafely(message);
     if(messageObj=='false')
     {
+        if(localStorage.muteNotifications == 'false')
+        {
+            var new1 = localStorage.getItem('userPid');
+            if(new1 != id)
+            {
+                if (!isChatOpen) {
+                    dispatch(playSound(INCOMING_MSG_SOUND_ID));
+                    APP.store.dispatch(showNotification({
+                           descriptionKey:displayName+" sent a message.",
+                            logoIconCustom:  displayName,
+                            titleKey: displayName
+                    },2500));
+                }
+
+            }
+        }
         dispatch(addMessage({
             displayName,
             hasRead,
@@ -275,6 +311,8 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
             recipient: getParticipantDisplayName(state, localParticipant.id),
             timestamp: millisecondsTimestamp
         }));
+
+
     }
 
     if (typeof APP !== 'undefined') {

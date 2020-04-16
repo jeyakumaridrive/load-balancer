@@ -127,6 +127,7 @@ function CanvasDesigner() {
         };
 
         designer.iframe.src = designer.widgetHtmlURL + '?widgetJsURL=' + designer.widgetJsURL + '&tools=' + JSON.stringify(tools) + '&selectedIcon=' + selectedIcon + '&icons=' + JSON.stringify(designer.icons);
+        designer.iframe.id = 'myframe';
         designer.iframe.style.width = '100%';
         designer.iframe.style.height = '100%';
         designer.iframe.style.border = 0;

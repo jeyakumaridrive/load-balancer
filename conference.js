@@ -133,6 +133,7 @@ const eventEmitter = new EventEmitter();
 let room;
 let connection;
 localStorage.setItem('mutede','false');
+localStorage.setItem('muteNotifications','true');
 /**
  * This promise is used for chaining mutePresenterVideo calls in order to avoid  calling GUM multiple times if it takes
  * a while to finish.
@@ -270,6 +271,8 @@ function showBoard(userID)
     conntrolMessage.FromParticipantID = userID;
     let message = JSON.stringify( conntrolMessage );
     room.sendTextMessage(message);
+
+
 }
 
 function closeBoard(userID)
@@ -2025,7 +2028,22 @@ export default {
 
         document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(localParticipantIDs); });
         document.getElementById("closeMyBoard").addEventListener("click", function() { closeBoard(localParticipantIDs); });
+        var checkExist = setInterval(function() {
+        var btn = $( "#myId").contents().find('#myframe').contents().find('#close-icon');
+            if (typeof btn !== 'undefined')
+            {
+                
+                // if(!btn.hasClass('eventAdded'))
+                // {
+                //     btn.addClass('eventAdded');
+                    btn.on('click',function() {
 
+                    document.getElementById('closeMyBoard').click();
+                    });
+               // }
+               // clearInterval(checkExist);
+            }
+        }, 600);
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
             var pp = room.getParticipants().length + 1;
            //alert(pp)
@@ -2098,9 +2116,12 @@ export default {
         });
 
         room.on(JitsiConferenceEvents.USER_ROLE_CHANGED, (id, role) => {
+                setTimeout(function(){
+                	localStorage.setItem('muteNotifications','false')
+                },8000)
+             //   alert('s');
             if (this.isLocalId(id)) {
                 logger.info(`My role changed, new role: ${role}`);
-
                 APP.store.dispatch(localParticipantRoleChanged(role));
             } else {
                 APP.store.dispatch(participantRoleChanged(id, role));
@@ -2283,11 +2304,15 @@ export default {
                 var new1=localStorage.getItem('userPid');
                 if(new1 != messageObj.userID){
                     var nn = messageObj.name+' muted everyone';
-                  APP.store.dispatch(showNotification({
-                       descriptionKey:nn,
-                        //title: messageObj.name,
-                        logoIconCustom: messageObj.name
-                    },1500));
+                    if(localStorage.muteNotifications=='false'){
+		                  APP.store.dispatch(showNotification({
+		                       descriptionKey:nn,
+		                        //title: messageObj.name,
+		                         titleKey:  messageObj.name,
+		                        logoIconCustom: messageObj.name
+	                    	},2500));
+
+                    }
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(true);
                       //$('.button-group-audio').hide();
@@ -2298,11 +2323,14 @@ export default {
                 var new1=localStorage.getItem('userPid');
                 if(new1 != messageObj.userID){
                     var nn = messageObj.name+' unmuted everyone';
-                     APP.store.dispatch(showNotification({
-                        descriptionKey: nn,
-                       // title: messageObj.name,
-                         logoIconCustom: messageObj.name
-                    },1500));
+                     if(localStorage.muteNotifications=='false'){
+	                     APP.store.dispatch(showNotification({
+	                        descriptionKey: nn,
+	                         titleKey:  messageObj.name,
+	                       // title: messageObj.name,
+	                         logoIconCustom: messageObj.name
+	                    },2500));
+	                 }
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(false);
                       //$('.button-group-audio').hide();
@@ -2315,12 +2343,15 @@ export default {
                 var new1=localStorage.getItem('userPid');
                 if(new1 == messageObj.ToParticipantID){
                     var nn = messageObj.name+' Kicked out you';
-                    APP.store.dispatch(showNotification({
-                        descriptionKey: nn,
-                        //title: messageObj.name,
-                        //titleKey: 'You are Kicked by host'
-                         logoIconCustom: messageObj.name
-                     },1500));
+                     if(localStorage.muteNotifications=='false'){
+	                    APP.store.dispatch(showNotification({
+	                        descriptionKey: nn,
+	                         titleKey:  messageObj.name,
+	                        //title: messageObj.name,
+	                        //titleKey: 'You are Kicked by host'
+	                         logoIconCustom: messageObj.name
+	                     },2500));
+	                }
                     // if(localStorage.getItem('moderator') =='false'){
                         this.hangup(true);
                       //$('.button-group-audio').hide();
@@ -2338,16 +2369,14 @@ export default {
                       //$('.button-group-audio').hide();
                 }
                  if(new1 != messageObj.userID){
-                    
-                    var nn = messageObj.name+' muted '+messageObj.from+ ' for everyone';
-                     APP.store.dispatch(showNotification({
-                        // descriptionKey: 'Muted',
-                        // title: messageObj.name,
-                        // titleKey: 'You are muted by host'
-                        descriptionKey: nn,
-                       // title: messageObj.name,
-                        logoIconCustom: messageObj.name
-                    },1500));
+                     if(localStorage.muteNotifications=='false'){
+	                    var nn = messageObj.name+' muted '+messageObj.from+ ' for everyone';
+	                     APP.store.dispatch(showNotification({
+	                        descriptionKey: nn,
+	                        titleKey: messageObj.name,
+	                        logoIconCustom: messageObj.name
+	                    },2500));
+	                 }
                  }
             
            
@@ -2356,28 +2385,46 @@ export default {
 
             else if(messageObj.EventType == 1005)
             {
+
                 var new1=localStorage.getItem('userPid');
 
                 
                  if(new1 != messageObj.userID){
-                    if(localStorage.getItem('canvasRef') != 1)
-                    {
-                        setTimeout(function(){ 
-                            document.getElementById('myId').contentDocument.location.reload(true);
-                        }, 1500);                       
-                    }
+                    // if(localStorage.getItem('canvasRef') != 1)
+                    // {
+                    //     setTimeout(function(){ 
+                    //         document.getElementById('myId').contentDocument.location.reload(true);
+                    //     }, 1500);                       
+                    // }
 
                     //document.getElementById("myId").style.pointerEvents = 'none';
+                    document.getElementById("myId").style.display = 'block';
                 }
+                var checkExist = setInterval(function() {
+                var btn = $( "#myId").contents().find('#myframe').contents().find('#close-icon');
+                    if (typeof btn !== 'undefined')
+                    {
+                        
+                        // if(!btn.hasClass('eventAdded'))
+                        // {
+                        //     btn.addClass('eventAdded');
+                            btn.on('click',function() {
 
-                document.getElementById("myId").style.display = 'block';
+                            document.getElementById('closeMyBoard').click();
+                            });
+                        // }
+                        //clearInterval(checkExist);
+                    }
+                }, 600);
+                
                 //document.getElementById("w-board-wrapper").style.display = 'block';
                 // document.getElementById('myId').contentDocument.location.reload(true);
+
             }
             else if(messageObj.EventType == 1006)
             {
                 document.getElementById("myId").style.display = 'none';
-                document.getElementById("w-board-wrapper").style.display = 'none';
+                //document.getElementById("w-board-wrapper").style.display = 'none';
                 // document.getElementById('myId').contentDocument.location.reload(true);
             }
         }
