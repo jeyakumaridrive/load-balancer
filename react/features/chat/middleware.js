@@ -285,16 +285,22 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
     let messageObj = parseJSONSafely(message);
     if(messageObj=='false')
     {
-        if (!isChatOpen) {
-            dispatch(playSound(INCOMING_MSG_SOUND_ID));
+        if(localStorage.muteNotifications == 'false')
+        {
+            var new1 = localStorage.getItem('userPid');
+            if(new1 != id)
+            {
+                if (!isChatOpen) {
+                    dispatch(playSound(INCOMING_MSG_SOUND_ID));
+                    APP.store.dispatch(showNotification({
+                           descriptionKey:displayName+" sent a message.",
+                            logoIconCustom:  displayName,
+                            titleKey: displayName
+                    },2500));
+                }
+
+            }
         }
-
-        APP.store.dispatch(showNotification({
-               descriptionKey:displayName+" sent a message.",
-                logoIconCustom:  displayName,
-                titleKey: displayName
-        },2500));
-
         dispatch(addMessage({
             displayName,
             hasRead,
@@ -305,6 +311,7 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
             recipient: getParticipantDisplayName(state, localParticipant.id),
             timestamp: millisecondsTimestamp
         }));
+
 
     }
 

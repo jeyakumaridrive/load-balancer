@@ -18,8 +18,8 @@
 </style>
 <!-- 1st step -->
 <script src="canvas-designer-widget.js"></script>
-<script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
-<script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+<script src="RTCMultiConnection.js"></script>
+<script src="https://remotepc4.codertc.com/socket.io/socket.io.js"></script>
 <!-- 2nd step -->
 <script>
 // document.getElementById('room-id').onkeyup = document.getElementById('room-id').onblur = function() {
@@ -49,13 +49,14 @@ document.getElementById('open-room').onclick = function() {
 
 var connection = new RTCMultiConnection();
 
-connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+connection.socketURL = 'https://remotepc4.codertc.com/';
 connection.socketMessageEvent = 'canvas-designer';
 
 connection.enableFileSharing = false;
 connection.session = {
     data: true
 };
+
 connection.sdpConstraints.mandatory = {
     OfferToReceiveAudio: false,
     OfferToReceiveVideo: false
@@ -67,6 +68,7 @@ if(location.hash.replace('#', '').length) {
 }
 
 connection.onUserStatusChanged = function(event) {
+
     var infoBar = document.getElementById('hide-on-datachannel-opened');
     if(event.status == 'online') {
         infoBar.innerHTML = event.userid + ' is <b>online</b>.';
