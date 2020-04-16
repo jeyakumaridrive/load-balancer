@@ -127,8 +127,35 @@ class SpeakerStats extends Component<Props, State> {
     render() {
         const userIds = Object.keys(this.state.stats);
         const items = userIds.map(userId => this._createStatsItem(userId));
+
           const isAdmin = APP.conference._room.isAdmin;
+                console.log("isAdmin");
+                console.log(isAdmin);
         return (
+
+                <Dialog
+                    cancelKey = { 'dialog.close' }
+                    submitDisabled = { true }
+                    titleKey = 'People'>
+                <div className = 'speaker-stats'>
+                    <SpeakerStatsLabels />
+                    { items }
+                </div>
+
+                { isAdmin == true ? (
+                <div className="mute-controller" >
+                    <button className='btn-mute-all'
+                        onClick={ this.muteall }
+                        id='mute_all'>Mute All
+                    </button>
+                    <button className='btn-unmute-all'
+                        onClick={ this.unmuteall }
+                        style={{'display':'none'}}
+                        id='unmuteall_'>Unmute All
+                    </button>
+                </div>) : '' }
+            </Dialog>
+=======
                 <div className='spear-status-sidebar' id='people_sidebar'>
                     <div className='people-title'>
                         <span>People</span>
@@ -152,6 +179,7 @@ class SpeakerStats extends Component<Props, State> {
                     </div>
 
             </div>
+>>>>>>> master
         );
     }
 
