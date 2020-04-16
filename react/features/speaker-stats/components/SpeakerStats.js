@@ -127,7 +127,10 @@ class SpeakerStats extends Component<Props, State> {
     render() {
         const userIds = Object.keys(this.state.stats);
         const items = userIds.map(userId => this._createStatsItem(userId));
+
           const isAdmin = APP.conference._room.isAdmin;
+                console.log("isAdmin");
+                console.log(isAdmin);
         return (
                 <Dialog
                     cancelKey = { 'dialog.close' }
@@ -138,7 +141,7 @@ class SpeakerStats extends Component<Props, State> {
                     { items }
                 </div>
 
-                { isAdmin == "true" ? (
+                { isAdmin == true ? (
                 <div className="mute-controller" >
                     <button className='btn-mute-all'
                         onClick={ this.muteall }

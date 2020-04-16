@@ -199,7 +199,7 @@ function connect(roomName) {
 
 function mute_all(userID) {
 
-    if(APP.conference._room.isAdmin == "true") {
+    if(APP.conference._room.isAdmin == true) {
         let conntrolMessage = new Object();
         conntrolMessage.EventType = 1001;
         conntrolMessage.userID = userID;
@@ -214,7 +214,7 @@ function mute_all(userID) {
    
 }
 function unmuteAll(userID) {
-    if(APP.conference._room.isAdmin == "true") {
+    if(APP.conference._room.isAdmin == true) {
         let conntrolMessage = new Object();
         conntrolMessage.EventType = 1002;
         conntrolMessage.userID = userID;
@@ -230,7 +230,7 @@ function unmuteAll(userID) {
 function Kickout(userID) {
     var to = localStorage.getItem('kickuser');
    
-    if(APP.conference._room.isAdmin == "true") {
+    if(APP.conference._room.isAdmin == true) {
         let conntrolMessage = new Object();
         conntrolMessage.EventType = 1003;
         conntrolMessage.userID = userID;
@@ -246,7 +246,7 @@ function Kickout(userID) {
 function mute_single(userID) {
     var to = localStorage.getItem('kickuser');
     var from = localStorage.getItem('kickuserName');
-    if(APP.conference._room.isAdmin == "true") {
+    if(APP.conference._room.isAdmin == true) {
         let conntrolMessage = new Object();
         conntrolMessage.EventType = 1004;
         conntrolMessage.userID = userID;
