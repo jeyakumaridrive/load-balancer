@@ -63,6 +63,7 @@ export default class AbstractMuteButton extends AbstractButton<Props, *> {
             {
                 'participant_id': participantID
             }));
+        localStorage.setItem('dialog_name',APP.conference.getSpeakerStats()[participantID].displayName);
 
         dispatch(openDialog(MuteRemoteParticipantDialog, { participantID }));
     }
