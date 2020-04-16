@@ -133,7 +133,7 @@ class SpeakerStats extends Component<Props, State> {
                 console.log(isAdmin);
         return (
 
-                <Dialog
+                <Dialog>
                     cancelKey = { 'dialog.close' }
                     submitDisabled = { true }
                     titleKey = 'People'>
