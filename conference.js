@@ -271,6 +271,8 @@ function showBoard(userID)
     conntrolMessage.FromParticipantID = userID;
     let message = JSON.stringify( conntrolMessage );
     room.sendTextMessage(message);
+
+
 }
 
 function closeBoard(userID)
@@ -2026,7 +2028,22 @@ export default {
 
         document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(localParticipantIDs); });
         document.getElementById("closeMyBoard").addEventListener("click", function() { closeBoard(localParticipantIDs); });
+        var checkExist = setInterval(function() {
+        var btn = $( "#myId").contents().find('#myframe').contents().find('#close-icon');
+            if (typeof btn !== 'undefined')
+            {
+                
+                // if(!btn.hasClass('eventAdded'))
+                // {
+                //     btn.addClass('eventAdded');
+                    btn.on('click',function() {
 
+                    document.getElementById('closeMyBoard').click();
+                    });
+               // }
+               // clearInterval(checkExist);
+            }
+        }, 600);
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
             var pp = room.getParticipants().length + 1;
            //alert(pp)
@@ -2368,28 +2385,46 @@ export default {
 
             else if(messageObj.EventType == 1005)
             {
+
                 var new1=localStorage.getItem('userPid');
 
                 
                  if(new1 != messageObj.userID){
-                    if(localStorage.getItem('canvasRef') != 1)
-                    {
-                        setTimeout(function(){ 
-                            document.getElementById('myId').contentDocument.location.reload(true);
-                        }, 1500);                       
-                    }
+                    // if(localStorage.getItem('canvasRef') != 1)
+                    // {
+                    //     setTimeout(function(){ 
+                    //         document.getElementById('myId').contentDocument.location.reload(true);
+                    //     }, 1500);                       
+                    // }
 
                     //document.getElementById("myId").style.pointerEvents = 'none';
+                    document.getElementById("myId").style.display = 'block';
                 }
+                var checkExist = setInterval(function() {
+                var btn = $( "#myId").contents().find('#myframe').contents().find('#close-icon');
+                    if (typeof btn !== 'undefined')
+                    {
+                        
+                        // if(!btn.hasClass('eventAdded'))
+                        // {
+                        //     btn.addClass('eventAdded');
+                            btn.on('click',function() {
 
-                document.getElementById("myId").style.display = 'block';
+                            document.getElementById('closeMyBoard').click();
+                            });
+                        // }
+                        //clearInterval(checkExist);
+                    }
+                }, 600);
+                
                 //document.getElementById("w-board-wrapper").style.display = 'block';
                 // document.getElementById('myId').contentDocument.location.reload(true);
+
             }
             else if(messageObj.EventType == 1006)
             {
                 document.getElementById("myId").style.display = 'none';
-                document.getElementById("w-board-wrapper").style.display = 'none';
+                //document.getElementById("w-board-wrapper").style.display = 'none';
                 // document.getElementById('myId').contentDocument.location.reload(true);
             }
         }

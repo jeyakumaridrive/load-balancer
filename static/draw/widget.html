@@ -504,6 +504,39 @@
             background: #eeeeee;
             border-radius: 25px;
         }
+
+        .close_bitton {
+            position: absolute;
+            top: 20px;
+            left: 38px;
+        }
+        #close-icon
+        {
+          display:block;
+          box-sizing:border-box;
+          width:20px;
+          height:20px;
+          border-width:3px;
+          border-style: solid;
+          border-color:#000;
+          border-radius:100%;
+          background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, white 46%,  white 56%,transparent 56%, transparent 100%);
+          background-color:#000;
+          box-shadow:0px 0px 5px 2px rgba(0,0,0,0.5);
+          transition: all 0.3s ease;
+            float: right;
+            font-size: 21px;
+            font-weight: 700;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            filter: alpha(opacity=20);
+            opacity: .2;
+            cursor: pointer;
+        }
+        a#close-icon:hover {
+            background-color: #844f4f;
+        }
     </style>
 </head>
 
@@ -514,6 +547,7 @@
     </section>
 
     <!-- toolbox -->
+    <div class="close_bitton"> <button id="close-icon"></button></div>
 
     <section id="tool-box" class="tool-box">
         <canvas id="pencil-icon" height="50" width="50" title="Pencil"></canvas>

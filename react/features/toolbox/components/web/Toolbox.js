@@ -670,17 +670,17 @@ class Toolbox extends Component<Props, State> {
         }
         //document.getElementById("myId").style.display = 'block';
         
-        if(localStorage.getItem('canvasRef') != 1)
-        {
-            setTimeout(function(){ 
-                document.getElementById('myId').contentDocument.location.reload(true);
-            }, 800);
-        }
+        // if(localStorage.getItem('canvasRef') != 1)
+        // {
+        //     setTimeout(function(){ 
+        //         document.getElementById('myId').contentDocument.location.reload(true);
+        //     }, 800);
+        // }
         
         setTimeout(function(){
             document.getElementById("myId").style.display = 'block';
-            document.getElementById("w-board-wrapper").style.display = 'block';
-        },1500);
+           // document.getElementById("w-board-wrapper").style.display = 'block';
+        },800);
         document.getElementById("ShowMyBoard").click();
     }
     /**
