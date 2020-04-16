@@ -317,7 +317,8 @@
 }
 
 .vertical-filmstrip .filmstrip.reduce-height {
-    height: calc(100% - 100px) !important;
+	height: calc(100% - 100px) !important;
+	
 }
 
 .vertical-filmstrip .filmstrip #filmstripRemoteVideos{
@@ -836,5 +837,14 @@ form[class^="device-select"]{
 		color: #1896c6;
 		font-weight: 600;
 		font-size: 14px;
+	}
+}
+
+.filmstrip{
+	.videocontainer__background, .videocontainer__hoverOverlay{
+		background: none !important;
+	}
+	video{
+		opacity: 1 !important;
 	}
 }
