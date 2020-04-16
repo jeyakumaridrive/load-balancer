@@ -999,6 +999,21 @@ class Toolbox extends Component<Props, State> {
             console.log('=>>> reject ->>',reject);
         });
     }
+
+    getTimeString(meetingInfo) {
+        var x = new Date(meetingInfo.meeting_on)
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+          var hours = x.getHours();
+          var minutes = x.getMinutes();
+          var ampm = hours >= 12 ? 'PM' : 'AM';
+          hours = hours % 12;
+          hours = hours ? hours : 12; // the hour '0' should be '12'
+          minutes = minutes < 10 ? '0'+minutes : minutes;
+          var strTime = hours + ':' + minutes + ' ' + ampm;
+        return monthNames[x.getMonth()]+' '+x.getDate()+', '+x.getFullYear()+' '+strTime+' '+meetingInfo.timezone;
+    }
     getSIP() {
         const fullUrl = `https://api-meeting.remotepc.com/`;
         $.get(fullUrl)
@@ -1309,7 +1324,7 @@ class Toolbox extends Component<Props, State> {
                                 </div>
                                 <div className="cw_copy-text">
                                     <h3>
-                                        <a onClick={this.copyMeetingInfo}>
+                                        <a onClick={() => this.copyMeetingInfo()}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="#383838" viewBox="0 0 841.889 595.281" overflow="visible"><g><g><path d="M506.403 104.11H229.67c-25.967 0-47.057 21.09-47.057 47.057v397.057c0 25.967 21.09 47.058 47.057 47.058h276.732c25.967 0 47.057-21.091 47.057-47.058V151.167c-.122-25.967-21.212-47.057-47.056-47.057zm14.019 443.992c0 7.802-6.339 14.141-14.142 14.141H229.548c-7.802 0-14.142-6.339-14.142-14.141V151.167c0-7.802 6.34-14.142 14.142-14.142H506.28c7.803 0 14.142 6.34 14.142 14.142v396.935z"></path><path d="M612.219 0H335.487C309.52 0 288.43 21.091 288.43 47.056a16.389 16.389 0 0016.458 16.458 16.389 16.389 0 0016.457-16.458c0-7.802 6.34-14.141 14.142-14.141h276.732c7.803 0 14.142 6.339 14.142 14.141v397.058c0 7.802-6.339 14.142-14.142 14.142a16.388 16.388 0 00-16.457 16.457 16.389 16.389 0 0016.457 16.458c25.967 0 47.057-21.091 47.057-47.057V47.056C659.276 21.091 638.186 0 612.219 0z"></path></g></g></svg>
                                             Copy joining info
                                         </a>
@@ -1465,11 +1480,11 @@ class Toolbox extends Component<Props, State> {
     copyMeetingInfo() {
         var meetingInfo = JSON.parse(sessionStorage.meetingInfo);
         console.log('=>>>> meeting info =>>>>',meetingInfo);
-        var pin = $('#pin').text(),phone = $('.phone').text();
+        var pin = $('#pin').text(),phone = $('.phone').text(),timeStr = this.getTimeString(meetingInfo);
         var text = APP.conference.getLocalDisplayName()+` is inviting you to a scheduled RemotePC Meeting.` + '\n' +
             `` + '\n' +
             `Topic: ${meetingInfo.name}` + '\n' +
-            `Time: Oct 30, 2019 02:00 AM India` + '\n' +
+            `Time: ${timeStr}` + '\n' +
             `` + '\n' +
             `Join RemotePC Meeting` + '\n' +
             `https://meet.remotepc.com/meet/${meetingInfo.slug}` + '\n' +

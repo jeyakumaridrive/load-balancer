@@ -47,9 +47,9 @@ export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
     let id = locationURL.searchParams.has('id') ? locationURL.searchParams.get('id') : '';
     if(id != '')
         sessionStorage.setItem('socket_id',id);
-    let name = locationURL.searchParams.has('name') ? locationURL.searchParams.get('name') : '';
-    if(name != '')
-        sessionStorage.setItem('name',name);
+    let user = locationURL.searchParams.has('user') ? locationURL.searchParams.get('user') : '';
+    if(user != '')
+        sessionStorage.setItem('user',user);
 
     return _getWebConferenceRoute(state) || _getWebWelcomePageRoute(state);
 }

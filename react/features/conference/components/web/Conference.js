@@ -132,9 +132,13 @@ class Conference extends AbstractConference<Props, *> {
      */
     componentDidMount() {
         document.title = `${this.props._roomName} | ${interfaceConfig.APP_NAME}`;
-        this.props.dispatch(updateSettings({
-            displayName:sessionStorage.name
-        }));
+        var user = sessionStorage.user;
+        if(sessionStorage.user != undefined && sessionStorage.user != '') {
+            user = JSON.parse(user);
+            this.props.dispatch(updateSettings({
+                displayName: user.firstname != undefined ? user.firstname : user._name
+            }));
+        }
         this._start();
         var _t = this;
         var interval = setInterval(function() {
@@ -153,30 +157,21 @@ class Conference extends AbstractConference<Props, *> {
                         }
                         console.log('Request came but i am not moderator!');
                     });
-                    if(sessionStorage.socket_id != undefined && sessionStorage.user == undefined) {
-                        console.log('Emited the replace_id event =>>>',room_id);
-                        socket.emit('replace_id',{room:room_id,old_socket_id:sessionStorage.socket_id});
-                    } else if(sessionStorage.user != undefined){
-                        var waitForSocketId = setInterval(function() {
-                            if(socket.id != undefined && socket.id != '') {
-                                console.log('user =>>>>',user,socket.id);
-                                var user = JSON.parse(sessionStorage.user);
-                                user.id = socket.id;
-                                user.user.socket_id = socket.id;
-                                sessionStorage.user = JSON.stringify(user);
-                                if(sessionStorage.isAdmin) {
-                                    socket.emit('join',{id:room_id,name:sessionStorage.room_name},{id:user.user.id,socket_id:socket.id,name:user.user.name,presenter:true});
-                                } else {
-                                    socket.emit('join_room',{room:room_id, user:user.user, id:socket.id});
-                                }
-                                socket.on('user_joined', data => {
-                                    console.log('User joined =>>>',data);
-                                })
-                                console.log('user =>>>> after update',user);
-                                clearInterval(waitForSocketId);
-                            }
-                        },500);
-                    }
+                    var waitForSocketId = setInterval(function() {
+                        console.log('user =>>>>',user,socket.id);
+                        if(socket.id != undefined && socket.id != '') {
+                            var isAdmin = user.type == 'user' && user.userType == 'Super Admin' ? true : false ;
+                            socket.emit('join',{id:room_id,name:sessionStorage.room_name},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
+                            socket.on('user_joined', data => {
+                                console.log('User joined =>>>',data);
+                            })
+                            console.log('user =>>>> after update',user);
+                            sessionStorage.isAdmin = isAdmin;
+                            APP.conference._room.isAdmin = isAdmin;
+                            localStorage.isAdmin = isAdmin;
+                            clearInterval(waitForSocketId);
+                        }
+                    },500);
                     socket.on('open',data => {
                         console.log('Request came open!');
                         sessionStorage.socket_id = socket.id;
@@ -184,12 +179,7 @@ class Conference extends AbstractConference<Props, *> {
                     });
                     socket.on('info', data => {
                         console.log('info about the room =>>>>',data);
-                        var admin = data.members.find(member => member.presenter);
-                        sessionStorage.isAdmin = sessionStorage.isAdmin !== undefined && sessionStorage.isAdmin ? sessionStorage.isAdmin : admin && admin.id == socket.id ? true : false;
                         sessionStorage.room_name = data.name;
-                        APP.conference._room.isAdmin = sessionStorage.isAdmin;
-                        sessionStorage.user = sessionStorage.user == undefined ? JSON.stringify(data.members.find(member => member.id = socket.id)) : sessionStorage.user;
-                        localStorage.isAdmin = sessionStorage.isAdmin;
                     })
                     clearInterval(interval);
                 }
@@ -312,7 +302,7 @@ class Conference extends AbstractConference<Props, *> {
     }
 
     allowUser = () => {
-        console.log('allow user =>>>',this);
+        console.log('allow user =>>>',this.admit_user);
         APP.conference._socket.emit('allow_user', this.admit_user);
         $('#join-this-meeting').hide();
         if(this.pendingUsers.length) {
