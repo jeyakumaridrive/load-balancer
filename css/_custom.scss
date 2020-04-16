@@ -170,8 +170,12 @@
 			li:last-child {
 			    border-right: none;
 			    a {
-				    padding: 28px 15px;
+					padding: 30px 15px;
+					svg{
+						width: 24px;
+					}
 				}
+				min-width: auto;
 			}
 		}
 
@@ -808,18 +812,6 @@ form[class^="device-select"]{
 	text-transform: capitalize;
 }
 
-.peoplesidebar{
-	position: fixed;
-    top: 0;
-    right: -300px;
-    z-index: 100;
-    background: #fff;
-    width: 300px;
-	bottom: 0;
-	&.show-people-list{
-		right: 0
-	}
-}
 
 #largeVideoBackgroundContainer {
 	display: none !important;
@@ -846,5 +838,111 @@ form[class^="device-select"]{
 	}
 	video{
 		opacity: 1 !important;
+	}
+}
+
+
+.spear-status-sidebar{
+	z-index: 1001;
+    position: fixed;
+    width: 300px;
+    right: -1500;
+    top: 0;
+    bottom: 0;
+	background: #fff;
+	transition: right 0.5s ease;
+	&.show-people-list{
+		right: 0;
+		transition: right 0.5s ease;
+	}
+
+	.speaker-stats {
+		list-style: none;
+		padding: 0;
+		width: 100%;
+		font-weight: 500;
+		height: 100%;
+		overflow: auto;
+	}
+
+	.people-title{
+		height: 60px;
+		position: relative;
+		width: 100%;
+		z-index: 1;
+		border-bottom: 2px solid #0373bd;
+		color: #0373bd;
+		font-weight: 600;
+		text-transform: uppercase;
+		display: flex;
+		align-items: center;
+		justify-content: left;
+		font-size: 18px;
+		text-align: center;
+		padding-left: 15px;
+	}
+
+	.speaker-stats-item{
+		display: flex;
+		align-items: center;
+		padding: 10px;
+		border-bottom: 1px solid #f5f5f5;
+		// &:last-child{
+		// 	border: none
+		// }
+		.speaker-stats-item__name{
+			width: 100%;
+			margin-right: 10px;
+			padding-left: 10px;
+		}
+		.speaker-stats-item__audio_stat{
+			margin-left: auto;
+			svg{
+				width: 18px;
+			}
+			.audio-muted{
+				height: 25px;
+				width: 25px;
+				padding: 5px;
+				background-color: #f3f3f3;
+				border-radius: 50%;
+				border: 1px solid #eaeaea;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				svg{
+					fill: #ff0000;
+				}
+			}
+			.audio-active{
+				height: 25px;
+				width: 25px;
+				padding: 5px;
+				background-color: #f3f3f3;
+				border-radius: 50%;
+				border: 1px solid #eaeaea;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				svg{
+					fill: #00ad48;
+				}
+			}
+		}
+		&.status-user-left{
+			display: none;
+		}
+		
+	}
+	.mute-controller{
+		position: absolute;
+		bottom: 0;
+		right: 30px;
+		top: 10px;
+		
+	}
+	.btn-mute-all, .btn-unmute-all{
+		width: 100%;
+		justify-content: center;
 	}
 }
