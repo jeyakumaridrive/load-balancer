@@ -132,34 +132,11 @@ class SpeakerStats extends Component<Props, State> {
                 console.log("isAdmin");
                 console.log(isAdmin);
         return (
-            <div>
-                <Dialog>
-                    cancelKey = { 'dialog.close' }
-                    submitDisabled = { true }
-                    titleKey = 'People'>
-                <div className = 'speaker-stats'>
-                    <SpeakerStatsLabels />
-                    { items }
-                </div>
-
-                { isAdmin == true ? (
-                <div className="mute-controller" >
-                    <button className='btn-mute-all'
-                        onClick={ this.muteall }
-                        id='mute_all'>Mute All
-                    </button>
-                    <button className='btn-unmute-all'
-                        onClick={ this.unmuteall }
-                        style={{'display':'none'}}
-                        id='unmuteall_'>Unmute All
-                    </button>
-                </div>) : '' }
-            </Dialog>
-            
+           
                 <div className='spear-status-sidebar' id='people_sidebar'>
                     <div className='people-title'>
                         <span>People</span>
-                        { isAdmin == "true" ? (
+                        { isAdmin == true ? (
                             <div className="mute-controller" >
                                 <button className='btn-mute-all'
                                     onClick={ this.muteall }
@@ -179,7 +156,7 @@ class SpeakerStats extends Component<Props, State> {
                     </div>
 
             </div>
-            </div>
+           
         );
     }
 
