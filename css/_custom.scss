@@ -149,10 +149,12 @@
 						margin-right: 8px;
 						vertical-align: middle;
 						position: absolute;
-						right: 10px;
+						right: 0;
 						top: 10px;
 						text-decoration: none;
 						font-weight: 600;
+						width: 25px;
+						text-align: left;
 					}
 
 					.participants-count-icon {
@@ -833,7 +835,7 @@ form[class^="device-select"]{
 }
 
 .filmstrip{
-	.videocontainer__background, .videocontainer__hoverOverlay{
+	.videocontainer__hoverOverlay{
 		background: none !important;
 	}
 	video{
@@ -855,14 +857,19 @@ form[class^="device-select"]{
 		right: 0;
 		transition: right 0.5s ease;
 	}
-
+	.speaker-stats-item__status{
+		display: none;
+	}
 	.speaker-stats {
 		list-style: none;
 		padding: 0;
 		width: 100%;
 		font-weight: 500;
-		height: 100%;
+		height: calc(100% - 60px);
 		overflow: auto;
+		&.has-footer{
+			height: calc(100% - 120px) !important;
+		}
 	}
 
 	.people-title{
@@ -873,13 +880,37 @@ form[class^="device-select"]{
 		border-bottom: 2px solid #0373bd;
 		color: #0373bd;
 		font-weight: 600;
-		text-transform: uppercase;
 		display: flex;
 		align-items: center;
 		justify-content: left;
 		font-size: 18px;
 		text-align: center;
 		padding-left: 15px;
+		.close-sidebar{
+			position: absolute;
+			right: 30px;
+			cursor: pointer;
+			svg{
+				width: 20px;
+				fill: #0373bd;
+				margin-right: 0;
+				padding: 0;
+			}
+		}
+
+		.user-count{
+			margin-left: 5px;
+			font-size: 14px;
+			color: #666;
+		}
+
+		svg{
+			width: 20px;
+			fill: #0373bd;
+			margin-right: 10px;
+			padding-top: 3px;
+		}
+	
 	}
 
 	.speaker-stats-item{
@@ -936,14 +967,22 @@ form[class^="device-select"]{
 	}
 	.mute-controller{
 		position: absolute;
-		bottom: 0;
-		right: 30px;
-		top: 10px;
+		left: 15px;
+		bottom: 10px;
 		
 	}
 	.btn-mute-all, .btn-unmute-all{
 		width: 100%;
 		justify-content: center;
+	}
+	.spearker-stats-footer{
+		position: relative;
+		background-color: #f3f3f3;
+		width: 100%;
+		display: flex;
+		z-index: 1000;
+		height: 60px;
+		align-items: center;
 	}
 }
 .hidePopups .dropdown-menu.active, .hidePopups #cw_present-menu_setting, .hidePopups #cw_settings_menu{

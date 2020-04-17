@@ -2297,7 +2297,6 @@ export default {
             {
                 let messageObj = JSON.parse( text );
             
-            
             console.log(messageObj);
             if( messageObj.EventType == 1001 )
             {   
