@@ -58,9 +58,10 @@ class ParticipantsCount extends PureComponent<Props> {
      */
     _onClick() {
         const { dispatch, conference } = this.props;
-        console.log(SpeakerStats)
         dispatch(openDialog(SpeakerStats, { conference }));
-        document.getElementById('people_sidebar') != null && document.getElementById('people_sidebar').classList.toggle('show-people-list');
+        setTimeout(() => {
+            $('#people_sidebar').toggleClass('show-people-list');
+        }, 300);
     }
 
     /**
@@ -70,10 +71,12 @@ class ParticipantsCount extends PureComponent<Props> {
      * @returns {ReactElement}
      */
     render() {
+
         return (
             <a
                 type="button" 
                 className="js-open-modal present-tab"
+                id='people-trigger'
                 onClick = { this._onClick }>
                 <div className = 'participants-count-number'>
                     {this.props.count}

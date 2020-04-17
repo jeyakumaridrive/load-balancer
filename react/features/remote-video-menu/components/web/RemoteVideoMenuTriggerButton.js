@@ -183,7 +183,8 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
           const _T = this;
             var TimIN = setInterval(function(){
                 const isAdmin = APP.conference._room.isAdmin;
-                if(isAdmin=='true') {
+                
+                if(isAdmin==true) {
                     if(_T.state.show==false) {
                         _T.setState({'show':true})
                         }
