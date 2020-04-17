@@ -242,6 +242,13 @@
 				&.overflow-menu-item{
 					padding: 30px;
 					vertical-align: middle;
+					.overflow-menu-item-icon{
+						&.toggled {
+							svg{
+								fill: '#ff0000'
+							}
+						}
+					}
 				}
 			}
 		}
@@ -985,6 +992,27 @@ form[class^="device-select"]{
 		align-items: center;
 	}
 }
+
 .hidePopups .dropdown-menu.active, .hidePopups #cw_present-menu_setting, .hidePopups #cw_settings_menu{
 	display:none;
 }
+
+
+
+[role^="alert"]{
+	border-radius: 6px;
+
+	.notification_logo{
+		width: 42px;
+		height: 42px;
+		font-size: 24px;
+		background-color: #0373bd !important;
+		border-radius: 50% !important;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		margin-right: 10px;
+		color: #fff;
+	}
+}
+
