@@ -288,3 +288,7 @@ export function maybeRedirectToWelcomePage(options: Object = {}) {
         }
     };
 }
+
+export function leaveMeeting() {
+    parent.window.postMessage({'method':'leavMeeting'},'https://meet.olecons.com');
+}

@@ -946,3 +946,6 @@ form[class^="device-select"]{
 		justify-content: center;
 	}
 }
+.hidePopups .dropdown-menu.active, .hidePopups #cw_present-menu_setting, .hidePopups #cw_settings_menu{
+	display:none;
+}

@@ -262,6 +262,7 @@ class Toolbox extends Component<Props, State> {
         this.updateMeetingInfo = this.updateMeetingInfo.bind(this);
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.offAllPopups = this.offAllPopups.bind(this);
         this.state = {
             windowWidth: window.innerWidth,
         };
@@ -368,20 +369,27 @@ class Toolbox extends Component<Props, State> {
     {
         if (!(document.getElementById('sideToolbarContainer').contains(event.target) || document.getElementById('new-toolbox').contains(event.target) || document.getElementsByClassName('meeting-info-box')[0].contains(event.target) || document.getElementsByClassName('atlaskit-portal')[0] != undefined && document.getElementsByClassName('atlaskit-portal')[0].contains(event.target)))
         {
-            var isAvailable = document.getElementsByClassName('chat-close');
-            if (isAvailable.length > 0)
-            {
-                document.querySelector('.chat-close').click();
-                var element = document.getElementById("new-toolbox");
-                element.classList.add("visible");
-
-            }
-            var ele = document.querySelector('.dropdown-menu.active');
-            if(ele != null) {
-                this.toggleInfobox();
-            }
-            this.props.dispatch(clearNotifications());
+            this.offAllPopups();
         }   
+    }
+
+    offAllPopups() {
+        var isAvailable = document.getElementsByClassName('chat-close');
+        if (isAvailable.length > 0)
+        {
+            document.querySelector('.chat-close').click();
+            var element = document.getElementById("new-toolbox");
+            element.classList.add("visible");
+        }
+        if(document.querySelector('.dropdown-menu.active') != null) {
+            this.toggleInfobox();
+        }
+        this.props.dispatch(clearNotifications());
+        // toggle the present menu
+        this.setState({
+            togglePresent:false,
+            toggleSettingsMenu:false
+        })
     }
 
     /**
@@ -392,6 +400,9 @@ class Toolbox extends Component<Props, State> {
      */
     render() {
         const { _visible, _visibleButtons } = this.props;
+        // Add class to body to hide popups on toolbar hide
+        var body = $('body');
+        _visible ? body.removeClass('hidePopups') : body.addClass('hidePopups');;
         const rootClassNames = `new-toolbox ${_visible ? 'visible' : ''} ${
             _visibleButtons.size ? '' : 'no-buttons'}`;
 
@@ -1291,7 +1302,7 @@ class Toolbox extends Component<Props, State> {
 
                 <li>
                     <div className="meeting-info-box">
-                        <a type="button" className='js-open-modal present-tab' id="meeting-info-box" onClick={this.toggleInfobox}>
+                        <a type="button" className='js-open-modal present-tab' id="meeting-info-box" onClick={() => this.toggleInfobox()}>
                             <span className="meeting-name"></span>
                             <span className="dropdown-icon" style={{'display': 'none'}}>
                                 <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgdmlld0JveD0iMCAwIDQ5Mi4wMDIgNDkyLjAwMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDkyLjAwMiA0OTIuMDAyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Zz4NCgkJPHBhdGggZD0iTTQ4NC4xMzYsMzI4LjQ3M0wyNjQuOTg4LDEwOS4zMjljLTUuMDY0LTUuMDY0LTExLjgxNi03Ljg0NC0xOS4xNzItNy44NDRjLTcuMjA4LDAtMTMuOTY0LDIuNzgtMTkuMDIsNy44NDQNCgkJCUw3Ljg1MiwzMjguMjY1QzIuNzg4LDMzMy4zMzMsMCwzNDAuMDg5LDAsMzQ3LjI5N2MwLDcuMjA4LDIuNzg0LDEzLjk2OCw3Ljg1MiwxOS4wMzJsMTYuMTI0LDE2LjEyNA0KCQkJYzUuMDY0LDUuMDY0LDExLjgyNCw3Ljg2LDE5LjAzMiw3Ljg2czEzLjk2NC0yLjc5NiwxOS4wMzItNy44NmwxODMuODUyLTE4My44NTJsMTg0LjA1NiwxODQuMDY0DQoJCQljNS4wNjQsNS4wNiwxMS44Miw3Ljg1MiwxOS4wMzIsNy44NTJjNy4yMDgsMCwxMy45Ni0yLjc5MiwxOS4wMjgtNy44NTJsMTYuMTI4LTE2LjEzMg0KCQkJQzQ5NC42MjQsMzU2LjA0MSw0OTQuNjI0LDMzOC45NjUsNDg0LjEzNiwzMjguNDczeiIvPg0KCTwvZz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjwvc3ZnPg0K"  />
@@ -1494,8 +1505,6 @@ class Toolbox extends Component<Props, State> {
             `` + '\n' +
             `Join RemotePC Meeting` + '\n' +
             `https://meet.remotepc.com/meet/${meetingInfo.slug}` + '\n' +
-            `` + '\n' +
-            `Meeting Pin: ${pin}` + '\n' +
             `` + '\n' +
             `One tap mobile` + '\n' +
             `${phone.replace(/([-])|([A-Z() ])/g,'')},,${pin.replace(/ /g,'')}# (US)` + '\n' +
@@ -1731,6 +1740,10 @@ class Toolbox extends Component<Props, State> {
      *
      */
     toggleInfobox() {
+        this.setState({
+            togglePresent: false,
+            toggleSettingsMenu: false
+        })
         var ele = document.querySelector('.dropdown-menu');
         $(ele).fadeToggle('fast').toggleClass('active');
         $('#meeting-info-box span.dropdown-icon').toggle();
@@ -1738,6 +1751,7 @@ class Toolbox extends Component<Props, State> {
     togglePresentTab:() => boolean;
 
     togglePresentTab = () => {
+        this.offAllPopups();
         this.setState({
             togglePresent: !this.state.togglePresent,
             toggleSettingsMenu: false
@@ -1747,6 +1761,7 @@ class Toolbox extends Component<Props, State> {
     togglemoreOptions:() => boolean;
 
     togglemoreOptions = () => {
+        this.offAllPopups();
         this.setState({
             togglePresent: false,
             toggleSettingsMenu: !this.state.toggleSettingsMenu

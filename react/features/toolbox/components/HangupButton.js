@@ -3,7 +3,7 @@
 import _ from 'lodash';
 
 import { createToolbarEvent, sendAnalytics } from '../../analytics';
-import { appNavigate } from '../../app';
+import { appNavigate, leaveMeeting } from '../../app';
 import { disconnect } from '../../base/connection';
 import { translate } from '../../base/i18n';
 import { connect } from '../../base/redux';
@@ -50,7 +50,7 @@ class HangupButton extends AbstractHangupButton<Props, *> {
             } else {
                 this.props.dispatch(disconnect(true));
             }
-            parent.window.postMessage({'method':'leavMeeting'},'https://meet.olecons.com');
+            leaveMeeting();
         });
     }
 
