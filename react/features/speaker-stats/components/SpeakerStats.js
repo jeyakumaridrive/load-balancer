@@ -8,7 +8,10 @@ import { getLocalParticipant } from '../../base/participants';
 import { connect } from '../../base/redux';
 import {
     Icon,
-     IconMicrophone, IconMicDisabled 
+    IconMicrophone,
+    IconMicDisabled, 
+    IconClose,
+    IconPeople
 } from '../../base/icons';
 
 
@@ -94,6 +97,9 @@ class SpeakerStats extends Component<Props, State> {
         console.log(APP.conference._room.isAdmin);
      }
 
+     onCloseSidebar = () =>{
+         $('#people_sidebar').removeClass('show-people-list')
+     }
     /**
      * Begin polling for speaker stats updates.
      *
@@ -129,14 +135,26 @@ class SpeakerStats extends Component<Props, State> {
         const items = userIds.map(userId => this._createStatsItem(userId));
 
           const isAdmin = APP.conference._room.isAdmin;
-                console.log("isAdmin");
-                console.log(isAdmin);
+
+          const statClasses =   isAdmin ? 'speaker-stats has-footer' : 'speaker-stats';
+
         return (
            
                 <div className='spear-status-sidebar' id='people_sidebar'>
                     <div className='people-title'>
-                        <span>People</span>
-                        { isAdmin == true ? (
+                        <Icon src={IconPeople} />
+                        <span>People</span> <span className='user-count'>({this.props._participants.length}) </span>
+                        <div className='close-sidebar' onClick={this.onCloseSidebar}>
+                            <Icon src = { IconClose } />    
+                        </div>
+                    </div>
+
+                    <div className = {statClasses}>
+                        { items }
+                    </div>
+                    
+                    { isAdmin == true ? (
+                        <div className='spearker-stats-footer'>
                             <div className="mute-controller" >
                                 <button className='btn-mute-all'
                                     onClick={ this.muteall }
@@ -147,14 +165,9 @@ class SpeakerStats extends Component<Props, State> {
                                     style={{'display':'none'}}
                                     id='unmuteall_'>Unmute All
                                 </button>
-                            </div>) : '' }
-
-                    </div>
-                    <div className = 'speaker-stats'>
-
-                        { items }
-                    </div>
-
+                            </div>
+                        </div>) : '' }
+                    
             </div>
            
         );
@@ -181,11 +194,13 @@ class SpeakerStats extends Component<Props, State> {
 
         let displayName;
         let audio_status = '';
+        let video_status = '';
         console.log("meooooo2");
        // console.log(this.state.stats[userId]);
         var ac = false;
+        let vc = false;;
         if(APP.conference.getParticipantById(userId)!=undefined) {
-            console.log(APP.conference.getParticipantById(userId)._tracks[0]);
+            console.log(APP.conference.getParticipantById(userId)._tracks[1]);
             if(APP.conference.getParticipantById(userId)._tracks[0]  != undefined){
               ac = APP.conference.getParticipantById(userId)._tracks[0].muted;
             } 
@@ -205,10 +220,34 @@ class SpeakerStats extends Component<Props, State> {
         } else {
             audio_status = 'In Active';
         }
+
+        // if(APP.conference.getParticipantById(userId)!=undefined) {
+        //     if(APP.conference.getParticipantById(userId)._tracks[1]  != undefined){
+        //       vc = APP.conference.getParticipantById(userId)._tracks[1].muted;
+        //     } 
+        //     if(vc==true) {
+        //         video_status = (
+        //              <div className='audio-muted'>
+        //                 <Icon src={IconCameraDisabled} />
+        //              </div>
+        //          );
+        //     } else{
+        //         video_status = (
+        //             <div className='audio-active'>
+        //                <Icon src={IconCamera} />
+        //             </div>
+        //         );
+        //     }
+        // } else {
+        //     video_status = 'In Active';
+        // }
+
+
         if (statsModel.isLocalStats()) {
             audio_status = '-';
+            video_status = 'local';
             const { t } = this.props;
-            const meString = t('me');
+            const meString = t('You');
 
             displayName = this.props._localDisplayName;
             displayName
@@ -226,6 +265,7 @@ class SpeakerStats extends Component<Props, State> {
                 displayName = { displayName }
                 dominantSpeakerTime = { dominantSpeakerTime }
                 audio_status ={audio_status}
+                video_status = {video_status}
                 hasLeft = { hasLeft }
                 isDominantSpeaker = { isDominantSpeaker }
                 key = { userId } />
@@ -271,6 +311,8 @@ class SpeakerStats extends Component<Props, State> {
  */
 function _mapStateToProps(state) {
     const localParticipant = getLocalParticipant(state);
+    console.log(state);
+    
 
     return {
         /**
@@ -279,7 +321,8 @@ function _mapStateToProps(state) {
          * @private
          * @type {string|undefined}
          */
-        _localDisplayName: localParticipant && localParticipant.name
+        _localDisplayName: localParticipant && localParticipant.name,
+        _participants: state['features/base/participants']
     };
 }
 

@@ -83,3 +83,4 @@ export { default as IconVideoQualitySD } from './SD.svg';
 export { default as IconVolume } from './volume.svg';
 export { default as IconVolumeEmpty } from './volume-empty.svg';
 export { default as IconRpcMic } from './rpc-microphone.svg';
+export { default as IconPeople } from './people.svg';
