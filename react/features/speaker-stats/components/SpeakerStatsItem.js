@@ -65,7 +65,7 @@ class SpeakerStatsItem extends Component<Props> {
                 </div> */}
 
                 <div className = 'speaker-stats-item__audio_stat audio_status'>
-                        { this.props.audio_status  } 
+                { this.props.video_status  }  { this.props.audio_status  } 
                     </div>
 
             </div>
