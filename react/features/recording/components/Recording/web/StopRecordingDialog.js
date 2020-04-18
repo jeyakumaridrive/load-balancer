@@ -33,7 +33,7 @@ class StopRecordingDialog extends AbstractStopRecordingDialog<Props> {
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.recording'
                 width = 'medium'>
-                    <div classNAme='alert-dialog'>
+                    <div className='alert-dialog'>
                         { t('dialog.stopRecordingWarning') }
                     </div>
             </Dialog>

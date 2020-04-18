@@ -1,0 +1,74 @@
+#join-this-meeting {
+	top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    max-width: 600px;
+    z-index: 99;
+    border-radius: 6px;
+    outline: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.24);
+    width: 100%;
+    background: #ffffff;
+    padding: 20px;
+
+	    .modal-body {
+		    padding: 10px;
+		    h2 {
+				padding-left: 15px;
+			    font-size: 16px;
+			    color: #4e4e4e;
+			    margin: 0 0 25px;
+				display: inline-block;
+			
+			}
+
+
+			.sw_new_user{
+				display: flex;
+				font-size: 16px;
+				align-items: center;
+				padding-left: 15px;
+				.sw_user_profile{
+					width: 32px;
+					height: 32px;
+					color: #fff;
+					background-color: #0373bd;
+					border-radius: 50%;
+					justify-content: center;
+					display: flex;
+					align-items: center;
+					font-weight: 700;
+					font-size: 16px;
+					margin-right: 10px;
+				}
+				span.sw_user_name {
+					color: #303e47;
+					font-size: 16px;
+				}
+			}
+		}
+	
+	.modal-footer {
+		text-align: right;
+		border-top: none;
+		padding-top: 10px;
+		button.btn.jm_fancy-button {
+			background: #1896c6;
+			color: #fff;
+			font-size: 16px;
+			text-align: center;
+			padding: 8px 20px;
+			border-radius: 2px;
+			font-weight: 600;
+			border: none;
+			outline: 0;
+			display: inline-flex;
+			text-transform: capitalize;
+		}
+		.btn + .btn {
+			margin-bottom: 0;
+			margin-left: 5px;
+		}
+	}
+}
