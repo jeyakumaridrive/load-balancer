@@ -106,7 +106,7 @@
     background-color: #ffffff;
     height: 60px;
     position: relative;
-    width: 100%;
+    padding: 0 15px;
     z-index: 1;
     border-bottom: 2px solid #019d68;
     color: #019d68;
@@ -114,8 +114,8 @@
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 14px;
+    justify-content: left;
+    font-size: 18px;
     svg{
         fill: #019d68;
         width: 20px;
