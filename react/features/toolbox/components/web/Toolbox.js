@@ -367,7 +367,12 @@ class Toolbox extends Component<Props, State> {
     */
     handleClickOutside(event)
     {
-        if (!(document.getElementById('sideToolbarContainer').contains(event.target) || document.getElementById('new-toolbox').contains(event.target) || document.getElementsByClassName('meeting-info-box')[0].contains(event.target) || document.getElementsByClassName('atlaskit-portal')[0] != undefined && document.getElementsByClassName('atlaskit-portal')[0].contains(event.target)))
+        if (!(document.getElementById('sideToolbarContainer').contains(event.target)
+            || document.getElementById('new-toolbox').contains(event.target)
+            || document.getElementsByClassName('meeting-info-box')[0].contains(event.target)
+            || document.getElementsByClassName('atlaskit-portal')[0] != undefined && document.getElementsByClassName('atlaskit-portal')[0].contains(event.target)
+            || document.getElementById('people_sidebar').contains(event.target)
+            ))
         {
             this.offAllPopups();
         }   
@@ -390,6 +395,8 @@ class Toolbox extends Component<Props, State> {
             togglePresent:false,
             toggleSettingsMenu:false
         })
+        //hide the people side bar
+        $('#people_sidebar').removeClass('show-people-list');
     }
 
     /**
