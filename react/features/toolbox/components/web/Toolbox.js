@@ -258,6 +258,7 @@ class Toolbox extends Component<Props, State> {
         this._onToolbarToggleSharedVideo = this._onToolbarToggleSharedVideo.bind(this);
         this._onToolbarOpenLocalRecordingInfoDialog = this._onToolbarOpenLocalRecordingInfoDialog.bind(this);
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
+        this.startScreenShare = this.startScreenShare.bind(this);
         this.showWhiteboard = this.showWhiteboard.bind(this);
         this.updateMeetingInfo = this.updateMeetingInfo.bind(this);
         this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -679,6 +680,11 @@ class Toolbox extends Component<Props, State> {
     }
 
     _onShortcutToggleFullScreen: () => void;
+    
+    startScreenShare() {
+        this.togglePresentTab();
+        APP.conference.toggleScreenSharing();
+    }
     
     showWhiteboard()
     {
