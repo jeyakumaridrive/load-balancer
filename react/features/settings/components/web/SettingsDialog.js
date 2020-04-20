@@ -102,7 +102,7 @@ class SettingsDialog extends Component<Props> {
                 tabs = { tabs }
                 >   
                 <div className='video-quality-section'>
-                    <div class="video-quality-selector-label">Video Quality</div>
+                    <div className="video-quality-selector-label">Video Quality</div>
                     <VideoQualitySlider />
                 </div>
             </DialogWithTabs>
