@@ -86,8 +86,16 @@
     }
 
     var context = getContext('main-canvas'),
-        tempContext = getContext('temp-canvas');
-
+        tempContext = getContext('temp-canvas'),
+        thirdContext = getContext('third-canvas');
+    function renderr() {
+        thirdContext.fillStyle = '#fff';
+        thirdContext.fillRect(0, 0, iWidth, iHeight);
+        thirdContext.drawImage(find('main-canvas'), 0, 0);
+        thirdContext.drawImage(find('temp-canvas'), 0, 0);
+        window.requestAnimationFrame(renderr);
+    }
+    window.requestAnimationFrame(renderr);
     var common = {
         updateTextArea: function() {
             var c = common,

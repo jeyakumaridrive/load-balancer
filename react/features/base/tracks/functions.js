@@ -69,6 +69,47 @@ export async function createLocalPresenterTrack(options, desktopHeight) {
  * is to execute and from which state such as {@code config} is to be retrieved.
  * @returns {Promise<JitsiLocalTrack[]>}
  */
+export function createLocalTracksW(options = {}, firePermissionPromptIsShownEvent, store) {
+    let { cameraDeviceId, micDeviceId } = options;
+    
+    if (typeof APP !== 'undefined') {
+        // TODO The app's settings should go in the redux store and then the
+        // reliance on the global variable APP will go away.
+        store || (store = APP.store); // eslint-disable-line no-param-reassign
+
+        const state = store.getState();
+
+        if (typeof cameraDeviceId === 'undefined' || cameraDeviceId === null) {
+            cameraDeviceId = getUserSelectedCameraDeviceId(state);
+        }
+        if (typeof micDeviceId === 'undefined' || micDeviceId === null) {
+            micDeviceId = getUserSelectedMicDeviceId(state);
+        }
+    }
+
+    const state = store.getState();
+    const {
+        desktopSharingFrameRate,
+        firefox_fake_device, // eslint-disable-line camelcase
+        resolution
+    } = state['features/base/config'];
+    const constraints = options.constraints ?? state['features/base/config'].constraints;
+    
+    return (
+        loadEffects(store).then(effectsArray => {
+            // Filter any undefined values returned by Promise.resolve().
+            const effects = effectsArray.filter(effect => Boolean(effect));
+            // console.log(options); return;
+            return JitsiMeetJS.createLocalTracks(
+                options,
+                firePermissionPromptIsShownEvent)
+            .catch(err => {
+                logger.error('Failed to create local tracks', options.devices, err);
+
+                return Promise.reject(err);
+            });
+        }));
+}
 export function createLocalTracksF(options = {}, firePermissionPromptIsShownEvent, store) {
     let { cameraDeviceId, micDeviceId } = options;
 

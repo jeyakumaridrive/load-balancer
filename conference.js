@@ -103,6 +103,7 @@ import {
     createLocalPresenterTrack,
     createLocalTracksF,
     destroyLocalTracks,
+    createLocalTracksW,
     isLocalVideoTrackMuted,
     isLocalTrackMuted,
     isUserInteractionRequiredForUnmute,
@@ -1741,7 +1742,48 @@ export default {
             throw error;
         });
     },
+    _createWhiteboardTrack(options = {}) {
+        const externalInstallation = false;
+        const didHaveVideo = !this.isLocalVideoMuted();
+        const getDesktopStreamPromise = options.desktopStream
+            ? Promise.resolve([ options.desktopStream ])
+            : createLocalTracksW({
+                stream: options.stream,
+                devices: ''
+            });
+        
+        return getDesktopStreamPromise.then(desktopStreams => {
+            // Stores the "untoggle" handler which remembers whether was
+            // there any video before and whether was it muted.
+            this._untoggleScreenSharing
+                = this._turnScreenSharingOff.bind(this, didHaveVideo);
 
+            const desktopVideoStream = desktopStreams.find(stream => stream.getType() === MEDIA_TYPE.VIDEO);
+
+            if (desktopVideoStream) {
+                desktopVideoStream.on(
+                    JitsiTrackEvents.LOCAL_TRACK_STOPPED,
+                    () => {
+                        // If the stream was stopped during screen sharing
+                        // session then we should switch back to video.
+                        this.isSharingScreen
+                            && this._untoggleScreenSharing
+                            && this._untoggleScreenSharing();
+                    }
+                );
+            }
+
+            // close external installation dialog on success.
+            externalInstallation && $.prompt.close();
+
+            return desktopStreams;
+        }, error => {
+
+            // close external installation dialog on success.
+            externalInstallation && $.prompt.close();
+            throw error;
+        });
+    },
     /**
      * Creates a new instance of presenter effect. A new video track is created
      * using the new set of constraints that are calculated based on
@@ -1937,7 +1979,69 @@ export default {
                 return Promise.reject(error);
             });
     },
+    _switchToWhiteboardSharing(options = {}) {
+        if (this.videoSwitchInProgress) {
+            return Promise.reject('Switch in progress.');
+        }
 
+        this.videoSwitchInProgress = true;
+
+        return this._createWhiteboardTrack(options)
+            .then(async streams => {
+                console.log(streams);
+                const desktopVideoStream = streams.find(stream => stream.getType() === MEDIA_TYPE.VIDEO);
+
+                if (desktopVideoStream) {
+                    this.useVideoStream(desktopVideoStream);
+                }
+
+                this._desktopAudioStream = streams.find(stream => stream.getType() === MEDIA_TYPE.AUDIO);
+
+                if (this._desktopAudioStream) {
+                    // If there is a localAudio stream, mix in the desktop audio stream captured by the screen sharing
+                    // api.
+                    if (this.localAudio) {
+                        this._mixerEffect = new AudioMixerEffect(this._desktopAudioStream);
+
+                        await this.localAudio.setEffect(this._mixerEffect);
+                    } else {
+                        // If no local stream is present ( i.e. no input audio devices) we use the screen share audio
+                        // stream as we would use a regular stream.
+                        await this.useAudioStream(this._desktopAudioStream);
+                    }
+                }
+            })
+            .then(() => {
+                this.videoSwitchInProgress = false;
+                if (config.enableScreenshotCapture) {
+                    APP.store.dispatch(toggleScreenshotCaptureEffect(true));
+                }
+                sendAnalytics(createScreenSharingEvent('started'));
+                logger.log('Screen sharing started');
+            })
+            .catch(error => {
+                this.videoSwitchInProgress = false;
+
+                // Pawel: With this call I'm trying to preserve the original
+                // behaviour although it is not clear why would we "untoggle"
+                // on failure. I suppose it was to restore video in case there
+                // was some problem during "this.useVideoStream(desktopStream)".
+                // It's important to note that the handler will not be available
+                // if we fail early on trying to get desktop media (which makes
+                // sense, because the camera video is still being used, so
+                // nothing to "untoggle").
+                if (this._untoggleScreenSharing) {
+                    this._untoggleScreenSharing();
+                }
+
+                // FIXME the code inside of _handleScreenSharingError is
+                // asynchronous, but does not return a Promise and is not part
+                // of the current Promise chain.
+                this._handleScreenSharingError(error);
+
+                return Promise.reject(error);
+            });
+    },
     /**
      * Handles {@link JitsiTrackError} returned by the lib-jitsi-meet when
      * trying to create screensharing track. It will either do nothing if
@@ -2029,7 +2133,7 @@ export default {
         document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(localParticipantIDs); });
         document.getElementById("closeMyBoard").addEventListener("click", function() { closeBoard(localParticipantIDs); });
         var checkExist = setInterval(function() {
-        var btn = $( "#myId").contents().find('#myframe').contents().find('#close-icon');
+        var btn = $( "#myId").contents().find('#close-icon');
             if (typeof btn !== 'undefined')
             {
                 
@@ -2397,10 +2501,10 @@ export default {
                     // }
 
                     //document.getElementById("myId").style.pointerEvents = 'none';
-                    document.getElementById("myId").style.display = 'block';
+                    //document.getElementById("myId").style.display = 'block';
                 }
                 var checkExist = setInterval(function() {
-                var btn = $( "#myId").contents().find('#myframe').contents().find('#close-icon');
+                var btn = $( "#myId").contents().find('#close-icon');
                     if (typeof btn !== 'undefined')
                     {
                         
@@ -2422,6 +2526,7 @@ export default {
             }
             else if(messageObj.EventType == 1006)
             {
+                this._untoggleScreenSharing();
                 document.getElementById("myId").style.display = 'none';
                 //document.getElementById("w-board-wrapper").style.display = 'none';
                 // document.getElementById('myId').contentDocument.location.reload(true);
@@ -2771,7 +2876,7 @@ export default {
 
 
         window.sessionStorage.setItem('white-board', this.roomName);
-        var htmlPath = window.location.origin+'/static/draw/canvas.html#'+this.roomName;
+        var htmlPath = window.location.origin+'/static/draw/widget.html?widgetJsURL=widget.js&tools={"pencil":true,"marker":true,"eraser":true,"text":true,"image":true,"pdf":true,"dragSingle":true,"dragMultiple":true,"arc":true,"arrow":true,"rectangle":true,"undo":true,"undoAll":true,"line":true,"colorsPicker":true,"lineWidth":true,"quadratic":true}&selectedIcon=pencil&icons={"line":null,"arrow":null,"pencil":null,"dragSingle":null,"dragMultiple":null,"eraser":null,"rectangle":null,"arc":null,"bezier":null,"quadratic":null,"text":null,"image":null,"pdf":null,"pdf_next":null,"pdf_prev":null,"pdf_close":null,"marker":null,"zoom":null,"lineWidth":null,"colorsPicker":null,"extraOptions":null,"code":null}';
         //var htmlPath = '/static/draw/canvas.html#'+this.roomName;
         var $iframe = $('#myId');
         $iframe.attr('src',htmlPath);
