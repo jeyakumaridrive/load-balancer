@@ -292,3 +292,6 @@ export function maybeRedirectToWelcomePage(options: Object = {}) {
 export function leaveMeeting() {
     parent.window.postMessage({'method':'leavMeeting'},'https://meet.olecons.com');
 }
+export function finishedLoading() {
+    parent.window.postMessage({'method':'loaded'},'https://meet.olecons.com');
+}

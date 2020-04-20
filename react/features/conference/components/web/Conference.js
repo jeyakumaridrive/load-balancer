@@ -15,6 +15,7 @@ import { CalleeInfoContainer } from '../../../invite';
 import { LargeVideo } from '../../../large-video';
 import { LAYOUTS, getCurrentLayout } from '../../../video-layout';
 import { updateSettings } from '../../../base/settings';
+import { finishedLoading } from '../../../app';
 
 import {
     Toolbox,
@@ -169,6 +170,8 @@ class Conference extends AbstractConference<Props, *> {
                             sessionStorage.isAdmin = isAdmin;
                             APP.conference._room.isAdmin = isAdmin;
                             localStorage.isAdmin = isAdmin;
+                            //now remove the loader from the meetolecons server
+                            finishedLoading();
                             clearInterval(waitForSocketId);
                         }
                     },500);
