@@ -78,7 +78,7 @@ class Subject extends Component<Props> {
                        {this.state.galleryView ? 
                         <React.Fragment>
                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"
-                                    width="450px" height="323px" viewBox="0 0 450 323" enable-background="new 0 0 450 323">
+                                    width="450px" height="323px" viewBox="0 0 450 323" enableBackground="new 0 0 450 323">
                                 <g display="none">
                                     <g id="videocam-off" display="inline">
                                         <path d="M483.5,113.75l-102,102V126.5c0-15.3-10.2-25.5-25.5-25.5H197.9l285.6,285.6V113.75z M32.15-1L-1,32.15L67.85,101H50
@@ -160,7 +160,7 @@ class Subject extends Component<Props> {
                         <React.Fragment>
                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" 
                             x="0px" y="0px"
-                                width="591px" height="349px" viewBox="0 0 591 349" enable-background="new 0 0 591 349" >
+                                width="591px" height="349px" viewBox="0 0 591 349" enableBackground="new 0 0 591 349" >
                             <g>
                                 <rect x="9.648" y="10.894" fill="#F9F9F9" width="442.753" height="328.106"/>
                                 <g>

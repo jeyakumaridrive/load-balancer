@@ -285,17 +285,17 @@ class Conference extends AbstractConference<Props, *> {
     }
     _renderJoinRequest() {
         return (
-            <div id="join-this-meeting" class="joinMeetingRequest hidden">
-                <div class="modal-body">
+            <div id="join-this-meeting" className="joinMeetingRequest hidden">
+                <div className="modal-body">
                     <h2>Someone wants to join this meeting</h2>
-                    <div class="sw_new_user">
-                        <span class="sw_user_profile">J
+                    <div className="sw_new_user">
+                        <span className="sw_user_profile">J
                         </span>
-                        <span class="sw_user_name">jhghgh</span>
+                        <span className="sw_user_name">jhghgh</span>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="sw_deny btn jm_fancy-button" onClick={this.denyUser}>deny  </button> <button type="button" class="sw_allow btn jm_fancy-button" onClick={this.allowUser}>allow </button>
+                <div className="modal-footer">
+                    <button type="button" className="sw_deny btn jm_fancy-button" onClick={this.denyUser}>deny  </button> <button type="button" className="sw_allow btn jm_fancy-button" onClick={this.allowUser}>allow </button>
                 </div>
             </div>
         )

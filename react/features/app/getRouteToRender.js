@@ -51,7 +51,7 @@ export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
     let user = locationURL.searchParams.has('user') ? locationURL.searchParams.get('user') : '';
     if(user != '')
         sessionStorage.setItem('user',user);
-    if (!isRoomValid(state['features/base/conference'].room)) {
+    if (!isRoomValid(state['features/base/conference'].room) && window.parent.length > 0) {
         // To stop the ladning page and send the user to the parent site.
         leaveMeeting();
         return;
