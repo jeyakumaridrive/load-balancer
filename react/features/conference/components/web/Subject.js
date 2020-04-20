@@ -32,7 +32,11 @@ type Props = {
     /**
      * Indicates whether the component should be visible or not.
      */
-    _visible: boolean
+    _visible: boolean,
+    /**
+    * Whether the Tileview is enabled or not.
+    */
+    _tileViewEnabled:boolean
 };
 
 /**
@@ -45,7 +49,7 @@ class Subject extends Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            galleryView: true
+            galleryView: !this.props._tileViewEnabled
         };
     }
     /**
@@ -262,7 +266,8 @@ function _mapStateToProps(state) {
     return {
         _showParticipantCount: participantCount > 1,
         _subject: getConferenceName(state),
-        _visible: isToolboxVisible(state)
+        _visible: isToolboxVisible(state),
+        _tileViewEnabled: state['features/video-layout'].tileViewEnabled,
     };
 }
 

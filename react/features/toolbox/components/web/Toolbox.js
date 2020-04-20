@@ -371,7 +371,7 @@ class Toolbox extends Component<Props, State> {
             || document.getElementById('new-toolbox').contains(event.target)
             || document.getElementsByClassName('meeting-info-box')[0].contains(event.target)
             || document.getElementsByClassName('atlaskit-portal')[0] != undefined && document.getElementsByClassName('atlaskit-portal')[0].contains(event.target)
-            || document.getElementById('people_sidebar').contains(event.target)
+            || document.getElementById('people_sidebar') != null && document.getElementById('people_sidebar').contains(event.target)
             ))
         {
             this.offAllPopups();
