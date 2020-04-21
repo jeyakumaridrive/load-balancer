@@ -18,6 +18,12 @@ import PrivateMessageButton from '../PrivateMessageButton';
  * Renders a single chat message.
  */
 class ChatMessage extends AbstractChatMessage<Props> {
+
+    download (processedMessage) {
+        const key = processedMessage.key.split("::attachment:")[1].split(":attachment::")[0];
+        const url = 'https://meet.olecons.com/api/v1'+'/download/'+key;
+        window.open(url, '_blank');
+    }
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -47,7 +53,17 @@ class ChatMessage extends AbstractChatMessage<Props> {
                             { this._renderDisplayName() }
                             {/* { this.props.showDisplayName && this._renderDisplayName() } */}
                             <div className = 'usermessage'>
-                                { processedMessage }
+                                { processedMessage[0].key.indexOf("::attachment:") >= 0 &&
+                                    <div>
+                                        { processedMessage[0].key.split("::attachment:")[0] }
+                                        <a onClick={ () => { this.download(processedMessage[0]) } } style={{display:"block", color:"#2473bd", cursor: "pointer"}} >{processedMessage[0].key.split("::attachment:")[1].split(":attachment::")[0].slice(12)}</a>
+                                    </div>
+                                }
+                                { processedMessage[0].key.indexOf("::attachment:") == -1 &&
+                                    <div>
+                                        { processedMessage[0].key }
+                                    </div>
+                                }
                             </div>
                             { message.privateMessage && this._renderPrivateNotice() }
                             { this._renderTimestamp() }
