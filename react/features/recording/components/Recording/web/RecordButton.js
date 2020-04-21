@@ -1,7 +1,7 @@
 // @flow
 
 import { translate } from '../../../../base/i18n';
-import { IconToggleRecording } from '../../../../base/icons';
+import { IconRpcRecord, IconRpcStopRecord } from '../../../../base/icons';
 import { connect } from '../../../../base/redux';
 
 import AbstractRecordButton, {
@@ -32,7 +32,8 @@ type Props = AbstractProps & {
  * An implementation of a button for starting and stopping recording.
  */
 class RecordButton extends AbstractRecordButton<Props> {
-    icon = IconToggleRecording;
+    icon = IconRpcRecord;
+    toggledIcon = IconRpcStopRecord;
 
     /**
      * Returns the tooltip that should be displayed when the button is disabled.
