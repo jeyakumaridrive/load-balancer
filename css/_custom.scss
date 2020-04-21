@@ -430,7 +430,7 @@
 #myId{
     right: 0;
     display: none;
-    position: absolute;
+    /*position: absolute;*/
     z-index: 1000;
     left: 0;
     top: 0;
@@ -442,7 +442,7 @@
 		width: 100%;
 		height: 100%;
 		border: 0px;
-		position: absolute;
+		/*position: absolute;*/
 		left: 0;
 		bottom: 0;
 	}
@@ -1031,6 +1031,13 @@ form[class^="device-select"]{
 		color: #fff;
 		justify-content: center;
 	}
+}
+
+.disabledCls
+{
+	opacity: 0.7;
+	cursor: not-allowed;
+	pointer-events: none;	
 }
 
 .remote-recording-label{
