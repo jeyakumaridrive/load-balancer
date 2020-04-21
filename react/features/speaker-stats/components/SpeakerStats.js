@@ -205,7 +205,7 @@ class SpeakerStats extends Component<Props, State> {
             if(APP.conference.getParticipantById(userId)._tracks[0]  != undefined){
               ac = APP.conference.getParticipantById(userId)._tracks[0].muted;
             } 
-            if(APP.conference.getParticipantById(userId)._tracks[0]  != undefined){
+            if(APP.conference.getParticipantById(userId)._tracks[1]  != undefined){
               vc = APP.conference.getParticipantById(userId)._tracks[1].muted;
             } 
             if(ac==true) {
