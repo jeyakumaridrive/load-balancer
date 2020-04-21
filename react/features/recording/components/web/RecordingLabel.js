@@ -31,11 +31,19 @@ class RecordingLabel extends AbstractRecordingLabel {
         }
 
         return (
-            <div>
-                <CircularLabel
-                    className = { this.props.mode }
-                    label = { this.props.t(this._getLabelKey()) } />
-            </div>
+            <React.Fragment>
+                {this.props._status == JitsiRecordingConstants.status.ON ? 
+                    (<div className='remote-recording-label'>
+                        <div className='redot blink' /> Recording...
+                    </div>)
+                
+                :(<div>
+                    <CircularLabel
+                        className = { this.props.mode }
+                        label = { this.props.t(this._getLabelKey()) } />
+                </div>)
+            }       
+            </React.Fragment>
         );
     }
 

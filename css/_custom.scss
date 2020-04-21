@@ -1016,3 +1016,39 @@ form[class^="device-select"]{
 	}
 }
 
+.remote-recording-label{
+	display: flex;
+	align-items: center;
+	position: fixed;
+	left: 5px;
+	top: 5px;
+	background:rgba(0,0,0,0.6);
+	padding: 5px 10px;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 10px;
+}
+
+
+.blink {
+	animation: blink 1s steps(5, start) infinite;
+	-webkit-animation: blink 1s steps(5, start) infinite;
+  }
+  @keyframes blink {
+	to {
+	  visibility: hidden;
+	}
+  }
+  @-webkit-keyframes blink {
+	to {
+	  visibility: hidden;
+	}
+  }
+
+.redot{
+	width: 8px;
+	height: 8px;
+	background: #ff0000;
+	border-radius: 50px;
+	margin-right: 5px;
+}
