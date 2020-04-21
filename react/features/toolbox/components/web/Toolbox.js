@@ -1073,7 +1073,8 @@ class Toolbox extends Component<Props, State> {
         const fullUrl = `https://jitsi-api.jitsi.net/conferenceMapper?conference=${meetingId}@conference.meeting.remotepc.com`;
         $.get(fullUrl)
         .then(resolve => {
-            $('#pin').text(resolve.id);
+            //$('#pin').text(resolve.id);
+            localStorage.setItem('mypin', resolve.id)
         })
         .catch(reject => {
             console.log('=>>> reject ->>',reject);
@@ -1120,8 +1121,9 @@ class Toolbox extends Component<Props, State> {
                 console.log('=>>>>',n,num,resolve.numbers[num][0]);
             }
             console.log('help =>..',n);
-            //$('.phone').text(n);
-            document.getElementById('phone-me').innerHTML = n;
+            //$('.phone').html(n);
+
+            //document.getElementById('phone-me').innerHTML = n;
         })
         .catch(reject => {
             console.log('=>>> reject ->>',reject);
@@ -1383,6 +1385,7 @@ class Toolbox extends Component<Props, State> {
     * @returns {ReactElement}
     */
     _renderMeetingInfoButton() {
+        var moreNumbers = "https://meeting.remotepc.com/static/dialInInfo.html?room="+APP.conference.roomName;
         return (
             <ul className="cw_bottom-left-menu-list"> 
 
@@ -1416,10 +1419,11 @@ class Toolbox extends Component<Props, State> {
                                     <h2>Joining info</h2>
                                     <div className="cw_meeting-url"></div>
                                     <div className="cw_dial_meeting">
-                                        <span>Dial-in:</span> <span id="phone-me" className="phone"></span> <span>PIN:</span> <span id="pin"> #</span> 
-                                        <a href="https://meeting.remotepc.com/static/dialInInfo.html?room=RudeCombinationsRegulateObnoxiously" target="_blank">More numbers</a>
+                                        <span>Dial-in:</span> <span id="phone-me" className="phone">(US) +1-760-284-6659</span> <span>PIN:</span> <span id="pin"> { localStorage.getItem('mypin') }</span> 
+                                        
                                     </div>
                                 </div>
+                                <div class="cw_copy-text"><h3><a href={moreNumbers} target="_blank">More numbers</a></h3></div>
                                 <div className="cw_copy-text">
                                     <h3>
                                         <a onClick={() => this.copyMeetingInfo()}>
