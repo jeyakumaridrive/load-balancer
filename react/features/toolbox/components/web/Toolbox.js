@@ -369,6 +369,7 @@ class Toolbox extends Component<Props, State> {
     */
     handleClickOutside(event)
     {
+
         if (!(document.getElementById('sideToolbarContainer').contains(event.target)
             || document.getElementById('new-toolbox').contains(event.target)
             || document.getElementsByClassName('meeting-info-box')[0].contains(event.target)
@@ -719,12 +720,46 @@ class Toolbox extends Component<Props, State> {
     
     showWhiteboard()
     {
-        
+        var _this = this;
         if(this.props._screensharing == true)
         {
             return false;
         }
+        if(APP.conference.isLocalVideoMuted() == true)
+        {
+            localStorage.setItem('prevVideoStatus', 'off');
+        }
+        else
+        {
+            localStorage.setItem('prevVideoStatus', 'on');
+        }
+        
+
         document.getElementById("myId").style.display = 'block';
+        var checkExist = setInterval(function() {
+        var btn = $( "#myId").contents().find('#close-icon');
+        var ifrm = $( "#myId").contents().find('body');
+            if (typeof btn !== 'undefined')
+            {
+                
+                if(!btn.hasClass('eventAdded'))
+                {
+
+                    btn.addClass('eventAdded');
+                    btn.on('click',function() {
+
+                    document.getElementById('closeMyBoard').click();
+                    });
+
+                    ifrm.on('click',function() {
+                        
+                        _this.offAllPopups();
+                    });
+
+                }
+                clearInterval(checkExist);
+            }
+        }, 600);
         var canvas = $('#myId').contents().find('canvas#third-canvas')[0];
         var stream = canvas.captureStream();
         this.togglePresentTab();
@@ -1115,6 +1150,7 @@ class Toolbox extends Component<Props, State> {
                     iconId = 'share-desktop'
                     key = 'desktop'
                     onClick = { this._onToolbarToggleScreenshare }
+                    id = 'ScreenSharebtn'
                     text = {
                         t(`toolbar.${
                             _screensharing
@@ -1439,7 +1475,7 @@ class Toolbox extends Component<Props, State> {
     }
 
     _renderPresentTab() {
-        if(this.props._screensharing == true)
+        if(this.props._screensharing == true && $('#myId').is(":visible"))
         {
             var classNameForLi = 'disabledCls';
         }
@@ -1447,7 +1483,14 @@ class Toolbox extends Component<Props, State> {
         {
             var classNameForLi = '';
         }
-        
+        if(this.props._screensharing == true)
+        {
+            var classNameForLiW = 'disabledCls';
+        }
+        else
+        {
+            var classNameForLiW = '';
+        }        
         if(APP.conference._room.isAdmin !== undefined && typeof APP.conference._room.isAdmin !== undefined)
         {
             if(APP.conference._room.isAdmin !== undefined && typeof APP.conference._room.isAdmin !== undefined && APP.conference._room.isAdmin == "true")
@@ -1455,12 +1498,12 @@ class Toolbox extends Component<Props, State> {
                 return (
                     <div className="cw_present-menu" id="cw_present-menu_setting">
                         <ul>
-                            <li> <a onClick={this.startScreenShare}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
+                            <li> <a onClick={this.startScreenShare} className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
                                         <g>
                                             <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
                                         </g>
                                     </svg> Your Screen</a> </li>
-                            <li><a onClick={ ()=>{ this.showWhiteboard() } } className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                            <li><a onClick={ ()=>{ this.showWhiteboard() } } className={  `${classNameForLi} ${classNameForLiW}`}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
                                         <g>
                                             <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
                                         </g>
@@ -1475,12 +1518,12 @@ class Toolbox extends Component<Props, State> {
                 return (
                     <div className="cw_present-menu" id="cw_present-menu_setting">
                         <ul>
-                            <li> <a onClick={this.startScreenShare}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
+                            <li> <a onClick={this.startScreenShare} className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
                                         <g>
                                             <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
                                         </g>
                                     </svg> Your Screen</a> </li>
-                                                                <li><a onClick={ ()=>{ this.showWhiteboard() } } className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                                                                <li><a onClick={ ()=>{ this.showWhiteboard() } } className={  `${classNameForLi} ${classNameForLiW}`}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
                                         <g>
                                             <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
                                         </g>
@@ -1496,12 +1539,12 @@ class Toolbox extends Component<Props, State> {
             return (
                 <div className="cw_present-menu" id="cw_present-menu_setting">
                     <ul>
-                        <li> <a onClick={this.startScreenShare}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
+                        <li> <a onClick={this.startScreenShare} className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
                                     <g>
                                         <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
                                     </g>
                                 </svg> Your Screen</a> </li>
-                                <li><a onClick={ ()=>{ this.showWhiteboard() } } className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                                <li><a onClick={ ()=>{ this.showWhiteboard() } } className={  `${classNameForLi} ${classNameForLiW}`}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
                                         <g>
                                             <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
                                         </g>
