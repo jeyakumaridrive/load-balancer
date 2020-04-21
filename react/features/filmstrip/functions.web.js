@@ -103,7 +103,7 @@ export function calculateThumbnailSizeForTileView({
 
     // Minimum space to keep between the sides of the tiles and the sides
     // of the window.
-    const sideMargins = 10 * 2;
+    const sideMargins = 25 * 2;
 
     const verticalMargins = visibleRows * 10;
     const viewWidth = clientWidth - sideMargins;
