@@ -2526,7 +2526,7 @@ export default {
             }
             else if(messageObj.EventType == 1006)
             {
-                this._untoggleScreenSharing();
+                this.toggleScreenSharing();
                 document.getElementById("myId").style.display = 'none';
                 //document.getElementById("w-board-wrapper").style.display = 'none';
                 // document.getElementById('myId').contentDocument.location.reload(true);
