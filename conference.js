@@ -135,6 +135,7 @@ let room;
 let connection;
 localStorage.setItem('mutede','false');
 localStorage.setItem('muteNotifications','true');
+localStorage.setItem('prevVideoStatus','');
 /**
  * This promise is used for chaining mutePresenterVideo calls in order to avoid  calling GUM multiple times if it takes
  * a while to finish.
@@ -278,13 +279,21 @@ function showBoard(userID)
 
 function closeBoard(userID)
 {
-    let conntrolMessage = new Object();
-    conntrolMessage.EventType = 1006
-    conntrolMessage.userID = userID;
-    conntrolMessage.Message = 'close-board';
-    conntrolMessage.FromParticipantID = userID;
-    let message = JSON.stringify( conntrolMessage );
-    room.sendTextMessage(message);    
+
+    setTimeout(function(){ 
+        document.getElementById("myId").style.display = 'none';
+    }, 500);                      
+    
+    APP.conference._turnScreenSharingOff(false, 'fromboard'); 
+    
+
+    // let conntrolMessage = new Object();
+    // conntrolMessage.EventType = 1006
+    // conntrolMessage.userID = userID;
+    // conntrolMessage.Message = 'close-board';
+    // conntrolMessage.FromParticipantID = userID;
+    // let message = JSON.stringify( conntrolMessage );
+    // room.sendTextMessage(message);    
 }
 /**
  * Share data to other users.
@@ -1527,7 +1536,7 @@ export default {
      * in case it fails.
      * @private
      */
-    async _turnScreenSharingOff(didHaveVideo) {
+    async _turnScreenSharingOff(didHaveVideo, fromboard = null) {
         this._untoggleScreenSharing = null;
         this.videoSwitchInProgress = true;
         const { receiver } = APP.remoteControl;
@@ -1589,7 +1598,17 @@ export default {
         } else {
             promise = promise.then(() => this.useVideoStream(null));
         }
+        if(fromboard && fromboard != null)
+        {
 
+            if(localStorage.getItem('prevVideoStatus') == 'on')
+            {
+                setTimeout(function(){
+                    $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+                },3000)
+                
+            }
+        }
         return promise.then(
             () => {
                 this.videoSwitchInProgress = false;
@@ -2132,22 +2151,7 @@ export default {
 
         document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(localParticipantIDs); });
         document.getElementById("closeMyBoard").addEventListener("click", function() { closeBoard(localParticipantIDs); });
-        var checkExist = setInterval(function() {
-        var btn = $( "#myId").contents().find('#close-icon');
-            if (typeof btn !== 'undefined')
-            {
-                
-                // if(!btn.hasClass('eventAdded'))
-                // {
-                //     btn.addClass('eventAdded');
-                    btn.on('click',function() {
 
-                    document.getElementById('closeMyBoard').click();
-                    });
-               // }
-               // clearInterval(checkExist);
-            }
-        }, 600);
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
             var pp = room.getParticipants().length + 1;
            //alert(pp)
@@ -2503,22 +2507,7 @@ export default {
                     //document.getElementById("myId").style.pointerEvents = 'none';
                     //document.getElementById("myId").style.display = 'block';
                 }
-                var checkExist = setInterval(function() {
-                var btn = $( "#myId").contents().find('#close-icon');
-                    if (typeof btn !== 'undefined')
-                    {
-                        
-                        // if(!btn.hasClass('eventAdded'))
-                        // {
-                        //     btn.addClass('eventAdded');
-                            btn.on('click',function() {
 
-                            document.getElementById('closeMyBoard').click();
-                            });
-                        // }
-                        //clearInterval(checkExist);
-                    }
-                }, 600);
                 
                 //document.getElementById("w-board-wrapper").style.display = 'block';
                 // document.getElementById('myId').contentDocument.location.reload(true);
@@ -2532,7 +2521,7 @@ export default {
                     this.toggleScreenSharing();
                     setTimeout(function(){ 
                         document.getElementById("myId").style.display = 'none';
-                    }, 800);                      
+                    }, 500);                      
                     
                 }                
                 

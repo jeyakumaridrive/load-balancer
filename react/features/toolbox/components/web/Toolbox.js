@@ -724,7 +724,33 @@ class Toolbox extends Component<Props, State> {
         {
             return false;
         }
+        if(APP.conference.isLocalVideoMuted() == true)
+        {
+            localStorage.setItem('prevVideoStatus', 'off');
+        }
+        else
+        {
+            localStorage.setItem('prevVideoStatus', 'on');
+        }
+        
+
         document.getElementById("myId").style.display = 'block';
+        var checkExist = setInterval(function() {
+        var btn = $( "#myId").contents().find('#close-icon');
+            if (typeof btn !== 'undefined')
+            {
+                
+                if(!btn.hasClass('eventAdded'))
+                {
+                    btn.addClass('eventAdded');
+                    btn.on('click',function() {
+
+                    document.getElementById('closeMyBoard').click();
+                    });
+                }
+                clearInterval(checkExist);
+            }
+        }, 600);
         var canvas = $('#myId').contents().find('canvas#third-canvas')[0];
         var stream = canvas.captureStream();
         this.togglePresentTab();
@@ -1115,6 +1141,7 @@ class Toolbox extends Component<Props, State> {
                     iconId = 'share-desktop'
                     key = 'desktop'
                     onClick = { this._onToolbarToggleScreenshare }
+                    id = 'ScreenSharebtn'
                     text = {
                         t(`toolbar.${
                             _screensharing

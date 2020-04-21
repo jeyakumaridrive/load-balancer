@@ -18,131 +18,27 @@
 </style>
 <!-- 1st step -->
 <script src="canvas-designer-widget.js"></script>
-<script src="RTCMultiConnection.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<!-- 2nd step -->
-<script>
-// document.getElementById('room-id').onkeyup = document.getElementById('room-id').onblur = function() {
-//     localStorage.setItem('canvas-designer-roomid', this.value);
-// };
 
-// if(localStorage.getItem('canvas-designer-roomid')) {
-//     document.getElementById('room-id').value = localStorage.getItem('canvas-designer-roomid');
-// }
-window.onload = function () {
-    var roomID = location.hash.replace('#', '');
-    document.getElementById('room-id').value = roomID;
-    setTimeout(function(){
-        document.getElementById('open-room').click();
-    }, 2000);
-}   
-document.getElementById('open-room').onclick = function() {
-    var roomid = document.getElementById('room-id').value;
-    if(!roomid.length) return alert('Please enter roomid.');
-
-    this.disabled = true;
-
-    connection.open(roomid);
-
-    this.parentNode.innerHTML = '<a href="#' + roomid + '" target="_blank">Please share this link</a>';
-};
-
-var connection = new RTCMultiConnection();
-
-connection.socketURL = '/';
-connection.socketMessageEvent = 'canvas-designer';
-
-connection.enableFileSharing = false;
-connection.session = {
-    data: true
-};
-
-connection.sdpConstraints.mandatory = {
-    OfferToReceiveAudio: false,
-    OfferToReceiveVideo: false
-};
-if(location.hash.replace('#', '').length) {
-    var roomid = location.hash.replace('#', '');
-    connection.openOrJoin(roomid);
-   // connection.openOrJoin(roomid);
-}
-
-connection.onUserStatusChanged = function(event) {
-
-    var infoBar = document.getElementById('hide-on-datachannel-opened');
-    if(event.status == 'online') {
-        infoBar.innerHTML = event.userid + ' is <b>online</b>.';
-    }
-
-    if(event.status == 'offline') {
-        infoBar.innerHTML = event.userid + ' is <b>offline</b>.';
-    }
-
-   // numberOfConnectedUsers.innerHTML = connection.getAllParticipants().length;
-};
-
-var numberOfConnectedUsers = document.getElementById('number-of-connected-users');
-connection.onopen = function(event) {
-    var infoBar = document.getElementById('hide-on-datachannel-opened');
-    infoBar.innerHTML = '<b>' + event.userid + '</b> is ready to collaborate with you.';
-
-    if(designer1.pointsLength <= 0 || designer2.pointsLength <= 0) {
-        // make sure that remote user gets all drawings synced.
-        setTimeout(function() {
-            connection.send('plz-sync-points');
-
-        }, 1000);
-    }
-
-    //numberOfConnectedUsers.innerHTML = connection.getAllParticipants().length;
-};
-
-connection.onclose = connection.onerror = connection.onleave = function() {
-    //numberOfConnectedUsers.innerHTML = connection.getAllParticipants().length;
-};
-
-connection.onmessage = function(event) {
-    if(event.data === 'plz-sync-points') {
-        designer1.sync();
-        designer2.sync();
-        return;
-    }
-
-    if(event.data.designer1) {
-        designer1.syncData( event.data.actualData );
-    }
-
-    if(event.data.designer2) {
-        designer2.syncData( event.data.actualData );
-    }
-};
-</script>
 
 <script>
 var designer1 = new CanvasDesigner();
-var designer2 = new CanvasDesigner();
+
 
 // you can place widget.html anywhere
 designer1.widgetHtmlURL = 'widget.html';
 designer1.widgetJsURL = 'widget.js'
-designer2.widgetHtmlURL = 'widget.html';
-designer2.widgetJsURL = 'widget.min.js'
 
-designer1.addSyncListener(function(data) {
-    connection.send({
-        actualData: data,
-        designer1: true
-    });
-});
-designer2.addSyncListener(function(data) {
-    connection.send({
-        actualData: data,
-        designer2: true
-    });
-});
+
+// designer1.addSyncListener(function(data) {
+//     connection.send({
+//         actualData: data,
+//         designer1: true
+//     });
+// });
+
 
 designer1.setSelected('pencil');
-designer2.setSelected('pencil');
+
 
 designer1.setTools({
     pencil: true,
