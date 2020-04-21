@@ -11,7 +11,9 @@ import {
     IconMicrophone,
     IconMicDisabled, 
     IconClose,
-    IconPeople
+    IconPeople,
+    IconCameraDisabled,
+    IconCamera
 } from '../../base/icons';
 
 
@@ -199,9 +201,12 @@ class SpeakerStats extends Component<Props, State> {
         var ac = false;
         let vc = false;;
         if(APP.conference.getParticipantById(userId)!=undefined) {
-            console.log(APP.conference.getParticipantById(userId)._tracks[1]);
+            console.log(APP.conference.getParticipantById(userId));
             if(APP.conference.getParticipantById(userId)._tracks[0]  != undefined){
               ac = APP.conference.getParticipantById(userId)._tracks[0].muted;
+            } 
+            if(APP.conference.getParticipantById(userId)._tracks[0]  != undefined){
+              vc = APP.conference.getParticipantById(userId)._tracks[1].muted;
             } 
             if(ac==true) {
                  audio_status = (
@@ -216,8 +221,23 @@ class SpeakerStats extends Component<Props, State> {
                     </div>
                 );
             }
+            if(vc==true) {
+                 video_status = (
+                     <div className='audio-muted'>
+                        <Icon src={IconCameraDisabled} />
+                     </div>
+                 );
+            } else{
+                video_status = (
+                    <div className='audio-active'>
+                       <Icon src={IconCamera} />
+                    </div>
+                );
+            }
+
         } else {
             audio_status = 'In Active';
+            video_status = 'In Active';
         }
 
         // if(APP.conference.getParticipantById(userId)!=undefined) {
@@ -243,10 +263,36 @@ class SpeakerStats extends Component<Props, State> {
 
 
         if (statsModel.isLocalStats()) {
-            audio_status = '-';
-            video_status = 'local';
+            var a_status = APP.conference.isLocalAudioMuted();
+            var v_status = APP.conference.isLocalVideoMuted();
+            if(a_status==true) {
+                 audio_status = (
+                     <div className='audio-muted'>
+                        <Icon src={IconMicDisabled} />
+                     </div>
+                 );
+            } else{
+                audio_status = (
+                    <div className='audio-active'>
+                       <Icon src={IconMicrophone} />
+                    </div>
+                );
+            }
+            if(v_status==true) {
+                 video_status = (
+                     <div className='audio-muted'>
+                        <Icon src={IconCameraDisabled} />
+                     </div>
+                 );
+            } else{
+                video_status = (
+                    <div className='audio-active'>
+                       <Icon src={IconCamera} />
+                    </div>
+                );
+            }
             const { t } = this.props;
-            const meString = t('You');
+            const meString = t('Me');
 
             displayName = this.props._localDisplayName;
             displayName

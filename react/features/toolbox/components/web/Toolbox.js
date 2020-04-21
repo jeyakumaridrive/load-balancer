@@ -264,6 +264,7 @@ class Toolbox extends Component<Props, State> {
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
         this.offAllPopups = this.offAllPopups.bind(this);
+        this.stopScreen = this.stopScreen.bind(this);
         this.state = {
             windowWidth: window.innerWidth,
         };
@@ -716,6 +717,12 @@ class Toolbox extends Component<Props, State> {
     startScreenShare() {
         this.togglePresentTab();
         APP.conference.toggleScreenSharing();
+    }    
+    stopScreen() {
+        APP.conference.toggleScreenSharing();
+        setTimeout(() => {
+            document.getElementById("myId").style.display = 'none';
+        }, 500);
     }
     
     showWhiteboard()
@@ -1049,7 +1056,7 @@ class Toolbox extends Component<Props, State> {
 
     updateMeetingInfo() {
         var v = 0, x = setInterval(() => {
-            if(APP && APP.conference && document.getElementById('meeting-info-box') != null) {
+            if(APP && APP.conference) {
                 var roomName = APP.conference.roomName;
                 this.getMeetingPin(roomName)
                 this.getMeetingInfo(roomName);
@@ -1077,7 +1084,7 @@ class Toolbox extends Component<Props, State> {
         const fullUrl = `https://meet.olecons.com/api/v1/get-meeting-by-slug?slug=${meetingId}`;
         $.get(fullUrl)
         .then(resolve => {
-            console.log('=>>>> meeting info =>>>>',resolve,$('.cw_meeting-url'),$('.meeting-name'),$('.cw_meeting-name'));
+            console.log('=>>>> meeting info =>>>>',resolve);
             $('.cw_meeting-url').text('https://meet.remotepc.com/meet/'+resolve.slug);
             $('.meeting-name').text(resolve.name);
             $('.cw_meeting-name').text(resolve.description);
@@ -1456,14 +1463,24 @@ class Toolbox extends Component<Props, State> {
                         </a>
                     </div>
                 </li>
-                <li id="present-tab-li">
+                {
+                    this.props._screensharing != true ? (<li id="present-tab-li">
                     <a onClick={this.togglePresentTab} type="button" className="js-open-modal present-tab">
                         <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="32" viewBox="0 0 841.889 595.281">
                             <image overflow="visible" width="35" height="26" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAaCAYAAAA9rOU8AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ bWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdp bj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6 eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0 NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJo dHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlw dGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAv IiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RS ZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpD cmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNl SUQ9InhtcC5paWQ6MUUzQkQ3NDNERkI2MTFFOUI5RjJBRDQ4NzQ3QUI3QUMiIHhtcE1NOkRvY3Vt ZW50SUQ9InhtcC5kaWQ6MUUzQkQ3NDRERkI2MTFFOUI5RjJBRDQ4NzQ3QUI3QUMiPiA8eG1wTU06 RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRTNCRDc0MURGQjYxMUU5QjlG MkFENDg3NDdBQjdBQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRTNCRDc0MkRGQjYxMUU5 QjlGMkFENDg3NDdBQjdBQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1w bWV0YT4gPD94cGFja2V0IGVuZD0iciI/PjuYB2cAAADsSURBVHjaYlSydPrPMEgAE8MgAsiOYRwI fPfYXsZBHzKjjhnWjpEA4hVArDPQjgE5ZDkQhwPxaiDWHSjHSALxKiB2gPI1gHgNJQ4i1zHiUIfY oomrQUNIm16OkYaGgA0OeXUgXg/EhrR2DCgqduFxCAyoAvEOILYjxXAWEh2jD8S7gXgtEMsCcQwW MzYC8UUg5gViLSA+RCvHrIRiENAD4jAsZiyERhNdcxMPtLJDB1wjvgQG6WXDIs5MroEsFDjmBxA/ BGJOIP4HjTKQQ74OhGPOALHyaK096piBBMgJeED6T8pWzoMzZAACDABAER22DaCVowAAAABJRU5E rkJggg==" transform="translate(78.396 29.79) scale(19.5742)"></image>
                         </svg>
                         <span>Present</span>
                     </a>
-                </li>
+                </li>) : (<li id="present-tab-li">
+                    <a onClick={this.stopScreen} type="button" className="js-open-modal present-tab">
+                        <svg xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="32" viewBox="0 0 841.889 595.281">
+                            <image overflow="visible" width="35" height="26" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAaCAYAAAA9rOU8AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ bWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdp bj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6 eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0 NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJo dHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlw dGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAv IiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RS ZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpD cmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNl SUQ9InhtcC5paWQ6MUUzQkQ3NDNERkI2MTFFOUI5RjJBRDQ4NzQ3QUI3QUMiIHhtcE1NOkRvY3Vt ZW50SUQ9InhtcC5kaWQ6MUUzQkQ3NDRERkI2MTFFOUI5RjJBRDQ4NzQ3QUI3QUMiPiA8eG1wTU06 RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRTNCRDc0MURGQjYxMUU5QjlG MkFENDg3NDdBQjdBQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRTNCRDc0MkRGQjYxMUU5 QjlGMkFENDg3NDdBQjdBQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1w bWV0YT4gPD94cGFja2V0IGVuZD0iciI/PjuYB2cAAADsSURBVHjaYlSydPrPMEgAE8MgAsiOYRwI fPfYXsZBHzKjjhnWjpEA4hVArDPQjgE5ZDkQhwPxaiDWHSjHSALxKiB2gPI1gHgNJQ4i1zHiUIfY oomrQUNIm16OkYaGgA0OeXUgXg/EhrR2DCgqduFxCAyoAvEOILYjxXAWEh2jD8S7gXgtEMsCcQwW MzYC8UUg5gViLSA+RCvHrIRiENAD4jAsZiyERhNdcxMPtLJDB1wjvgQG6WXDIs5MroEsFDjmBxA/ BGJOIP4HjTKQQ74OhGPOALHyaK096piBBMgJeED6T8pWzoMzZAACDABAER22DaCVowAAAABJRU5E rkJggg==" transform="translate(78.396 29.79) scale(19.5742)"></image>
+                        </svg>
+                        <span>Stop Share</span>
+                    </a>
+                </li>)
+                }
+                
                 <li id="extra-tab-li">
                     <a onClick={this.togglemoreOptions} type="button" className="js-open-modal extra-tab">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" viewBox="0 0 841.889 595.281"><g><g><g><circle cx="420.945" cy="297.64" r="74.41"></circle><circle cx="420.945" cy="520.871" r="74.41"></circle><circle cx="420.945" cy="74.41" r="74.41"></circle></g></g></g>
@@ -1490,28 +1507,53 @@ class Toolbox extends Component<Props, State> {
         else
         {
             var classNameForLiW = '';
-        }        
-        if(APP.conference._room.isAdmin !== undefined && typeof APP.conference._room.isAdmin !== undefined)
+        }
+
+        if(this.props._screensharing != true)
         {
-            if(APP.conference._room.isAdmin !== undefined && typeof APP.conference._room.isAdmin !== undefined && APP.conference._room.isAdmin == "true")
+
+            if(APP.conference._room.isAdmin !== undefined && typeof APP.conference._room.isAdmin !== undefined)
             {
-                return (
-                    <div className="cw_present-menu" id="cw_present-menu_setting">
-                        <ul>
-                            <li> <a onClick={this.startScreenShare} className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
-                                        <g>
-                                            <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
-                                        </g>
-                                    </svg> Your Screen</a> </li>
-                            <li><a onClick={ ()=>{ this.showWhiteboard() } } className={  `${classNameForLi} ${classNameForLiW}`}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
-                                        <g>
-                                            <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
-                                        </g>
-                                        <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
-                                    </svg> Whiteboard</a></li>
-                        </ul>
-                    </div>
-                ) 
+                if(APP.conference._room.isAdmin !== undefined && typeof APP.conference._room.isAdmin !== undefined && APP.conference._room.isAdmin == "true")
+                {
+                    return (
+                        <div className="cw_present-menu" id="cw_present-menu_setting">
+                            <ul>
+                                <li> <a onClick={this.startScreenShare} className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
+                                            <g>
+                                                <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
+                                            </g>
+                                        </svg> Your Screen</a> </li>
+                                <li><a onClick={ ()=>{ this.showWhiteboard() } } className={  `${classNameForLi} ${classNameForLiW}`}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                                            <g>
+                                                <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
+                                            </g>
+                                            <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
+                                        </svg> Whiteboard</a></li>
+                            </ul>
+                        </div>
+                    ) 
+                }
+                else
+                {
+                    return (
+                        <div className="cw_present-menu" id="cw_present-menu_setting">
+                            <ul>
+                                <li> <a onClick={this.startScreenShare} className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
+                                            <g>
+                                                <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
+                                            </g>
+                                        </svg> Your Screen</a> </li>
+                                                                    <li><a onClick={ ()=>{ this.showWhiteboard() } } className={  `${classNameForLi} ${classNameForLiW}`}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                                            <g>
+                                                <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
+                                            </g>
+                                            <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
+                                        </svg> Whiteboard</a></li>
+                            </ul>
+                        </div>
+                    )                 
+                }
             }
             else
             {
@@ -1523,38 +1565,32 @@ class Toolbox extends Component<Props, State> {
                                             <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
                                         </g>
                                     </svg> Your Screen</a> </li>
-                                                                <li><a onClick={ ()=>{ this.showWhiteboard() } } className={  `${classNameForLi} ${classNameForLiW}`}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
-                                        <g>
-                                            <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
-                                        </g>
-                                        <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
-                                    </svg> Whiteboard</a></li>
+                                    <li><a onClick={ ()=>{ this.showWhiteboard() } } className={  `${classNameForLi} ${classNameForLiW}`}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                                            <g>
+                                                <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
+                                            </g>
+                                            <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
+                                        </svg> Whiteboard</a></li>
                         </ul>
                     </div>
-                )                 
+                )            
             }
         }
         else
         {
-            return (
-                <div className="cw_present-menu" id="cw_present-menu_setting">
-                    <ul>
-                        <li> <a onClick={this.startScreenShare} className={classNameForLi}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
-                                    <g>
-                                        <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
-                                    </g>
-                                </svg> Your Screen</a> </li>
-                                <li><a onClick={ ()=>{ this.showWhiteboard() } } className={  `${classNameForLi} ${classNameForLiW}`}> <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#2f444d" viewBox="0 0 31.539 31.537">
+                return (
+                    <div className="cw_present-menu" id="cw_present-menu_setting">
+                        <ul>
+                            <li> <a onClick={this.startScreenShare}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
                                         <g>
-                                            <path d="M31.482 1.455H17.388V0h-3.583v1.455H.055v1.753h.914V20.5H14.18v3.22l-7.292 7.817h2.621l4.921-5.284v5.284h1.507V26.26l4.914 5.277h2.663l-7.333-7.817V20.5h14.724V3.208h.577V1.455zM29.617 19.21H2.258V3.208h27.357V19.21h.002z"></path>
+                                            <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
                                         </g>
-                                        <path d="M13.793 9.223a.577.577 0 00-.572-.069l-8.864 3.777a.578.578 0 10.453 1.064l8.558-3.646 3.665 2.73c.172.128.4.151.594.058l7.219-3.44-.391 1.287a.579.579 0 001.108.335l.771-2.543a.58.58 0 00-.361-.712l-2.389-.848a.58.58 0 00-.386 1.091l1.078.383-6.832 3.256-3.651-2.723z"></path>
-                                    </svg> Whiteboard</a></li>
-                    </ul>
-                </div>
-            )            
-        }
-
+                            </svg> Stop Share</a> </li>
+                                    
+                        </ul>
+                    </div>
+                )               
+        } 
     }
 
     _renderSettingsTab() {
