@@ -243,9 +243,13 @@
 					border-right: none;
 				}
 				&.overflow-menu-item{
-					padding: 30px;
-					vertical-align: middle;
+					padding: 13px 30px;
+					display: block !important;
+					span{
+						display: block !important;
+					}
 					.overflow-menu-item-icon{
+						margin-bottom: 10px;
 						&.toggled {
 							svg{
 								fill: #ff0000
