@@ -30,6 +30,9 @@ class RecordingLabel extends AbstractRecordingLabel {
             return null;
         }
 
+        console.log(this.props.t(this._getLabelKey()));
+        
+
         return (
             <div>
                 <CircularLabel
