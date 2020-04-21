@@ -719,11 +719,8 @@ class Toolbox extends Component<Props, State> {
     
     showWhiteboard()
     {
-       
-        setTimeout(function(){
-            document.getElementById("myId").style.display = 'block';
-        },800);
-        
+
+        document.getElementById("myId").style.display = 'block';
         var canvas = $('#myId').contents().find('canvas#third-canvas')[0];
         var stream = canvas.captureStream();
 

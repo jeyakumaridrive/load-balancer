@@ -2526,8 +2526,13 @@ export default {
             }
             else if(messageObj.EventType == 1006)
             {
-                this._untoggleScreenSharing();
-                document.getElementById("myId").style.display = 'none';
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.userID)
+                {
+                    this.toggleScreenSharing();
+                    document.getElementById("myId").style.display = 'none';
+                }                
+                
                 //document.getElementById("w-board-wrapper").style.display = 'none';
                 // document.getElementById('myId').contentDocument.location.reload(true);
             }
