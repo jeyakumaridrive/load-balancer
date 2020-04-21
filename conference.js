@@ -2530,7 +2530,10 @@ export default {
                 if(new1 == messageObj.userID)
                 {
                     this.toggleScreenSharing();
-                    document.getElementById("myId").style.display = 'none';
+                    setTimeout(function(){ 
+                        document.getElementById("myId").style.display = 'none';
+                    }, 800);                      
+                    
                 }                
                 
                 //document.getElementById("w-board-wrapper").style.display = 'none';
