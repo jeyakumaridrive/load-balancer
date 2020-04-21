@@ -30,6 +30,9 @@ class RecordingLabel extends AbstractRecordingLabel {
             return null;
         }
 
+        console.log(this.props.t(this._getLabelKey()));
+        
+
         return (
             <React.Fragment>
                 {this.props._status == JitsiRecordingConstants.status.ON ? 
