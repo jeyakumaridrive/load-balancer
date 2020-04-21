@@ -84,3 +84,5 @@ export { default as IconVolume } from './volume.svg';
 export { default as IconVolumeEmpty } from './volume-empty.svg';
 export { default as IconRpcMic } from './rpc-microphone.svg';
 export { default as IconPeople } from './people.svg';
+export { default as IconRpcRecord } from './rpc-record.svg';
+export { default as IconRpcStopRecord } from './rpc-stoprecord.svg';
