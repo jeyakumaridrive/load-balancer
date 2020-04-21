@@ -2401,7 +2401,7 @@ export default {
             {
                 let messageObj = JSON.parse( text );
             
-            console.log(messageObj);
+            //console.log(messageObj);
             if( messageObj.EventType == 1001 )
             {   
                 var new1=localStorage.getItem('userPid');
