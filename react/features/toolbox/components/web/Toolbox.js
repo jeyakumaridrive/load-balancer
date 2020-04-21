@@ -1415,7 +1415,8 @@ class Toolbox extends Component<Props, State> {
                                     <h2>Joining info</h2>
                                     <div className="cw_meeting-url"></div>
                                     <div className="cw_dial_meeting">
-                                        <span>Dial-in:</span> <span className="phone"></span> <span>PIN:</span> <span id="pin">943 986 165 #</span> 
+                                        <span>Dial-in:</span> <span className="phone"></span> <span>PIN:</span> <span id="pin"> #</span> 
+                                        <a href="https://meeting.remotepc.com/static/dialInInfo.html?room=RudeCombinationsRegulateObnoxiously" target="_blank">More numbers</a>
                                     </div>
                                 </div>
                                 <div className="cw_copy-text">
