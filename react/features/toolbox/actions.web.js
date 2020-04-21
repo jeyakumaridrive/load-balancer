@@ -131,8 +131,8 @@ export function showToolbox(timeout: number = 0): Object {
             timeoutMS,
             visible
         } = state['features/toolbox'];
-
-        if (enabled && !visible) {
+        var t = $("#people_sidebar");
+        if (enabled && !visible && !(t != undefined && t != null && t.hasClass('show-people-list'))) {
             dispatch(setToolboxVisible(true));
 
             // If the Toolbox is always visible, there's no need for a timeout

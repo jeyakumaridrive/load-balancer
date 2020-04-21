@@ -1049,7 +1049,7 @@ class Toolbox extends Component<Props, State> {
 
     updateMeetingInfo() {
         var v = 0, x = setInterval(() => {
-            if(APP && APP.conference) {
+            if(APP && APP.conference && document.getElementById('meeting-info-box') != null) {
                 var roomName = APP.conference.roomName;
                 this.getMeetingPin(roomName)
                 this.getMeetingInfo(roomName);
@@ -1077,7 +1077,7 @@ class Toolbox extends Component<Props, State> {
         const fullUrl = `https://meet.olecons.com/api/v1/get-meeting-by-slug?slug=${meetingId}`;
         $.get(fullUrl)
         .then(resolve => {
-            console.log('=>>>> meeting info =>>>>',resolve);
+            console.log('=>>>> meeting info =>>>>',resolve,$('.cw_meeting-url'),$('.meeting-name'),$('.cw_meeting-name'));
             $('.cw_meeting-url').text('https://meet.remotepc.com/meet/'+resolve.slug);
             $('.meeting-name').text(resolve.name);
             $('.cw_meeting-name').text(resolve.description);
