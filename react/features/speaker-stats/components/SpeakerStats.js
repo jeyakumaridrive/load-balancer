@@ -292,7 +292,7 @@ class SpeakerStats extends Component<Props, State> {
                 );
             }
             const { t } = this.props;
-            const meString = t('Me');
+            const meString = t('You');
 
             displayName = this.props._localDisplayName;
             displayName
