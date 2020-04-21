@@ -1120,7 +1120,8 @@ class Toolbox extends Component<Props, State> {
                 console.log('=>>>>',n,num,resolve.numbers[num][0]);
             }
             console.log('help =>..',n);
-            $('.phone').text(n);
+            //$('.phone').text(n);
+            document.getElementById('phone-me').innerHTML = n;
         })
         .catch(reject => {
             console.log('=>>> reject ->>',reject);
@@ -1415,7 +1416,7 @@ class Toolbox extends Component<Props, State> {
                                     <h2>Joining info</h2>
                                     <div className="cw_meeting-url"></div>
                                     <div className="cw_dial_meeting">
-                                        <span>Dial-in:</span> <span className="phone"></span> <span>PIN:</span> <span id="pin"> #</span> 
+                                        <span>Dial-in:</span> <span id="phone-me" className="phone"></span> <span>PIN:</span> <span id="pin"> #</span> 
                                         <a href="https://meeting.remotepc.com/static/dialInInfo.html?room=RudeCombinationsRegulateObnoxiously" target="_blank">More numbers</a>
                                     </div>
                                 </div>
