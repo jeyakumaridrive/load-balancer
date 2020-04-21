@@ -5,6 +5,10 @@ import Emoji from 'react-emoji-render';
 import TextareaAutosize from 'react-textarea-autosize';
 import type { Dispatch } from 'redux';
 
+import {
+    IconCheck
+} from '../../../base/icons';
+
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
 
@@ -62,8 +66,12 @@ class ChatInput extends Component<Props, State> {
     _textArea: ?HTMLTextAreaElement;
 
     state = {
+        uploaded: false,
+        uploading: false,
+        selectedFile: null,
         message: '',
-        showSmileysPanel: false
+        showSmileysPanel: false,
+        sendingMessage: false,
     };
 
     /**
@@ -99,6 +107,28 @@ class ChatInput extends Component<Props, State> {
         this._focus();
     }
 
+    onFileChange = (event) => {
+        this.setState({ selectedFile: event.target.files[0] });
+        this.setState({ uploading: true });
+        this.setState({ uploaded: false });
+        var files = event.target.files;
+        var file = files[0];
+        console.log(file);
+        var fd = new FormData(); 
+        fd.append('file', file);
+        $.ajax({ 
+            url: 'https://meet.olecons.com'+'/api/v1/upload/'+APP.conference.roomName,
+            type: 'post', 
+            data: fd,
+            contentType: false,
+            processData: false, 
+            success: (res) => {
+                this.setState({ uploading: false });
+                this.setState({ uploaded: res });
+            }
+        });
+    }
+
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -113,6 +143,7 @@ class ChatInput extends Component<Props, State> {
             
         return (
             <React.Fragment>
+                <div id = 'chat-input-wrapper'>
                 <div id = 'chat-input' >
                     <div className = 'usrmsg-form'>
                         <TextareaAutosize
@@ -140,13 +171,48 @@ class ChatInput extends Component<Props, State> {
                     </div> */}
                 </div>
                 <div className='chat-actions'>
-                    <div className="upload-btn-wrapper">
-                        <button className="btn">
-                            <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiB2aWV3Qm94PSIwIDAgNDM2LjI1NiA0MzYuMjU3IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0MzYuMjU2IDQzNi4yNTc7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMzg5LjQyOCwyOTAuNjYxbC0xNjUuODc5LTE2NS44OGMtMTEuNjEzLTExLjk5Mi0yNS43OTItMTcuOTg3LTQyLjU0MS0xNy45ODdjLTE1LjYwOCwwLTI4LjgzMyw1LjQyNC0zOS42ODQsMTYuMjc0ICAgYy0xMC44NTQsMTAuODQ4LTE2LjI3NywyNC4wNzgtMTYuMjc3LDM5LjY4N2MwLDE2Ljc1LDUuOTk2LDMwLjkzMSwxNy45ODcsNDIuNTQxbDExNy4wNiwxMTcuMDU4ICAgYzEuOTAyLDEuOTAzLDQuMDAxLDIuODU0LDYuMjgzLDIuODU0YzMuMDQ2LDAsNy41MTktMi45NTMsMTMuNDE1LTguODVjNS44OTktNS44OTksOC44NDYtMTAuMzc2LDguODQ2LTEzLjQyMiAgIGMwLTIuMjc5LTAuOTQ3LTQuMzc0LTIuODUxLTYuMjc5TDE2OC43MzEsMTc5LjU5OWMtNC43NTgtNS4xNC03LjEzNy0xMC43NTQtNy4xMzctMTYuODQ0YzAtNS41MjMsMS44MDctMTAuMDksNS40MjQtMTMuNzA2ICAgYzMuNjE1LTMuNjE3LDguMTg2LTUuNDI0LDEzLjcwNi01LjQyNGM2LjQ3MSwwLDEyLjE4LDIuMjgxLDE3LjEzMSw2Ljg0OWwxNjUuODc1LDE2NS44OCAgIGMxMS45OTgsMTEuOTg4LDE3Ljk5NCwyNS43ODYsMTcuOTk0LDQxLjM5MmMwLDEyLjE4OS00LjAwMSwyMi4yNzQtMTEuOTkyLDMwLjI2NmMtOCw3Ljk5NC0xOC4wODIsMTEuOTk4LTMwLjI2OSwxMS45OTggICBjLTE1LjYwOCwwLTI5LjQwNi02LjAwMy00MS4zOTEtMTcuOTk0TDc2LjUxMywxNjAuMTc4Yy0xNC40NjYtMTQuNDY1LTIxLjY5NS0zMS42OTItMjEuNjk1LTUxLjY3OCAgIGMwLTIwLjE3Nyw2Ljk0NS0zNy40MDQsMjAuODQxLTUxLjY3OGMxMy44OTQtMTQuMjcyLDMwLjkyOC0yMS40MTEsNTEuMTA2LTIxLjQxMWMxOS40MTIsMCwzNi42MzYsNy4zMjgsNTEuNjczLDIxLjk3OSAgIGwxNzMuMDE4LDE3My4zMDJjMS45MDIsMS45MDYsNC4wOSwyLjg1MSw2LjU2NywyLjg1MWMzLjA0NiwwLDcuNDc0LTIuOTAyLDEzLjI3NC04LjcwNmM1LjgwOC01LjgwNCw4LjcwMy0xMC4yMjksOC43MDMtMTMuMjc0ICAgYzAtMi4yODEtMC45NDgtNC4zNzctMi44NDgtNi4yOEwyMDQuNDE5LDMyLjI2NEMxODIuNTMxLDEwLjc1NiwxNTYuNTUyLDAsMTI2LjQ3OCwwYy0zMC4yNjQsMC01NS44NjMsMTAuNTY2LTc2LjgsMzEuNjkzICAgQzI4LjczOSw1Mi44MjEsMTguMjcxLDc4LjUxOCwxOC4yNzEsMTA4Ljc4YzAsMjkuNjkyLDEwLjc1Miw1NS40ODMsMzIuMjYsNzcuMzcybDIyMS44NDIsMjIxLjU1NyAgIGMxOS4wMzMsMTkuMDI3LDQxLjM5NCwyOC41NDgsNjcuMDkxLDI4LjU0OGMyMi4yNjksMCw0MC45MjYtNy41MjEsNTUuOTU5LTIyLjU1OWMxNS4wMzctMTUuMDMsMjIuNTYyLTMzLjY4OCwyMi41NjItNTUuOTYzICAgQzQxNy45NzksMzMxLjY2Miw0MDguNDU4LDMwOS4zMDIsMzg5LjQyOCwyOTAuNjYxeiIgZmlsbD0iIzAwMDAwMCIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" />
-                        </button>
-                        <input type="file" name="myfile" />
-                    </div>
+                    {!this.state.uploading && !this.state.uploaded &&
+                        <div className="upload-btn-wrapper">
+                            <button className="btn">
+                                <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiB2aWV3Qm94PSIwIDAgNDM2LjI1NiA0MzYuMjU3IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0MzYuMjU2IDQzNi4yNTc7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMzg5LjQyOCwyOTAuNjYxbC0xNjUuODc5LTE2NS44OGMtMTEuNjEzLTExLjk5Mi0yNS43OTItMTcuOTg3LTQyLjU0MS0xNy45ODdjLTE1LjYwOCwwLTI4LjgzMyw1LjQyNC0zOS42ODQsMTYuMjc0ICAgYy0xMC44NTQsMTAuODQ4LTE2LjI3NywyNC4wNzgtMTYuMjc3LDM5LjY4N2MwLDE2Ljc1LDUuOTk2LDMwLjkzMSwxNy45ODcsNDIuNTQxbDExNy4wNiwxMTcuMDU4ICAgYzEuOTAyLDEuOTAzLDQuMDAxLDIuODU0LDYuMjgzLDIuODU0YzMuMDQ2LDAsNy41MTktMi45NTMsMTMuNDE1LTguODVjNS44OTktNS44OTksOC44NDYtMTAuMzc2LDguODQ2LTEzLjQyMiAgIGMwLTIuMjc5LTAuOTQ3LTQuMzc0LTIuODUxLTYuMjc5TDE2OC43MzEsMTc5LjU5OWMtNC43NTgtNS4xNC03LjEzNy0xMC43NTQtNy4xMzctMTYuODQ0YzAtNS41MjMsMS44MDctMTAuMDksNS40MjQtMTMuNzA2ICAgYzMuNjE1LTMuNjE3LDguMTg2LTUuNDI0LDEzLjcwNi01LjQyNGM2LjQ3MSwwLDEyLjE4LDIuMjgxLDE3LjEzMSw2Ljg0OWwxNjUuODc1LDE2NS44OCAgIGMxMS45OTgsMTEuOTg4LDE3Ljk5NCwyNS43ODYsMTcuOTk0LDQxLjM5MmMwLDEyLjE4OS00LjAwMSwyMi4yNzQtMTEuOTkyLDMwLjI2NmMtOCw3Ljk5NC0xOC4wODIsMTEuOTk4LTMwLjI2OSwxMS45OTggICBjLTE1LjYwOCwwLTI5LjQwNi02LjAwMy00MS4zOTEtMTcuOTk0TDc2LjUxMywxNjAuMTc4Yy0xNC40NjYtMTQuNDY1LTIxLjY5NS0zMS42OTItMjEuNjk1LTUxLjY3OCAgIGMwLTIwLjE3Nyw2Ljk0NS0zNy40MDQsMjAuODQxLTUxLjY3OGMxMy44OTQtMTQuMjcyLDMwLjkyOC0yMS40MTEsNTEuMTA2LTIxLjQxMWMxOS40MTIsMCwzNi42MzYsNy4zMjgsNTEuNjczLDIxLjk3OSAgIGwxNzMuMDE4LDE3My4zMDJjMS45MDIsMS45MDYsNC4wOSwyLjg1MSw2LjU2NywyLjg1MWMzLjA0NiwwLDcuNDc0LTIuOTAyLDEzLjI3NC04LjcwNmM1LjgwOC01LjgwNCw4LjcwMy0xMC4yMjksOC43MDMtMTMuMjc0ICAgYzAtMi4yODEtMC45NDgtNC4zNzctMi44NDgtNi4yOEwyMDQuNDE5LDMyLjI2NEMxODIuNTMxLDEwLjc1NiwxNTYuNTUyLDAsMTI2LjQ3OCwwYy0zMC4yNjQsMC01NS44NjMsMTAuNTY2LTc2LjgsMzEuNjkzICAgQzI4LjczOSw1Mi44MjEsMTguMjcxLDc4LjUxOCwxOC4yNzEsMTA4Ljc4YzAsMjkuNjkyLDEwLjc1Miw1NS40ODMsMzIuMjYsNzcuMzcybDIyMS44NDIsMjIxLjU1NyAgIGMxOS4wMzMsMTkuMDI3LDQxLjM5NCwyOC41NDgsNjcuMDkxLDI4LjU0OGMyMi4yNjksMCw0MC45MjYtNy41MjEsNTUuOTU5LTIyLjU1OWMxNS4wMzctMTUuMDMsMjIuNTYyLTMzLjY4OCwyMi41NjItNTUuOTYzICAgQzQxNy45NzksMzMxLjY2Miw0MDguNDU4LDMwOS4zMDIsMzg5LjQyOCwyOTAuNjYxeiIgZmlsbD0iIzAwMDAwMCIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" />
+                            </button>
+                            <input type="file" name="myfile" onChange={this.onFileChange}/>
+                        </div>
+                    }
+                    {this.state.uploaded && 
+                        <>
+                            <span className="file-uploaded">
+                                <IconCheck />
+                            </span>
+                            <span style={{fontSize: "13px"}}>{this.state.selectedFile.name}</span>
+                        </>
+                    }
+                    {this.state.uploading && !this.state.uploaded &&
+                            <>
+                            <div className="loading">
+                                <div className="loader-a" style={{
+                                    width: "20px",
+                                    height: "20px"
+                                }}></div>
+                            </div>
+                            <span>{this.state.selectedFile.name}</span>
+                            </>
+                    }
                     <a onClick={ ()=>{ this.sendMsg() } } className='btn-send'>SEND</a>
+                    {this.state.sendingMessage && 
+                        <div className="waitMessage">
+                            <div className="loading">
+                                <div className="loader-a" style={{
+                                    position: "absolute",
+                                    top: "50%",
+                                    left: "50%",
+                                    marginTop: "-15px",
+                                    marginLeft: "-15px"
+                                }}></div>
+                            </div>
+                        </div>
+                    }
+                </div>
                 </div>
             </React.Fragment>
                 
@@ -177,27 +243,29 @@ class ChatInput extends Component<Props, State> {
         if (event.keyCode === 13
             && event.shiftKey === false) {
             event.preventDefault();
-
-            const trimmed = this.state.message.trim();
-
-            if (trimmed) {
-                this.props.onSend(trimmed);
-
-                this.setState({ message: '' });
-            }
+            this.sendMsg(event);
         }
     }
     sendMsg(event)
     {
-        const trimmed = this.state.message.trim();
-
+        if(this.state.uploading) {
+            this.setState({sendingMessage: true});
+            setTimeout(()=>{
+                this.sendMsg(event);
+            }, 300);
+            return;
+        }
+        this.setState({sendingMessage: false});
+        let trimmed = this.state.message.trim();
+        if(this.state.uploaded) {
+            trimmed = trimmed + '::attachment:' + this.state.uploaded.key + ':attachment::';
+        }
         if(trimmed)
         {
             this.props.onSend(trimmed);
-
             this.setState({ message: '' });
+            this.setState({uploaded: false, selectedFile: null});
         }
-
     }
     _onMessageChange: (Object) => void;
 
