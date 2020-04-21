@@ -754,8 +754,9 @@ class Toolbox extends Component<Props, State> {
 
                     btn.addClass('eventAdded');
                     btn.on('click',function() {
-
-                    document.getElementById('closeMyBoard').click();
+                    _this.stopScreen();
+                   
+                    //document.getElementById('closeMyBoard').click();
                     });
 
                     ifrm.on('click',function() {
