@@ -144,8 +144,6 @@ export function showToolbox(timeout: number = 0): Object {
                         timeout || 2900));
                 dispatch(setToolboxTimeoutMS(interfaceConfig.TOOLBAR_TIMEOUT));
             }
-        } else {
-            console.log('working the changes!');
         }
     };
 }
