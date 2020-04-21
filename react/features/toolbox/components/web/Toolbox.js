@@ -258,6 +258,7 @@ class Toolbox extends Component<Props, State> {
         this._onToolbarToggleSharedVideo = this._onToolbarToggleSharedVideo.bind(this);
         this._onToolbarOpenLocalRecordingInfoDialog = this._onToolbarOpenLocalRecordingInfoDialog.bind(this);
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
+        this.startScreenShare = this.startScreenShare.bind(this);
         this.showWhiteboard = this.showWhiteboard.bind(this);
         this.updateMeetingInfo = this.updateMeetingInfo.bind(this);
         this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -266,6 +267,7 @@ class Toolbox extends Component<Props, State> {
         this.state = {
             windowWidth: window.innerWidth,
         };
+        this._onToolbarToggleWhiteboard = this._onToolbarToggleWhiteboard.bind(this);
     }
 
     /**
@@ -479,7 +481,37 @@ class Toolbox extends Component<Props, State> {
         this.props.dispatch(toggleChat());
         
     }
+    _onToolbarToggleWhiteboard: () => void;
 
+    /**
+     * Creates an analytics toolbar event and dispatches an action for toggling
+     * the display of chat.
+     *
+     * @private
+     * @returns {void}
+     */
+
+    _onToolbarToggleWhiteboard(cb) {
+        _whiteboardOpen = !_whiteboardOpen;
+        if(!window.designer.iframe) {
+            window.designer.appendTo($('.drawer')[0]);
+        }
+        if(_whiteboardOpen) {
+            $('.white-board-div').show();
+            setTimeout(() => {
+                var canvas = $('iframe').contents().find('canvas#third-canvas')[0];
+                var stream = canvas.captureStream();
+                    APP.conference._createWhiteboardTrack({
+                        stream
+                    }).then((tracks) => {
+                        APP.conference.useVideoStream(tracks[0]);
+                    });
+            }, 1000);
+        } else {
+            $('.white-board-div').hide();
+            this._onToolbarToggleScreenshare();
+        }
+    }
     /**
      * Dispatches an action to toggle screensharing.
      *
@@ -680,26 +712,28 @@ class Toolbox extends Component<Props, State> {
 
     _onShortcutToggleFullScreen: () => void;
     
+    startScreenShare() {
+        this.togglePresentTab();
+        APP.conference.toggleScreenSharing();
+    }
+    
     showWhiteboard()
     {
-        if(localStorage.getItem('canvasRef') != 1)
-        {
-            localStorage.setItem('canvasRef', 1)
-        }
-        //document.getElementById("myId").style.display = 'block';
-        
-        // if(localStorage.getItem('canvasRef') != 1)
-        // {
-        //     setTimeout(function(){ 
-        //         document.getElementById('myId').contentDocument.location.reload(true);
-        //     }, 800);
-        // }
-        
+       
         setTimeout(function(){
             document.getElementById("myId").style.display = 'block';
-           // document.getElementById("w-board-wrapper").style.display = 'block';
         },800);
-        document.getElementById("ShowMyBoard").click();
+        
+        var canvas = $('#myId').contents().find('canvas#third-canvas')[0];
+        var stream = canvas.captureStream();
+
+        APP.conference._createWhiteboardTrack({
+            stream
+        }).then((tracks) => {
+            APP.conference.useVideoStream(tracks[0]);
+        });
+
+        //document.getElementById("ShowMyBoard").click();
     }
     /**
      * Creates an analytics keyboard shortcut event and dispatches an action for

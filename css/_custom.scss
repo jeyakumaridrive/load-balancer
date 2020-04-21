@@ -131,14 +131,17 @@
 						display: inline-block;
 						&.badge-round{
 							top: 5px;
-							background-color: #019d68;
 							right: 25px;
-							width: 20px;
-							height: 20px;
+							background-color: #28891e;
+							width: 15px;
+							height: 15px;
+							text-align: center;
+							line-height: 15px;
 							padding: 0;
+							position: absolute;
 							span{
 								color: #ffffff;
-								font-size: 12px;
+								font-size: 10px;
 								font-weight: 400;
 								line-height: 0;
 							}
@@ -240,9 +243,13 @@
 					border-right: none;
 				}
 				&.overflow-menu-item{
-					padding: 30px;
-					vertical-align: middle;
+					padding: 13px 30px;
+					display: block !important;
+					span{
+						display: block !important;
+					}
 					.overflow-menu-item-icon{
+						margin-bottom: 10px;
 						&.toggled {
 							svg{
 								fill: #ff0000
@@ -330,13 +337,23 @@
 }
 
 .vertical-filmstrip .filmstrip.reduce-height {
-	height: calc(100% - 100px) !important;
+	height: calc(100% - 120px) !important;
 	
 }
 
-.vertical-filmstrip .filmstrip #filmstripRemoteVideos{
-	flex-direction: column !important;
-}
+
+.vertical-filmstrip{
+	.filmstrip {
+		#filmstripRemoteVideos {
+			flex-direction: column !important;
+			#filmstripRemoteVideosContainer{
+				flex-direction: column !important;
+			}
+		}
+	}
+} 
+
+
 .view-settings{
     display: flex;
     justify-content: flex-end;
@@ -602,19 +619,18 @@ width: 75%;
 // 	display: none;
 // }
 .btn-mute-all{
-	background: #1896c6 !important;
-    color: #fff !important;
-    font-size: 16px;
-    text-align: center;
-    display: flex;
-    padding: 8px 20px;
-    border-radius: 2px;
-    line-height: 20px;
-	height: 40px;
-	border: none;
-	outline: 0;
+    background: #0373bd!important;
+    color: #fff!important;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 15px;
+    border: none;
+    outline: 0;
+    margin-left: auto;
+    cursor: pointer;
+	text-decoration: none;
 	&:hover{
-		background-color: darken( #daebfa, 10) !important;
+		background-color: darken( #0373bd, 10) !important;
 	 }
 	 svg{
 		 fill: #1896c6;
@@ -628,15 +644,14 @@ width: 75%;
 .btn-unmute-all{
 	background-color: #e95d5d;
 	color: #ffffff;
-	font-size: 16px;
-    text-align: center;
-    display: flex;
-    padding: 8px 20px;
-    border-radius: 2px;
-    line-height: 20px;
-	height: 40px;
-	border: none;
-	outline: 0;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 15px;
+    border: none;
+    outline: 0;
+    margin-left: auto;
+    cursor: pointer;
+    text-decoration: none;
 	&:hover{
 		background-color: darken( #e95d5d, 10) !important;
 	 }
@@ -884,8 +899,8 @@ form[class^="device-select"]{
 		position: relative;
 		width: 100%;
 		z-index: 1;
-		border-bottom: 2px solid #0373bd;
-		color: #0373bd;
+		border-bottom: 2px solid #019d68;
+		color: #019d68;
 		font-weight: 600;
 		display: flex;
 		align-items: center;
@@ -899,7 +914,7 @@ form[class^="device-select"]{
 			cursor: pointer;
 			svg{
 				width: 20px;
-				fill: #0373bd;
+				fill: #019d68;
 				margin-right: 0;
 				padding: 0;
 			}
@@ -913,7 +928,7 @@ form[class^="device-select"]{
 
 		svg{
 			width: 20px;
-			fill: #0373bd;
+			fill: #019d68;
 			margin-right: 10px;
 			padding-top: 3px;
 		}
@@ -974,22 +989,23 @@ form[class^="device-select"]{
 	}
 	.mute-controller{
 		position: absolute;
-		left: 15px;
-		bottom: 10px;
+		right: 15px;
+		bottom: 17px;
 		
 	}
 	.btn-mute-all, .btn-unmute-all{
 		width: 100%;
 		justify-content: center;
+		border-radius: 0 !important;
 	}
 	.spearker-stats-footer{
 		position: relative;
-		background-color: #f3f3f3;
-		width: 100%;
+		border-top: 1px solid #019d68;
 		display: flex;
 		z-index: 1000;
 		height: 60px;
 		align-items: center;
+		padding: 0 15px;
 	}
 }
 
@@ -1013,6 +1029,43 @@ form[class^="device-select"]{
 		align-items: center;
 		margin-right: 10px;
 		color: #fff;
+		justify-content: center;
 	}
 }
 
+.remote-recording-label{
+	display: flex;
+	align-items: center;
+	position: fixed;
+	left: 5px;
+	top: 5px;
+	background:rgba(0,0,0,0.6);
+	padding: 5px 10px;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 10px;
+}
+
+
+.blink {
+	animation: blink 1s steps(5, start) infinite;
+	-webkit-animation: blink 1s steps(5, start) infinite;
+  }
+  @keyframes blink {
+	to {
+	  visibility: hidden;
+	}
+  }
+  @-webkit-keyframes blink {
+	to {
+	  visibility: hidden;
+	}
+  }
+
+.redot{
+	width: 8px;
+	height: 8px;
+	background: #ff0000;
+	border-radius: 50px;
+	margin-right: 5px;
+}

@@ -152,7 +152,6 @@ class SpeakerStats extends Component<Props, State> {
                     <div className = {statClasses}>
                         { items }
                     </div>
-                    
                     { isAdmin == true ? (
                         <div className='spearker-stats-footer'>
                             <div className="mute-controller" >
