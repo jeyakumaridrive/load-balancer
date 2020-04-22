@@ -269,6 +269,7 @@ class Toolbox extends Component<Props, State> {
             windowWidth: window.innerWidth,
         };
         this._onToolbarToggleWhiteboard = this._onToolbarToggleWhiteboard.bind(this);
+        this.showMoreNumbers = this.showMoreNumbers.bind(this);
     }
 
     /**
@@ -1118,12 +1119,12 @@ class Toolbox extends Component<Props, State> {
             var n = '';
             for ( var num in resolve.numbers) {
                 if(resolve.numbers[num][0] != "+NA")
-                n += '('+num+')'+' '+resolve.numbers[num][0].replace(/[.]/g,'-');
+                n += '('+num+')'+' '+resolve.numbers[num][0].replace(/[.]/g,'-')+'\n';
                 console.log('=>>>>',n,num,resolve.numbers[num][0]);
             }
             console.log('help =>..',n);
-            //$('.phone').html(n);
-
+            $('.cw_phone_numbers').html(n);
+            sessionStorage.phone_numbers = n;
             //document.getElementById('phone-me').innerHTML = n;
         })
         .catch(reject => {
@@ -1380,6 +1381,10 @@ class Toolbox extends Component<Props, State> {
             : null;
     }
 
+    showMoreNumbers() {
+        this.setState({ morenumbers : !this.state.morenumbers });
+        $('.cw_phone_numbers').toggle();
+    }
     /**
     * Renders the Meeting info button and dropdown
     *
@@ -1387,6 +1392,7 @@ class Toolbox extends Component<Props, State> {
     */
     _renderMeetingInfoButton() {
         var moreNumbers = "https://meeting.remotepc.com/static/dialInInfo.html?room="+APP.conference.roomName;
+        var phone_numbers = sessionStorage.phone_numbers;
         return (
             <ul className="cw_bottom-left-menu-list"> 
 
@@ -1424,7 +1430,17 @@ class Toolbox extends Component<Props, State> {
                                         
                                     </div>
                                 </div>
-                                <div class="cw_copy-text"><h3><a href={moreNumbers} target="_blank">More numbers</a></h3></div>
+                                {
+                                    !this.state.morenumbers &&
+                                    <div className="cw_copy-text"><h3><a onClick={this.showMoreNumbers}>More numbers</a></h3></div>
+                                }
+                                {
+                                    this.state.morenumbers && 
+                                    <div className="cw_copy-text"><h3><a onClick={this.showMoreNumbers}>Less numbers</a></h3></div>
+                                }
+                                <div className="cw_copy-text cw_phone_numbers" style={{ whiteSpace: 'pre-wrap', display: 'none' }}>
+                                    <p>{phone_numbers}</p>
+                                </div>
                                 <div className="cw_copy-text">
                                     <h3>
                                         <a onClick={() => this.copyMeetingInfo()}>
@@ -1643,10 +1659,14 @@ class Toolbox extends Component<Props, State> {
             `https://meet.remotepc.com/meet/${meetingInfo.slug}` + '\n' +
             `` + '\n' +
             `One tap mobile` + '\n' +
-            `${phone.replace(/([-])|([A-Z() ])/g,'')},,${pin.replace(/ /g,'')}# (US)` + '\n' +
-            `` + '\n' +
+            `${sessionStorage.phone_numbers.split('\n').map(phone => {
+                var _phone = phone.split(" ");
+                if(_phone.length > 1) {
+                    return _phone[1].replace(/([-])|([A-Z() ])/g,'')+',,'+pin.replace(/ /g,'')+'# '+_phone[0]
+                }
+            }).join("\n")}`+
             `Or Call ` + '\n' +
-            `  ${phone}` + '\n' +
+            `${sessionStorage.phone_numbers}` + '\n' +
             `Use Meeting Pin: ${pin}` + '\n' +
             ``;
         event.preventDefault();
