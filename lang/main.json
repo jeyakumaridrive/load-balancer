@@ -432,9 +432,9 @@
     "lockRoomPasswordUppercase": "Password",
     "me": "me",
     "notify": {
-        "connectedOneMember": "{{name}} joined the meeting",
-        "connectedThreePlusMembers": "{{name}} and {{count}} others joined the meeting",
-        "connectedTwoMembers": "{{first}} and {{second}} joined the meeting",
+        "connectedOneMember": "joined this meeting",
+        "connectedThreePlusMembers": "{{name}} and {{count}}",
+        "connectedTwoMembers": "{{first}} and {{second}}",
         "disconnected": "disconnected",
         "focus": "Conference focus",
         "focusFail": "{{component}} not available - retry in {{ms}} sec",

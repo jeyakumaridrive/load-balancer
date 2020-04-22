@@ -338,12 +338,22 @@ class Toolbox extends Component<Props, State> {
         if (prevProps._overflowMenuVisible && !this.props._visible) {
             this._onSetOverflowVisible(false);
         }
-
+     
         if (prevProps._overflowMenuVisible
             && !prevProps._dialog
             && this.props._dialog) {
             this._onSetOverflowVisible(false);
             this.props.dispatch(setToolbarHovered(false));
+        }
+        if(this.props._screensharing == true)
+        {
+            $('.video-preview .settings-button-container').css('pointer-events','none');
+            $('.video-preview .settings-button-container').css('opacity', '0.2');            
+        }
+        else
+        {
+            $('.video-preview .settings-button-container').css('pointer-events','');
+            $('.video-preview .settings-button-container').css('opacity', '1');
         }
     }
 
@@ -720,6 +730,7 @@ class Toolbox extends Component<Props, State> {
         APP.conference.toggleScreenSharing();
     }    
     stopScreen() {
+
         APP.conference.toggleScreenSharing();
         setTimeout(() => {
             document.getElementById("myId").style.display = 'none';
@@ -769,6 +780,7 @@ class Toolbox extends Component<Props, State> {
                 clearInterval(checkExist);
             }
         }, 600);
+        
         var canvas = $('#myId').contents().find('canvas#third-canvas')[0];
         var stream = canvas.captureStream();
         this.togglePresentTab();

@@ -314,6 +314,18 @@
     display: none;
 }
 
+// .audioMuted, .videoMuted  {
+// 	svg{
+// 		fill: #ff0000 !important;
+// 	}
+// }
+
+
+.tile-view  .videocontainer .displayname {
+	max-width: 60% !important;
+	width: auto !important;
+}
+
 #sideToolbarContainer.slideInExt {
 	right: 0;
 	left: auto !important;
@@ -899,9 +911,8 @@ form[class^="device-select"]{
 		position: relative;
 		width: 100%;
 		z-index: 1;
-		border-bottom: 2px solid #019d68;
-		color: #019d68;
-		font-weight: 600;
+		border-bottom: 1px solid #e5e5e5;
+		color: #666666;
 		display: flex;
 		align-items: center;
 		justify-content: left;
@@ -914,7 +925,7 @@ form[class^="device-select"]{
 			cursor: pointer;
 			svg{
 				width: 20px;
-				fill: #019d68;
+				fill: #666666;
 				margin-right: 0;
 				padding: 0;
 			}
@@ -923,12 +934,12 @@ form[class^="device-select"]{
 		.user-count{
 			margin-left: 5px;
 			font-size: 14px;
-			color: #666;
+			color: #333333;
 		}
 
 		svg{
 			width: 20px;
-			fill: #019d68;
+			fill: #666666;
 			margin-right: 10px;
 			padding-top: 3px;
 		}
@@ -950,6 +961,11 @@ form[class^="device-select"]{
 		}
 		.speaker-stats-item__audio_stat{
 			margin-left: auto;
+			display: flex;
+			align-items: center;
+			div + div {
+				margin-left: 10px;
+			}
 			svg{
 				width: 18px;
 			}
@@ -1017,6 +1033,8 @@ form[class^="device-select"]{
 
 [role^="alert"]{
 	border-radius: 6px;
+	font-size: 14px;
+	background-color: #ffffff !important;
 
 	.notification_logo{
 		width: 42px;
@@ -1031,10 +1049,37 @@ form[class^="device-select"]{
 		color: #fff;
 		justify-content: center;
 	}
+
+	[class^="styledFlag__Title"]{
+		margin-left: 10px;
+		margin-top: -15px;
+		font-weight: 600;
+		color: #000000;
+	}
+
+	[class^="styledFlag__Content"]{
+		margin-left: 10px;
+    	margin-top: -5px;
+	}
+	[class^="styledFlag__DismissButton"]{
+    	margin-top: -15px;
+	}
+	[class^="styledFlagActions__StyledButton"] {
+		margin-top: 5px;
+		border-radius: 2px !important;
+		padding: 2px 8px !important;
+		background-color: #0373bd !important;
+		color: #fff !important;
+		height: auto !important;
+		text-decoration: none;
+		&:hover{
+			background-color: darken(#0373bd, 10) !important;
+		}
+	}
+	
 }
 
-.disabledCls
-{
+.disabledCls {
 	opacity: 0.7;
 	cursor: not-allowed;
 	pointer-events: none;	
@@ -1053,6 +1098,9 @@ form[class^="device-select"]{
 	font-size: 10px;
 }
 
+.large-video-labels{
+	z-index: 100;
+}
 
 .blink {
 	animation: blink 1s steps(5, start) infinite;
