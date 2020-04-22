@@ -348,7 +348,12 @@ class Toolbox extends Component<Props, State> {
         if(this.props._screensharing == true)
         {
             $('.video-preview .settings-button-container').css('pointer-events','none');
-            $('.video-preview .settings-button-container').css('opacity', '0.2');            
+            $('.video-preview .settings-button-container').css('opacity', '0.2');  
+            if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+            {
+                $('.toggle-view').click();
+            }
+            APP.conference._switchCallLayout();          
         }
         else
         {
@@ -726,6 +731,14 @@ class Toolbox extends Component<Props, State> {
     _onShortcutToggleFullScreen: () => void;
     
     startScreenShare() {
+        if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+        {
+            localStorage.setItem('prevLayout', true);
+        }
+        else
+        {
+            localStorage.setItem('prevLayout', false);
+        }
         this.togglePresentTab();
         APP.conference.toggleScreenSharing();
     }    
@@ -735,6 +748,7 @@ class Toolbox extends Component<Props, State> {
         setTimeout(() => {
             document.getElementById("myId").style.display = 'none';
         }, 500);
+        APP.conference._layoutToPrevStage();
     }
     
     showWhiteboard()
@@ -753,8 +767,17 @@ class Toolbox extends Component<Props, State> {
             localStorage.setItem('prevVideoStatus', 'on');
         }
         
-
+        if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+        {
+            localStorage.setItem('prevLayout', true);
+            $('.toggle-view').click();
+        }
+        else
+        {
+            localStorage.setItem('prevLayout', false);
+        }
         document.getElementById("myId").style.display = 'block';
+        
         var checkExist = setInterval(function() {
         var btn = $( "#myId").contents().find('#close-icon');
         var ifrm = $( "#myId").contents().find('body');
