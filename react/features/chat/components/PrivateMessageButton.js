@@ -43,7 +43,7 @@ export type Props = AbstractButtonProps & {
 class PrivateMessageButton extends AbstractButton<Props, any> {
     accessibilityLabel = 'toolbar.accessibilityLabel.privateMessage';
     icon = IconMessage;
-    label = 'toolbar.privateMessage';
+    label = 'Reply Privately';
     toggledIcon = IconReply;
 
     /**
