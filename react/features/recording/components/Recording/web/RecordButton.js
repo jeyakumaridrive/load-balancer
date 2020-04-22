@@ -42,7 +42,8 @@ class RecordButton extends AbstractRecordButton<Props> {
      * @returns {string}
      */
     _getTooltip() {
-        return this.tooltip || '';
+        const { _isRecordingRunning} = this.props;
+        return this.tooltip || _isRecordingRunning ? 'Stop Recording' : 'Start Recording';
     }
 
     /**
