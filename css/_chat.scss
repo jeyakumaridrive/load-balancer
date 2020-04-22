@@ -143,15 +143,14 @@
     position: relative;
     padding: 0 15px;
     z-index: 1;
-    border-bottom: 2px solid #019d68;
-    color: #019d68;
-    font-weight: 600;
+    border-bottom: 1px solid #666666;
+    color: #666666;
     display: flex;
     align-items: center;
     justify-content: left;
     font-size: 18px;
     svg{
-        fill: #019d68;
+        fill: #666666;
         width: 20px;
         margin-right: 10px;
     }

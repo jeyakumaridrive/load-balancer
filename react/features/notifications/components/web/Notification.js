@@ -69,12 +69,12 @@ class Notification extends AbstractNotification<Props> {
         return (
             <Flag
                 actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
-                appearance = { appearance }
                 description = { this._renderDescription() }
                 icon = { this._mapAppearanceToIcon(acronym,logoIconCustom) }
                 id = { uid }
                 isDismissAllowed = { isDismissAllowed }
                 onDismissed = { onDismissed }
+                className= {'notfications'}
                 title = { title || t(titleKey, titleArguments) } />
         );
     }
@@ -174,14 +174,14 @@ class Notification extends AbstractNotification<Props> {
     _mapAppearanceToIcon(tt,logoIconCustom) {
         const appearance = this.props.appearance;
         const secIconColor = ICON_COLOR[this.props.appearance];
-        const iconSize = 'medium';
+        const iconSize = 'large';
 
         switch (appearance) {
         case NOTIFICATION_TYPE.ERROR:
             return (
                 <ErrorIcon
                     label = { appearance }
-                    secondaryColor = { secIconColor }
+                    primaryColor = { secIconColor }
                     size = { iconSize } />
             );
 
@@ -189,7 +189,7 @@ class Notification extends AbstractNotification<Props> {
             return (
                 <WarningIcon
                     label = { appearance }
-                    secondaryColor = { secIconColor }
+                    primaryColor = { secIconColor }
                     size = { iconSize } />
             );
 
@@ -200,7 +200,7 @@ class Notification extends AbstractNotification<Props> {
                  <div className="notification_logo">{tt}</div>) :
                    <EditorInfoIcon
                     label = { appearance }
-                    secondaryColor = { secIconColor }
+                    primaryColor = { secIconColor }
                     size = { iconSize } />
                 }
                 </div>
