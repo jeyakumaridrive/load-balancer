@@ -1057,7 +1057,7 @@ class Toolbox extends Component<Props, State> {
 
     updateMeetingInfo() {
         var v = 0, x = setInterval(() => {
-            if(APP && APP.conference && && document.getElementById('meeting-info-box') != null) {
+            if(APP && APP.conference && document.getElementById('meeting-info-box') != null) {
                 var roomName = APP.conference.roomName;
                 this.getMeetingPin(roomName)
                 this.getMeetingInfo(roomName);
