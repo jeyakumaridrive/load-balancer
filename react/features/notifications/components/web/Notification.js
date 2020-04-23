@@ -7,7 +7,7 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import { colors } from '@atlaskit/theme';
 import React from 'react';
 
-import { translate } from '../../../base/i18n';
+import { translate, getLocalizedDateFormatter } from '../../../base/i18n';
 
 import { NOTIFICATION_TYPE } from '../../constants';
 
@@ -15,6 +15,7 @@ import AbstractNotification, {
     type Props
 } from '../AbstractNotification';
 
+const TIMESTAMP_FORMAT = 'hh:mm A';
 declare var interfaceConfig: Object;
 
 /**
@@ -53,7 +54,9 @@ class Notification extends AbstractNotification<Props> {
             titleArguments,
             titleKey,
             uid,
-            logoIconCustom
+            logoIconCustom,
+            timeStamp,
+            newMessage,
         } = this.props;
        
        
@@ -67,16 +70,25 @@ class Notification extends AbstractNotification<Props> {
 
         } 
         return (
-            <Flag
-                actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
-                description = { this._renderDescription() }
-                icon = { this._mapAppearanceToIcon(acronym,logoIconCustom) }
-                id = { uid }
-                isDismissAllowed = { isDismissAllowed }
-                onDismissed = { onDismissed }
-                className= {'notfications'}
-                title = { title || t(titleKey, titleArguments) } />
+            <div className="flag-wrapper">
+                {newMessage ? 
+                (<h2 className=""><span className="msg-time">{this._getFormattedTimestamp(timeStamp)}</span><img src="/images/ms-icon.png"/>New message</h2>) : ('')}
+                <Flag
+                    actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
+                    description = { this._renderDescription() }
+                    icon = { this._mapAppearanceToIcon(acronym,logoIconCustom) }
+                    id = { uid }
+                    isDismissAllowed = { isDismissAllowed }
+                    onDismissed = { onDismissed }
+                    className= {'notfications'}
+                    title = { title || t(titleKey, titleArguments) } />
+            </div>
         );
+    }
+
+    _getFormattedTimestamp(timeStamp) {
+        return getLocalizedDateFormatter(new Date(timeStamp))
+            .format(TIMESTAMP_FORMAT);
     }
 
     _getDescription: () => Array<string>

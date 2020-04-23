@@ -532,3 +532,29 @@
 #alwaysOnTop .displayname, .videocontainer .displayname, .videocontainer .editdisplayname{
     width: 60%;
 }
+.flag-wrapper {
+    background: #fff;
+    border-radius: 6px;
+    h2 {
+        margin: 0;
+        font-size: 12px;
+        color: #374c54;
+        border-bottom: 1px solid #ccc;
+        padding: 12px 24px;
+
+        img {
+            margin-right: 12px;
+            vertical-align: middle;
+            display: inline-block;
+        }
+    }
+    .msg-time {
+        position: absolute;
+        color: #000;
+        right: 0;
+        margin-top: 42px;
+        font-weight: bold;
+        font-size: 14px;
+        margin-right: 50px;
+    }
+}
