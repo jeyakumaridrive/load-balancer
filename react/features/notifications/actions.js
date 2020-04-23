@@ -136,7 +136,8 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: Dispatch<any>) 
                 count: joinedParticipantsCount - 1
             },
             titleKey: 'notify.connectedThreePlusMembers',
-            descriptionKey: 'others joined this meeting'
+            descriptionKey: 'others joined this meeting',
+            logoIconCustom: joinedParticipantsNames[0]
         };
     } else if (joinedParticipantsCount === 2) {
         notificationProps = {
@@ -145,7 +146,8 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: Dispatch<any>) 
                 second: joinedParticipantsNames[1]
             },
             titleKey: 'notify.connectedTwoMembers',
-            descriptionKey: 'notify.connectedOneMember'
+            descriptionKey: 'notify.connectedOneMember',
+            logoIconCustom: joinedParticipantsNames[0]
         };
     } else if (joinedParticipantsCount) {
         notificationProps = {

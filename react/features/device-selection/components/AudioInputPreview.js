@@ -93,14 +93,28 @@ class AudioInputPreview extends Component<Props, State> {
             width: `${Math.floor(this.state.audioLevel * 100)}%`
         };
 
+        const audioMeterWaves = Math.floor(this.state.audioLevel * 100);
+        const audioLevelClasses = audioMeterWaves >= 1 ? 'audio-wave animate' : 'audio-wave';
+        console.log(audioMeterWaves);
+        console.log(this.state.audioLevel);
+        
+        
         return (
             <div className='audio-preview-container'>
                 <Icon src={IconMicrophone} />
-                <div className = 'audio-input-preview' >
-                    <div
+
+                <div className={audioLevelClasses}>
+                    <span />
+                    <span />
+                    <span />
+                    
+                </div>
+                {/* <div className = 'audio-input-preview' >
+
+                     <div
                         className = 'audio-input-preview-level'
                         style = { audioMeterFill } />
-                </div>
+                </div> */}
             </div>
         );
     }

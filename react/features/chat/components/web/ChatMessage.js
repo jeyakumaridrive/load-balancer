@@ -75,7 +75,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
                                     <PrivateMessageButton
                                         participantID = { message.id }
                                         reply = { true }
-                                        showLabel = { false } />
+                                        showLabel = { true } />
                                 </div>
                             ) }
                     </div>
