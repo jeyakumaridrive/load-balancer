@@ -1640,21 +1640,21 @@ class Toolbox extends Component<Props, State> {
                 )            
             }
         }
-        else
-        {
-                return (
-                    <div className="cw_present-menu" id="cw_present-menu_setting">
-                        <ul>
-                            <li> <a onClick={this.startScreenShare}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
-                                        <g>
-                                            <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
-                                        </g>
-                            </svg> Stop Share</a> </li>
+        // else
+        // {
+        //         return (
+        //             <div className="cw_present-menu" id="cw_present-menu_setting">
+        //                 <ul>
+        //                     <li> <a onClick={this.startScreenShare}> <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 115.383 115.383">
+        //                                 <g>
+        //                                     <path d="M11.025 87.779h93.333c1.932 0 3.5-1.569 3.5-3.5v-60c0-1.93-1.568-3.5-3.5-3.5H11.025c-1.93 0-3.5 1.57-3.5 3.5v60c0 1.931 1.571 3.5 3.5 3.5zm-.5-63.499a.5.5 0 01.5-.5h93.333a.5.5 0 01.5.5v60a.5.5 0 01-.5.5H11.025a.5.5 0 01-.5-.5v-60zm104.858 66.178v2.801c0 .742-.602 1.345-1.344 1.345H1.344A1.345 1.345 0 010 93.259v-2.801h47.387a1.89 1.89 0 001.807 1.354H66.19c.856 0 1.572-.572 1.808-1.354h47.385z"></path>
+        //                                 </g>
+        //                     </svg> Stop Share</a> </li>
                                     
-                        </ul>
-                    </div>
-                )               
-        } 
+        //                 </ul>
+        //             </div>
+        //         )               
+        // } 
     }
 
     _renderSettingsTab() {
