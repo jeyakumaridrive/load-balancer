@@ -293,9 +293,11 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
                 if (!isChatOpen) {
                     dispatch(playSound(INCOMING_MSG_SOUND_ID));
                     APP.store.dispatch(showNotification({
-                           descriptionKey:displayName+" sent a message.",
+                           descriptionKey:message,
                             logoIconCustom:  displayName,
-                            titleKey: displayName
+                            titleKey: displayName,
+                            timeStamp:millisecondsTimestamp,
+                            newMessage:true,
                     },2500));
                 }
 
