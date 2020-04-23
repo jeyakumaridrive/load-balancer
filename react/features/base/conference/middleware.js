@@ -21,11 +21,14 @@ import {
 import { MiddlewareRegistry, StateListenerRegistry } from '../redux';
 import { TRACK_ADDED, TRACK_REMOVED } from '../tracks';
 
+import { getPropertyValue } from '../settings';
+
 import {
     conferenceFailed,
     conferenceWillLeave,
     createConference,
-    setSubject
+    setSubject,
+    setPassword
 } from './actions';
 import {
     CONFERENCE_FAILED,
@@ -52,7 +55,8 @@ declare var APP: Object;
  * Handler for before unload event.
  */
 let beforeUnloadHandler;
-
+let password = null;
+let passwordSet = false;
 /**
  * Implements the middleware of the feature base/conference.
  *
@@ -191,6 +195,8 @@ function _conferenceJoined({ dispatch, getState }, next, action) {
     const { requireDisplayName } = getState()['features/base/config'];
 
     pendingSubjectChange && dispatch(setSubject(pendingSubjectChange));
+
+    password = getPropertyValue(getState(), 'password');
 
     // FIXME: Very dirty solution. This will work on web only.
     // When the user closes the window or quits the browser, lib-jitsi-meet
@@ -554,13 +560,21 @@ function _trackAddedOrRemoved(store, next, action) {
  * @private
  * @returns {Object} The value returned by {@code next(action)}.
  */
-function _updateLocalParticipantInConference({ getState }, next, action) {
+function _updateLocalParticipantInConference({ dispatch, getState }, next, action) {
     const { conference } = getState()['features/base/conference'];
     const { participant } = action;
     const result = next(action);
 
     if (conference && participant.local && 'name' in participant) {
         conference.setDisplayName(participant.name);
+    }
+
+    if (conference && conference.getRole() == 'moderator' && password && !passwordSet) {
+        dispatch(setPassword(conference, conference.lock, password)).then((r) => {
+            passwordSet = true;
+        }).catch((e) => {
+            console.log("++++++++ cannot set password", e);
+        });
     }
 
     return result;
