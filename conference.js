@@ -2528,6 +2528,37 @@ export default {
                 //document.getElementById("w-board-wrapper").style.display = 'none';
                 // document.getElementById('myId').contentDocument.location.reload(true);
             }
+            else if(messageObj.EventType == 1007)
+            {
+                var new1 = localStorage.getItem('userPid');
+                if(new1 != messageObj.userID)
+                {
+                    if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+                    {
+                        localStorage.setItem('prevLayout', true);
+                        $('.toggle-view').click();
+                    }
+                    else
+                    {
+                        localStorage.setItem('prevLayout', false);
+                    }
+                }                
+            }
+            else if(messageObj.EventType == 1008)
+            {
+               if(localStorage.getItem('prevLayout') == 'true')
+               {
+                    $('.toggle-view').click();
+               }
+                if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+                {
+                    localStorage.setItem('prevLayout', true);
+                }
+                else
+                {
+                    localStorage.setItem('prevLayout', false);
+                }
+            }
         }
         });
 
@@ -2870,7 +2901,14 @@ export default {
             = APP.store.getState()['features/base/settings'].displayName;
 
         APP.UI.changeDisplayName('localVideoContainer', displayName);
-
+        if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+        {
+            localStorage.setItem('prevLayout', true);
+        }
+        else
+        {
+            localStorage.setItem('prevLayout', false);
+        }
 
         window.sessionStorage.setItem('white-board', this.roomName);
         var htmlPath = window.location.origin+'/static/draw/widget.html?widgetJsURL=widget.js&tools={"pencil":true,"marker":true,"eraser":true,"text":true,"image":true,"pdf":true,"dragSingle":true,"dragMultiple":true,"arc":true,"arrow":true,"rectangle":true,"undo":true,"undoAll":true,"line":true,"colorsPicker":true,"lineWidth":true,"quadratic":true}&selectedIcon=pencil&icons={"line":null,"arrow":null,"pencil":null,"dragSingle":null,"dragMultiple":null,"eraser":null,"rectangle":null,"arc":null,"bezier":null,"quadratic":null,"text":null,"image":null,"pdf":null,"pdf_next":null,"pdf_prev":null,"pdf_close":null,"marker":null,"zoom":null,"lineWidth":null,"colorsPicker":null,"extraOptions":null,"code":null}';
@@ -3498,5 +3536,33 @@ export default {
         }
 
         this._proxyConnection = null;
-    }
+    },
+
+
+    _switchCallLayout()
+    {
+        var localParticipantIDs = getLocalParticipant(APP.store.getState());
+        var localParticipantIDs = localParticipantIDs.id;
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1007;
+        conntrolMessage.userID = localParticipantIDs;
+        conntrolMessage.Message = 'get-layout';
+        conntrolMessage.FromParticipantID = localParticipantIDs;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);       
+    },
+
+    _layoutToPrevStage()
+    {
+        var localParticipantIDs = getLocalParticipant(APP.store.getState());
+        var localParticipantIDs = localParticipantIDs.id;
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1008;
+        conntrolMessage.userID = localParticipantIDs;
+        conntrolMessage.Message = 'prev-layout';
+        conntrolMessage.FromParticipantID = localParticipantIDs;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);       
+    },
+
 };

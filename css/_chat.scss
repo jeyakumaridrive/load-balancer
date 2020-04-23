@@ -466,6 +466,25 @@
                 flex-direction: column;
                 justify-content: center;
                 padding: 5px;
+                li{
+                    list-style-type: none;
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row-reverse;
+                    position: absolute;
+                    right: 5px;
+                    bottom: 9px;
+                    font-size: 11px;
+                    cursor: pointer;
+                    outline: 0;
+                }
+                .overflow-menu-item-icon{
+                    cursor: pointer;
+                    svg{
+                        fill: $chatPrivateMessageBackgroundColor;
+                    }
+                }
+                
 
                 .toolbox-icon {
                     cursor: pointer;
