@@ -326,10 +326,10 @@
 // }
 
 
-.tile-view  .videocontainer .displayname {
-	max-width: 60% !important;
-	width: auto !important;
-}
+// .tile-view  .videocontainer .displayname {
+// 	max-width: 60% !important;
+// 	width: auto !important;
+// }
 
 #sideToolbarContainer.slideInExt {
 	right: 0;
@@ -1195,5 +1195,47 @@ form[class^="device-select"]{
 	}
 	100% {
 		height: 15px
+	}
+}
+
+
+
+
+.tile-view, .vertical-filmstrip {
+	.videocontainer__toolbar{
+		height: 25px!important;
+		padding: 2px 5px;
+		width: auto;
+		right: 0;
+		left: auto;
+		background-color: rgba(0,0,0,.5);
+		float: left;
+		top: calc(100% - 25px);
+		position: relative;
+	}
+
+	.displayNameContainer{
+		top: calc(100% - 25px);
+		position: relative;
+		float: left;
+		max-width: 60%;
+		width: auto;
+	}
+
+	.videocontainer .displayname {
+		left: auto;
+		position: relative;
+		padding: 0 4px 0 0;
+		line-height: 25px;
+		height: 25px;
+		visibility: visible!important;
+		bottom: 0;
+		display: block;
+		width: 100%;
+		background-color: rgba(0,0,0,.5);
+	}
+	#localDisplayName {
+		left: 0;
+		bottom: 0;
 	}
 }
