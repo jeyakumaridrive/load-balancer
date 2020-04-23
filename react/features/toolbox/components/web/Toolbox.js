@@ -808,16 +808,16 @@ class Toolbox extends Component<Props, State> {
                 clearInterval(checkExist);
             }
         }, 600);
-        
-        var canvas = $('#myId').contents().find('canvas#third-canvas')[0];
-        var stream = canvas.captureStream();
-        this.togglePresentTab();
-        APP.conference._createWhiteboardTrack({
-            stream
-        }).then((tracks) => {
-            APP.conference.useVideoStream(tracks[0]);
-        });
-
+        setTimeout(() => {
+            var canvas = $('#myId').contents().find('canvas#third-canvas')[0];
+            var stream = canvas.captureStream();
+            this.togglePresentTab();
+            APP.conference._createWhiteboardTrack({
+                stream
+            }).then((tracks) => {
+                APP.conference.useVideoStream(tracks[0]);
+            });
+        }, 1500);
         //document.getElementById("ShowMyBoard").click();
     }
     /**
