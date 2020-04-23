@@ -743,8 +743,13 @@ class Toolbox extends Component<Props, State> {
         APP.conference.toggleScreenSharing();
     }    
     stopScreen() {
+        sendAnalytics(createShortcutEvent(
+            'toggle.screen.sharing',
+            ACTION_SHORTCUT_TRIGGERED,
+            { enable: !this.props._screensharing }));
 
-        APP.conference.toggleScreenSharing();
+        this._doToggleScreenshare();
+        //APP.conference.toggleScreenSharing();
         setTimeout(() => {
             document.getElementById("myId").style.display = 'none';
         }, 500);
