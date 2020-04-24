@@ -1203,19 +1203,26 @@ form[class^="device-select"]{
 
 .tile-view, .vertical-filmstrip {
 	.videocontainer__toolbar{
-		height: 25px!important;
-		padding: 2px 5px;
+		height: 20px!important;
+		padding: 0;
 		width: auto;
-		right: 0;
-		left: auto;
+		right: auto;
+		left: 0;
 		background-color: rgba(0,0,0,.5);
 		float: left;
-		top: calc(100% - 25px);
+		top: calc(100% - 20px);
 		position: relative;
+		.toolbar-icon{
+			margin: 0 2px 0 0;
+			> div {
+				height: 20px;
+				padding-left: 2px;
+			}
+		}
 	}
 
 	.displayNameContainer{
-		top: calc(100% - 25px);
+		top: calc(100% - 20px);
 		position: relative;
 		float: left;
 		max-width: 60%;
@@ -1225,9 +1232,9 @@ form[class^="device-select"]{
 	.videocontainer .displayname {
 		left: auto;
 		position: relative;
-		padding: 0 4px 0 0;
-		line-height: 25px;
-		height: 25px;
+		padding: 0 2px;
+		line-height: 20px;
+		height: 20px;
 		visibility: visible!important;
 		bottom: 0;
 		display: block;
