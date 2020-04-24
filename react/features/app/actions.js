@@ -293,7 +293,7 @@ export function leaveMeeting() {
     if(window.parent.length > 0)
         parent.window.postMessage({'method':'leavMeeting'},'https://meet.olecons.com');
     else
-        location.href = 'https://meet.olecons.com';
+        location.href = 'https://www.remotepc.com';
 }
 export function finishedLoading() {
     parent.window.postMessage({'method':'loaded'},'https://meet.olecons.com');
