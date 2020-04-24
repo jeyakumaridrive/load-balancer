@@ -42,6 +42,8 @@ const DESKSTOP_SHARE_RATE = 500000;
  * @param {boolean} options.disableSimulcast if set to 'true' will disable
  * the simulcast.
  * @param {boolean} options.disableRtx if set to 'true' will disable the RTX
+ * @param {boolean} options.enableFirefoxSimulcast if set to 'true' will enable
+ * experimental simulcast support on Firefox.
  * @param {boolean} options.capScreenshareBitrate if set to 'true' simulcast will
  * be disabled for screenshare and a max bitrate of 500Kbps will applied on the
  * stream.
@@ -1296,7 +1298,7 @@ TraceablePeerConnection.prototype._injectSsrcGroupForUnifiedSimulcast
         const sdp = transform.parse(desc.sdp);
         const video = sdp.media.find(mline => mline.type === 'video');
 
-        if (video.simulcast || video.simulcast_03) {
+        if (video.simulcast) {
             const ssrcs = [];
 
             video.ssrcs.forEach(ssrc => {
@@ -1475,31 +1477,30 @@ TraceablePeerConnection.prototype.addTrack = function(track, isInitiator = false
  * Adds local track as part of the unmute operation.
  * @param {JitsiLocalTrack} track the track to be added as part of the unmute
  * operation
- * @return {Promise<boolean>} Promise that resolves to true if the underlying PeerConnection's
- * state has changed and renegotiation is required, false if no renegotiation is needed or
- * Promise is rejected when something goes wrong.
+ * @return {boolean} <tt>true</tt> if the state of underlying PC has changed and
+ * the renegotiation is required or <tt>false</tt> otherwise.
  */
 TraceablePeerConnection.prototype.addTrackUnmute = function(track) {
-    if (browser.usesUnifiedPlan()) {
-        return this.tpcUtils.addTrackUnmute(track);
-    }
     if (!this._assertTrackBelongs('addTrackUnmute', track)) {
         // Abort
-        return Promise.reject('Track not found on the peerconnection');
+        return false;
     }
 
     logger.info(`Adding ${track} as unmute to ${this}`);
+    if (browser.usesUnifiedPlan()) {
+        return this.tpcUtils.addTrackUnmute(track);
+    }
     const webRtcStream = track.getOriginalStream();
 
     if (!webRtcStream) {
         logger.error(
             `Unable to add ${track} as unmute to ${this} - no WebRTC stream`);
 
-        return Promise.reject('Stream not found');
+        return false;
     }
     this._addStream(webRtcStream);
 
-    return Promise.resolve(true);
+    return true;
 };
 
 /**
@@ -1624,28 +1625,6 @@ TraceablePeerConnection.prototype.findSenderByStream = function(stream) {
 };
 
 /**
- * Returns the receiver corresponding to the given MediaStreamTrack.
- *
- * @param {MediaSreamTrack} track - The media stream track used for the search.
- * @returns {RTCRtpReceiver|undefined} - The found receiver or undefined if no receiver
- * was found.
- */
-TraceablePeerConnection.prototype.findReceiverForTrack = function(track) {
-    return this.peerconnection.getReceivers().find(r => r.track === track);
-};
-
-/**
- * Returns the sender corresponding to the given MediaStreamTrack.
- *
- * @param {MediaSreamTrack} track - The media stream track used for the search.
- * @returns {RTCRtpSender|undefined} - The found sender or undefined if no sender
- * was found.
- */
-TraceablePeerConnection.prototype.findSenderForTrack = function(track) {
-    return this.peerconnection.getSenders().find(s => s.track === track);
-};
-
-/**
  * Replaces <tt>oldTrack</tt> with <tt>newTrack</tt> from the peer connection.
  * Either <tt>oldTrack</tt> or <tt>newTrack</tt> can be null; replacing a valid
  * <tt>oldTrack</tt> with a null <tt>newTrack</tt> effectively just removes
@@ -1675,14 +1654,10 @@ TraceablePeerConnection.prototype.replaceTrack = function(oldTrack, newTrack) {
  * Removes local track as part of the mute operation.
  * @param {JitsiLocalTrack} localTrack the local track to be remove as part of
  * the mute operation.
- * @return {Promise<boolean>} Promise that resolves to true if the underlying PeerConnection's
- * state has changed and renegotiation is required, false if no renegotiation is needed or
- * Promise is rejected when something goes wrong.
+ * @return {boolean} <tt>true</tt> if the underlying PeerConnection's state has
+ * changed and the renegotiation is required or <tt>false</tt> otherwise.
  */
 TraceablePeerConnection.prototype.removeTrackMute = function(localTrack) {
-    if (browser.usesUnifiedPlan()) {
-        return this.tpcUtils.removeTrackMute(localTrack);
-    }
     const webRtcStream = localTrack.getOriginalStream();
 
     this.trace(
@@ -1691,19 +1666,22 @@ TraceablePeerConnection.prototype.removeTrackMute = function(localTrack) {
 
     if (!this._assertTrackBelongs('removeStreamMute', localTrack)) {
         // Abort - nothing to be done here
-        return Promise.reject('Track not found in the peerconnection');
+        return false;
+    }
+    if (browser.usesUnifiedPlan()) {
+        return this.tpcUtils.removeTrackMute(localTrack);
     }
     if (webRtcStream) {
         logger.info(
             `Removing ${localTrack} as mute from ${this}`);
         this._removeStream(webRtcStream);
 
-        return Promise.resolve(true);
+        return true;
     }
 
     logger.error(`removeStreamMute - no WebRTC stream for ${localTrack}`);
 
-    return Promise.reject('Stream not found');
+    return false;
 };
 
 /**
@@ -2480,7 +2458,8 @@ TraceablePeerConnection.prototype.getStats = function(callback, errback) {
     // TODO (brian): After moving all browsers to adapter, check if adapter is
     // accounting for different getStats apis, making the browser-checking-if
     // unnecessary.
-    if (browser.isSafari() || browser.isFirefox() || browser.isReactNative()) {
+    if (browser.isSafariWithWebrtc() || browser.isFirefox()
+            || browser.isReactNative()) {
         // uses the new Promise based getStats
         this.peerconnection.getStats()
             .then(callback)

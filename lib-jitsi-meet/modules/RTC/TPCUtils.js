@@ -122,15 +122,7 @@ export class TPCUtils {
                 if (mline.type === 'video' && i !== idx) {
                     sdp.media[i].rids = undefined;
                     sdp.media[i].simulcast = undefined;
-
-                    // eslint-disable-next-line camelcase
-                    sdp.media[i].simulcast_03 = undefined;
                 }
-            });
-
-            return new RTCSessionDescription({
-                type: desc.type,
-                sdp: transform.write(sdp)
             });
         }
 
@@ -201,8 +193,8 @@ export class TPCUtils {
     /**
      * Adds a track on the RTCRtpSender as part of the unmute operation.
      * @param {JitsiLocalTrack} localTrack - track to be unmuted.
-     * @returns {Promise<boolean>} - Promise that resolves to false if unmute
-     * operation is successful, a reject otherwise.
+     * @returns {boolean} Returns true if the operation is successful,
+     * false otherwise.
      */
     addTrackUnmute(localTrack) {
         const mediaType = localTrack.getType();
@@ -214,7 +206,9 @@ export class TPCUtils {
             .find(t => t.receiver && t.receiver.track && t.receiver.track.kind === mediaType);
 
         if (!transceiver) {
-            return Promise.reject(new Error(`RTCRtpTransceiver for ${mediaType} not found`));
+            logger.error(`RTCRtpTransceiver for ${mediaType} on ${this.pc} not found`);
+
+            return false;
         }
         logger.debug(`Adding ${localTrack} on ${this.pc}`);
 
@@ -226,22 +220,26 @@ export class TPCUtils {
             this.pc.localTracks.set(localTrack.rtcId, localTrack);
             transceiver.direction = 'sendrecv';
 
-            return Promise.resolve(false);
+            return true;
         }
-
-        return transceiver.sender.replaceTrack(track)
+        transceiver.sender.replaceTrack(track)
             .then(() => {
                 this.pc.localTracks.set(localTrack.rtcId, localTrack);
 
-                return Promise.resolve(false);
+                return true;
+            })
+            .catch(err => {
+                logger.error(`Unmute track failed for ${mediaType} track on ${this.pc}, ${err}`);
+
+                return false;
             });
     }
 
     /**
      * Removes the track from the RTCRtpSender as part of the mute operation.
      * @param {JitsiLocalTrack} localTrack - track to be removed.
-     * @returns {Promise<boolean>} - Promise that resolves to false if unmute
-     * operation is successful, a reject otherwise.
+     * @returns {boolean} Returns true if the operation is successful,
+     * false otherwise.
      */
     removeTrackMute(localTrack) {
         const mediaType = localTrack.getType();
@@ -249,16 +247,23 @@ export class TPCUtils {
             .find(t => t.sender && t.sender.track && t.sender.track.id === localTrack.getTrackId());
 
         if (!transceiver) {
-            return Promise.reject(new Error(`RTCRtpTransceiver for ${mediaType} not found`));
+            logger.error(`RTCRtpTransceiver for ${mediaType} on ${this.pc} not found`);
+
+            return false;
         }
 
         logger.debug(`Removing ${localTrack} on ${this.pc}`);
-
-        return transceiver.sender.replaceTrack(null)
+        transceiver.sender.replaceTrack(null)
             .then(() => {
                 this.pc.localTracks.delete(localTrack.rtcId);
+                this.pc.localSSRCs.delete(localTrack.rtcId);
 
-                return Promise.resolve(false);
+                return true;
+            })
+            .catch(err => {
+                logger.error(`Mute track failed for ${mediaType} track on ${this.pc}, ${err}`);
+
+                return false;
             });
     }
 

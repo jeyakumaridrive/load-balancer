@@ -785,14 +785,14 @@ class Toolbox extends Component<Props, State> {
         setTimeout(() => {
             var canvas = $('#myId').contents().find('canvas#third-canvas')[0];
             var stream = canvas.captureStream();
-            this.togglePresentTab();
+            console.log(stream);
             APP.conference._createWhiteboardTrack({
                 stream
             }).then((tracks) => {
                 APP.conference.useVideoStream(tracks[0]);
             });
         }, 1000);
-                
+        this.togglePresentTab();      
         var checkExist = setInterval(function() {
         var btn = $( "#myId").contents().find('#close-icon');
         var ifrm = $( "#myId").contents().find('body');
