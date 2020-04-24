@@ -27,7 +27,6 @@ import IceFailedNotification
     from './modules/connectivity/IceFailedNotification';
 import ParticipantConnectionStatusHandler
     from './modules/connectivity/ParticipantConnectionStatus';
-import E2EEContext from './modules/e2ee/E2EEContext';
 import E2ePing from './modules/e2eping/e2eping';
 import Jvb121EventGenerator from './modules/event/Jvb121EventGenerator';
 import RecordingManager from './modules/recording/RecordingManager';
@@ -234,10 +233,6 @@ export default function JitsiConference(options) {
     this.videoSIPGWHandler = new VideoSIPGW(this.room);
     this.recordingManager = new RecordingManager(this.room);
     this._conferenceJoinAnalyticsEventSent = false;
-
-    if (browser.supportsInsertableStreams()) {
-        this._e2eeCtx = new E2EEContext({ salt: this.options.name });
-    }
 }
 
 // FIXME convert JitsiConference to ES6 - ASAP !
@@ -1113,8 +1108,6 @@ JitsiConference.prototype._setupNewTrack = function(newTrack) {
     newTrack._setConference(this);
 
     this.eventEmitter.emit(JitsiConferenceEvents.TRACK_ADDED, newTrack);
-
-    this._setupSenderE2EEForTrack(newTrack);
 };
 
 /**
@@ -1643,9 +1636,6 @@ JitsiConference.prototype.onRemoteTrackAdded = function(track) {
         return;
     }
 
-    // Setup E2EE handling, if supported.
-    this._setupReceiverE2EEForTrack(track);
-
     const id = track.getParticipantId();
     const participant = this.getParticipantById(id);
 
@@ -1847,7 +1837,6 @@ JitsiConference.prototype._acceptJvbIncomingCall = function(
             p2p: false,
             value: now
         }));
-
     try {
         jingleSession.initialize(this.room, this.rtc, this.options.config);
     } catch (error) {
@@ -1858,8 +1847,6 @@ JitsiConference.prototype._acceptJvbIncomingCall = function(
     this._setBridgeChannel(jingleOffer, jingleSession.peerconnection);
 
     // Add local tracks to the session
-    const localTracks = this.getLocalTracks();
-
     try {
         jingleSession.acceptOffer(
             jingleOffer,
@@ -1870,18 +1857,13 @@ JitsiConference.prototype._acceptJvbIncomingCall = function(
                 if (this.isP2PActive() && this.jvbJingleSession) {
                     this._suspendMediaTransferForJvbConnection();
                 }
-
-                // Setup E2EE.
-                for (const track of localTracks) {
-                    this._setupSenderE2EEForTrack(track);
-                }
             },
             error => {
                 GlobalOnErrorHandler.callErrorHandler(error);
                 logger.error(
                     'Failed to accept incoming Jingle session', error);
             },
-            localTracks
+            this.getLocalTracks()
         );
 
         // Start callstats as soon as peerconnection is initialized,
@@ -3286,70 +3268,4 @@ JitsiConference.prototype._sendConferenceJoinAnalyticsEvent = function() {
         participantId: `${meetingId}.${this._statsCurrentId}`
     }));
     this._conferenceJoinAnalyticsEventSent = true;
-};
-
-/**
- * Returns whether End-To-End encryption is supported. Note that not all participants
- * in the conference may support it.
- *
- * @returns {boolean}
- */
-JitsiConference.prototype.isE2EESupported = function() {
-    return Boolean(this._e2eeCtx);
-};
-
-/**
- * Sets the key to be used for End-To-End encryption.
- *
- * @param {string} key the key to be used.
- * @returns {void}
- */
-JitsiConference.prototype.setE2EEKey = function(key) {
-    if (!this._e2eeCtx) {
-        logger.warn('Cannot set E2EE key: there is no defined context, platform is likely unsupported.');
-
-        return;
-    }
-
-    this._e2eeCtx.setKey(key);
-};
-
-/**
- * Setup E2EE for the sending side, if supported.
- * Note that this is only done for the JVB Peer Connecction.
- *
- * @returns {void}
- */
-JitsiConference.prototype._setupSenderE2EEForTrack = function(track) {
-    const jvbPc = this.jvbJingleSession ? this.jvbJingleSession.peerconnection : null;
-
-    if (jvbPc && this._e2eeCtx) {
-        const sender = jvbPc.findSenderForTrack(track.track);
-
-        if (sender) {
-            this._e2eeCtx.handleSender(sender, track.getType());
-        } else {
-            logger.warn(`Could not handle E2EE for local ${track.getType()} track: sender not found`);
-        }
-    }
-};
-
-/**
- * Setup E2EE for the receiving side, if supported.
- * Note that this is only done for the JVB Peer Connecction.
- *
- * @returns {void}
- */
-JitsiConference.prototype._setupReceiverE2EEForTrack = function(track) {
-    const jvbPc = this.jvbJingleSession ? this.jvbJingleSession.peerconnection : null;
-
-    if (jvbPc && this._e2eeCtx) {
-        const receiver = jvbPc.findReceiverForTrack(track.track);
-
-        if (receiver) {
-            this._e2eeCtx.handleReceiver(receiver, track.getType());
-        } else {
-            logger.warn(`Could not handle E2EE for remote ${track.getType()} track: receiver not found`);
-        }
-    }
 };
