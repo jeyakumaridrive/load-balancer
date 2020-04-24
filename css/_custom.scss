@@ -15,6 +15,12 @@
 	.toolbox-content {
 		background:#ecf2f5;
 		height:80px;
+		.button-group-center{
+			.video-preview{
+				overflow: none;
+			}
+		}
+
 		.meeting-info-box {
 			a {
 			    display: inline-block !important;
@@ -805,6 +811,8 @@ form[class^="device-select"]{
 	border-radius: 50% !important;
 	.avatar-foreign{
 		color: #ffffff !important;
+		height: 100%;
+		width: 100%;
 	}
 }
 
@@ -1201,7 +1209,7 @@ form[class^="device-select"]{
 
 
 
-.tile-view, .vertical-filmstrip {
+.tile-view{
 	.videocontainer__toolbar{
 		height: 20px!important;
 		padding: 0;
@@ -1244,5 +1252,78 @@ form[class^="device-select"]{
 	#localDisplayName {
 		left: 0;
 		bottom: 0;
+	}
+	.avatar-container{
+		width: 100px !important;
+		height: 100px !important;
+		.avatar-foreign{
+			font-size: 40px !important;
+		}
+	}
+
+}
+
+
+.vertical-filmstrip {
+	.videocontainer__toolbar{
+		height: 20px!important;
+		padding: 0;
+		width: auto;
+		right: auto;
+		left: 0;
+		background-color: rgba(0,0,0,.5);
+		float: left;
+		top: auto;
+		bottom: 20px;
+		position: relative;
+		.toolbar-icon{
+			margin: 0 2px 0 0;
+			> div {
+				height: 20px;
+				padding-left: 2px;
+			}
+		}
+	}
+
+	.displayNameContainer{
+		top: auto;
+		bottom: 20px;
+		position: relative;
+		float: left;
+		max-width: 60%;
+		width: auto;
+	}
+
+	.videocontainer .displayname {
+		left: auto;
+		position: relative;
+		padding: 0 2px;
+		line-height: 20px;
+		height: 20px;
+		visibility: visible!important;
+		bottom: 0;
+		display: block;
+		width: 100%;
+		background-color: rgba(0,0,0,.5);
+	}
+	#localDisplayName {
+		left: 0;
+		bottom: 0;
+	}
+
+	#filmstripLocalVideo{
+		.avatar-container{
+			width: 40px !important;
+			height: 40px !important;
+			.avatar-foreign{
+				font-size: 20px !important;
+			}
+		}
+	}
+
+	#filmstripRemoteVideosContainer{
+		.avatar-foreign{
+			font-size: 30px !important;
+		}
 	}
 }
