@@ -1116,8 +1116,7 @@ class Toolbox extends Component<Props, State> {
         const fullUrl = `https://jitsi-api.jitsi.net/conferenceMapper?conference=${meetingId}@conference.meeting.remotepc.com`;
         $.get(fullUrl)
         .then(resolve => {
-            //$('#pin').text(resolve.id);
-            localStorage.setItem('mypin', resolve.id)
+            localStorage.setItem('mypin', resolve.id.toString().replace(/^(.{3})(.{3})(.*)$/, "$1 $2 $3"))
         })
         .catch(reject => {
             console.log('=>>> reject ->>',reject);
