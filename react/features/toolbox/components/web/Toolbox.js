@@ -1128,7 +1128,7 @@ class Toolbox extends Component<Props, State> {
         $.get(fullUrl)
         .then(resolve => {
             console.log('=>>>> meeting info =>>>>',resolve);
-            $('.cw_meeting-url').text('https://meet.remotepc.com/meet/'+resolve.slug);
+            $('.cw_meeting-url').text('https://meet.olecons.com/meet/'+resolve.slug);
             $('.meeting-name').text(resolve.name);
             $('.cw_meeting-name').text(resolve.description);
             sessionStorage.setItem('meetingInfo',JSON.stringify(resolve));
@@ -1696,7 +1696,7 @@ class Toolbox extends Component<Props, State> {
             `Time: ${timeStr}` + '\n' +
             `` + '\n' +
             `Join RemotePC Meeting` + '\n' +
-            `https://meet.remotepc.com/meet/${meetingInfo.slug}` + '\n' +
+            `https://meet.olecons.com/meet/${meetingInfo.slug}` + '\n' +
             `` + '\n' +
             `One tap mobile` + '\n' +
             `${sessionStorage.phone_numbers.split('\n').map(phone => {

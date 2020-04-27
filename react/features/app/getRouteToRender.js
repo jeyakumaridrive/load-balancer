@@ -51,7 +51,7 @@ export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
     let user = locationURL.searchParams.has('user') ? locationURL.searchParams.get('user') : '';
     if(user != '')
         sessionStorage.setItem('user',user);
-    if (state['features/base/conference'].room == '' || !isRoomValid(state['features/base/conference'].room) || user == '') {
+    if (state['features/base/conference'].room == '' || !isRoomValid(state['features/base/conference'].room) || (user == '' && locationURL.hash.search('config.iAmRecorder') == -1)) {
         // To stop the ladning page and send the user to the parent site.
         leaveMeeting();
         return Promise.resolve(_getEmptyRoute());
