@@ -14,14 +14,17 @@ import AbstractChatMessage, {
 } from '../AbstractChatMessage';
 import PrivateMessageButton from '../PrivateMessageButton';
 
+declare var APP: Object;
+
 /**
  * Renders a single chat message.
  */
 class ChatMessage extends AbstractChatMessage<Props> {
 
     download (processedMessage) {
+        let { parentApi } = APP.store.getState()['features/base/config'];
         const key = processedMessage.key.split("::attachment:")[1].split(":attachment::")[0];
-        const url = 'https://meet.olecons.com/api/v1'+'/download/'+key;
+        const url = parentApi+'/api/v1'+'/download/'+key;
         window.open(url, '_blank');
     }
     /**

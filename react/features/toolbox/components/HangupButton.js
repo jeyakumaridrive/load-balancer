@@ -50,7 +50,7 @@ class HangupButton extends AbstractHangupButton<Props, *> {
             } else {
                 this.props.dispatch(disconnect(true));
             }
-            leaveMeeting();
+            this.props.dispatch(leaveMeeting());
         });
     }
 
