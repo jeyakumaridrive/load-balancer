@@ -1124,11 +1124,12 @@ class Toolbox extends Component<Props, State> {
     }
 
     getMeetingInfo(meetingId: string) {
-        const fullUrl = `https://meet.olecons.com/api/v1/get-meeting-by-slug?slug=${meetingId}`;
+        let { parentDomain, parentApi } = APP.store.getState()['features/base/config'];
+        const fullUrl = `${parentApi}/api/v1/get-meeting-by-slug?slug=${meetingId}`;
         $.get(fullUrl)
         .then(resolve => {
             console.log('=>>>> meeting info =>>>>',resolve);
-            $('.cw_meeting-url').text('https://meet.olecons.com/meet/'+resolve.slug);
+            $('.cw_meeting-url').text(parentDomain+'/meet/'+resolve.slug);
             if(APP.password) {
                 $('.cw_meeting-password').show();
                 $('.cw_meeting-password b').text(APP.password);
@@ -1695,6 +1696,7 @@ class Toolbox extends Component<Props, State> {
 
     copyMeetingInfo() {
         var meetingInfo = JSON.parse(sessionStorage.meetingInfo);
+        let { parentDomain } = APP.store.getState()['features/base/config'];
         console.log('=>>>> meeting info =>>>>',meetingInfo);
         var pin = $('#pin').text(),phone = $('.phone').text(),timeStr = this.getTimeString(meetingInfo);
         var text = APP.conference.getLocalDisplayName()+` is inviting you to a scheduled RemotePC Meeting.` + '\n' +
@@ -1703,7 +1705,7 @@ class Toolbox extends Component<Props, State> {
             `Time: ${timeStr}` + '\n' +
             `` + '\n' +
             `Join RemotePC Meeting` + '\n' +
-            `https://meet.olecons.com/meet/${meetingInfo.slug}` + '\n' +
+            `${parentDomain}/meet/${meetingInfo.slug}` + '\n' +
 			(function() {
 				if(APP.password) {
 					return `Use Meeting Password : `+ APP.password + '\n';

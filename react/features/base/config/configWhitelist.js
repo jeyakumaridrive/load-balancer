@@ -146,5 +146,7 @@ export default [
     'useNicks',
     'useStunTurn',
     'webrtcIceTcpDisable',
-    'webrtcIceUdpDisable'
+    'webrtcIceUdpDisable',
+    'parentDomain',
+    'parentApi'
 ].concat(extraConfigWhitelist);

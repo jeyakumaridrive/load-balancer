@@ -290,11 +290,22 @@ export function maybeRedirectToWelcomePage(options: Object = {}) {
 }
 
 export function leaveMeeting() {
-    if(window.parent.length > 0)
-        parent.window.postMessage({'method':'leavMeeting'},'https://meet.olecons.com');
-    else
-        location.href = 'https://www.remotepc.com';
+    return (dispatch: Dispatch<any>, getState: Function) => {
+        const {
+            parentDomain
+        } = getState()['features/base/config'];
+        if(window.parent.length > 0)
+            parent.window.postMessage({'method':'leavMeeting'},parentDomain);
+        else
+            location.href = parentDomain;
+    }
 }
 export function finishedLoading() {
-    parent.window.postMessage({'method':'loaded'},'https://meet.olecons.com');
+    return (dispatch: Dispatch<any>, getState: Function) => {
+        const {
+            parentDomain
+        } = getState()['features/base/config'];
+        console.log(' =>>>>> check',parentDomain,getState()['features/base/config']);
+        parent.window.postMessage({'method':'loaded'},parentDomain);
+    }
 }

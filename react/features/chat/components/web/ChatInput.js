@@ -14,6 +14,8 @@ import { connect } from '../../../base/redux';
 
 import SmileysPanel from './SmileysPanel';
 
+declare var APP: Object;
+
 /**
  * The type of the React {@code Component} props of {@link ChatInput}.
  */
@@ -113,11 +115,12 @@ class ChatInput extends Component<Props, State> {
         this.setState({ uploaded: false });
         var files = event.target.files;
         var file = files[0];
+        let { parentApi } = APP.store.getState()['features/base/config'];
         console.log(file);
         var fd = new FormData(); 
         fd.append('file', file);
         $.ajax({ 
-            url: 'https://meet.olecons.com'+'/api/v1/upload/'+APP.conference.roomName,
+            url: parentApi+'/api/v1/upload/'+APP.conference.roomName,
             type: 'post', 
             data: fd,
             contentType: false,

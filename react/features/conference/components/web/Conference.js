@@ -146,7 +146,8 @@ class Conference extends AbstractConference<Props, *> {
             console.log('Interval is running!');
             if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
                 console.log('implemented the event');
-                const socket = socketIOClient('https://meet.olecons.com');
+                let { parentDomain } = APP.store.getState()['features/base/config'];
+                const socket = socketIOClient(parentDomain);
                 APP.conference._socket = socket;
                 const room_id = APP.conference.roomName;
                 console.log('This is your room id =>>>',room_id,socket.id);
@@ -171,7 +172,7 @@ class Conference extends AbstractConference<Props, *> {
                             APP.conference._room.isAdmin = isAdmin;
                             localStorage.isAdmin = isAdmin;
                             //now remove the loader from the meetolecons server
-                            finishedLoading();
+                            _t.props.dispatch(finishedLoading());
                             clearInterval(waitForSocketId);
                         }
                     },500);
