@@ -197,7 +197,7 @@ function _conferenceJoined({ dispatch, getState }, next, action) {
     pendingSubjectChange && dispatch(setSubject(pendingSubjectChange));
 
     password = getPropertyValue(getState(), 'password');
-
+    APP.password = password;
     // FIXME: Very dirty solution. This will work on web only.
     // When the user closes the window or quits the browser, lib-jitsi-meet
     // handles the process of leaving the conference. This is temporary solution

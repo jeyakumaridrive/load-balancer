@@ -1129,6 +1129,12 @@ class Toolbox extends Component<Props, State> {
         .then(resolve => {
             console.log('=>>>> meeting info =>>>>',resolve);
             $('.cw_meeting-url').text('https://meet.olecons.com/meet/'+resolve.slug);
+            if(APP.password) {
+                $('.cw_meeting-password').show();
+                $('.cw_meeting-password b').text(APP.password);
+            } else {
+                $('.cw_meeting-password').hide();
+            }
             $('.meeting-name').text(resolve.name);
             $('.cw_meeting-name').text(resolve.description);
             sessionStorage.setItem('meetingInfo',JSON.stringify(resolve));
@@ -1160,9 +1166,9 @@ class Toolbox extends Component<Props, State> {
             for ( var num in resolve.numbers) {
                 if(resolve.numbers[num][0] != "+NA")
                 n += '('+num+')'+' '+resolve.numbers[num][0].replace(/[.]/g,'-')+'\n';
-                console.log('=>>>>',n,num,resolve.numbers[num][0]);
+                // console.log('=>>>>',n,num,resolve.numbers[num][0]);
             }
-            console.log('help =>..',n);
+            // console.log('help =>..',n);
             $('.cw_phone_numbers').html(n);
             sessionStorage.phone_numbers = n;
             //document.getElementById('phone-me').innerHTML = n;
@@ -1465,6 +1471,7 @@ class Toolbox extends Component<Props, State> {
                                 <div className="cw_info_1">
                                     <h2>Joining info</h2>
                                     <div className="cw_meeting-url"></div>
+                                    <div className="cw_meeting-password" style = {{ fontSize: '15px' }}> Use Meeting Password : <b> </b></div>
                                     <div className="cw_dial_meeting">
                                         <span>Dial-in:</span> <span id="phone-me" className="phone">(US) +1-760-284-6659</span> <span>PIN:</span> <span id="pin"> { localStorage.getItem('mypin') }</span> 
                                         
@@ -1697,6 +1704,11 @@ class Toolbox extends Component<Props, State> {
             `` + '\n' +
             `Join RemotePC Meeting` + '\n' +
             `https://meet.olecons.com/meet/${meetingInfo.slug}` + '\n' +
+			(function() {
+				if(APP.password) {
+					return `Use Meeting Password : `+ APP.password + '\n';
+				}
+			} ()) +
             `` + '\n' +
             `One tap mobile` + '\n' +
             `${sessionStorage.phone_numbers.split('\n').map(phone => {
@@ -1943,6 +1955,12 @@ class Toolbox extends Component<Props, State> {
         var ele = document.querySelector('.dropdown-menu');
         $(ele).fadeToggle('fast').toggleClass('active');
         $('#meeting-info-box span.dropdown-icon').toggle();
+        if(APP.password) {
+            $('.cw_meeting-password').show();
+            $('.cw_meeting-password b').text(APP.password);
+        } else {
+            $('.cw_meeting-password').hide();
+        }
     }
     togglePresentTab:() => boolean;
 

@@ -82,6 +82,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
                 isModal = { false }
                 onCancel = { this._onCancel }
                 onSubmit = { this._onSubmit }
+                okKey = 'Join'
                 titleKey = 'dialog.passwordRequired'
                 width = 'small'>
                 { this._renderBody() }
