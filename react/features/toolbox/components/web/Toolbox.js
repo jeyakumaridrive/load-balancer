@@ -1113,7 +1113,8 @@ class Toolbox extends Component<Props, State> {
     }
 
     getMeetingPin(meetingId: string) {
-        const fullUrl = `https://jitsi-api.jitsi.net/conferenceMapper?conference=${meetingId}@conference.meeting.remotepc.com`;
+        let { parentApi } = APP.store.getState()['features/base/config'];
+        const fullUrl = `${parentApi}/api/v1/conferenceMapper?conference=${meetingId}@conference.meeting.remotepc.com`;
         $.get(fullUrl)
         .then(resolve => {
             localStorage.setItem('mypin', resolve.id.toString().replace(/^(.{3})(.{3})(.*)$/, "$1 $2 $3"))
@@ -1474,8 +1475,10 @@ class Toolbox extends Component<Props, State> {
                                     <div className="cw_meeting-url"></div>
                                     <div className="cw_meeting-password" style = {{ fontSize: '15px' }}> Use Meeting Password : <b> </b></div>
                                     <div className="cw_dial_meeting">
-                                        <span>Dial-in:</span> <span id="phone-me" className="phone">(US) +1-760-284-6659</span> <span>PIN:</span> <span id="pin"> { localStorage.getItem('mypin') }</span> 
-                                        
+                                        <span>Dial-in:</span> <span id="phone-me" className="phone">(US) +1-760-284-6659</span> 
+                                    </div>
+                                    <div className="cw_dial_meeting">
+                                       <span>PIN:</span> <span id="pin"> { localStorage.getItem('mypin') }</span> 
                                     </div>
                                 </div>
                                 {
