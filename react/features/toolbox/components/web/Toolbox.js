@@ -509,7 +509,7 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
 
-    _onToolbarToggleWhiteboard(cb) {
+    async _onToolbarToggleWhiteboard(cb) {
         _whiteboardOpen = !_whiteboardOpen;
         if(!window.designer.iframe) {
             window.designer.appendTo($('.drawer')[0]);
@@ -526,8 +526,8 @@ class Toolbox extends Component<Props, State> {
                     });
             }, 1000);
         } else {
+            await APP.conference.toggleScreenSharing();
             $('.white-board-div').hide();
-            this._onToolbarToggleScreenshare();
         }
     }
     /**
