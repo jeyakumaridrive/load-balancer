@@ -187,7 +187,7 @@ class ChatInput extends Component<Props, State> {
                             <span className="file-uploaded">
                                 <IconCheck />
                             </span>
-                            <span style={{fontSize: "13px"}}>{this.state.selectedFile.name}</span>
+                            <span style={{fontSize: "13px", maxWidth: '100px', textOverflow: "ellipsis",overflow: "hidden"}}>{this.state.selectedFile.name}</span>
                         </>
                     }
                     {this.state.uploading && !this.state.uploaded &&
