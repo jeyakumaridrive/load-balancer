@@ -509,7 +509,7 @@ class Toolbox extends Component<Props, State> {
      * @returns {void}
      */
 
-    async _onToolbarToggleWhiteboard(cb) {
+    _onToolbarToggleWhiteboard(cb) {
         _whiteboardOpen = !_whiteboardOpen;
         if(!window.designer.iframe) {
             window.designer.appendTo($('.drawer')[0]);
@@ -526,8 +526,18 @@ class Toolbox extends Component<Props, State> {
                     });
             }, 1000);
         } else {
-            await APP.conference.toggleScreenSharing();
-            $('.white-board-div').hide();
+            // await APP.conference.toggleScreenSharing();
+            try {
+                console.log('trying');
+                this._onToolbarToggleScreenshare();
+                setTimeout(() => {
+                    console.log('closing whiteboard');
+                    $('.white-board-div').hide();
+                }, 1000);
+            } catch ($e) {
+                $('.white-board-div').hide();
+                console.log('errar happned', $e);
+            } 
         }
     }
     /**
