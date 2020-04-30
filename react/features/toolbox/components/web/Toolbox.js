@@ -753,16 +753,22 @@ class Toolbox extends Component<Props, State> {
         APP.conference.toggleScreenSharing();
     }    
     stopScreen() {
-        sendAnalytics(createShortcutEvent(
-            'toggle.screen.sharing',
-            ACTION_SHORTCUT_TRIGGERED,
-            { enable: !this.props._screensharing }));
+        if(document.getElementById("myId").style.display != 'block') {
+            sendAnalytics(createShortcutEvent(
+                'toggle.screen.sharing',
+                ACTION_SHORTCUT_TRIGGERED,
+                { enable: !this.props._screensharing }));
+        }
 
+        console.log('doing _doToggleScreenshare');
         this._doToggleScreenshare();
         //APP.conference.toggleScreenSharing();
         setTimeout(() => {
+            console.log('closing whiteboard')
             document.getElementById("myId").style.display = 'none';
-        }, 500);
+            console.log('closed whiteboard')
+        }, 1000);
+        console.log('setting to prevlayout change');
         APP.conference._layoutToPrevStage();
     }
     
