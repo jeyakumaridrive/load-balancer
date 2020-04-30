@@ -823,7 +823,19 @@ form[class^="device-select"]{
 .alert-dialog{
 	padding: 20px 10px;
     font-size: 18px;
-    line-height: 34px;
+    line-height: 34px;	
+    	[class^="FieldTextStateless__Wrapper"]{
+	    	span{
+	    	font-size: 18px;
+	    	margin-bottom: 10px;
+	    	display: block;
+	    	}
+    	}
+    	[class^="Label__LabelInner-sc"]{
+    	padding-top: 0;
+
+    	}
+    	
 }
 .atlaskit-portal div[class^="Wrapper-"] {
 	right: 31px;
@@ -858,7 +870,6 @@ form[class^="device-select"]{
 }
 #snackbar{
 	text-align: center;
-	text-transform: capitalize;
 }
 
 
@@ -1328,8 +1339,8 @@ form[class^="device-select"]{
 	}
 }
 #ps_alert{
-	font-size: 13px;
-    color: red;
-    position: absolute;
-    margin: 72px 0 0 14px;
+	font-size: 18px;
+    color: #ff0000;
+    position: relative;
+    margin-top: 5px;
 }
