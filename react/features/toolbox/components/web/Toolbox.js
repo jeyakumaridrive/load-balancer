@@ -353,7 +353,7 @@ class Toolbox extends Component<Props, State> {
             {
                 $('.toggle-view').click();
             }
-            APP.conference._switchCallLayout();          
+            // APP.conference._switchCallLayout();          
         }
         else
         {
@@ -797,6 +797,7 @@ class Toolbox extends Component<Props, State> {
         {
             localStorage.setItem('prevLayout', false);
         }
+        APP.conference._switchCallLayout();
         document.getElementById("myId").style.display = 'block';
         setTimeout(() => {
             var canvas = $('#myId').contents().find('canvas#third-canvas')[0];
@@ -1133,7 +1134,7 @@ class Toolbox extends Component<Props, State> {
         const fullUrl = `${parentApi}/api/v1/conferenceMapper?conference=${meetingId}@conference.meeting.remotepc.com`;
         $.get(fullUrl)
         .then(resolve => {
-            localStorage.setItem('mypin', resolve.id.toString().replace(/^(.{3})(.{3})(.*)$/, "$1 $2 $3"))
+            $('#pin').text(resolve.id.toString().replace(/^(.{3})(.{3})(.*)$/, "$1 $2 $3"));
         })
         .catch(reject => {
             console.log('=>>> reject ->>',reject);
@@ -1145,7 +1146,9 @@ class Toolbox extends Component<Props, State> {
         const fullUrl = `${parentApi}/api/v1/get-meeting-by-slug?slug=${meetingId}`;
         $.get(fullUrl)
         .then(resolve => {
-            console.log('=>>>> meeting info =>>>>',resolve);
+            if(!resolve) {
+                location.href="https://www.remotepc.com";
+            }
             $('.cw_meeting-url').text(parentDomain+'/meet/'+resolve.slug);
             if(APP.password) {
                 $('.cw_meeting-password').show();
@@ -1494,7 +1497,7 @@ class Toolbox extends Component<Props, State> {
                                         <span>Dial-in:</span> <span id="phone-me" className="phone">(US) +1-760-284-6659</span> 
                                     </div>
                                     <div className="cw_dial_meeting">
-                                       <span>PIN:</span> <span id="pin"> { localStorage.getItem('mypin') }</span> 
+                                       <span>PIN:</span> <span id="pin"></span> 
                                     </div>
                                 </div>
                                 {

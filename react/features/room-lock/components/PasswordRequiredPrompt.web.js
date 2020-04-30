@@ -69,6 +69,11 @@ class PasswordRequiredPrompt extends Component<Props, State> {
         this._onSubmit = this._onSubmit.bind(this);
     }
 
+    componentDidUpdate() {
+        if(sessionStorage.wrongPassword)
+        sessionStorage.passwordCheck = true;
+    }
+
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -101,9 +106,8 @@ class PasswordRequiredPrompt extends Component<Props, State> {
     _renderBody() {
         return (
             <div>
-                { APP.conference.passRequested ? <span className="ps_alert" id="ps_alert">Wrong password, Please try again!</span> :''}
                 <TextField
-                    autoFocus = { true }
+                    autoFocus
                     compact = { true }
                     label = { this.props.t('dialog.passwordLabel') }
                     name = 'lockKey'
@@ -111,6 +115,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
                     shouldFitContainer = { true }
                     type = 'text'
                     value = { this.state.password } />
+                { sessionStorage.passwordCheck ? <span className="ps_alert" id="ps_alert">Wrong password, Please try again!</span> :''}
             </div>
         );
     }
@@ -168,13 +173,10 @@ class PasswordRequiredPrompt extends Component<Props, State> {
         //Don't hide till the validation is not done.
         //This is causing thr jump of the toolbar
         //We also need to show the wrong password error.
+        sessionStorage.wrongPassword = true;
         this.setState({
             password: undefined
         });
-        setTimeout(function() {
-            APP.conference.passRequested = true;
-        },1000);
-
         return true;
     }
 }
