@@ -764,12 +764,12 @@ class Toolbox extends Component<Props, State> {
         this._doToggleScreenshare();
         //APP.conference.toggleScreenSharing();
         setTimeout(() => {
+            console.log('setting to prevlayout change');
+            APP.conference._layoutToPrevStage();
             console.log('closing whiteboard')
             document.getElementById("myId").style.display = 'none';
             console.log('closed whiteboard')
         }, 1000);
-        console.log('setting to prevlayout change');
-        APP.conference._layoutToPrevStage();
     }
     
     showWhiteboard()
