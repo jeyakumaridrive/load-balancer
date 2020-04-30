@@ -146,8 +146,8 @@ class Conference extends AbstractConference<Props, *> {
             console.log('Interval is running!');
             if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
                 console.log('implemented the event');
-                let { parentDomain } = APP.store.getState()['features/base/config'];
-                const socket = socketIOClient(parentDomain);
+                let { parentApi } = APP.store.getState()['features/base/config'];
+                const socket = socketIOClient(parentApi);
                 APP.conference._socket = socket;
                 const room_id = APP.conference.roomName;
                 console.log('This is your room id =>>>',room_id,socket.id);
