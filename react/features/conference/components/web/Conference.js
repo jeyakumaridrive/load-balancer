@@ -162,7 +162,11 @@ class Conference extends AbstractConference<Props, *> {
                     var waitForSocketId = setInterval(function() {
                         if(socket.id != undefined && socket.id != '' && user != undefined && user != '') {
                             console.log('user =>>>>',user,socket.id);
-                            var isAdmin = user.type == 'user' && user.userType == 'Super Admin' ? true : false ;
+                            var isAdmin = user.type == 'user' && (
+                                user.userType == 'User' || 
+                                user.userType == 'Super Admin' ||
+                                user.userType == 'Admin Sub User' || 
+                                user.userType == 'Sub User') ? true : false ;
                             socket.emit('join',{id:room_id,name:sessionStorage.room_name},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
                             socket.on('user_joined', data => {
                                 console.log('User joined =>>>',data);
