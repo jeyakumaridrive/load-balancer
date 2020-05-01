@@ -116,7 +116,7 @@
             @include minHWAutoFix();
             flex-direction: column-reverse;
             overflow: visible;
-            width: calc(100% - 8px); // 8px for margin + border of the thumbnails
+            padding-right: 8px;
 
             .videocontainer {
                 height: 0px;

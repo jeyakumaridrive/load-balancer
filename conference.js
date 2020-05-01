@@ -26,7 +26,8 @@ import {
 import {
     maybeRedirectToWelcomePage,
     redirectToStaticPage,
-    reloadWithStoredParams
+    reloadWithStoredParams,
+    leaveMeeting
 } from './react/features/app';
 
 import EventEmitter from 'events';
@@ -2446,7 +2447,7 @@ export default {
            
             //console.log(id);
             }else if( messageObj.EventType == 1003) {
-
+                logger.log(messageObj.name+' Kicked out you');
                 var new1=localStorage.getItem('userPid');
                 if(new1 == messageObj.ToParticipantID){
                     var nn = messageObj.name+' Kicked out you';
@@ -2459,8 +2460,9 @@ export default {
 	                         logoIconCustom: messageObj.name
 	                     },2500));
 	                }
+                    APP.store.dispatch(leaveMeeting());
                     // if(localStorage.getItem('moderator') =='false'){
-                        this.hangup(true);
+                        // this.hangup(true);
                       //$('.button-group-audio').hide();
                 }
             
