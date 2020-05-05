@@ -340,6 +340,7 @@ class Conference extends AbstractConference<Props, *> {
                 $("#join-this-meeting").show().removeClass('hidden');
             }
             this.admit_user = data;
+            if(!data.user.firstname) { data.user.firstname = data.user.name }
             $("#join-this-meeting .sw_user_profile").html(data.user.firstname.slice(0,1));
             $("#join-this-meeting .sw_user_name").html(data.user.firstname + ' <!--<i>Unverified</i>-->');
             // if(__alert.setSinkId) {
