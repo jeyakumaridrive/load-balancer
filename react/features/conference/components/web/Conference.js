@@ -338,15 +338,13 @@ class Conference extends AbstractConference<Props, *> {
         if(!this.admit_user) {
             var data = this.pendingUsers.shift();
             console.log('inside the ask user ->>>>',data,sessionStorage.isAdmin);
-            if(sessionStorage.isAdmin) {
+            if(sessionStorage.meetingInfo != undefined && JSON.parse(sessionStorage.meetingInfo).permission) {
                 $("#join-this-meeting").show().removeClass('hidden');
             }
             this.admit_user = data;
-            if(data.user.name && !data.user._name) {
-                data.user._name = data.user.name;
-            }
-            $("#join-this-meeting .sw_user_profile").html(data.user._name.slice(0,1));
-            $("#join-this-meeting .sw_user_name").html(data.user._name + ' <!--<i>Unverified</i>-->');
+            console.log('permission check =>>>',data.user.firstname,data);
+            $("#join-this-meeting .sw_user_profile").html(data.user.firstname.slice(0,1));
+            $("#join-this-meeting .sw_user_name").html(data.user.firstname + ' <!--<i>Unverified</i>-->');
             // if(__alert.setSinkId) {
             //     __alert.setSinkId(setting.data.defaults.speaker).then(() => {
             //         __alert.play();
