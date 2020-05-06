@@ -2167,6 +2167,19 @@ export default {
             if(pp < 10)
             {
                 muteLocalAudio(false);
+
+            }
+            else
+            {
+                
+                const displayName
+                = APP.store.getState()['features/base/settings'].displayName;
+
+                APP.store.dispatch(showNotification({
+                    descriptionKey:'Your mic is off due to the size of the meeting.',
+                    titleKey:  displayName,
+                    logoIconCustom: displayName
+                },2500));
             }
             this._onConferenceJoined();
         });
