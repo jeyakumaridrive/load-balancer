@@ -51,6 +51,21 @@ class Subject extends Component<Props> {
         this.state = {
             galleryView: !this.props._tileViewEnabled
         };
+        var _this = this;
+        setInterval(()=>{
+            if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+            {
+                _this.setState({
+                    galleryView: true
+                })
+            }
+            else
+            {
+                   _this.setState({
+                    galleryView: false
+                })
+            }
+        },100)
     }
     /**
      * Implements React's {@link Component#render()}.
@@ -64,6 +79,7 @@ class Subject extends Component<Props> {
         this.setState({
             galleryView: !this.state.galleryView
         })
+
     }
     render() {
         const { _showParticipantCount, _subject, _visible } = this.props;
@@ -89,7 +105,7 @@ class Subject extends Component<Props> {
                                 <rect x="35" y="14" fill="#FFFFFF" width="13.8" height="10.2"/>
                                 <rect x="35.1" y="27.1" fill="#FFFFFF" width="13.8" height="10.2"/>
                             </svg>
-                            <span>Gallery View</span> 
+                            <span id="tile-view">Gallery View</span> 
                         </React.Fragment> :
                         <React.Fragment>
                             <svg
@@ -99,7 +115,7 @@ class Subject extends Component<Props> {
                                 <rect x="36.6" y="14.5" fill="#FFFFFF" width="12.6" height="10.2"/>
                                 <rect x="36.7" y="27.6" fill="#FFFFFF" width="12.6" height="10.2"/>
                             </svg>
-                            <span>Speaker View</span> 
+                            <span id="tile-view">Speaker View</span> 
                         </React.Fragment> 
                     } 
                     </div>

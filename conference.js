@@ -771,7 +771,7 @@ export default {
                 options.roomName, {
                     startAudioOnly: config.startAudioOnly,
                     startScreenSharing: config.startScreenSharing,
-                    startWithAudioMuted: config.startWithAudioMuted
+                    startWithAudioMuted: true
                     || config.startSilent
                     || isUserInteractionRequiredForUnmute(APP.store.getState()),
                     startWithVideoMuted: config.startWithVideoMuted
@@ -2163,6 +2163,11 @@ export default {
                 }
 
             }
+
+            if(pp < 10)
+            {
+                muteLocalAudio(false);
+            }
             this._onConferenceJoined();
         });
 
@@ -2917,6 +2922,7 @@ export default {
         //var htmlPath = '/static/draw/canvas.html#'+this.roomName;
         var $iframe = $('#myId');
         $iframe.attr('src',htmlPath);
+
 
         // setTimeout(function(){ 
         //     document.getElementById('myId').contentDocument.location.reload(true);
