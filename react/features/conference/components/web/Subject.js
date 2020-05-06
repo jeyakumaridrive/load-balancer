@@ -56,13 +56,13 @@ class Subject extends Component<Props> {
             if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
             {
                 _this.setState({
-                    galleryView: true
+                    galleryView: false
                 })
             }
             else
             {
                    _this.setState({
-                    galleryView: false
+                    galleryView: true
                 })
             }
         },100)
