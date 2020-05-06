@@ -46,7 +46,7 @@ function createContainer(spanId) {
         <div class = 'videocontainer__toolbar'></div>
         <div class = 'displayNameContainer'></div>
         <div class = 'avatar-container'></div>
-        <div class ='presence-label-container'></div>
+        <div class ='presence-label-container' style='display:none;'></div>
         <span class = 'remotevideomenu'></span>`;
 
     const remoteVideosContainer
