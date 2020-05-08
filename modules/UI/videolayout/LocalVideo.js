@@ -74,7 +74,17 @@ export default class LocalVideo extends SmallVideo {
 
         containerSpan.classList.add('videocontainer');
         containerSpan.id = this.videoSpanId;
-
+        var dName = APP.store.getState()['features/base/settings'].displayName;
+        if(dName)
+        {
+            var res = dName.match(/\b(\w)/g); 
+            var capName = res.join('');
+            var capName = capName.toUpperCase();
+        }
+        else
+        {
+            var capName = '';
+        }
         containerSpan.innerHTML = `
             <div class = 'videocontainer__background'></div>
             <span id = 'localVideoWrapper'></span>
@@ -82,7 +92,8 @@ export default class LocalVideo extends SmallVideo {
             <div class = 'videocontainer__toptoolbar'></div>
             <div class = 'videocontainer__hoverOverlay'></div>
             <div class = 'displayNameContainer'></div>
-            <div class = 'avatar-container'></div>`;
+             <div class = 'avatar-container-2' style="width: 40px!important;height: 40px!important;max-width: 60px;max-height: 60px;top: 50%;left: 50%;position: absolute;transform: translate(-50%,-50%);display: flex;justify-content: center;overflow: hidden;"><div class="avatar  userAvatar " style="background-color: rgba(234, 255, 128, 0.4); font-size: 180%; height: 100%; width: 100%;"><svg class="avatar-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><text dominant-baseline="central" fill="rgba(255,255,255,.6)" font-size="40pt" text-anchor="middle" x="50" y="50">${capName
+                    }</text></svg></div></div>`;
 
         return containerSpan;
     }
