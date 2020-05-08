@@ -1344,3 +1344,12 @@ form[class^="device-select"]{
     position: relative;
     margin-top: 5px;
 }
+
+.filmstrip__videos .videocontainer.videoContainerFocused {
+	border: 1px solid #0772ba !important;
+	box-shadow: none !important;
+}
+
+.tile-view .active-speaker {
+	box-shadow: 0 0 0 1px #0772ba !important;
+}
