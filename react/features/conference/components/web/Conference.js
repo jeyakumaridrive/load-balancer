@@ -146,7 +146,8 @@ class Conference extends AbstractConference<Props, *> {
             console.log('Interval is running!');
             if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
                 console.log('implemented the event');
-                let { parentApi } = APP.store.getState()['features/base/config'];
+                let { parentApi, server } = APP.store.getState()['features/base/config'];
+                if(!server) {server = {}};
                 const socket = socketIOClient(parentApi);
                 APP.conference._socket = socket;
                 const room_id = APP.conference.roomName;
@@ -167,7 +168,7 @@ class Conference extends AbstractConference<Props, *> {
                                 user.userType == 'Super Admin' ||
                                 user.userType == 'Admin Sub User' || 
                                 user.userType == 'Sub User') ? true : false ;
-                            socket.emit('join',{id:room_id,name:sessionStorage.room_name},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
+                            socket.emit('join',{id:room_id,name:sessionStorage.room_name, domain: server.domain, latency: server.latency},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
                             socket.on('user_joined', data => {
                                 console.log('User joined =>>>',data);
                             })
