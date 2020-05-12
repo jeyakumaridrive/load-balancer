@@ -1724,14 +1724,16 @@ class Toolbox extends Component<Props, State> {
         var text = APP.conference.getLocalDisplayName()+` is inviting you to a scheduled RemotePC Meeting.` + '\n' +
             `` + '\n' +
             `Topic: ${meetingInfo.name}` + '\n' +
-            `Time: ${timeStr}` + '\n' +
+            (meetingInfo.meeting_on ? `Time: ${timeStr}` + '\n' : ``)+
             `` + '\n' +
             `Join RemotePC Meeting` + '\n' +
             `${parentDomain}/meet/${meetingInfo.slug}` + '\n' +
 			(function() {
 				if(APP.password) {
 					return `Use Meeting Password : `+ APP.password + '\n';
-				}
+				} else {
+                    return ``;
+                }
 			} ()) +
             `` + '\n' +
             `One tap mobile` + '\n' +
