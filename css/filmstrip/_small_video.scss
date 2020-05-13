@@ -14,7 +14,7 @@
      * Focused video thumbnail.
      */
     &.videoContainerFocused {
-        box-shadow: 0 0 0 1px #0772ba !important;
+        box-shadow: 0 0 0 2px #0772ba !important;
     }
 
     .remotevideomenu > .icon-menu {
@@ -26,7 +26,7 @@
      */
     &:hover:not(.videoContainerFocused):not(.active-speaker) {
         cursor: hand;
-        box-shadow: 0 0 0 1px #0772ba !important;
+        box-shadow: 0 0 0 2px #0772ba !important;
 
         .remotevideomenu > .icon-menu {
             display: inline-block;
