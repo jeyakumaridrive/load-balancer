@@ -771,7 +771,7 @@ export default {
                 options.roomName, {
                     startAudioOnly: config.startAudioOnly,
                     startScreenSharing: config.startScreenSharing,
-                    startWithAudioMuted: config.startWithAudioMuted
+                    startWithAudioMuted: true
                     || config.startSilent
                     || isUserInteractionRequiredForUnmute(APP.store.getState()),
                     startWithVideoMuted: config.startWithVideoMuted
@@ -2163,6 +2163,24 @@ export default {
                 }
 
             }
+
+            if(pp < 10)
+            {
+                muteLocalAudio(false);
+
+            }
+            else
+            {
+                
+                const displayName
+                = APP.store.getState()['features/base/settings'].displayName;
+
+                APP.store.dispatch(showNotification({
+                    descriptionKey:'Your mic is off due to the size of the meeting.',
+                    titleKey:  displayName,
+                    logoIconCustom: displayName
+                },2500));
+            }
             this._onConferenceJoined();
         });
 
@@ -2917,6 +2935,7 @@ export default {
         //var htmlPath = '/static/draw/canvas.html#'+this.roomName;
         var $iframe = $('#myId');
         $iframe.attr('src',htmlPath);
+
 
         // setTimeout(function(){ 
         //     document.getElementById('myId').contentDocument.location.reload(true);

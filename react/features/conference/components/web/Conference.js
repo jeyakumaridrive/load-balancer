@@ -146,7 +146,8 @@ class Conference extends AbstractConference<Props, *> {
             console.log('Interval is running!');
             if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
                 console.log('implemented the event');
-                let { parentApi } = APP.store.getState()['features/base/config'];
+                let { parentApi, server, deploymentInfo } = APP.store.getState()['features/base/config'];
+                if(!server) {server = {}};
                 const socket = socketIOClient(parentApi);
                 APP.conference._socket = socket;
                 const room_id = APP.conference.roomName;
@@ -167,7 +168,7 @@ class Conference extends AbstractConference<Props, *> {
                                 user.userType == 'Super Admin' ||
                                 user.userType == 'Admin Sub User' || 
                                 user.userType == 'Sub User') ? true : false ;
-                            socket.emit('join',{id:room_id,name:sessionStorage.room_name},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
+                            socket.emit('join',{id:room_id,name:sessionStorage.room_name, domain: server.domain, latency: server.latency, media_server: deploymentInfo.userRegion},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
                             socket.on('user_joined', data => {
                                 console.log('User joined =>>>',data);
                             })
@@ -340,6 +341,7 @@ class Conference extends AbstractConference<Props, *> {
                 $("#join-this-meeting").show().removeClass('hidden');
             }
             this.admit_user = data;
+            if(!data.user.firstname) { data.user.firstname = data.user.name }
             $("#join-this-meeting .sw_user_profile").html(data.user.firstname.slice(0,1));
             $("#join-this-meeting .sw_user_name").html(data.user.firstname + ' <!--<i>Unverified</i>-->');
             // if(__alert.setSinkId) {

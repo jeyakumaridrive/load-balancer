@@ -808,7 +808,7 @@ export default class SmallVideo {
      */
     _onContainerClick(event) {
         const triggerPin = this._shouldTriggerPin(event);
-
+        
         if (event.stopPropagation && triggerPin) {
             event.stopPropagation();
             event.preventDefault();
@@ -816,7 +816,8 @@ export default class SmallVideo {
         if (triggerPin) {
             this.togglePin();
         }
-
+        
+        
         return false;
     }
 
