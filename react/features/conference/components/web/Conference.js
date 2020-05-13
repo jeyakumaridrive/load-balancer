@@ -168,6 +168,9 @@ class Conference extends AbstractConference<Props, *> {
                                 user.userType == 'Super Admin' ||
                                 user.userType == 'Admin Sub User' || 
                                 user.userType == 'Sub User') ? true : false ;
+                            socket.on('connect', () => {
+                                socket.emit('join',{id:room_id,name:sessionStorage.room_name, domain: server.domain, latency: server.latency, media_server: deploymentInfo.userRegion},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
+                            });
                             socket.emit('join',{id:room_id,name:sessionStorage.room_name, domain: server.domain, latency: server.latency, media_server: deploymentInfo.userRegion},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
                             socket.on('user_joined', data => {
                                 console.log('User joined =>>>',data);
