@@ -16,6 +16,19 @@
     <link rel="stylesheet" href="css/all.css?v=152">
     <button style="display: none;" id="ShowMyBoard"></button> 
     <button style="display: none;" id="closeMyBoard"></button> 
+     <div style="display: none;">
+        <div class="select">
+            <label for="audioSource">Audio input source: </label><select id="audioSource"></select>
+        </div>
+
+        <div class="select">
+            <label for="audioOutput">Audio output destination: </label><select id="audioOutput"></select>
+        </div>
+
+        <div class="select">
+            <label for="videoSource">Video source: </label><select id="videoSource"></select>
+        </div>
+    </div>
     <script>
         // IE11 and earlier can be identified via their user agent and be
         // redirected to a page that is known to have no newer js syntax.
@@ -147,6 +160,127 @@
         };
         window.addEventListener(
             'error', loadErrHandler, true /* capture phase type of listener */);
+                function parseJSONSafely(str) {
+                try {
+                    return JSON.parse(str);
+                }
+                catch (e) {
+                    //console.err(e);
+                    // Return a default object, or null based on use case.
+                    return 'false'
+                }
+                }
+
+                function getUrlVars()
+                {
+                    var vars = [], hash;
+                    var hashes = decodeURIComponent(window.location.href).slice(window.location.href.indexOf('?') + 1).split('&');
+                    for(var i = 0; i < hashes.length; i++)
+                    {
+                        hash = hashes[i].split('=');
+                        vars.push(hash[0]);
+                        vars[hash[0]] = hash[1];
+                    }
+                    return vars;
+                }
+
+                var configDev = getUrlVars()["config._devices"];
+
+                if(configDev)
+                {
+                    var isParse = parseJSONSafely(configDev);
+                    if(isParse != 'false')
+                    {
+                        var parseData = JSON.parse(configDev);
+                        var cam = parseData.videoinput.name;
+                        var microphones = parseData.audioinput.name;
+                        var speakerscam = parseData.audiooutput.name;
+                        if(cam)
+                        {
+                            localStorage.setItem('camera',cam);
+                        }
+                        else
+                        {
+                            localStorage.setItem('camera',"");
+                        }
+                        if(microphones)
+                        {
+                            localStorage.setItem('microphones',microphones);
+                        }
+                        else
+                        {
+                           localStorage.setItem('microphones',""); 
+                        }
+                        if(speakerscam)
+                        {
+                            localStorage.setItem('speakerscam',speakerscam);
+                        } 
+                        else
+                        {
+                            localStorage.setItem('speakerscam',"");
+                        }
+                    }
+                    else
+                    {
+                        localStorage.setItem('camera',"");
+                        localStorage.setItem('microphones',"");
+                        localStorage.setItem('speakerscam',"");
+                    }
+
+                }
+                else
+                {
+                    localStorage.setItem('camera',"");
+                    localStorage.setItem('microphones',"");
+                    localStorage.setItem('speakerscam',"");
+                }
+                'use strict';
+
+                const videoElement = document.querySelector('video');
+                const audioInputSelect = document.querySelector('select#audioSource');
+                const audioOutputSelect = document.querySelector('select#audioOutput');
+                const videoSelect = document.querySelector('select#videoSource');
+                const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+
+                //audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
+
+                function gotDevices(deviceInfos) {
+                  // Handles being called several times to update labels. Preserve values.
+                  const values = selectors.map(select => select.value);
+                  selectors.forEach(select => {
+                    while (select.firstChild) {
+                      select.removeChild(select.firstChild);
+                    }
+                  });
+                  for (let i = 0; i !== deviceInfos.length; ++i) {
+                    const deviceInfo = deviceInfos[i];
+                    const option = document.createElement('option');
+                    option.value = deviceInfo.deviceId;
+                    if (deviceInfo.kind === 'audioinput') {
+                      option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
+                      audioInputSelect.appendChild(option);
+                    } else if (deviceInfo.kind === 'audiooutput') {
+                      option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
+                      audioOutputSelect.appendChild(option);
+                    } else if (deviceInfo.kind === 'videoinput') {
+                      option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+                      videoSelect.appendChild(option);
+                    } else {
+                      console.log('Some other kind of source/device: ', deviceInfo);
+                    }
+                  }
+                  selectors.forEach((select, selectorIndex) => {
+                    if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
+                      select.value = values[selectorIndex];
+                    }
+                  });
+                }
+                function handleError(error) {
+                  console.log('navigator.getUserMedia error: ', error);
+                }
+                navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+
+
     </script>
     <script><!--#include virtual="/config.js" --></script><!-- adapt to your needs, i.e. set hosts and bosh path -->
     <!--#include virtual="connection_optimization/connection_optimization.html" -->
