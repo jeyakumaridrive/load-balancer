@@ -78,6 +78,9 @@ function checkForAttachParametersAndConnect(id, password, connection) {
  * @returns {Promise<JitsiConnection>} connection if
  * everything is ok, else error.
  */
+
+
+
 function connect(id, password, roomName) {
     const connectionConfig = Object.assign({}, config);
     const { issuer, jwt } = APP.store.getState()['features/base/jwt'];
@@ -91,6 +94,10 @@ function connect(id, password, roomName) {
     // FIXME Remove deprecated 'bosh' option assignment at some point(LJM will be accepting only 'serviceUrl' option
     //  in future). It's included for the time being for Jitsi Meet and lib-jitsi-meet versions interoperability.
     connectionConfig.serviceUrl = connectionConfig.bosh = serviceUrl;
+
+
+    // alert(cam);
+    // alert(microphones);
 
     const connection
         = new JitsiMeetJS.JitsiConnection(
