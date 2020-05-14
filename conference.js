@@ -2579,6 +2579,38 @@ export default {
                     localStorage.setItem('prevLayout', false);
                 }
             }
+            else if( messageObj.EventType == 1009) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.userID){
+                    var nn = ' You have been unmuted by Admin';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                        muteLocalAudio(false);
+                }
+                else
+                {
+                    if(messageObj.FromParticipantID != new1)
+                    {
+
+                     var nn = messageObj.name+' have been unmuted by Admin';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                       // muteLocalAudio(false);
+                    }
+                }
+
+            }
         }
         });
 
@@ -3595,5 +3627,21 @@ export default {
         let message = JSON.stringify( conntrolMessage );
         room.sendTextMessage(message);       
     },
+
+    _unmuteme(uId)
+    {
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1009;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle unmute single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    }
 
 };
