@@ -2970,7 +2970,17 @@ export default {
      */
     _initDeviceList(setDeviceListChangeHandler = false) {
         const { mediaDevices } = JitsiMeetJS;
-
+        
+        var speakerscam = localStorage.getItem('speakerscam');
+        if(speakerscam != null) {
+            speakerscam = speakerscam.trim().replace("'",' ');
+            var speakerscam = jQuery("#audioOutput option:contains('"+speakerscam+"')").val();
+           // setAudioOutputDeviceId(speakerscam);
+            const { dispatch } = APP.store;
+            const setAudioOutputPromise
+                = setAudioOutputDeviceId(speakerscam, dispatch)
+                    .catch(); 
+        }
         if (mediaDevices.isDeviceListAvailable()
                 && mediaDevices.isDeviceChangeAvailable()) {
             if (setDeviceListChangeHandler) {
