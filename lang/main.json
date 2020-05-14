@@ -741,7 +741,7 @@
         "kick": "Remove",
         "moderator": "Moderator",
         "mute": "Participant is muted",
-        "muted": "Muted",
+        "muted": "Unmute",
         "remoteControl": "Start / Stop remote control",
         "show": "Show on stage",
         "videomute": "Participant has stopped the camera"

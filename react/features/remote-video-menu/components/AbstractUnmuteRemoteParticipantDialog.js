@@ -31,7 +31,7 @@ export type Props = {
  *
  * @extends Component
  */
-export default class AbstractMuteRemoteParticipantDialog<P:Props = Props>
+export default class AbstractUnmuteRemoteParticipantDialog<P:Props = Props>
     extends Component<P> {
     /**
      * Initializes a new {@code AbstractMuteRemoteParticipantDialog} instance.
@@ -59,7 +59,7 @@ export default class AbstractMuteRemoteParticipantDialog<P:Props = Props>
         const { dispatch, participantID } = this.props;
          localStorage.setItem('kickuser',participantID);
         // alert(APP.store.getState()['features/base/settings'].displayName);
-         localStorage.setItem('kickuserName',APP.conference.getParticipantById(participantID)._displayName);
+         localStorage.setItem('kickuserName',APP.store.getState()['features/base/settings'].displayName);
         document.getElementById('mute_single').click();
         dispatch(muteRemote(participantID));
 
