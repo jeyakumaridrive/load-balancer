@@ -137,6 +137,7 @@ let connection;
 localStorage.setItem('mutede','false');
 localStorage.setItem('muteNotifications','true');
 localStorage.setItem('prevVideoStatus','');
+
 /**
  * This promise is used for chaining mutePresenterVideo calls in order to avoid  calling GUM multiple times if it takes
  * a while to finish.
@@ -374,6 +375,7 @@ class ConferenceConnector {
             this._handleConferenceJoined.bind(this));
         room.on(JitsiConferenceEvents.CONFERENCE_FAILED,
             this._onConferenceFailed.bind(this));
+
     }
 
     /**
@@ -1941,7 +1943,7 @@ export default {
         if (this.videoSwitchInProgress) {
             return Promise.reject('Switch in progress.');
         }
-
+        
         this.videoSwitchInProgress = true;
 
         return this._createDesktopTrack(options)
@@ -1975,6 +1977,8 @@ export default {
                 }
                 sendAnalytics(createScreenSharingEvent('started'));
                 logger.log('Screen sharing started');
+
+
             })
             .catch(error => {
                 this.videoSwitchInProgress = false;
@@ -2626,7 +2630,9 @@ export default {
             this.muteAudio(muted);
         });
         APP.UI.addListener(UIEvents.VIDEO_MUTED, muted => {
+            localStorage.setItem('camstateMuted',muted);
             this.muteVideo(muted);
+
         });
 
         room.addCommandListener(this.commands.defaults.ETHERPAD,
@@ -2968,6 +2974,22 @@ export default {
         var $iframe = $('#myId');
         $iframe.attr('src',htmlPath);
 
+        setInterval(function(){ 
+            if(APP.conference.isSharingScreen == true)
+            {
+                var videoMutedState = localStorage.getItem('camstateMuted');
+
+                if(videoMutedState == 'false' || videoMutedState == false )
+                {
+                    if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true')
+                    {
+                        $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+                       //document.getElementsByClassName('participants-count-icon')[0].click();
+                    }
+                    
+                } 
+            } 
+        }, 500);
 
         // setTimeout(function(){ 
         //     document.getElementById('myId').contentDocument.location.reload(true);
@@ -3642,6 +3664,14 @@ export default {
             let message = JSON.stringify( conntrolMessage );
             room.sendTextMessage(message);
         }
+    },
+
+    _oncamerastatus()
+    {
+        console.log('clickme');
+        $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+        $('.present-tab').click();
+       // document.getElementsByClassName('.present-tab').click();
     }
 
 };

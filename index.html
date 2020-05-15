@@ -185,6 +185,24 @@
                 }
 
                 var configDev = getUrlVars()["config._devices"];
+                var configvideostatus = getUrlVars()["config.startWithVideoMuted"];
+
+                if(configvideostatus)
+                {
+                    var isParseStatus = parseJSONSafely(configvideostatus);
+                    if(isParse != 'false')
+                    {
+                        var camState = JSON.parse(configvideostatus);
+                        if(camState == false || camState == 'false')
+                        {
+                            localStorage.setItem('camstateMuted','false');
+                        }
+                        else
+                        {
+                            localStorage.setItem('camstateMuted', 'true');
+                        }
+                    }
+                }
 
                 if(configDev)
                 {
