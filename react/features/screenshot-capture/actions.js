@@ -59,7 +59,7 @@ export function toggleScreenshotCaptureEffect(enabled: boolean) {
                 dispatch(setScreenshotCapture(enabled));
             }
         }
-
+        
         return Promise.resolve();
     };
 }
