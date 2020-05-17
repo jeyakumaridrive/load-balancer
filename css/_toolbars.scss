@@ -1,7 +1,7 @@
 /**
  * Round badge.
  */
-.badge-round {
+ .badge-round {
     background-color: $toolbarBadgeBackground;
     border-radius: 50%;
     box-sizing: border-box;
@@ -27,12 +27,13 @@
     left: 0;
     position: absolute;
     right: 0;
-    transition: bottom .3s ease-in;
+    transition: bottom .3s opacity 1s ease-in;
     width: 100%;
-
+    opacity: 0.5;
 
     &.visible {
         bottom: 0;
+        opacity: 1;
         .toolbox-background {
             bottom: 0px;
         }
@@ -81,9 +82,9 @@
                     background-color: #fff;
                     border-radius: 50%;
                     border: 1px solid #d1dbe8;
-                    margin: 8px;
-                    width: 50px;
-                    height: 50px;
+                    margin: 3px 8px;
+                    width: 40px;
+                    height: 40px;
                     outline: 0;
         
                     &:hover {
@@ -118,8 +119,8 @@
                     .toolbox-icon {
                         background-color: $hangupColor;
                         border: 1px solid $hangupColor;
-                        width: 50px;
-                        height: 50px;
+                        width: 40px;
+                        height: 40px;
                 
                         &:hover {
                             background-color: $hangupColor;
