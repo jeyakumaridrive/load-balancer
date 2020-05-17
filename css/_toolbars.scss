@@ -23,17 +23,16 @@
  * TODO: when the old filmstrip has been removed, remove the "new-" prefix.
  */
 .new-toolbox {
-    bottom: calc((#{$newToolbarSize} * 2) * -1);
+    // bottom: calc((#{$newToolbarSize} * 2) * -1);
+    bottom: 0;
     left: 0;
     position: absolute;
     right: 0;
-    transition: bottom .3s opacity 1s ease-in;
+    @include transition(all .3s ease-in);
     width: 100%;
-    opacity: 0.5;
-
     &.visible {
         bottom: 0;
-        opacity: 1;
+        @include transition(all .3s ease-in);
         .toolbox-background {
             bottom: 0px;
         }

@@ -12,9 +12,17 @@
 	.toolbox-background {
 		background-image:none;
 	}
+	&.visible{
+		.toolbox-content {
+			opacity: 1;
+			@include transition(all .5s ease-in);
+		}
+	}
 	.toolbox-content {
 		background:#ecf2f5;
 		height:60px;
+		opacity: 0;
+		@include transition(all .5s ease-in);
 		.button-group-center{
 			.video-preview{
 				overflow: none;
