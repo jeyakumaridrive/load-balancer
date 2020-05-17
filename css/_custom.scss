@@ -48,7 +48,7 @@
 				max-width: 360px;
 				min-width: 360px;
 			    top: auto;
-				bottom: 70px;
+				bottom: 80px;
 				text-align: left;
 			    .cw_title {
 				    padding: 9px 20px;
@@ -105,6 +105,7 @@
 		    padding: 0;
 		    float: right;
 			li{
+
 				&:hover {
 					background:#ebebeb;
 				}
@@ -182,6 +183,14 @@
 				}
 				min-width: 90px;
 				position: relative;
+				&.hand{
+					min-width: 125px;
+					a{
+						span{
+							padding-top: 7px;
+						}
+					}
+				}
 			}
 			li:last-child {
 			    border-right: none;
@@ -325,7 +334,7 @@
 } 
 
 
-#videoResolutionLabel, .subject-text, .videocontainer__toptoolbar, .filmstrip__toolbar, #toggleFilmstripButton {
+#videoResolutionLabel, .subject-text, .filmstrip__toolbar, #toggleFilmstripButton {
     display: none;
 }
 
@@ -1243,6 +1252,26 @@ form[class^="device-select"]{
 			}
 		}
 	}
+	.videocontainer__toptoolbar{
+		display: flex;
+		text-align: left;
+	}
+
+	.videocontainer__toptoolbar .indicator.raisehandindicator  {
+		background: #0772ba;
+		color: #fff;
+		border: none;
+		width: 32px;
+		height: 32px;
+		svg{
+			fill: #ffffff;
+			width: 16px;
+			height: 16px;
+			margin-left: -3px;
+		}
+		
+	}
+
 
 	.displayNameContainer{
 		top: calc(100% - 20px);
@@ -1268,11 +1297,11 @@ form[class^="device-select"]{
 		left: 0;
 		bottom: 0;
 	}
-	.avatar-container{
-		width: 100px !important;
-		height: 100px !important;
+	.avatar-container, .avatar-container-2{
+		width: 75px !important;
+		height: 75px !important;
 		.avatar-foreign{
-			font-size: 40px !important;
+			font-size: 36px !important;
 		}
 	}
 
@@ -1300,6 +1329,24 @@ form[class^="device-select"]{
 		}
 	}
 
+	.videocontainer__toptoolbar{
+		text-align: right;
+	}
+
+
+	.videocontainer__toptoolbar .indicator.raisehandindicator  {
+		background: #0772ba;
+		color: #fff;
+		border: none;
+		margin-top: 2px;
+		svg{
+			width: 12px;
+			height: 12px;
+			margin-left: -3px;
+		}
+	}
+	
+
 	.displayNameContainer{
 		top: auto;
 		bottom: 20px;
@@ -1307,6 +1354,10 @@ form[class^="device-select"]{
 		float: left;
 		max-width: 60%;
 		width: auto;
+	}
+	.avatar-container-2{
+		width: 40px !important;
+		height: 40px !important;
 	}
 
 	.videocontainer .displayname {

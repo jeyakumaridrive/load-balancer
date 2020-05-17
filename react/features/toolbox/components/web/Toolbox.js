@@ -1556,9 +1556,17 @@ class Toolbox extends Component<Props, State> {
             _raisedHand,
             t
         } = this.props;
-
-        return (
+     
+           return (
             <ul className="cw_bottom-right-menu-list">
+                <li className='hand'>
+                    <a onClick={this._onToolbarToggleRaiseHand}
+                        type="button"
+                        className="js-open-modal present-tab">
+                        <Icon src={IconRaisedHand} />
+        {_raisedHand ? <span>Down Hand</span> : <span>Raise Hand</span> }
+                    </a>
+                </li>
                <li>
                     <div className = 'toolbar-button-with-badge'>
                             <ParticipantsCount />

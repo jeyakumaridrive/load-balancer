@@ -672,7 +672,7 @@
         "stopScreenSharing": "Stop screen sharing",
         "stopSubtitles": "Stop subtitles",
         "stopSharedVideo": "Stop YouTube video",
-        "talkWhileMutedPopup": "Trying to speak? You are muted.",
+        "talkWhileMutedPopup": "Are you trying to speak? You are muted..",
         "tileViewToggle": "Toggle tile view",
         "toggleCamera": "Toggle camera",
         "videomute": "Start / Stop camera",
