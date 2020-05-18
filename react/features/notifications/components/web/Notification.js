@@ -14,6 +14,7 @@ import { NOTIFICATION_TYPE } from '../../constants';
 import AbstractNotification, {
     type Props
 } from '../AbstractNotification';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
 const TIMESTAMP_FORMAT = 'hh:mm A';
 declare var interfaceConfig: Object;
@@ -104,9 +105,9 @@ class Notification extends AbstractNotification<Props> {
      */
     _renderDescription() {
         return (
-            <div>
+            <div className="noto">
                 {
-                    this._getDescription()
+                    ReactHtmlParser(this._getDescription())
                 }
             </div>
         );
