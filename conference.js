@@ -266,6 +266,23 @@ function mute_single(userID) {
    
 }
 
+function unmutesingle(uId=null)
+    {
+        var to = localStorage.getItem('kickuser');
+        uId = to;
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1009;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle unmute single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    }
 function showBoard(userID)
 {
     let conntrolMessage = new Object();
@@ -2152,6 +2169,7 @@ export default {
       document.getElementById("unmuteAll").addEventListener("click", function() { unmuteAll(localParticipantIDs)});
       document.getElementById("Kickout").addEventListener("click", function() { Kickout(localParticipantIDs)});
       document.getElementById("mute_single").addEventListener("click", function() { mute_single(localParticipantIDs)});
+      document.getElementById("mute_single").addEventListener("click", function() { unmutesingle(localParticipantIDs)});
         // add local streams when joined to the conference
 
         document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(localParticipantIDs); });
