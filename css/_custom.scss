@@ -66,7 +66,6 @@
 				    text-transform: uppercase;
 				    font-weight: 600;
 				    letter-spacing: .2px;
-				    vertical-align: middle;
 				    display: block;
 				    svg {
 					    fill: #019d68;
@@ -128,7 +127,7 @@
 
 			    a {
 				    margin: 0;
-				    padding: 13px 20px;
+				    padding: 8px 20px;
 					display: block;
 					
 				    svg {
@@ -137,12 +136,13 @@
 						vertical-align: middle;
 						text-align: center;
 						fill: #000000;
+						height: 20px;
 						}
 				    span {
 					    color: #223942;
 					    font-size: 14px;
 					    font-weight: 600;
-					    padding: 10px 0 0;
+					    padding: 5px 0 0;
 						display: inline-block;
 						&.badge-round{
 							top: 5px;
@@ -173,7 +173,7 @@
 						vertical-align: middle;
 						position: absolute;
 						right: 0;
-						top: 10px;
+						top: 3px;
 						text-decoration: none;
 						font-weight: 600;
 						width: 25px;
@@ -183,8 +183,8 @@
 					.participants-count-icon {
 						background: url(../images/user-groups.svg) no-repeat;
 						display: block;
-						height: 24px;
-						width: 24px;
+						height: 22px;
+						width: 20px;
 						margin: auto;
 						background-size: 100%;
 					}
@@ -203,7 +203,7 @@
 			li:last-child {
 			    border-right: none;
 			    a {
-					padding: 30px 15px;
+					padding: 20px 15px;
 					svg{
 						width: 24px;
 					}
@@ -264,20 +264,24 @@
 				.meeting-info-box{
 					a{
 						display: inline-block !important;
-						padding: 30px;
+						padding: 20px;
 					}
 				} 
 				&:last-child {
 					border-right: none;
 				}
 				&.overflow-menu-item{
-					padding: 13px 30px;
+					padding: 8px 30px;
 					display: block !important;
 					span{
 						display: block !important;
 					}
 					.overflow-menu-item-icon{
-						margin-bottom: 10px;
+						svg{
+							width: 20px;
+							height: 20px;
+						}
+						margin-bottom: 5px;
 						// &.toggled {
 						// 	svg{
 						// 		fill: #ff0000
@@ -289,7 +293,7 @@
 		}
 		.cw_present-menu {
 		    position: absolute;
-		    bottom: 106px;
+		    bottom: 80px;
 		    left: auto;
 		    top: auto;
 		    right: 90px;
@@ -377,7 +381,7 @@
 }
 
 .vertical-filmstrip .filmstrip.reduce-height {
-	height: calc(100% - 120px) !important;
+	height: calc(100% - 100px) !important;
 	
 }
 
@@ -1265,13 +1269,13 @@ form[class^="device-select"]{
 		background: #0772ba;
 		color: #fff;
 		border: none;
-		width: 32px;
-		height: 32px;
+		width: 24px;
+		height: 24px;
 		svg{
 			fill: #ffffff;
-			width: 16px;
-			height: 16px;
-			margin-left: -3px;
+			width: 12px;
+			height: 12px;
+			margin-left: -1px;
 		}
 		
 	}
@@ -1343,10 +1347,11 @@ form[class^="device-select"]{
 		color: #fff;
 		border: none;
 		margin-top: 2px;
+		margin-right: 2px;
 		svg{
-			width: 12px;
-			height: 12px;
-			margin-left: -3px;
+			width: 10px;
+			height: 10px;
+			margin-left: -1px;
 		}
 	}
 	
@@ -1405,7 +1410,7 @@ form[class^="device-select"]{
 }
 
 .filmstrip__videos .videocontainer.videoContainerFocused {
-	border: 1px solid #0772ba !important;
+	border: 2px solid #0772ba !important;
 	box-shadow: none !important;
 }
 
@@ -1413,7 +1418,7 @@ form[class^="device-select"]{
 	box-shadow: 0 0 0 2px #0772ba !important;
 }
 
-.handraise-button{
+.handraise-button {
 	border-radius: 2px !important;
 	padding: 2px 8px !important;
 	background-color: #0373bd !important;
