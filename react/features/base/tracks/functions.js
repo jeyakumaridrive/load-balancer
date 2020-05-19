@@ -127,6 +127,31 @@ export function createLocalTracksF(options = {}, firePermissionPromptIsShownEven
             micDeviceId = getUserSelectedMicDeviceId(state);
         }
     }
+    var cam = localStorage.getItem('camera');
+    var microphones = localStorage.getItem('microphones');
+    var value2 = value = '';
+    if(cam != null) {
+        cam = cam.trim().replace("'",' ');
+        var value = jQuery("#videoSource option:contains('"+cam+"')").val();
+    }
+    if(microphones!=null) {
+        microphones = microphones.trim().replace("'",' ');
+        var value2 = jQuery("#audioSource option:contains('"+microphones+"')").val();
+    }
+
+
+     if(value != ''){
+        cameraDeviceId =value;
+        localStorage.removeItem('camera');
+
+
+    }
+    if(value2!= '') {
+        micDeviceId =value2;
+        localStorage.removeItem('microphones');
+
+        
+    }
 
     const state = store.getState();
     const {
