@@ -267,7 +267,7 @@ class Toolbox extends Component<Props, State> {
         this.stopScreen = this.stopScreen.bind(this);
         this.state = {
             windowWidth: window.innerWidth,
-            show:true,
+            show:false,
         };
         this._onToolbarToggleWhiteboard = this._onToolbarToggleWhiteboard.bind(this);
         this.showMoreNumbers = this.showMoreNumbers.bind(this);
@@ -327,8 +327,8 @@ class Toolbox extends Component<Props, State> {
         window.addEventListener('resize', this._onResize);
         this.updateMeetingInfo();
         setInterval(() => {
-          
-            if(APP.conference.isLocalAudioMuted()) {
+
+            if(APP.conference.isLocalAudioMuted() && !APP.conference._room.isAdmin) {
                 this.setState({show:true});
             }else {
                 this.setState({show:false});
