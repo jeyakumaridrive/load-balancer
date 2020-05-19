@@ -2186,7 +2186,7 @@ export default {
 
             }
 
-            if(pp < 10)
+            if(pp < 6)
             {
                 muteLocalAudio(false);
 
