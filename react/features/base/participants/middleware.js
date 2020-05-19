@@ -256,6 +256,7 @@ function _localParticipantJoined({ getState, dispatch }, next, action) {
     return result;
 }
 
+
 /**
  * Signals that the local participant has left.
  *
@@ -388,14 +389,25 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
     }));
 
     if (raisedHand) {
-        dispatch(showNotification({
-            titleArguments: {
-                name: getParticipantDisplayName(getState, pid)
-            },
-            titleKey: 'notify.raisedHand'
-        }, NOTIFICATION_TIMEOUT));
+        // dispatch(showNotification({
+        //     titleArguments: {
+        //         name: getParticipantDisplayName(getState, pid)
+        //     },
+        //     titleKey: 'notify.raisedHand'
+        // }, NOTIFICATION_TIMEOUT));
+        if(APP.conference._room.isAdmin == true) {
+            localStorage.setItem('kickuser',pid);
+           APP.store.dispatch(showNotification({
+                    descriptionKey:"<button id='unmutesingle' class='Unmute handraise-button'>Unmute</button> <button class='ignore handraise-button'>Ignore</button>",
+                     titleKey: getParticipantDisplayName(getState, pid) + ' rased his hand',
+                    logoIconCustom: getParticipantDisplayName(getState, pid)
+            }));
+       }
     }
 }
+// function actionHand(pid) {
+//   alert(pid);
+// }
 
 /**
  * Registers sounds related with the participants feature.

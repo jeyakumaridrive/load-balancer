@@ -672,7 +672,7 @@
         "stopScreenSharing": "Stop screen sharing",
         "stopSubtitles": "Stop subtitles",
         "stopSharedVideo": "Stop YouTube video",
-        "talkWhileMutedPopup": "Trying to speak? You are muted.",
+        "talkWhileMutedPopup": "Are you trying to speak? You are muted..",
         "tileViewToggle": "Toggle tile view",
         "toggleCamera": "Toggle camera",
         "videomute": "Start / Stop camera",
@@ -741,7 +741,7 @@
         "kick": "Remove",
         "moderator": "Moderator",
         "mute": "Participant is muted",
-        "muted": "Muted",
+        "muted": "Unmute",
         "remoteControl": "Start / Stop remote control",
         "show": "Show on stage",
         "videomute": "Participant has stopped the camera"

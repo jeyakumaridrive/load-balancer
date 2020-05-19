@@ -333,6 +333,7 @@ class Toolbox extends Component<Props, State> {
      * @inheritdoc
      */
     componentDidUpdate(prevProps) {
+        
         document.addEventListener('mousedown', this.handleClickOutside);
         // Ensure the dialog is closed when the toolbox becomes hidden.
         if (prevProps._overflowMenuVisible && !this.props._visible) {
@@ -347,19 +348,33 @@ class Toolbox extends Component<Props, State> {
         }
         if(this.props._screensharing == true)
         {
-            $('.video-preview .settings-button-container').css('pointer-events','none');
-            $('.video-preview .settings-button-container').css('opacity', '0.2');  
-            if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+            var videoMutedState = localStorage.getItem('camstateMuted');
+
+            if(videoMutedState == 'false' || videoMutedState == false )
             {
-                $('.toggle-view').click();
-            }
-            // APP.conference._switchCallLayout();          
+                if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true')
+                {
+                    
+                   // APP.conference._oncamerastatus();
+                }
+                
+            } 
         }
-        else
-        {
-            $('.video-preview .settings-button-container').css('pointer-events','');
-            $('.video-preview .settings-button-container').css('opacity', '1');
-        }
+        // if(this.props._screensharing == true)
+        // {
+        //     $('.video-preview .settings-button-container').css('pointer-events','none');
+        //     $('.video-preview .settings-button-container').css('opacity', '0.2');  
+        //     if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+        //     {
+        //         $('.toggle-view').click();
+        //     }
+        //     // APP.conference._switchCallLayout();          
+        // }
+        // else
+        // {
+        //     $('.video-preview .settings-button-container').css('pointer-events','');
+        //     $('.video-preview .settings-button-container').css('opacity', '1');
+        // }
     }
 
     /**
@@ -749,6 +764,8 @@ class Toolbox extends Component<Props, State> {
         {
             localStorage.setItem('prevLayout', false);
         }
+
+
         this.togglePresentTab();
         APP.conference.toggleScreenSharing();
     }    
@@ -1539,9 +1556,17 @@ class Toolbox extends Component<Props, State> {
             _raisedHand,
             t
         } = this.props;
-
-        return (
+     
+           return (
             <ul className="cw_bottom-right-menu-list">
+                <li className='hand'>
+                    <a onClick={this._onToolbarToggleRaiseHand}
+                        type="button"
+                        className="js-open-modal present-tab">
+                        <Icon src={IconRaisedHand} />
+        {_raisedHand ? <span>Down Hand</span> : <span>Raise Hand</span> }
+                    </a>
+                </li>
                <li>
                     <div className = 'toolbar-button-with-badge'>
                             <ParticipantsCount />
