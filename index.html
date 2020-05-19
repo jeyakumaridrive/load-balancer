@@ -12,6 +12,7 @@
     <button style="display: none;" id="unmuteAll"></button>
     <button style="display: none;" id="Kickout"></button>
     <button style="display: none;"  id="mute_single"></button>
+    <button style="display: none;"  id="unmute_single"></button>
     
 
     <link rel="stylesheet" href="css/all.css?v=154">
@@ -333,9 +334,9 @@
             $('#localDisplayName').text('').append('You');
     },100)
     $(document).ready(function(){
-        $(document).on('click','.Unmute',function(){
+        $(document).on('click','#unmutesingle2',function(){
            
-            $('#mute_single').click()
+            $('#unmute_single').click()
             $('.EDTcm').click()
         }) 
         //$('.ignore').on('click',function(){

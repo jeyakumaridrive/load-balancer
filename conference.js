@@ -2169,7 +2169,7 @@ export default {
       document.getElementById("unmuteAll").addEventListener("click", function() { unmuteAll(localParticipantIDs)});
       document.getElementById("Kickout").addEventListener("click", function() { Kickout(localParticipantIDs)});
       document.getElementById("mute_single").addEventListener("click", function() { mute_single(localParticipantIDs)});
-      document.getElementById("mute_single").addEventListener("click", function() { unmutesingle(localParticipantIDs)});
+      document.getElementById("unmute_single").addEventListener("click", function() { unmutesingle(localParticipantIDs)});
         // add local streams when joined to the conference
 
         document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(localParticipantIDs); });
@@ -2446,7 +2446,6 @@ export default {
             {
                 let messageObj = JSON.parse( text );
             
-            //console.log(messageObj);
             if( messageObj.EventType == 1001 )
             {   
                 var new1=localStorage.getItem('userPid');
@@ -2605,7 +2604,7 @@ export default {
 
                 var new1=localStorage.getItem('userPid');
                 if(new1 == messageObj.userID){
-                    var nn = ' You have been unmuted by Admin';
+                    var nn = ' You have been unmuted by Admin dddd';
                      if(localStorage.muteNotifications=='false'){
                          APP.store.dispatch(showNotification({
                             descriptionKey: nn,
