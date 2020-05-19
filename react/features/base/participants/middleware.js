@@ -398,7 +398,7 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
         if(APP.conference._room.isAdmin == true) {
             localStorage.setItem('kickuser',pid);
            APP.store.dispatch(showNotification({
-                    descriptionKey:"<button id='unmutesingle' class='Unmute handraise-button'>Unmute</button> <button class='ignore handraise-button'>Ignore</button>",
+                    descriptionKey:"<button id='unmutesingle2' class='Unmute handraise-button'>Unmute</button> <button class='ignore handraise-button'>Ignore</button>",
                      titleKey: getParticipantDisplayName(getState, pid) + ' rased his hand',
                     logoIconCustom: getParticipantDisplayName(getState, pid)
             }));
