@@ -1416,3 +1416,20 @@ form[class^="device-select"]{
 .tile-view .active-speaker {
 	box-shadow: 0 0 0 2px #0772ba !important;
 }
+
+.handraise-button{
+	border-radius: 2px !important;
+	padding: 2px 8px !important;
+	background-color: #0373bd !important;
+	color: #fff !important;
+	height: auto !important;
+	text-decoration: none;
+	border: 1px solid #0373bd;
+	display: inline-block;
+	margin-right: 5px;
+	margin-top: 10px;
+	&:hover{
+		background-color: darken(#0373bd, 10) !important;
+		border: 1px solid darken(#0373bd, 10) !important;
+	}
+}
