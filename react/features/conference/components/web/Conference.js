@@ -342,6 +342,7 @@ class Conference extends AbstractConference<Props, *> {
             var data = this.pendingUsers.shift();
             if(sessionStorage.meetingInfo != undefined && JSON.parse(sessionStorage.meetingInfo).permission) {
                 $("#join-this-meeting").show().removeClass('hidden');
+                document.getElementById('hidden-jitsi-audio').play();
             }
             this.admit_user = data;
             if(!data.user.firstname) { data.user.firstname = data.user.name }
