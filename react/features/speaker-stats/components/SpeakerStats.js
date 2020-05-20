@@ -13,7 +13,8 @@ import {
     IconClose,
     IconPeople,
     IconCameraDisabled,
-    IconCamera
+    IconCamera,
+    IconRaisedHand
 } from '../../base/icons';
 
 
@@ -200,10 +201,12 @@ class SpeakerStats extends Component<Props, State> {
         let displayName;
         let audio_status = '';
         let video_status = '';
+        let raise_hand = '';
         //console.log("meooooo2");
        // console.log(this.state.stats[userId]);
         var ac = false;
-        let vc = false;;
+        let vc = false;
+        let rh = false;
         if(APP.conference.getParticipantById(userId)!=undefined) {
             //console.log(APP.conference.getParticipantById(userId));
             if(APP.conference.getParticipantById(userId)._tracks[0]  != undefined){
@@ -212,6 +215,19 @@ class SpeakerStats extends Component<Props, State> {
             if(APP.conference.getParticipantById(userId)._tracks[1]  != undefined){
               vc = APP.conference.getParticipantById(userId)._tracks[1].muted;
             } 
+            if(APP.conference.getParticipantById(userId)._properties.raisedHand  != undefined){
+              rh = APP.conference.getParticipantById(userId)._properties.raisedHand;
+            } 
+
+            if(rh==true || rh=='true') {
+               raise_hand = (
+                     <div className='raisehand-active'>
+                        <Icon src={IconRaisedHand} />
+                     </div>
+                );
+                 
+            } 
+
             if(ac==true) {
                 var customStyle = '';
                 if(APP.conference._room.isAdmin)
@@ -322,6 +338,7 @@ class SpeakerStats extends Component<Props, State> {
                 dominantSpeakerTime = { dominantSpeakerTime }
                 audio_status ={audio_status}
                 video_status = {video_status}
+                raise_hand = {raise_hand}
                 hasLeft = { hasLeft }
                 isDominantSpeaker = { isDominantSpeaker }
                 key = { userId } />

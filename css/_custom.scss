@@ -1038,6 +1038,20 @@ form[class^="device-select"]{
 					fill: #00ad48;
 				}
 			}
+			.raisehand-active{
+				height: 25px;
+				width: 25px;
+				padding: 5px;
+				background-color: #f3f3f3;
+				border-radius: 50%;
+				border: 1px solid #eaeaea;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				svg{
+					fill: #4e5852;
+				}
+			}
 		}
 		&.status-user-left{
 			display: none;
