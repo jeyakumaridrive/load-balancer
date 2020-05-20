@@ -328,7 +328,8 @@ class Toolbox extends Component<Props, State> {
         this.updateMeetingInfo();
         setInterval(() => {
 
-            if(APP.conference.isLocalAudioMuted() && !APP.conference._room.isAdmin) {
+            //if(APP.conference.isLocalAudioMuted() && !APP.conference._room.isAdmin) {
+            if(!APP.conference._room.isAdmin) {
                 this.setState({show:true});
             }else {
                 this.setState({show:false});
