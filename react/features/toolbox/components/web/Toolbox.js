@@ -329,10 +329,14 @@ class Toolbox extends Component<Props, State> {
         setInterval(() => {
 
             //if(APP.conference.isLocalAudioMuted() && !APP.conference._room.isAdmin) {
-            if(!APP.conference._room.isAdmin) {
-                this.setState({show:true});
-            }else {
-                this.setState({show:false});
+            if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
+                if (APP.conference._room.isAdmin != undefined) {
+                    if(!APP.conference._room.isAdmin) {
+                        this.setState({show:true});
+                    }else {
+                        this.setState({show:false});
+                    }
+                }
             }
         },100);
     }
