@@ -33,6 +33,7 @@ class MuteButton extends AbstractMuteButton {
         super(props);
 
         this._handleClick = this._handleClick.bind(this);
+        this._handleClickUnmute = this._handleClickUnmute.bind(this);
     }
 
     /**
@@ -45,7 +46,7 @@ class MuteButton extends AbstractMuteButton {
         const { _audioTrackMuted, participantID, t } = this.props;
         const muteConfig = _audioTrackMuted ? {
             translationKey: 'videothumbnail.muted',
-            muteClassName: 'mutelink disabled',
+            muteClassName: 'mutelink customMuteBtn',
             muteIconName: IconMicDisabled
         } : {
             translationKey: 'videothumbnail.domute',
@@ -53,18 +54,40 @@ class MuteButton extends AbstractMuteButton {
             muteIconName: IconMicrophone
         };
 
-        return (
-            <RemoteVideoMenuButton
-                buttonText = { t(muteConfig.translationKey) }
-                displayClass = { muteConfig.muteClassName }
-                icon = { muteConfig.muteIconName }
-                id = { `mutelink_${participantID}` }
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick = { this._handleClick } />
-        );
-    }
+        if(_audioTrackMuted)
+        {
+            return (
+                <RemoteVideoMenuButton
+                    buttonText = { t(muteConfig.translationKey) }
+                    displayClass = { muteConfig.muteClassName }
+                    icon = { muteConfig.muteIconName }
+                    id = { `mutelink_${participantID}` }
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onClick = { () => {this._handleClickUnmute(participantID)} } />
+            );
+        }
+        else
+        {
+             return (
+                <RemoteVideoMenuButton
+                    buttonText = { t(muteConfig.translationKey) }
+                    displayClass = { muteConfig.muteClassName }
+                    icon = { muteConfig.muteIconName }
+                    id = { `mutelink_${participantID}` }
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onClick = { this._handleClick } />
+            );           
+        }
 
+    }
+    
+    _handleClickUnmute = (uId) =>
+     {
+        APP.conference._unmuteme(uId);
+     }
     _handleClick: () => void
+
+
 }
 
 export default translate(connect(_mapStateToProps)(MuteButton));

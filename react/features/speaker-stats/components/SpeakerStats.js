@@ -13,7 +13,8 @@ import {
     IconClose,
     IconPeople,
     IconCameraDisabled,
-    IconCamera
+    IconCamera,
+    IconRaisedHand
 } from '../../base/icons';
 
 
@@ -79,6 +80,7 @@ class SpeakerStats extends Component<Props, State> {
         this._updateStats = this._updateStats.bind(this);
         this.muteall = this.muteall.bind(this);
         this.unmuteall = this.unmuteall.bind(this);
+        this.unmuteMe = this.unmuteMe.bind(this);
         
     }
       muteall = (e) => {
@@ -86,7 +88,7 @@ class SpeakerStats extends Component<Props, State> {
 
         localStorage.setItem('mutede','true');
         document.getElementById('muteAll').click();
-        console.log(APP.conference._room.isAdmin);
+        //console.log(APP.conference._room.isAdmin);
         $('#mute_all').hide();
         $('#unmuteall_').show();
      }
@@ -96,9 +98,12 @@ class SpeakerStats extends Component<Props, State> {
        document.getElementById('unmuteAll').click();
        $('#mute_all').show();
        $('#unmuteall_').hide();
-        console.log(APP.conference._room.isAdmin);
+        //console.log(APP.conference._room.isAdmin);
      }
-
+     unmuteMe = (uId) =>
+     {
+        APP.conference._unmuteme(uId);
+     }
      onCloseSidebar = () =>{
          $('#people_sidebar').removeClass('show-people-list')
      }
@@ -196,24 +201,46 @@ class SpeakerStats extends Component<Props, State> {
         let displayName;
         let audio_status = '';
         let video_status = '';
-        console.log("meooooo2");
+        let raise_hand = '';
+        //console.log("meooooo2");
        // console.log(this.state.stats[userId]);
         var ac = false;
-        let vc = false;;
+        let vc = false;
+        let rh = false;
         if(APP.conference.getParticipantById(userId)!=undefined) {
-            console.log(APP.conference.getParticipantById(userId));
+            //console.log(APP.conference.getParticipantById(userId));
             if(APP.conference.getParticipantById(userId)._tracks[0]  != undefined){
               ac = APP.conference.getParticipantById(userId)._tracks[0].muted;
             } 
             if(APP.conference.getParticipantById(userId)._tracks[1]  != undefined){
               vc = APP.conference.getParticipantById(userId)._tracks[1].muted;
             } 
-            if(ac==true) {
-                 audio_status = (
-                     <div className='audio-muted'>
-                        <Icon src={IconMicDisabled} />
+            if(APP.conference.getParticipantById(userId)._properties.raisedHand  != undefined){
+              rh = APP.conference.getParticipantById(userId)._properties.raisedHand;
+            } 
+
+            if(rh==true || rh=='true') {
+               raise_hand = (
+                     <div className='raisehand-active'>
+                        <Icon src={IconRaisedHand} />
                      </div>
-                 );
+                );
+                 
+            } 
+
+            if(ac==true) {
+                var customStyle = '';
+                if(APP.conference._room.isAdmin)
+                {
+                    customStyle = "pointer";
+                }
+                
+                audio_status = (
+                     <div className='audio-muted'>
+                        <Icon src={IconMicDisabled} onClick={() => { this.unmuteMe(userId) } } style={{ cursor: customStyle }}/>
+                     </div>
+                );
+                 
             } else{
                 audio_status = (
                     <div className='audio-active'>
@@ -311,6 +338,7 @@ class SpeakerStats extends Component<Props, State> {
                 dominantSpeakerTime = { dominantSpeakerTime }
                 audio_status ={audio_status}
                 video_status = {video_status}
+                raise_hand = {raise_hand}
                 hasLeft = { hasLeft }
                 isDominantSpeaker = { isDominantSpeaker }
                 key = { userId } />
@@ -356,7 +384,7 @@ class SpeakerStats extends Component<Props, State> {
  */
 function _mapStateToProps(state) {
     const localParticipant = getLocalParticipant(state);
-    console.log(state);
+    //console.log(state);
     
 
     return {

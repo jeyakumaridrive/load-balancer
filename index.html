@@ -11,11 +11,14 @@
     <button style="display: none;" id="muteAll"></button>
     <button style="display: none;" id="unmuteAll"></button>
     <button style="display: none;" id="Kickout"></button>
-    <button style="display: none;" id="mute_single"></button>
+    <button style="display: none;"  id="mute_single"></button>
+    <button style="display: none;"  id="unmute_single"></button>
+    
 
-    <link rel="stylesheet" href="css/all.css?v=152">
+    <link rel="stylesheet" href="css/all.css?v=182">
     <button style="display: none;" id="ShowMyBoard"></button> 
     <button style="display: none;" id="closeMyBoard"></button> 
+    <audio id="hidden-jitsi-audio" style="display:none;" src="sounds/alert.mp3"></audio>
      <div style="display: none;">
         <div class="select">
             <label for="audioSource">Audio input source: </label><select id="audioSource"></select>
@@ -185,6 +188,24 @@
                 }
 
                 var configDev = getUrlVars()["config._devices"];
+                var configvideostatus = getUrlVars()["config.startWithVideoMuted"];
+
+                if(configvideostatus)
+                {
+                    var isParseStatus = parseJSONSafely(configvideostatus);
+                    if(isParse != 'false')
+                    {
+                        var camState = JSON.parse(configvideostatus);
+                        if(camState == false || camState == 'false')
+                        {
+                            localStorage.setItem('camstateMuted','false');
+                        }
+                        else
+                        {
+                            localStorage.setItem('camstateMuted', 'true');
+                        }
+                    }
+                }
 
                 if(configDev)
                 {
@@ -287,8 +308,8 @@
     <script src="libs/do_external_connect.min.js?v=1"></script>
     <script><!--#include virtual="/interface_config.js" --></script>
     <script><!--#include virtual="/logging_config.js" --></script>
-    <script src="libs/lib-jitsi-meet.min.js?v=x180"></script>
-    <script src="libs/app.bundle.min.js?v=X180"></script>
+    <script src="libs/lib-jitsi-meet.min.js?v=x182"></script>
+    <script src="libs/app.bundle.min.js?v=X182"></script>
     <!--#include virtual="title.html" -->
     <!--#include virtual="plugin.head.html" -->
     <!--#include virtual="static/welcomePageAdditionalContent.html" -->
@@ -313,6 +334,16 @@
             }
             $('#localDisplayName').text('').append('You');
     },100)
-
+    $(document).ready(function(){
+        $(document).on('click','#unmutesingle2',function(){
+           
+            $('#unmute_single').click()
+            $('.EDTcm').click()
+        }) 
+        //$('.ignore').on('click',function(){
+        $(document).on('click','.ignore',function(){
+            $('.EDTcm').click()
+        })
+    })
     
 </script>

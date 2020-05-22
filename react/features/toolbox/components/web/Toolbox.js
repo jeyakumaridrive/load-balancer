@@ -267,6 +267,7 @@ class Toolbox extends Component<Props, State> {
         this.stopScreen = this.stopScreen.bind(this);
         this.state = {
             windowWidth: window.innerWidth,
+            show:false,
         };
         this._onToolbarToggleWhiteboard = this._onToolbarToggleWhiteboard.bind(this);
         this.showMoreNumbers = this.showMoreNumbers.bind(this);
@@ -325,6 +326,19 @@ class Toolbox extends Component<Props, State> {
 
         window.addEventListener('resize', this._onResize);
         this.updateMeetingInfo();
+        setInterval(() => {
+
+            //if(APP.conference.isLocalAudioMuted() && !APP.conference._room.isAdmin) {
+            if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
+                if (APP.conference._room.isAdmin != undefined) {
+                    if(!APP.conference._room.isAdmin) {
+                       // this.setState({show:true});
+                    }else {
+                       // this.setState({show:false});
+                    }
+                }
+            }
+        },100);
     }
 
     /**
@@ -333,6 +347,7 @@ class Toolbox extends Component<Props, State> {
      * @inheritdoc
      */
     componentDidUpdate(prevProps) {
+        
         document.addEventListener('mousedown', this.handleClickOutside);
         // Ensure the dialog is closed when the toolbox becomes hidden.
         if (prevProps._overflowMenuVisible && !this.props._visible) {
@@ -347,19 +362,33 @@ class Toolbox extends Component<Props, State> {
         }
         if(this.props._screensharing == true)
         {
-            $('.video-preview .settings-button-container').css('pointer-events','none');
-            $('.video-preview .settings-button-container').css('opacity', '0.2');  
-            if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+            var videoMutedState = localStorage.getItem('camstateMuted');
+
+            if(videoMutedState == 'false' || videoMutedState == false )
             {
-                $('.toggle-view').click();
-            }
-            // APP.conference._switchCallLayout();          
+                if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true')
+                {
+                    
+                   // APP.conference._oncamerastatus();
+                }
+                
+            } 
         }
-        else
-        {
-            $('.video-preview .settings-button-container').css('pointer-events','');
-            $('.video-preview .settings-button-container').css('opacity', '1');
-        }
+        // if(this.props._screensharing == true)
+        // {
+        //     $('.video-preview .settings-button-container').css('pointer-events','none');
+        //     $('.video-preview .settings-button-container').css('opacity', '0.2');  
+        //     if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+        //     {
+        //         $('.toggle-view').click();
+        //     }
+        //     // APP.conference._switchCallLayout();          
+        // }
+        // else
+        // {
+        //     $('.video-preview .settings-button-container').css('pointer-events','');
+        //     $('.video-preview .settings-button-container').css('opacity', '1');
+        // }
     }
 
     /**
@@ -749,6 +778,8 @@ class Toolbox extends Component<Props, State> {
         {
             localStorage.setItem('prevLayout', false);
         }
+
+
         this.togglePresentTab();
         APP.conference.toggleScreenSharing();
     }    
@@ -1460,6 +1491,7 @@ class Toolbox extends Component<Props, State> {
     _renderMeetingInfoButton() {
         var moreNumbers = "https://meeting.remotepc.com/static/dialInInfo.html?room="+APP.conference.roomName;
         var phone_numbers = sessionStorage.phone_numbers;
+        var audio_muted = APP.conference.isLocalAudioMuted();
         return (
             <ul className="cw_bottom-left-menu-list"> 
 
@@ -1539,10 +1571,23 @@ class Toolbox extends Component<Props, State> {
             _raisedHand,
             t
         } = this.props;
-
-        return (
+     
+           return (
             <ul className="cw_bottom-right-menu-list">
+            { this.state.show ? 
+                 <li className='hand'>
+                    <a onClick={this._onToolbarToggleRaiseHand}
+                        type="button"
+                        className="js-open-modal present-tab">
+                        <Icon src={IconRaisedHand} />
+                         {_raisedHand ? <span>Down Hand</span> : <span>Raise Hand</span> }
+                    </a>
+                </li>
+                 : ''}
                <li>
+
+           
+               
                     <div className = 'toolbar-button-with-badge'>
                             <ParticipantsCount />
                     </div>

@@ -137,6 +137,7 @@ let connection;
 localStorage.setItem('mutede','false');
 localStorage.setItem('muteNotifications','true');
 localStorage.setItem('prevVideoStatus','');
+
 /**
  * This promise is used for chaining mutePresenterVideo calls in order to avoid  calling GUM multiple times if it takes
  * a while to finish.
@@ -265,6 +266,23 @@ function mute_single(userID) {
    
 }
 
+function unmutesingle(uId=null)
+    {
+        var to = localStorage.getItem('kickuser');
+        uId = to;
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1009;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle unmute single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    }
 function showBoard(userID)
 {
     let conntrolMessage = new Object();
@@ -374,6 +392,7 @@ class ConferenceConnector {
             this._handleConferenceJoined.bind(this));
         room.on(JitsiConferenceEvents.CONFERENCE_FAILED,
             this._onConferenceFailed.bind(this));
+
     }
 
     /**
@@ -1941,7 +1960,7 @@ export default {
         if (this.videoSwitchInProgress) {
             return Promise.reject('Switch in progress.');
         }
-
+        
         this.videoSwitchInProgress = true;
 
         return this._createDesktopTrack(options)
@@ -1975,6 +1994,8 @@ export default {
                 }
                 sendAnalytics(createScreenSharingEvent('started'));
                 logger.log('Screen sharing started');
+
+
             })
             .catch(error => {
                 this.videoSwitchInProgress = false;
@@ -2148,6 +2169,7 @@ export default {
       document.getElementById("unmuteAll").addEventListener("click", function() { unmuteAll(localParticipantIDs)});
       document.getElementById("Kickout").addEventListener("click", function() { Kickout(localParticipantIDs)});
       document.getElementById("mute_single").addEventListener("click", function() { mute_single(localParticipantIDs)});
+      document.getElementById("unmute_single").addEventListener("click", function() { unmutesingle(localParticipantIDs)});
         // add local streams when joined to the conference
 
         document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(localParticipantIDs); });
@@ -2164,7 +2186,7 @@ export default {
 
             }
 
-            if(pp < 10)
+            if(pp < 6)
             {
                 muteLocalAudio(false);
 
@@ -2424,7 +2446,6 @@ export default {
             {
                 let messageObj = JSON.parse( text );
             
-            //console.log(messageObj);
             if( messageObj.EventType == 1001 )
             {   
                 var new1=localStorage.getItem('userPid');
@@ -2579,6 +2600,38 @@ export default {
                     localStorage.setItem('prevLayout', false);
                 }
             }
+            else if( messageObj.EventType == 1009) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.userID){
+                    var nn = ' You have been unmuted by Admin dddd';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                        muteLocalAudio(false);
+                }
+                else
+                {
+                    if(messageObj.FromParticipantID != new1)
+                    {
+
+                     var nn = messageObj.name+' have been unmuted by Admin';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                       // muteLocalAudio(false);
+                    }
+                }
+
+            }
         }
         });
 
@@ -2594,7 +2647,9 @@ export default {
             this.muteAudio(muted);
         });
         APP.UI.addListener(UIEvents.VIDEO_MUTED, muted => {
+            localStorage.setItem('camstateMuted',muted);
             this.muteVideo(muted);
+
         });
 
         room.addCommandListener(this.commands.defaults.ETHERPAD,
@@ -2936,6 +2991,22 @@ export default {
         var $iframe = $('#myId');
         $iframe.attr('src',htmlPath);
 
+        setInterval(function(){ 
+            if(APP.conference.isSharingScreen == true)
+            {
+                var videoMutedState = localStorage.getItem('camstateMuted');
+
+                if(videoMutedState == 'false' || videoMutedState == false )
+                {
+                    if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true')
+                    {
+                        $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+                       //document.getElementsByClassName('participants-count-icon')[0].click();
+                    }
+                    
+                } 
+            } 
+        }, 500);
 
         // setTimeout(function(){ 
         //     document.getElementById('myId').contentDocument.location.reload(true);
@@ -2970,7 +3041,17 @@ export default {
      */
     _initDeviceList(setDeviceListChangeHandler = false) {
         const { mediaDevices } = JitsiMeetJS;
-
+        
+        var speakerscam = localStorage.getItem('speakerscam');
+        if(speakerscam != null) {
+            speakerscam = speakerscam.trim().replace("'",' ');
+            var speakerscam = jQuery("#audioOutput option:contains('"+speakerscam+"')").val();
+           // setAudioOutputDeviceId(speakerscam);
+            const { dispatch } = APP.store;
+            const setAudioOutputPromise
+                = setAudioOutputDeviceId(speakerscam, dispatch)
+                    .catch(); 
+        }
         if (mediaDevices.isDeviceListAvailable()
                 && mediaDevices.isDeviceChangeAvailable()) {
             if (setDeviceListChangeHandler) {
@@ -3585,5 +3666,29 @@ export default {
         let message = JSON.stringify( conntrolMessage );
         room.sendTextMessage(message);       
     },
+
+    _unmuteme(uId)
+    {
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1009;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle unmute single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    },
+
+    _oncamerastatus()
+    {
+        console.log('clickme');
+        $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+        $('.present-tab').click();
+       // document.getElementsByClassName('.present-tab').click();
+    }
 
 };
