@@ -1277,8 +1277,28 @@ form[class^="device-select"]{
 	.videocontainer__toptoolbar{
 		display: flex;
 		text-align: left;
+		position: relative;
+		float: left;
+		top: calc(100% - 20px);
+		width: auto;
+		.indicator-container:nth-child(1) .indicator{
+			left: auto;
+			position: relative;
+			padding:0;
+			line-height: 20px;
+			height: 20px;
+			bottom: 0;
+			width: 20px;
+			border-radius: 0;
+			border: none;
+			margin: 0;
+			background-color: rgba(0,0,0,.5);
+			svg{
+				width: 2em !important;
+				height: 1em !important;
+			}
+		}
 	}
-
 	.videocontainer__toptoolbar .indicator.raisehandindicator  {
 		background: #0772ba;
 		color: #fff;
@@ -1447,4 +1467,18 @@ form[class^="device-select"]{
 		background-color: darken(#0373bd, 10) !important;
 		border: 1px solid darken(#0373bd, 10) !important;
 	}
+}
+
+.indicator-container{
+	[class^="sc-"] {
+		display: none !important
+  	}
+}
+
+.videocontainer__toptoolbar .hide-connection-indicator {
+    display: inline-block !important;
+}
+
+.fadeoutsignal{
+	opacity: 0.4;
 }

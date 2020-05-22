@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { translate } from '../../../base/i18n';
-import { Icon, IconConnectionActive, IconConnectionInactive } from '../../../base/icons';
+import { Icon, IconConnectionActive, IconSignalFull, IconConnectionInactive, IconSignalAverage } from '../../../base/icons';
 import { JitsiParticipantConnectionStatus } from '../../../base/lib-jitsi-meet';
 import { Popover } from '../../../base/popover';
 import { ConnectionStatsTable } from '../../../connection-stats';
@@ -253,9 +253,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
     _getVisibilityClass() {
         const { connectionStatus } = this.props;
 
-        return this.state.showIndicator
-            || this.props.alwaysVisible
-            || connectionStatus === JitsiParticipantConnectionStatus.INTERRUPTED
+        return  connectionStatus === JitsiParticipantConnectionStatus.INTERRUPTED
             || connectionStatus === JitsiParticipantConnectionStatus.INACTIVE
             ? 'show-connection-indicator' : 'hide-connection-indicator';
     }
@@ -294,6 +292,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
 
         let iconWidth;
         let emptyIconWrapperClassName = 'connection_empty';
+        
 
         if (this.props.connectionStatus
             === JitsiParticipantConnectionStatus.INTERRUPTED) {
@@ -317,7 +316,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                 <Icon
                     className = 'icon-gsm-bars'
                     size = '1em'
-                    src = { IconConnectionActive } />
+                    src = { IconSignalAverage } />
             </span>,
             <span
                 className = 'connection_full'
@@ -326,7 +325,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                 <Icon
                     className = 'icon-gsm-bars'
                     size = '1em'
-                    src = { IconConnectionActive } />
+                    src = { IconSignalAverage } />
             </span>
         ];
     }
