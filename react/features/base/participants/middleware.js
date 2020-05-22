@@ -402,9 +402,10 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
               ac = APP.conference.getParticipantById(pid)._tracks[0].muted;
             } 
             var de = '';
-            if(ac){
-                de = "<button id='unmutesingle2' class='Unmute handraise-button'>Unmute</button> <button class='ignore handraise-button'>Ignore</button>";
-            }
+            // if(ac){
+            //     // de = "<button id='unmutesingle2' class='Unmute handraise-button'>Unmute</button> <button class='ignore handraise-button'>Ignore</button>";
+            // }
+            document.getElementById('hidden-jitsi-audio').play();
            APP.store.dispatch(showNotification({
                     descriptionKey:de,
                      titleKey: getParticipantDisplayName(getState, pid) + ' rased his hand',
