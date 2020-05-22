@@ -2604,7 +2604,7 @@ export default {
 
                 var new1=localStorage.getItem('userPid');
                 if(new1 == messageObj.userID){
-                    var nn = ' You have been unmuted by Admin dddd';
+                    var nn = ' You have been unmuted by Admin';
                      if(localStorage.muteNotifications=='false'){
                          APP.store.dispatch(showNotification({
                             descriptionKey: nn,
