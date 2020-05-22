@@ -1578,7 +1578,7 @@ class Toolbox extends Component<Props, State> {
                  <li className='hand'>
                     <a onClick={this._onToolbarToggleRaiseHand}
                         type="button"
-                        className="js-open-modal present-tab">
+                        className="js-open-modal present-tab" id="raiseHandId">
                         <Icon src={IconRaisedHand} />
                          {_raisedHand ? <span>Down Hand</span> : <span>Raise Hand</span> }
                     </a>
