@@ -332,9 +332,9 @@ class Toolbox extends Component<Props, State> {
             if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
                 if (APP.conference._room.isAdmin != undefined) {
                     if(!APP.conference._room.isAdmin) {
-                       // this.setState({show:true});
+                        this.setState({show:true});
                     }else {
-                       // this.setState({show:false});
+                        this.setState({show:false});
                     }
                 }
             }
