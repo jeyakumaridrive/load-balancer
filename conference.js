@@ -3041,10 +3041,10 @@ export default {
 
                 if(videoMutedState == 'false' || videoMutedState == false )
                 {
-                    if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true')
+                    if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true' && APP.conference.isSharingScreen == true)
                     {
                         
-                        //$('.video-preview .settings-button-container').find('.toolbox-icon').click();
+                        $('.video-preview .settings-button-container').find('.toolbox-icon').click();
                        //document.getElementsByClassName('participants-count-icon')[0].click();
                        //APP.conference.muteVideo(false);
                     }
