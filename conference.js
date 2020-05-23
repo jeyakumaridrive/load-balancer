@@ -2186,7 +2186,7 @@ export default {
                 }
 
             }
-        }, 4000);
+        }, 3400);
             if(pp < 6)
             {
                 muteLocalAudio(false);
@@ -2239,7 +2239,7 @@ export default {
                 }
 
             }
-             }, 4000);
+             }, 3400);
             logger.log(`USER ${id} connnected:`, user);
             APP.UI.addUser(user);
         });
