@@ -2178,6 +2178,7 @@ export default {
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
             var pp = room.getParticipants().length + 1;
            //alert(pp)
+        setTimeout(function(){ 
             if(pp==3) {
                 //alert(pp)
              if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
@@ -2185,7 +2186,7 @@ export default {
                 }
 
             }
-
+        }, 3400);
             if(pp < 6)
             {
                 muteLocalAudio(false);
@@ -2229,6 +2230,7 @@ export default {
             }
             var pp = room.getParticipants().length + 1;
            // alert(pp)
+           setTimeout(function(){
             if(pp==3) {
              //   alert()
                // APP.store.getState()['features/video-layout'].tileViewEnabled = true
@@ -2237,6 +2239,7 @@ export default {
                 }
 
             }
+             }, 3400);
             logger.log(`USER ${id} connnected:`, user);
             APP.UI.addUser(user);
         });
@@ -3003,7 +3006,7 @@ export default {
                         
                         //$('.video-preview .settings-button-container').find('.toolbox-icon').click();
                        //document.getElementsByClassName('participants-count-icon')[0].click();
-                       APP.conference.muteVideo(false);
+                       //APP.conference.muteVideo(false);
                     }
                     else
                     {
