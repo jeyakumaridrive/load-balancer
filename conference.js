@@ -3040,13 +3040,19 @@ export default {
                 {
                     if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true')
                     {
-                        $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+                        
+                        //$('.video-preview .settings-button-container').find('.toolbox-icon').click();
                        //document.getElementsByClassName('participants-count-icon')[0].click();
+                       APP.conference.muteVideo(false);
+                    }
+                    else
+                    {
+
                     }
                     
                 } 
             } 
-        }, 500);
+        }, 5000);
 
         // setTimeout(function(){ 
         //     document.getElementById('myId').contentDocument.location.reload(true);
