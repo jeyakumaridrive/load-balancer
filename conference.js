@@ -3046,7 +3046,7 @@ export default {
                         
                         //$('.video-preview .settings-button-container').find('.toolbox-icon').click();
                        //document.getElementsByClassName('participants-count-icon')[0].click();
-                       APP.conference.muteVideo(false);
+                       //APP.conference.muteVideo(false);
                     }
                     else
                     {
