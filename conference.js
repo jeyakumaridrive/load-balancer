@@ -2189,7 +2189,7 @@ export default {
         // }, 3400);
             if(pp < 6)
             {
-                // muteLocalAudio(false);
+                muteLocalAudio(false);
 
             }
             else
