@@ -2178,7 +2178,7 @@ export default {
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
             var pp = room.getParticipants().length + 1;
            //alert(pp)
-        setTimeout(function(){ 
+        // setTimeout(function(){ 
             if(pp==3) {
                 //alert(pp)
              if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
@@ -2186,7 +2186,7 @@ export default {
                 }
 
             }
-        }, 3400);
+        // }, 3400);
             if(pp < 6)
             {
                 muteLocalAudio(false);
