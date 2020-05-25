@@ -2188,6 +2188,18 @@ export default {
             }
         // }, 3400);
            
+           if(pp >= config.startAudioMuted)
+           {
+                var de = "<button class='ignore handraise-button'>Okay</button>";
+                const displayName
+                = APP.store.getState()['features/base/settings'].displayName;
+
+                APP.store.dispatch(showNotification({
+                        descriptionKey:de,
+                         titleKey: 'Your mic is off due to the size of meeting room.',
+                        logoIconCustom: displayName
+                },10000));
+           }
             this._onConferenceJoined();
         });
 
