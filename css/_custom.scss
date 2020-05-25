@@ -1448,7 +1448,7 @@ form[class^="device-select"]{
 	box-shadow: none !important;
 }
 
-.tile-view .active-speaker {
+.tile-view .active-speaker, .filmstrip__videos .videocontainer.active-speaker {
 	box-shadow: 0 0 0 2px #0772ba !important;
 }
 
