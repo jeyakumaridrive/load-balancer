@@ -327,15 +327,26 @@ class Toolbox extends Component<Props, State> {
         window.addEventListener('resize', this._onResize);
         this.updateMeetingInfo();
         setInterval(() => {
-
             //if(APP.conference.isLocalAudioMuted() && !APP.conference._room.isAdmin) {
             if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
-                if (APP.conference._room.isAdmin != undefined) {
-                    if(!APP.conference._room.isAdmin) {
-                        this.setState({show:true});
-                    }else {
+                if (APP.conference._room.isAdmin != undefined)
+                {
+                    if(APP.conference._room.isAdmin == true || APP.conference._room.isAdmin == "true")
+                    {
                         this.setState({show:false});
                     }
+                    else if(APP.conference._room.isAdmin == false || APP.conference._room.isAdmin == "false")
+                    {
+                        this.setState({show:true});
+                    }
+                    else
+                    {
+                        this.setState({show:false});
+                    }
+                }
+                else
+                {
+                    this.setState({show:false});
                 }
             }
         },100);
