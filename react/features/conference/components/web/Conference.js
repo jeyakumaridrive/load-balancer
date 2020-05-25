@@ -153,7 +153,7 @@ class Conference extends AbstractConference<Props, *> {
                 const room_id = APP.conference.roomName;
                 console.log('This is your room id =>>>',room_id,socket.id);
                     socket.on("want_to_join", data => {
-                        if(sessionStorage.isAdmin) {
+                        if(APP.conference._room.isAdmin) {
                             _t.pendingUsers.push(data);
                             _t.askForJoin();
                             console.log('Request came but i am moderator!',_t);
@@ -171,11 +171,20 @@ class Conference extends AbstractConference<Props, *> {
                                 console.log('User joined =>>>',data);
                             });
                             console.log('user =>>>> after update',user);
+                            sessionStorage.isAdmin = false;
+                            // APP.conference._room.isAdmin = '';
+                            localStorage.isAdmin = false;
                             $.get(`${parentApi}/api/v1/get-meeting-by-slug?slug=${room_id}`).then((meeting) => {
                                 if(meeting.user_id == user.id) {
                                     sessionStorage.isAdmin = true;
                                     APP.conference._room.isAdmin = true;
                                     localStorage.isAdmin = true;
+                                }
+                                else
+                                {
+                                    sessionStorage.isAdmin = false;
+                                    APP.conference._room.isAdmin = false;
+                                    localStorage.isAdmin = false; 
                                 }
                             }).catch(() => { console.log('Forbidden, Not Real User')});
                             //now remove the loader from the meetolecons server
