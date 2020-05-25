@@ -395,10 +395,15 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
         //     },
         //     titleKey: 'notify.raisedHand'
         // }, NOTIFICATION_TIMEOUT));
-        document.getElementById('hand-popup').classList.add('show');
+        
+
 
         var ac = true;
         if(APP.conference._room.isAdmin == true) {
+            document.getElementById('hand-popup').classList.add('show');
+            var element = document.getElementById("new-toolbox");
+            element.classList.add("visible");
+
             localStorage.setItem('kickuser',pid);
              if(APP.conference.getParticipantById(pid)._tracks[0]  != undefined){
               ac = APP.conference.getParticipantById(pid)._tracks[0].muted;
