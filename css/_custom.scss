@@ -1428,7 +1428,7 @@ form[class^="device-select"]{
 	box-shadow: none !important;
 }
 
-.tile-view .active-speaker {
+.tile-view .active-speaker, .filmstrip__videos .videocontainer.active-speaker {
 	box-shadow: 0 0 0 2px #0772ba !important;
 }
 
@@ -1447,4 +1447,38 @@ form[class^="device-select"]{
 		background-color: darken(#0373bd, 10) !important;
 		border: 1px solid darken(#0373bd, 10) !important;
 	}
+}
+
+
+
+.rasie-hand-alert {
+	display: none;
+	cursor: pointer;
+    position: absolute;
+    top: -70px;
+    background: #fff;
+    padding: 15px;
+    font-size: 15px;
+    white-space: pre;
+    margin: auto;
+	left: -45%;
+	// border-top-left-radius: 4px;
+	// border-top-right-radius: 4px;
+	border-radius: 4px;
+	&.show{
+		display: flex;
+	}
+  &:before{
+	border: solid;
+	border-color: #ffffff transparent;
+	border-width: 6px 6px 0 6px;
+	content: "";
+	left: 51%;
+	bottom: -6px;
+	position: absolute;
+  }
+}
+
+.dynamic-shadow{
+	box-shadow: none !important;
 }
