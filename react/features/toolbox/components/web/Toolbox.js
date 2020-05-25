@@ -795,7 +795,7 @@ class Toolbox extends Component<Props, State> {
             localStorage.setItem('prevLayout', false);
         }
 
-
+        APP.conference._ChecklayoutForParticipants();
         this.togglePresentTab();
         APP.conference.toggleScreenSharing();
     }    
@@ -810,9 +810,10 @@ class Toolbox extends Component<Props, State> {
         console.log('doing _doToggleScreenshare');
         this._doToggleScreenshare();
         //APP.conference.toggleScreenSharing();
+        APP.conference._layoutToPrevStage();
         setTimeout(() => {
             console.log('setting to prevlayout change');
-            APP.conference._layoutToPrevStage();
+            //APP.conference._layoutToPrevStage();
             console.log('closing whiteboard')
             document.getElementById("myId").style.display = 'none';
             console.log('closed whiteboard')
