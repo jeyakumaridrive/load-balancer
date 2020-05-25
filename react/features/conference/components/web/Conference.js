@@ -153,7 +153,7 @@ class Conference extends AbstractConference<Props, *> {
                 const room_id = APP.conference.roomName;
                 console.log('This is your room id =>>>',room_id,socket.id);
                     socket.on("want_to_join", data => {
-                        if(sessionStorage.isAdmin) {
+                        if(APP.conference._room.isAdmin) {
                             _t.pendingUsers.push(data);
                             _t.askForJoin();
                             console.log('Request came but i am moderator!',_t);
