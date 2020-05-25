@@ -145,10 +145,17 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
         const visibilityClass = this._getVisibilityClass();
         const rootClassNames = `indicator-container ${visibilityClass}`;
 
-        const colorClass = this._getConnectionColorClass();
+        let colorClass = this._getConnectionColorClass();
         const indicatorContainerClassNames
             = `connection-indicator indicator ${colorClass}`;
-
+        let connectionIcon;
+        if(colorClass = 'status-high') {
+            connectionIcon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA0MDIuNSAyNTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMi41IDI1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTYxLjIsMjU0LjlIMTIuN2MtNC40LDAtOC0zLjYtOC04di03Ni41YzAtNC40LDMuNi04LDgtOGg0OC41YzQuNCwwLDgsMy42LDgsOHY3Ni41DQoJQzY5LjIsMjUxLjMsNjUuNiwyNTQuOSw2MS4yLDI1NC45eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTE2My40LDI1NC44aC00OC41Yy00LjQsMC04LTMuNi04LTh2LTExM2MwLTQuNCwzLjYtOCw4LThoNDguNWM0LjQsMCw4LDMuNiw4LDh2MTEzDQoJQzE3MS40LDI1MS4yLDE2Ny44LDI1NC44LDE2My40LDI1NC44eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTI3NC42LDI1NS4xaC00OS45Yy00LDAtNy4zLTQuMS03LjMtOS4yVjY4LjZjMC01LDMuMy05LjIsNy4zLTkuMmg0OS45YzQsMCw3LjMsNC4xLDcuMyw5LjJ2MTc3LjMNCglDMjgxLjksMjUwLjksMjc4LjcsMjU1LjEsMjc0LjYsMjU1LjF6Ii8+DQo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzg4LjQsMjU1LjFoLTQ4LjVjLTQuNCwwLTgtNC41LTgtMTBWMTIuOGMwLTUuNSwzLjYtMTAsOC0xMGg0OC41YzQuNCwwLDgsNC41LDgsMTBWMjQ1DQoJQzM5Ni40LDI1MC41LDM5Mi44LDI1NS4xLDM4OC40LDI1NS4xeiIvPg0KPC9zdmc+DQo='
+        } else if(colorClass = 'status-med'){
+            connectionIcon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA0MDIuNSAyNTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMi41IDI1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQoJLnN0MXtmaWxsOiM2RDZFNzE7fQ0KPC9zdHlsZT4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik02MS4yLDI1NC45SDEyLjdjLTQuNCwwLTgtMy42LTgtOHYtNzYuNWMwLTQuNCwzLjYtOCw4LThoNDguNWM0LjQsMCw4LDMuNiw4LDh2NzYuNQ0KCUM2OS4yLDI1MS4zLDY1LjYsMjU0LjksNjEuMiwyNTQuOXoiLz4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xNjMuNCwyNTQuOGgtNDguNWMtNC40LDAtOC0zLjYtOC04di0xMTNjMC00LjQsMy42LTgsOC04aDQ4LjVjNC40LDAsOCwzLjYsOCw4djExMw0KCUMxNzEuNCwyNTEuMiwxNjcuOCwyNTQuOCwxNjMuNCwyNTQuOHoiLz4NCjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yNzQuNiwyNTUuMWgtNDkuOWMtNCwwLTcuMy00LjEtNy4zLTkuMlY2OC42YzAtNSwzLjMtOS4yLDcuMy05LjJoNDkuOWM0LDAsNy4zLDQuMSw3LjMsOS4ydjE3Ny4zDQoJQzI4MS45LDI1MC45LDI3OC43LDI1NS4xLDI3NC42LDI1NS4xeiIvPg0KPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4OC40LDI1NS4xaC00OC41Yy00LjQsMC04LTQuNS04LTEwVjEyLjhjMC01LjUsMy42LTEwLDgtMTBoNDguNWM0LjQsMCw4LDQuNSw4LDEwVjI0NQ0KCUMzOTYuNCwyNTAuNSwzOTIuOCwyNTUuMSwzODguNCwyNTUuMXoiLz4NCjwvc3ZnPg0K'
+        } else if(colorClass = 'status-low'){
+            connectionIcon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA0MDIuNSAyNTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMi41IDI1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQoJLnN0MXtmaWxsOiM2RDZFNzE7fQ0KPC9zdHlsZT4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik02MS4yLDI1NC45SDEyLjdjLTQuNCwwLTgtMy42LTgtOHYtNzYuNWMwLTQuNCwzLjYtOCw4LThoNDguNWM0LjQsMCw4LDMuNiw4LDh2NzYuNQ0KCUM2OS4yLDI1MS4zLDY1LjYsMjU0LjksNjEuMiwyNTQuOXoiLz4NCjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xNjMuNCwyNTQuOGgtNDguNWMtNC40LDAtOC0zLjYtOC04di0xMTNjMC00LjQsMy42LTgsOC04aDQ4LjVjNC40LDAsOCwzLjYsOCw4djExMw0KCUMxNzEuNCwyNTEuMiwxNjcuOCwyNTQuOCwxNjMuNCwyNTQuOHoiLz4NCjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yNzQuNiwyNTUuMWgtNDkuOWMtNCwwLTcuMy00LjEtNy4zLTkuMlY2OC42YzAtNSwzLjMtOS4yLDcuMy05LjJoNDkuOWM0LDAsNy4zLDQuMSw3LjMsOS4ydjE3Ny4zDQoJQzI4MS45LDI1MC45LDI3OC43LDI1NS4xLDI3NC42LDI1NS4xeiIvPg0KPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4OC40LDI1NS4xaC00OC41Yy00LjQsMC04LTQuNS04LTEwVjEyLjhjMC01LjUsMy42LTEwLDgtMTBoNDguNWM0LjQsMCw4LDQuNSw4LDEwVjI0NQ0KCUMzOTYuNCwyNTAuNSwzOTIuOCwyNTUuMSwzODguNCwyNTUuMXoiLz4NCjwvc3ZnPg0K'
+        }
         return (
             <Popover
                 className = { rootClassNames }
@@ -160,7 +167,8 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                         className = { indicatorContainerClassNames }
                         style = {{ fontSize: this.props.iconSize }}>
                         <div className = 'connection indicatoricon'>
-                            { this._renderIcon() }
+                            {/* {this._renderIcon()} */}
+                            <img src={connectionIcon}  alt='satus'/>
                         </div>
                     </div>
                 </div>
@@ -252,8 +260,9 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
      */
     _getVisibilityClass() {
         const { connectionStatus } = this.props;
-
-        return  connectionStatus === JitsiParticipantConnectionStatus.INTERRUPTED
+        return this.state.showIndicator
+            || this.props.alwaysVisible
+            || connectionStatus === JitsiParticipantConnectionStatus.INTERRUPTED
             || connectionStatus === JitsiParticipantConnectionStatus.INACTIVE
             ? 'show-connection-indicator' : 'hide-connection-indicator';
     }
@@ -313,13 +322,19 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
             <span
                 className = { emptyIconWrapperClassName }
                 key = 'icon-empty'>
-                    <img src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA0MDIuNSAyNTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMi41IDI1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTYxLjIsMjU0LjlIMTIuN2MtNC40LDAtOC0zLjYtOC04di03Ni41YzAtNC40LDMuNi04LDgtOGg0OC41YzQuNCwwLDgsMy42LDgsOHY3Ni41DQoJQzY5LjIsMjUxLjMsNjUuNiwyNTQuOSw2MS4yLDI1NC45eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTE2My40LDI1NC44aC00OC41Yy00LjQsMC04LTMuNi04LTh2LTExM2MwLTQuNCwzLjYtOCw4LThoNDguNWM0LjQsMCw4LDMuNiw4LDh2MTEzDQoJQzE3MS40LDI1MS4yLDE2Ny44LDI1NC44LDE2My40LDI1NC44eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTI3NC42LDI1NS4xaC00OS45Yy00LDAtNy4zLTQuMS03LjMtOS4yVjY4LjZjMC01LDMuMy05LjIsNy4zLTkuMmg0OS45YzQsMCw3LjMsNC4xLDcuMyw5LjJ2MTc3LjMNCglDMjgxLjksMjUwLjksMjc4LjcsMjU1LjEsMjc0LjYsMjU1LjF6Ii8+DQo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzg4LjQsMjU1LjFoLTQ4LjVjLTQuNCwwLTgtNC41LTgtMTBWMTIuOGMwLTUuNSwzLjYtMTAsOC0xMGg0OC41YzQuNCwwLDgsNC41LDgsMTBWMjQ1DQoJQzM5Ni40LDI1MC41LDM5Mi44LDI1NS4xLDM4OC40LDI1NS4xeiIvPg0KPC9zdmc+DQo=' />
+                <Icon
+                    className = 'icon-gsm-bars'
+                    size = '1em'
+                    src = { IconSignalAverage } />
             </span>,
             <span
                 className = 'connection_full'
                 key = 'icon-full'
                 style = {{ width: iconWidth }}>
-                    <img src='data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA0MDIuNSAyNTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMi41IDI1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTYxLjIsMjU0LjlIMTIuN2MtNC40LDAtOC0zLjYtOC04di03Ni41YzAtNC40LDMuNi04LDgtOGg0OC41YzQuNCwwLDgsMy42LDgsOHY3Ni41DQoJQzY5LjIsMjUxLjMsNjUuNiwyNTQuOSw2MS4yLDI1NC45eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTE2My40LDI1NC44aC00OC41Yy00LjQsMC04LTMuNi04LTh2LTExM2MwLTQuNCwzLjYtOCw4LThoNDguNWM0LjQsMCw4LDMuNiw4LDh2MTEzDQoJQzE3MS40LDI1MS4yLDE2Ny44LDI1NC44LDE2My40LDI1NC44eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTI3NC42LDI1NS4xaC00OS45Yy00LDAtNy4zLTQuMS03LjMtOS4yVjY4LjZjMC01LDMuMy05LjIsNy4zLTkuMmg0OS45YzQsMCw3LjMsNC4xLDcuMyw5LjJ2MTc3LjMNCglDMjgxLjksMjUwLjksMjc4LjcsMjU1LjEsMjc0LjYsMjU1LjF6Ii8+DQo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzg4LjQsMjU1LjFoLTQ4LjVjLTQuNCwwLTgtNC41LTgtMTBWMTIuOGMwLTUuNSwzLjYtMTAsOC0xMGg0OC41YzQuNCwwLDgsNC41LDgsMTBWMjQ1DQoJQzM5Ni40LDI1MC41LDM5Mi44LDI1NS4xLDM4OC40LDI1NS4xeiIvPg0KPC9zdmc+DQo=' />
+                <Icon
+                    className = 'icon-gsm-bars'
+                    size = '1em'
+                    src = { IconSignalAverage } />
             </span>
         ];
     }
