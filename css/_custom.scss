@@ -1479,6 +1479,10 @@ form[class^="device-select"]{
   }
 }
 
-.dynamic-shadow{
-	box-shadow: none !important;
+// .dynamic-shadow{
+// 	box-shadow: none !important;
+// }
+
+#dominantspeakerindicator{
+	display: none !important;
 }
