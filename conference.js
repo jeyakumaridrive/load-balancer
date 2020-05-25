@@ -2188,7 +2188,7 @@ export default {
             }
         // }, 3400);
            
-           if(pp >= config.startAudioMuted)
+           if(pp > config.startAudioMuted)
            {
                 var de = "<button class='ignore handraise-button'>Okay</button>";
                 const displayName
