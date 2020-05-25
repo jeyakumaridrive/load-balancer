@@ -1516,3 +1516,9 @@ form[class^="device-select"]{
 		min-width:1.5em ;
 	}
 }
+
+.connection-indicator{
+	&.status-high{
+		display: none !important;
+	}
+}
