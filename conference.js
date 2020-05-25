@@ -790,7 +790,7 @@ export default {
                 options.roomName, {
                     startAudioOnly: config.startAudioOnly,
                     startScreenSharing: config.startScreenSharing,
-                    startWithAudioMuted: true
+                    startWithAudioMuted: config.startWithAudioMuted
                     || config.startSilent
                     || isUserInteractionRequiredForUnmute(APP.store.getState()),
                     startWithVideoMuted: config.startWithVideoMuted
@@ -2187,23 +2187,7 @@ export default {
 
             }
         // }, 3400);
-            if(pp < 100)
-            {
-                muteLocalAudio(false);
-
-            }
-            else
-            {
-                
-                const displayName
-                = APP.store.getState()['features/base/settings'].displayName;
-
-                APP.store.dispatch(showNotification({
-                    descriptionKey:'Your mic is off due to the size of the meeting.',
-                    titleKey:  displayName,
-                    logoIconCustom: displayName
-                },2500));
-            }
+           
             this._onConferenceJoined();
         });
 
