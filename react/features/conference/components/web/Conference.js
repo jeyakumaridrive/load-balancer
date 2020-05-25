@@ -171,6 +171,9 @@ class Conference extends AbstractConference<Props, *> {
                                 console.log('User joined =>>>',data);
                             });
                             console.log('user =>>>> after update',user);
+                            sessionStorage.isAdmin = false;
+                            APP.conference._room.isAdmin = false;
+                            localStorage.isAdmin = false;
                             $.get(`${parentApi}/api/v1/get-meeting-by-slug?slug=${room_id}`).then((meeting) => {
                                 if(meeting.user_id == user.id) {
                                     sessionStorage.isAdmin = true;
