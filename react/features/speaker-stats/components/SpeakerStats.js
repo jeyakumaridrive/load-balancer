@@ -81,6 +81,8 @@ class SpeakerStats extends Component<Props, State> {
         this.muteall = this.muteall.bind(this);
         this.unmuteall = this.unmuteall.bind(this);
         this.unmuteMe = this.unmuteMe.bind(this);
+        this.muteMe = this.muteMe.bind(this);
+        this.LowerHand = this.LowerHand.bind(this);
         
     }
       muteall = (e) => {
@@ -103,6 +105,14 @@ class SpeakerStats extends Component<Props, State> {
      unmuteMe = (uId) =>
      {
         APP.conference._unmuteme(uId);
+     }
+    muteMe = (uId) =>
+     {
+        APP.conference._muteme(uId);
+     }    
+     LowerHand = (uId) =>
+     {
+        APP.conference._LowerHand(uId);
      }
      onCloseSidebar = () =>{
          $('#people_sidebar').removeClass('show-people-list')
@@ -220,9 +230,15 @@ class SpeakerStats extends Component<Props, State> {
             } 
 
             if(rh==true || rh=='true') {
+                var customStyle = '';
+                if(APP.conference._room.isAdmin)
+                {
+                    customStyle = "pointer";
+                }
+                
                raise_hand = (
-                     <div className='raisehand-active'>
-                        <Icon src={IconRaisedHand} />
+                     <div className='raisehand-active' title="Raise Hand">
+                        <Icon src={IconRaisedHand} onClick={() => { this.LowerHand(userId)} } style={{ cursor: customStyle }} title="Raise Hand"/>
                      </div>
                 );
                  
@@ -236,15 +252,20 @@ class SpeakerStats extends Component<Props, State> {
                 }
                 
                 audio_status = (
-                     <div className='audio-muted'>
-                        <Icon src={IconMicDisabled} onClick={() => { this.unmuteMe(userId) } } style={{ cursor: customStyle }}/>
+                     <div className='audio-muted' title="Unmute">
+                        <Icon src={IconMicDisabled} onClick={() => { this.unmuteMe(userId) } } style={{ cursor: customStyle }} title="Unmute"/>
                      </div>
                 );
                  
             } else{
+                var customStyle = '';
+                if(APP.conference._room.isAdmin)
+                {
+                    customStyle = "pointer";
+                }
                 audio_status = (
-                    <div className='audio-active'>
-                       <Icon src={IconMicrophone} />
+                    <div className='audio-active' title="Mute">
+                       <Icon src={IconMicrophone} onClick={() => { this.muteMe(userId) } } style={{ cursor: customStyle }} title="Mute"/>
                     </div>
                 );
             }
