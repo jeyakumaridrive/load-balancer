@@ -789,6 +789,7 @@ class Toolbox extends Component<Props, State> {
         if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
         {
             localStorage.setItem('prevLayout', true);
+            $('.toggle-view').click();
         }
         else
         {
