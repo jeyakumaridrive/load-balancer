@@ -395,6 +395,8 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
         //     },
         //     titleKey: 'notify.raisedHand'
         // }, NOTIFICATION_TIMEOUT));
+        document.getElementById('hand-popup').classList.add('show');
+
         var ac = true;
         if(APP.conference._room.isAdmin == true) {
             localStorage.setItem('kickuser',pid);
@@ -402,14 +404,15 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
               ac = APP.conference.getParticipantById(pid)._tracks[0].muted;
             } 
             var de = '';
-            if(ac){
-                de = "<button id='unmutesingle2' class='Unmute handraise-button'>Unmute</button> <button class='ignore handraise-button'>Ignore</button>";
-            }
-           APP.store.dispatch(showNotification({
-                    descriptionKey:de,
-                     titleKey: getParticipantDisplayName(getState, pid) + ' rased his hand',
-                    logoIconCustom: getParticipantDisplayName(getState, pid)
-            }));
+            // if(ac){
+            //     // de = "<button id='unmutesingle2' class='Unmute handraise-button'>Unmute</button> <button class='ignore handraise-button'>Ignore</button>";
+            // }
+            document.getElementById('hidden-jitsi-audio').play();
+        //    APP.store.dispatch(showNotification({
+        //             descriptionKey:de,
+        //              titleKey: getParticipantDisplayName(getState, pid) + ' rased his hand',
+        //             logoIconCustom: getParticipantDisplayName(getState, pid)
+        //     }));
        }
     }
 }

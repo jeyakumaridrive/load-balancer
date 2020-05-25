@@ -153,7 +153,7 @@ class Conference extends AbstractConference<Props, *> {
                 const room_id = APP.conference.roomName;
                 console.log('This is your room id =>>>',room_id,socket.id);
                     socket.on("want_to_join", data => {
-                        if(sessionStorage.isAdmin) {
+                        if(APP.conference._room.isAdmin) {
                             _t.pendingUsers.push(data);
                             _t.askForJoin();
                             console.log('Request came but i am moderator!',_t);
@@ -163,22 +163,24 @@ class Conference extends AbstractConference<Props, *> {
                     var waitForSocketId = setInterval(function() {
                         if(socket.id != undefined && socket.id != '' && user != undefined && user != '') {
                             console.log('user =>>>>',user,socket.id);
-                            var isAdmin = user.type == 'user' && (
-                                user.userType == 'User' || 
-                                user.userType == 'Super Admin' ||
-                                user.userType == 'Admin Sub User' || 
-                                user.userType == 'Sub User') ? true : false ;
                             socket.on('connect', () => {
-                                socket.emit('join',{id:room_id,name:sessionStorage.room_name, domain: server.domain, latency: server.latency, media_server: deploymentInfo.userRegion},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
+                                socket.emit('join',{id:room_id,name:sessionStorage.room_name, domain: server.domain, latency: server.latency, media_server: deploymentInfo.userRegion},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name});
                             });
-                            socket.emit('join',{id:room_id,name:sessionStorage.room_name, domain: server.domain, latency: server.latency, media_server: deploymentInfo.userRegion},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name,presenter:isAdmin});
+                            socket.emit('join',{id:room_id,name:sessionStorage.room_name, domain: server.domain, latency: server.latency, media_server: deploymentInfo.userRegion},{id:user.id,socket_id:socket.id,name:user.firstname != undefined ? user.firstname : user._name});
                             socket.on('user_joined', data => {
                                 console.log('User joined =>>>',data);
-                            })
+                            });
                             console.log('user =>>>> after update',user);
-                            sessionStorage.isAdmin = isAdmin;
-                            APP.conference._room.isAdmin = isAdmin;
-                            localStorage.isAdmin = isAdmin;
+                            sessionStorage.isAdmin = false;
+                            APP.conference._room.isAdmin = false;
+                            localStorage.isAdmin = false;
+                            $.get(`${parentApi}/api/v1/get-meeting-by-slug?slug=${room_id}`).then((meeting) => {
+                                if(meeting.user_id == user.id) {
+                                    sessionStorage.isAdmin = true;
+                                    APP.conference._room.isAdmin = true;
+                                    localStorage.isAdmin = true;
+                                }
+                            }).catch(() => { console.log('Forbidden, Not Real User')});
                             //now remove the loader from the meetolecons server
                             _t.props.dispatch(finishedLoading());
                             clearInterval(waitForSocketId);

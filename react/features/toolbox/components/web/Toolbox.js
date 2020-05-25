@@ -267,7 +267,7 @@ class Toolbox extends Component<Props, State> {
         this.stopScreen = this.stopScreen.bind(this);
         this.state = {
             windowWidth: window.innerWidth,
-            show:false,
+            show: false,
         };
         this._onToolbarToggleWhiteboard = this._onToolbarToggleWhiteboard.bind(this);
         this.showMoreNumbers = this.showMoreNumbers.bind(this);
@@ -404,6 +404,11 @@ class Toolbox extends Component<Props, State> {
 
         window.removeEventListener('resize', this._onResize);
     }
+
+
+
+
+
     /**
     * Set the wrapper ref
     */
@@ -1569,28 +1574,30 @@ class Toolbox extends Component<Props, State> {
             _hideInviteButton,
             _overflowMenuVisible,
             _raisedHand,
+            _participants,
             t
-        } = this.props;
-     
+        } = this.props;         
+            const rh = _participants.filter(participant => participant.raisedHand);
            return (
             <ul className="cw_bottom-right-menu-list">
             { this.state.show ? 
                  <li className='hand'>
                     <a onClick={this._onToolbarToggleRaiseHand}
                         type="button"
-                        className="js-open-modal present-tab">
+                        className="js-open-modal present-tab" id="raiseHandId">
                         <Icon src={IconRaisedHand} />
                          {_raisedHand ? <span>Down Hand</span> : <span>Raise Hand</span> }
                     </a>
                 </li>
                  : ''}
                <li>
-
-           
-               
                     <div className = 'toolbar-button-with-badge'>
                             <ParticipantsCount />
                     </div>
+                    {/* { (rh.length >= 1 && !this.state.show) && 
+                       ( <div className='rasie-hand-alert' > 
+                        User raised hand </div> )
+                     } */}
                 </li>         
                 <li>
                     <div className = 'toolbar-button-with-badge'>
@@ -1600,6 +1607,7 @@ class Toolbox extends Component<Props, State> {
                             <ChatCounter />
                         </a>
                     </div>
+
                 </li>
                 {
                     this.props._screensharing != true ? (<li id="present-tab-li">
@@ -2108,6 +2116,7 @@ function _mapStateToProps(state) {
     const buttons = new Set(interfaceConfig.TOOLBAR_BUTTONS);
 
     return {
+        _participants: state['features/base/participants'],
         _chatOpen: state['features/chat'].isOpen,
         _conference: conference,
         _desktopSharingEnabled: desktopSharingEnabled,

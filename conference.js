@@ -790,7 +790,7 @@ export default {
                 options.roomName, {
                     startAudioOnly: config.startAudioOnly,
                     startScreenSharing: config.startScreenSharing,
-                    startWithAudioMuted: true
+                    startWithAudioMuted: config.startWithAudioMuted
                     || config.startSilent
                     || isUserInteractionRequiredForUnmute(APP.store.getState()),
                     startWithVideoMuted: config.startWithVideoMuted
@@ -2178,6 +2178,7 @@ export default {
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
             var pp = room.getParticipants().length + 1;
            //alert(pp)
+        // setTimeout(function(){ 
             if(pp==3) {
                 //alert(pp)
              if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
@@ -2185,24 +2186,8 @@ export default {
                 }
 
             }
-
-            if(pp < 6)
-            {
-                muteLocalAudio(false);
-
-            }
-            else
-            {
-                
-                const displayName
-                = APP.store.getState()['features/base/settings'].displayName;
-
-                APP.store.dispatch(showNotification({
-                    descriptionKey:'Your mic is off due to the size of the meeting.',
-                    titleKey:  displayName,
-                    logoIconCustom: displayName
-                },2500));
-            }
+        // }, 3400);
+           
             this._onConferenceJoined();
         });
 
@@ -2229,6 +2214,7 @@ export default {
             }
             var pp = room.getParticipants().length + 1;
            // alert(pp)
+           setTimeout(function(){
             if(pp==3) {
              //   alert()
                // APP.store.getState()['features/video-layout'].tileViewEnabled = true
@@ -2237,6 +2223,7 @@ export default {
                 }
 
             }
+             }, 3400);
             logger.log(`USER ${id} connnected:`, user);
             APP.UI.addUser(user);
         });
@@ -2604,7 +2591,7 @@ export default {
 
                 var new1=localStorage.getItem('userPid');
                 if(new1 == messageObj.userID){
-                    var nn = ' You have been unmuted by Admin dddd';
+                    var nn = ' You have been unmuted by Admin';
                      if(localStorage.muteNotifications=='false'){
                          APP.store.dispatch(showNotification({
                             descriptionKey: nn,
@@ -2631,6 +2618,46 @@ export default {
                     }
                 }
 
+            }
+            else if( messageObj.EventType == 1010) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.userID){
+                    var nn = ' You have been muted by Admin';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                        muteLocalAudio(true);
+                }
+                else
+                {
+                    if(messageObj.FromParticipantID != new1)
+                    {
+
+                     var nn = messageObj.name+' have been muted by Admin';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                       // muteLocalAudio(false);
+                    }
+                }
+
+            }
+            else if( messageObj.EventType == 1011) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.userID)
+                {
+                    document.getElementById('raiseHandId').click();
+                }
             }
         }
         });
@@ -2998,15 +3025,21 @@ export default {
 
                 if(videoMutedState == 'false' || videoMutedState == false )
                 {
-                    if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true')
+                    if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true' && APP.conference.isSharingScreen == true)
                     {
+                        
                         $('.video-preview .settings-button-container').find('.toolbox-icon').click();
                        //document.getElementsByClassName('participants-count-icon')[0].click();
+                       //APP.conference.muteVideo(false);
+                    }
+                    else
+                    {
+
                     }
                     
                 } 
             } 
-        }, 500);
+        }, 5000);
 
         // setTimeout(function(){ 
         //     document.getElementById('myId').contentDocument.location.reload(true);
@@ -3682,7 +3715,36 @@ export default {
             room.sendTextMessage(message);
         }
     },
-
+    _muteme(uId)
+    {
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1010;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle mute single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    },
+    _LowerHand(uId)
+    {
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1011;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle lower hand single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    },
     _oncamerastatus()
     {
         console.log('clickme');
