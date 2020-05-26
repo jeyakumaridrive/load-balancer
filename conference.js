@@ -1569,7 +1569,7 @@ export default {
         if (config.enableScreenshotCapture) {
             APP.store.dispatch(toggleScreenshotCaptureEffect(false));
         }
-
+        this._layoutToPrevStage();
         // It can happen that presenter GUM is in progress while screensharing is being turned off. Here it needs to
         // wait for that GUM to be resolved in order to prevent leaking the presenter track(this.localPresenterVideo
         // will be null when SS is being turned off, but it will initialize once GUM resolves).
@@ -1603,7 +1603,7 @@ export default {
             promise = promise.then(() => createLocalTracksF({ devices: [ 'video' ] }))
                 .then(([ stream ]) => this.useVideoStream(stream))
                 .then(() => {
-                    this._layoutToPrevStage();
+                    
                     sendAnalytics(createScreenSharingEvent('stopped'));
                     logger.log('Screen sharing stopped.');
                 })
@@ -1966,6 +1966,15 @@ export default {
 
         return this._createDesktopTrack(options)
             .then(async streams => {
+                if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+                {
+                    localStorage.setItem('prevLayout', true);
+                    $('.toggle-view').click();
+                }
+                else
+                {
+                    localStorage.setItem('prevLayout', false);
+                }
                 const desktopVideoStream = streams.find(stream => stream.getType() === MEDIA_TYPE.VIDEO);
 
                 if (desktopVideoStream) {
