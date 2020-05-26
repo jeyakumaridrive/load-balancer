@@ -1293,10 +1293,6 @@ form[class^="device-select"]{
 			border: none;
 			margin: 0;
 			background-color: rgba(0,0,0,.5);
-			svg{
-				width: 2em !important;
-				height: 1em !important;
-			}
 		}
 	}
 	.videocontainer__toptoolbar .indicator.raisehandindicator  {
@@ -1371,6 +1367,31 @@ form[class^="device-select"]{
 		}
 	}
 
+
+	.videocontainer__toptoolbar{
+		display: flex;
+		text-align: left;
+		position: relative;
+		float: left;
+		top: auto;
+		bottom: 20px;
+		width: auto;
+		.indicator-container:nth-child(1) .indicator{
+			left: auto;
+			position: relative;
+			padding:0;
+			line-height: 20px;
+			height: 20px;
+			bottom: 0;
+			width: 20px;
+			border-radius: 0;
+			border: none;
+			margin: 0;
+			background-color: rgba(0,0,0,.5);
+		}
+	}
+
+
 	.videocontainer__toptoolbar{
 		text-align: right;
 	}
@@ -1402,7 +1423,6 @@ form[class^="device-select"]{
 		width: 40px !important;
 		height: 40px !important;
 	}
-
 	.videocontainer .displayname {
 		left: auto;
 		position: relative;
