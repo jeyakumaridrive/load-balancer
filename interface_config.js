@@ -154,7 +154,7 @@ var interfaceConfig = {
      *
      * @type {boolean}
      */
-    CONNECTION_INDICATOR_DISABLED: true,
+    CONNECTION_INDICATOR_DISABLED: false,
 
     /**
      * If true, hides the video quality label indicating the resolution status
