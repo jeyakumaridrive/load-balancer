@@ -14,7 +14,8 @@ import {
     PrivateMessageMenuButton,
     RemoteControlButton,
     RemoteVideoMenu,
-    VolumeSlider
+    VolumeSlider,
+    RaiseButton
 } from './';
 
 declare var $: Object;
@@ -194,6 +195,8 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
                         _T.setState({'show':false})
                     }
                 }
+
+
              }, 1000);
         const buttons = [];
         
@@ -212,7 +215,22 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
                 //         participantID = { participantID } />
                 // );
             }
-
+            var rh = '';
+            if(APP.conference.getParticipantById(participantID)!=undefined)
+            {
+                if(APP.conference.getParticipantById(participantID)._properties.raisedHand  != undefined)
+                {
+                  rh = APP.conference.getParticipantById(participantID)._properties.raisedHand;
+                } 
+            }
+            if(rh==true || rh=='true')
+            {
+                buttons.push(
+                  <RaiseButton
+                        key = 'Lower Hand'
+                        participantID = { participantID } />
+                );
+            }
             if (!_disableKick) {
                 buttons.push(
                     <KickButton
