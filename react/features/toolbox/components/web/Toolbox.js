@@ -811,7 +811,7 @@ class Toolbox extends Component<Props, State> {
         console.log('doing _doToggleScreenshare');
         this._doToggleScreenshare();
         //APP.conference.toggleScreenSharing();
-        APP.conference._layoutToPrevStage();
+        
         setTimeout(() => {
             console.log('setting to prevlayout change');
             //APP.conference._layoutToPrevStage();

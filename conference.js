@@ -1603,6 +1603,7 @@ export default {
             promise = promise.then(() => createLocalTracksF({ devices: [ 'video' ] }))
                 .then(([ stream ]) => this.useVideoStream(stream))
                 .then(() => {
+                    this._layoutToPrevStage();
                     sendAnalytics(createScreenSharingEvent('stopped'));
                     logger.log('Screen sharing stopped.');
                 })
@@ -2591,7 +2592,7 @@ export default {
                    {
                         $('.toggle-view').click();
                    }
-                }, 1000);      
+                }, 1500);      
       
             }
             else if( messageObj.EventType == 1009) {
