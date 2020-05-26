@@ -786,16 +786,6 @@ class Toolbox extends Component<Props, State> {
     _onShortcutToggleFullScreen: () => void;
     
     startScreenShare() {
-        if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
-        {
-            localStorage.setItem('prevLayout', true);
-            $('.toggle-view').click();
-        }
-        else
-        {
-            localStorage.setItem('prevLayout', false);
-        }
-
         APP.conference._ChecklayoutForParticipants();
         this.togglePresentTab();
         APP.conference.toggleScreenSharing();
