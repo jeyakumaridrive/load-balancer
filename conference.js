@@ -2211,14 +2211,16 @@ export default {
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
 
             if(window.configDev) {
-                var camdevice = JSON.parse(window.configDev).videoinput.name;
-                if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-                    navigator.mediaDevices.enumerateDevices().then((devices) => {
-                        var camera = devices.find(device => device.label == camdevice);
-                        if(camera){
-                            APP.store.getState()['features/base/settings'].userSelectedCameraDeviceId = camera.deviceId;
-                        }
-                    });
+                if(JSON.parse(window.configDev).videoinput && JSON.parse(window.configDev).videoinput) {
+                    var camdevice = JSON.parse(window.configDev).videoinput.name;
+                    if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+                        navigator.mediaDevices.enumerateDevices().then((devices) => {
+                            var camera = devices.find(device => device.label == camdevice);
+                            if(camera){
+                                APP.store.getState()['features/base/settings'].userSelectedCameraDeviceId = camera.deviceId;
+                            }
+                        });
+                    }
                 }
             }
 
