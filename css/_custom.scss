@@ -711,7 +711,7 @@ width: 75%;
 	&.mute-everyone, &.volumeslider {
 		display: none;
 	}
-	&.private-message{
+	&.private-message, &.downhand-link{
 		svg{
 			width: 16px;
 		}
@@ -1273,12 +1273,35 @@ form[class^="device-select"]{
 				padding-left: 2px;
 			}
 		}
+
+		> .indicator-container{
+			float: left;
+		}
+		.indicator-container:nth-child(1) .indicator{
+			left: auto;
+			position: relative;
+			padding: 0;
+			line-height: 20px;
+			height: 14px;
+			bottom: 0;
+			width: 14px;
+			border-radius: 0;
+			border: none;
+			margin: 0;
+			background-color: rgba(0,0,0,.5);
+			margin-top: 5px;
+			margin-left: 5px;
+			margin-right: 3px;
+		}
+		> div {
+			display: inline-block;
+		}
 	}
 	.videocontainer__toptoolbar{
-		display: flex;
-		text-align: left;
+		.indicator-container{
+			float: left;
+		}
 	}
-
 	.videocontainer__toptoolbar .indicator.raisehandindicator  {
 		background: #0772ba;
 		color: #fff;
@@ -1331,6 +1354,9 @@ form[class^="device-select"]{
 
 
 .vertical-filmstrip {
+	.remotevideomenu{
+		z-index: 100;
+	}
 	.videocontainer__toolbar{
 		height: 20px!important;
 		padding: 0;
@@ -1349,10 +1375,33 @@ form[class^="device-select"]{
 				padding-left: 2px;
 			}
 		}
+		> .indicator-container{
+			float: left;
+		}
+		.indicator-container:nth-child(1) .indicator{
+			left: auto;
+			position: relative;
+			padding: 0;
+			line-height: 20px;
+			height: 12px;
+			bottom: 2px;
+			width: 12px;
+			border-radius: 0;
+			border: none;
+			margin: 0 2px;
+			background-color: transparent;
+		}
+		> div {
+			display: inline-block;
+		}
 	}
+
 
 	.videocontainer__toptoolbar{
 		text-align: right;
+		.indicator-container{
+			float: left;
+		}
 	}
 
 
@@ -1382,7 +1431,6 @@ form[class^="device-select"]{
 		width: 40px !important;
 		height: 40px !important;
 	}
-
 	.videocontainer .displayname {
 		left: auto;
 		position: relative;
@@ -1449,7 +1497,19 @@ form[class^="device-select"]{
 	}
 }
 
+.indicator-container{
+	[class^="sc-"] {
+		display: none !important
+  	}
+}
 
+.videocontainer__toptoolbar .hide-connection-indicator {
+    display: inline-block !important;
+}
+
+.fadeoutsignal{
+	opacity: 0.4;
+}
 
 .rasie-hand-alert {
 	display: none;
@@ -1479,8 +1539,24 @@ form[class^="device-select"]{
   }
 }
 
+// .indicatoricon{
+// 	img{
+// 		min-width:1.9em ;
+// 	}
+// }
+
+.connection-indicator{
+	&.status-high{
+		display: none !important;
+	}
+}
+
+
+// .dynamic-shadow{
+// 	box-shadow: none !important;
+// }
+
 
 #dominantspeakerindicator{
 	display: none !important;
 }
-

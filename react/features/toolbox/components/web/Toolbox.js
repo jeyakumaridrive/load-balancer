@@ -337,7 +337,7 @@ class Toolbox extends Component<Props, State> {
                     }
                     else if(APP.conference._room.isAdmin == false || APP.conference._room.isAdmin == "false")
                     {
-                        this.setState({show:false});
+                        this.setState({show:true});
                     }
                     else
                     {
@@ -631,6 +631,15 @@ class Toolbox extends Component<Props, State> {
             local: true,
             raisedHand: !_raisedHand
         }));
+        console.log(_raisedHand);
+        console.log('_raisedHand');
+        var r = !_raisedHand;
+        if(r != undefined){
+            if(r == false) {
+                APP.conference._LowerHandown(_localParticipantID);
+            }
+
+        }
     }
 
     /**
@@ -786,16 +795,7 @@ class Toolbox extends Component<Props, State> {
     _onShortcutToggleFullScreen: () => void;
     
     startScreenShare() {
-        if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
-        {
-            localStorage.setItem('prevLayout', true);
-        }
-        else
-        {
-            localStorage.setItem('prevLayout', false);
-        }
-
-
+        APP.conference._ChecklayoutForParticipants();
         this.togglePresentTab();
         APP.conference.toggleScreenSharing();
     }    
@@ -810,9 +810,10 @@ class Toolbox extends Component<Props, State> {
         console.log('doing _doToggleScreenshare');
         this._doToggleScreenshare();
         //APP.conference.toggleScreenSharing();
+        
         setTimeout(() => {
             console.log('setting to prevlayout change');
-            APP.conference._layoutToPrevStage();
+            //APP.conference._layoutToPrevStage();
             console.log('closing whiteboard')
             document.getElementById("myId").style.display = 'none';
             console.log('closed whiteboard')
