@@ -2209,6 +2209,19 @@ export default {
         document.getElementById("closeMyBoard").addEventListener("click", function() { closeBoard(localParticipantIDs); });
 
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
+
+            if(window.configDev) {
+                var camdevice = JSON.parse(window.configDev).videoinput.name;
+                if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+                    navigator.mediaDevices.enumerateDevices().then((devices) => {
+                        var camera = devices.find(device => device.label == camdevice);
+                        if(camera){
+                            APP.store.getState()['features/base/settings'].userSelectedCameraDeviceId = camera.deviceId;
+                        }
+                    });
+                }
+            }
+
             var pp = room.getParticipants().length + 1;
            //alert(pp)
         // setTimeout(function(){ 
