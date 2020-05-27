@@ -337,7 +337,7 @@ class Toolbox extends Component<Props, State> {
                     }
                     else if(APP.conference._room.isAdmin == false || APP.conference._room.isAdmin == "false")
                     {
-                        this.setState({show:false});
+                        this.setState({show:true});
                     }
                     else
                     {
