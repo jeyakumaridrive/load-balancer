@@ -52,7 +52,7 @@ class RaiseButton extends AbstractRaiseButton {
         return (
             <RemoteVideoMenuButton
                 buttonText = 'Lower Hand'
-                displayClass = 'kicklink'
+                displayClass = 'kicklink downhand-link'
                 icon = { IconRaisedHand }
                 id = { `lowerhand_${participantID}` }
                 // eslint-disable-next-line react/jsx-handler-names

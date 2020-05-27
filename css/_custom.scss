@@ -711,7 +711,7 @@ width: 75%;
 	&.mute-everyone, &.volumeslider {
 		display: none;
 	}
-	&.private-message{
+	&.private-message, &.downhand-link{
 		svg{
 			width: 16px;
 		}
@@ -1273,26 +1273,33 @@ form[class^="device-select"]{
 				padding-left: 2px;
 			}
 		}
-	}
-	.videocontainer__toptoolbar{
-		display: flex;
-		text-align: left;
-		position: relative;
-		float: left;
-		top: calc(100% - 20px);
-		width: auto;
+
+		> .indicator-container{
+			float: left;
+		}
 		.indicator-container:nth-child(1) .indicator{
 			left: auto;
 			position: relative;
-			padding:0;
+			padding: 0;
 			line-height: 20px;
-			height: 20px;
+			height: 14px;
 			bottom: 0;
-			width: 20px;
+			width: 14px;
 			border-radius: 0;
 			border: none;
 			margin: 0;
 			background-color: rgba(0,0,0,.5);
+			margin-top: 5px;
+			margin-left: 5px;
+			margin-right: 3px;
+		}
+		> div {
+			display: inline-block;
+		}
+	}
+	.videocontainer__toptoolbar{
+		.indicator-container{
+			float: left;
 		}
 	}
 	.videocontainer__toptoolbar .indicator.raisehandindicator  {
@@ -1347,6 +1354,9 @@ form[class^="device-select"]{
 
 
 .vertical-filmstrip {
+	.remotevideomenu{
+		z-index: 100;
+	}
 	.videocontainer__toolbar{
 		height: 20px!important;
 		padding: 0;
@@ -1365,35 +1375,33 @@ form[class^="device-select"]{
 				padding-left: 2px;
 			}
 		}
-	}
-
-
-	.videocontainer__toptoolbar{
-		display: flex;
-		text-align: left;
-		position: relative;
-		float: left;
-		top: auto;
-		bottom: 20px;
-		width: auto;
+		> .indicator-container{
+			float: left;
+		}
 		.indicator-container:nth-child(1) .indicator{
 			left: auto;
 			position: relative;
-			padding:0;
+			padding: 0;
 			line-height: 20px;
-			height: 20px;
-			bottom: 0;
-			width: 20px;
+			height: 12px;
+			bottom: 2px;
+			width: 12px;
 			border-radius: 0;
 			border: none;
-			margin: 0;
-			background-color: rgba(0,0,0,.5);
+			margin: 0 2px;
+			background-color: transparent;
+		}
+		> div {
+			display: inline-block;
 		}
 	}
 
 
 	.videocontainer__toptoolbar{
 		text-align: right;
+		.indicator-container{
+			float: left;
+		}
 	}
 
 
@@ -1531,11 +1539,11 @@ form[class^="device-select"]{
   }
 }
 
-.indicatoricon{
-	img{
-		min-width:1.9em ;
-	}
-}
+// .indicatoricon{
+// 	img{
+// 		min-width:1.9em ;
+// 	}
+// }
 
 .connection-indicator{
 	&.status-high{
