@@ -237,7 +237,7 @@ class SpeakerStats extends Component<Props, State> {
                 }
                 
                raise_hand = (
-                     <div className='raisehand-active' title="Raise Hand">
+                     <div className='raisehand-active' title="Lower Hand">
                         <Icon src={IconRaisedHand} onClick={() => { this.LowerHand(userId)} } style={{ cursor: customStyle }} title="Raise Hand"/>
                      </div>
                 );

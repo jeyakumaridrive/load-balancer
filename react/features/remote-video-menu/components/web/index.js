@@ -1,6 +1,7 @@
 // @flow
 
 export { default as KickButton } from './KickButton';
+export { default as RaiseButton } from './RaiseButton';
 export {
     default as KickRemoteParticipantDialog
 } from './KickRemoteParticipantDialog';
