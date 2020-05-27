@@ -218,14 +218,6 @@
                         var speakerscam = parseData.audiooutput.name;
                         if(cam)
                         {
-                            if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-                                navigator.mediaDevices.enumerateDevices().then((devices) => {
-                                    var camera = devices.find(device => device.label == cam);
-                                    if(camera){
-                                        APP.store.getState()['features/base/settings'].userSelectedCameraDeviceId = camera.deviceId;
-                                    }
-                                });
-                            }
                             localStorage.setItem('camera',cam);
                         }
                         else
@@ -316,8 +308,8 @@
     <script src="libs/do_external_connect.min.js?v=1"></script>
     <script><!--#include virtual="/interface_config.js" --></script>
     <script><!--#include virtual="/logging_config.js" --></script>
-    <script src="libs/lib-jitsi-meet.min.js?v=x198"></script>
-    <script src="libs/app.bundle.min.js?v=X198"></script>
+    <script src="libs/lib-jitsi-meet.min.js?v=x199"></script>
+    <script src="libs/app.bundle.min.js?v=X199"></script>
     <!--#include virtual="title.html" -->
     <!--#include virtual="plugin.head.html" -->
     <!--#include virtual="static/welcomePageAdditionalContent.html" -->
