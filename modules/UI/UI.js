@@ -489,12 +489,12 @@ UI.notifyMaxUsersLimitReached = function() {
  * Notify user that he was automatically muted when joned the conference.
  */
 UI.notifyInitiallyMuted = function() {
-    messageHandler.participantNotification(
-        null,
-        'notify.mutedTitle',
-        'connected',
-        'notify.muted',
-        null);
+    // messageHandler.participantNotification(
+    //     null,
+    //     'notify.mutedTitle',
+    //     'connected',
+    //     'notify.muted',
+    //     null);
 };
 
 UI.handleLastNEndpoints = function(leavingIds, enteringIds) {
