@@ -218,6 +218,14 @@
                         var speakerscam = parseData.audiooutput.name;
                         if(cam)
                         {
+                            if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+                                navigator.mediaDevices.enumerateDevices().then((devices) => {
+                                    var camera = devices.find(device => device.label == cam);
+                                    if(camera){
+                                        APP.store.getState()['features/base/settings'].userSelectedCameraDeviceId = camera.deviceId;
+                                    }
+                                });
+                            }
                             localStorage.setItem('camera',cam);
                         }
                         else
