@@ -631,6 +631,15 @@ class Toolbox extends Component<Props, State> {
             local: true,
             raisedHand: !_raisedHand
         }));
+        console.log(_raisedHand);
+        console.log('_raisedHand');
+        var r = !_raisedHand;
+        if(r != undefined){
+            if(r == false) {
+                APP.conference._LowerHandown(_localParticipantID);
+            }
+
+        }
     }
 
     /**

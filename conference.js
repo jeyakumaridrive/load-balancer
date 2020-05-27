@@ -2694,6 +2694,7 @@ export default {
             else if( messageObj.EventType == 1011) {
 
                 var new1=localStorage.getItem('userPid');
+                 document.getElementById('hand-popup').classList.remove('show');
                 if(new1 == messageObj.userID)
                 {
                     document.getElementById('raiseHandId').click();
@@ -2713,6 +2714,12 @@ export default {
                         localStorage.setItem('prevLayout', false);
                     }
                 }
+            }
+            else if( messageObj.EventType == 1013) {
+
+              
+                document.getElementById('hand-popup').classList.remove('show');
+               
             }
         }
         });
@@ -3817,6 +3824,20 @@ export default {
         conntrolMessage.FromParticipantID = localParticipantIDs;
         let message = JSON.stringify( conntrolMessage );
         room.sendTextMessage(message); 
+    }, _LowerHandown(uId)
+    {
+        //if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1013;
+            conntrolMessage.userID = uId;
+            //conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle lower hand single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        //}
     }
 
 };
