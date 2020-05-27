@@ -2190,7 +2190,7 @@ export default {
            
            if(pp > config.startAudioMuted)
            {
-                var de = "<button class='ignore handraise-button'>Okay</button>";
+                var de = "<button class='ignore handraise-button'>Ok</button>";
                 const displayName
                 = APP.store.getState()['features/base/settings'].displayName;
 
