@@ -2004,7 +2004,30 @@ export default {
                 }
                 sendAnalytics(createScreenSharingEvent('started'));
                 logger.log('Screen sharing started');
+                setTimeout(function(){
+                if(APP.conference.isSharingScreen == true)
+                {
+                    var videoMutedState = localStorage.getItem('camstateMuted');
 
+                    if(videoMutedState == 'false' || videoMutedState == false )
+                    {
+                        if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true' && APP.conference.isSharingScreen == true)
+                        {
+                           
+                                $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+                            
+                            
+                           //document.getElementsByClassName('participants-count-icon')[0].click();
+                           //APP.conference.muteVideo(false);
+                        }
+                        else
+                        {
+
+                        }
+                        
+                    } 
+                }
+                },3000)  
 
             })
             .catch(error => {
@@ -3050,28 +3073,28 @@ export default {
         var $iframe = $('#myId');
         $iframe.attr('src',htmlPath);
 
-        setInterval(function(){ 
-            if(APP.conference.isSharingScreen == true)
-            {
-                var videoMutedState = localStorage.getItem('camstateMuted');
+        // setInterval(function(){ 
+        //     if(APP.conference.isSharingScreen == true)
+        //     {
+        //         var videoMutedState = localStorage.getItem('camstateMuted');
 
-                if(videoMutedState == 'false' || videoMutedState == false )
-                {
-                    if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true' && APP.conference.isSharingScreen == true)
-                    {
+        //         if(videoMutedState == 'false' || videoMutedState == false )
+        //         {
+        //             if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true' && APP.conference.isSharingScreen == true)
+        //             {
                         
-                        $('.video-preview .settings-button-container').find('.toolbox-icon').click();
-                       //document.getElementsByClassName('participants-count-icon')[0].click();
-                       //APP.conference.muteVideo(false);
-                    }
-                    else
-                    {
+        //                 $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+        //                //document.getElementsByClassName('participants-count-icon')[0].click();
+        //                //APP.conference.muteVideo(false);
+        //             }
+        //             else
+        //             {
 
-                    }
+        //             }
                     
-                } 
-            } 
-        }, 5000);
+        //         } 
+        //     } 
+        // }, 5000);
         // setTimeout(function(){ 
         //     document.getElementById('myId').contentDocument.location.reload(true);
         // }, 3000);
