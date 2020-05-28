@@ -2216,8 +2216,11 @@ export default {
                     if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
                         navigator.mediaDevices.enumerateDevices().then((devices) => {
                             var camera = devices.find(device => device.label == camdevice);
+                            console.log(camera);
                             if(camera){
                                 APP.store.getState()['features/base/settings'].userSelectedCameraDeviceId = camera.deviceId;
+                                APP.store.getState()['features/base/settings'].userSelectedCameraDeviceLabel = camera.label;
+                                APP.store.getState()['features/base/settings'].cameraDeviceId = camera.deviceId;
                             }
                         });
                     }
