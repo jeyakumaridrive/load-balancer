@@ -86,3 +86,6 @@ export { default as IconRpcMic } from './rpc-microphone.svg';
 export { default as IconPeople } from './people.svg';
 export { default as IconRpcRecord } from './rpc-record.svg';
 export { default as IconRpcStopRecord } from './rpc-stoprecord.svg';
+export { default as IconSignalFull } from './signal-full.svg';
+export { default as IconSignalAverage } from './signal-average.svg';
+export { default as IconSignalPoor } from './signal-poor.svg';
