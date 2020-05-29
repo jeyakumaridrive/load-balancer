@@ -82,7 +82,7 @@ MiddlewareRegistry.register(store => next => action => {
                 conference,
                 id,
                 local: participant.id === id,
-                raisedHand: false
+                // raisedHand: false
             }));
 
         break;
