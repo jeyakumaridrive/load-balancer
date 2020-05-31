@@ -1195,7 +1195,7 @@ class Toolbox extends Component<Props, State> {
         $.get(fullUrl)
         .then(resolve => {
             if(!resolve) {
-                location.href="/home/";
+                location.href="https://meeting.remotepc.com/home/";
             }
             $('.cw_meeting-url').text(parentDomain+'/meet/'+resolve.slug);
             if(APP.password) {
