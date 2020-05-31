@@ -144,10 +144,10 @@ function _getWebWelcomePageRoute(state): Promise<Route> {
         let href = window.location.href;
         
         href = 'https://meeting.remotepc.com/home/';
-        return;
-        href.endsWith('/') || (href += '/');
-        // route.href = href + generateRoomWithoutSeparator();
-        window.location.href = '/home/';
+        window.location = 'https://meeting.remotepc.com/home/';
+        // href.endsWith('/') || (href += '/');
+        // // route.href = href + generateRoomWithoutSeparator();
+        // window.location.href = '/home/';
     }
 
     return Promise.resolve(route);
