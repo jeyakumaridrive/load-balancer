@@ -142,12 +142,9 @@ function _getWebWelcomePageRoute(state): Promise<Route> {
         // Web: if the welcome page is disabled, go directly to a random room.
 
         let href = window.location.href;
-        
-        href = 'https://meeting.remotepc.com/home/';
-        window.location = 'https://meeting.remotepc.com/home/';
-        // href.endsWith('/') || (href += '/');
-        // // route.href = href + generateRoomWithoutSeparator();
-        // window.location.href = '/home/';
+
+        href.endsWith('/') || (href += '/');
+        route.href = href + generateRoomWithoutSeparator();
     }
 
     return Promise.resolve(route);
