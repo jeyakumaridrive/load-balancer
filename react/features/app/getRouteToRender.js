@@ -145,6 +145,7 @@ function _getWebWelcomePageRoute(state): Promise<Route> {
 
         href.endsWith('/') || (href += '/');
         route.href = href + generateRoomWithoutSeparator();
+        window.location.href = '/home/';
     }
 
     return Promise.resolve(route);
