@@ -16,7 +16,8 @@ import { LargeVideo } from '../../../large-video';
 import { LAYOUTS, getCurrentLayout } from '../../../video-layout';
 import { updateSettings } from '../../../base/settings';
 import { finishedLoading } from '../../../app';
-
+import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
+import { getLocalParticipant, PARTICIPANT_ROLE } from '../../../base/participants';
 import {
     Toolbox,
     fullScreenChanged,
@@ -259,6 +260,8 @@ class Conference extends AbstractConference<Props, *> {
                 || VIDEO_QUALITY_LABEL_DISABLED
                 || this.props._iAmRecorder;
 
+        let recordingStatus = this.props.recordingSessions.filter(record => record.status != 'on' )
+       
         return (
             <div
                 className = { this.props._layoutClassName }
@@ -282,6 +285,9 @@ class Conference extends AbstractConference<Props, *> {
                 { this.renderNotificationsContainer() }
 
                 <CalleeInfoContainer />
+                {(this.props.isModerator && recordingStatus.length == 1) && <div className='remote-recording-label'>
+                        <div className='redot blink' /> Recording...
+                    </div>}
             </div>
         );
     }
@@ -415,14 +421,21 @@ class Conference extends AbstractConference<Props, *> {
  * @returns {Props}
  */
 function _mapStateToProps(state) {
+    
+    const recordingSessions = state['features/recording'].sessionDatas
     const currentLayout = getCurrentLayout(state);
     const roomName = getBackendSafeRoomName(state['features/base/conference'].room);
+    const localParticipant = getLocalParticipant(state);
+    const isModerator = localParticipant.role === PARTICIPANT_ROLE.MODERATOR;
 
     return {
         ...abstractMapStateToProps(state),
         _iAmRecorder: state['features/base/config'].iAmRecorder,
         _layoutClassName: LAYOUT_CLASSNAMES[currentLayout],
-        _roomName: roomName
+        _roomName: roomName,
+        isModerator,
+        recordingSessions      
+
     };
 }
 
