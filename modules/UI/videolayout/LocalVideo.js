@@ -80,6 +80,7 @@ export default class LocalVideo extends SmallVideo {
             var res = dName.match(/\b(\w)/g); 
             var capName = res.join('');
             var capName = capName.toUpperCase();
+            var capName = capName.substring(0,2);
         }
         else
         {
