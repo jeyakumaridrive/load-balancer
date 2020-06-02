@@ -260,7 +260,7 @@ class Conference extends AbstractConference<Props, *> {
                 || VIDEO_QUALITY_LABEL_DISABLED
                 || this.props._iAmRecorder;
 
-        let recordingStatus = this.props.recordingSessions.filter(record => record.status != 'on' )
+        let recordingStatus = this.props.recordingSessions.filter(record => record.status == 'on' )
        
         return (
             <div
@@ -285,7 +285,7 @@ class Conference extends AbstractConference<Props, *> {
                 { this.renderNotificationsContainer() }
 
                 <CalleeInfoContainer />
-                {(this.props.isModerator && recordingStatus.length == 1) && <div className='remote-recording-label'>
+                {(this.props.isModerator && recordingStatus.length >= 1) && <div className='remote-recording-label'>
                         <div className='redot blink' /> Recording...
                     </div>}
             </div>
