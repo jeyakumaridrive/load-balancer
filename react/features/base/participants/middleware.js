@@ -343,7 +343,7 @@ function _participantJoinedOrUpdated({ dispatch, getState }, next, action) {
     // Allow the redux update to go through and compare the old avatar
     // to the new avatar and emit out change events if necessary.
     const result = next(action);
-    //disabled avatar functionality
+    //disabled avatar functional ity
     
     const { disableThirdPartyRequests } = getState()['features/base/config'];
 
