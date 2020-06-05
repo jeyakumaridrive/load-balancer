@@ -1561,3 +1561,9 @@ form[class^="device-select"]{
 #dominantspeakerindicator{
 	display: none !important;
 }
+
+.videocontainer>.audioindicator-container, .videocontainer>span.audioindicator{
+	display: none !important;
+}
+
+
