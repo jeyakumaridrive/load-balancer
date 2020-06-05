@@ -343,27 +343,27 @@ function _participantJoinedOrUpdated({ dispatch, getState }, next, action) {
     // Allow the redux update to go through and compare the old avatar
     // to the new avatar and emit out change events if necessary.
     const result = next(action);
-    //disabled avatar functionality
+    //disabled avatar functional ity
     
-    // const { disableThirdPartyRequests } = getState()['features/base/config'];
+    const { disableThirdPartyRequests } = getState()['features/base/config'];
 
-    // if (!disableThirdPartyRequests && (avatarURL || email || id || name)) {
-    //     const participantId = !id && local ? getLocalParticipant(getState()).id : id;
-    //     const updatedParticipant = getParticipantById(getState(), participantId);
+    if (!disableThirdPartyRequests && (avatarURL || email || id || name)) {
+        const participantId = !id && local ? getLocalParticipant(getState()).id : id;
+        const updatedParticipant = getParticipantById(getState(), participantId);
 
-    //     getFirstLoadableAvatarUrl(updatedParticipant)
-    //         .then(url => {
-    //             dispatch(setLoadableAvatarUrl(participantId, url));
-    //         });
-    // }
+        getFirstLoadableAvatarUrl(updatedParticipant)
+            .then(url => {
+                dispatch(setLoadableAvatarUrl(participantId, url));
+            });
+    }
 
-    // // Notify external listeners of potential avatarURL changes.
-    // if (typeof APP === 'object') {
-    //     const currentKnownId = local ? APP.conference.getMyUserId() : id;
+    // Notify external listeners of potential avatarURL changes.
+    if (typeof APP === 'object') {
+        const currentKnownId = local ? APP.conference.getMyUserId() : id;
 
-    //     // Force update of local video getting a new id.
-    //     APP.UI.refreshAvatarDisplay(currentKnownId);
-    // }
+        // Force update of local video getting a new id.
+        APP.UI.refreshAvatarDisplay(currentKnownId);
+    }
 
     return result;
 }
