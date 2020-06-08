@@ -151,14 +151,18 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: Dispatch<any>) 
         //     logoIconCustom: participant_name
         // };
     } else if (joinedParticipantsCount) {
-        notificationProps = {
-            titleArguments: {
-                name: participant_name
-            },
-            titleKey: participant_name,
-            descriptionKey: 'notify.connectedOneMember',
-            logoIconCustom: participant_name
-        };
+        var cDDc = document.getElementById("true-joining").value;
+        if(cDDc == 0 || cDDc == '0')
+        {
+            notificationProps = {
+                titleArguments: {
+                    name: participant_name
+                },
+                titleKey: participant_name,
+                descriptionKey: 'notify.connectedOneMember',
+                logoIconCustom: participant_name
+            };
+        }
     }
 
     if (notificationProps) {
