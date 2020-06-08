@@ -2238,7 +2238,7 @@ export default {
 
             }
         // }, 3400);
-           
+           document.getElementById("true-joining").value = '1';
            if(pp > config.startAudioMuted)
            {
                 var de = "<button class='ignore handraise-button'>Ok</button>";
@@ -2270,6 +2270,7 @@ export default {
             user => APP.UI.onUserFeaturesChanged(user));
         room.on(JitsiConferenceEvents.USER_JOINED, (id, user) => {
             // The logic shared between RN and web.
+            //document.getElementById("true-joining").value = '1';
             commonUserJoinedHandling(APP.store, room, user);
 
             if (user.isHidden()) {
@@ -3073,6 +3074,7 @@ export default {
      * @returns {void}
      */
     _onConferenceJoined() {
+        
         APP.UI.initConference();
 
         APP.keyboardshortcut.init();
@@ -3081,7 +3083,7 @@ export default {
 
         const displayName
             = APP.store.getState()['features/base/settings'].displayName;
-
+        
         APP.UI.changeDisplayName('localVideoContainer', displayName);
         if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
         {
@@ -3097,7 +3099,9 @@ export default {
         //var htmlPath = '/static/draw/canvas.html#'+this.roomName;
         var $iframe = $('#myId');
         $iframe.attr('src',htmlPath);
-
+        setTimeout(function(){
+            document.getElementById("true-joining").value = '0';
+        },16000)
         // setInterval(function(){ 
         //     if(APP.conference.isSharingScreen == true)
         //     {
