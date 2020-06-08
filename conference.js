@@ -2230,7 +2230,7 @@ export default {
             var pp = room.getParticipants().length + 1;
            //alert(pp)
         // setTimeout(function(){ 
-            if(pp==3) {
+            if(pp==2) {
                 //alert(pp)
              if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
                     $('.toggle-view').click()
@@ -2278,7 +2278,7 @@ export default {
             var pp = room.getParticipants().length + 1;
            // alert(pp)
            setTimeout(function(){
-            if(pp==3) {
+            if(pp==2) {
              //   alert()
                // APP.store.getState()['features/video-layout'].tileViewEnabled = true
                if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
