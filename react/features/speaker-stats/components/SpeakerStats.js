@@ -349,6 +349,13 @@ class SpeakerStats extends Component<Props, State> {
             displayName
                 = this.state.stats[userId].getDisplayName()
                     || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME;
+
+            var isnum = /^[0-9+()-\\s]*$/.test(displayName);
+            if(isnum == true || isnum == 'true')
+            {
+                var n = displayName.replace(/^(.{5})(.*)(.{1})$/, "$1*****$3");
+                displayName = n;
+            }
         }
         //var muted = APP.conference.getParticipantById(userId)._tracks[0].muted;
        
