@@ -131,34 +131,38 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: Dispatch<any>) 
     let participant_name = joinedParticipantsNames[0] != '' && joinedParticipantsNames[0].match(/^[0-9]+$/) != null && joinedParticipantsNames[0].match(/^[0-9]+$/).length > 0 ? joinedParticipantsNames[0].toString().replace(/^(.{5})(.*)(.{1})$/, "$1*****$3") : joinedParticipantsNames[0];
 
     if (joinedParticipantsCount >= 3) {
-        notificationProps = {
-            titleArguments: {
-                name: participant_name,
-                count: joinedParticipantsCount - 1
-            },
-            titleKey: 'notify.connectedThreePlusMembers',
-            descriptionKey: 'others joined this meeting',
-            logoIconCustom: participant_name
-        };
+        // notificationProps = {
+        //     titleArguments: {
+        //         name: participant_name,
+        //         count: joinedParticipantsCount - 1
+        //     },
+        //     titleKey: 'notify.connectedThreePlusMembers',
+        //     descriptionKey: 'others joined this meeting',
+        //     logoIconCustom: participant_name
+        // };
     } else if (joinedParticipantsCount === 2) {
-        notificationProps = {
-            titleArguments: {
-                first: participant_name,
-                second: joinedParticipantsNames[1] != '' && joinedParticipantsNames[1].match(/^[0-9]+$/) != null && joinedParticipantsNames[1].match(/^[0-9]+$/).length > 0 ? joinedParticipantsNames[1].toString().replace(/^(.{5})(.*)(.{1})$/, "$1*****$3") : joinedParticipantsNames[1]
-            },
-            titleKey: 'notify.connectedTwoMembers',
-            descriptionKey: 'notify.connectedOneMember',
-            logoIconCustom: participant_name
-        };
+        // notificationProps = {
+        //     titleArguments: {
+        //         first: participant_name,
+        //         second: joinedParticipantsNames[1] != '' && joinedParticipantsNames[1].match(/^[0-9]+$/) != null && joinedParticipantsNames[1].match(/^[0-9]+$/).length > 0 ? joinedParticipantsNames[1].toString().replace(/^(.{5})(.*)(.{1})$/, "$1*****$3") : joinedParticipantsNames[1]
+        //     },
+        //     titleKey: 'notify.connectedTwoMembers',
+        //     descriptionKey: 'notify.connectedOneMember',
+        //     logoIconCustom: participant_name
+        // };
     } else if (joinedParticipantsCount) {
-        notificationProps = {
-            titleArguments: {
-                name: participant_name
-            },
-            titleKey: participant_name,
-            descriptionKey: 'notify.connectedOneMember',
-            logoIconCustom: participant_name
-        };
+        var cDDc = document.getElementById("true-joining").value;
+        if(cDDc == 0 || cDDc == '0')
+        {
+            notificationProps = {
+                titleArguments: {
+                    name: participant_name
+                },
+                titleKey: participant_name,
+                descriptionKey: 'notify.connectedOneMember',
+                logoIconCustom: participant_name
+            };
+        }
     }
 
     if (notificationProps) {
