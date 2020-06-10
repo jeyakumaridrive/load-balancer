@@ -278,7 +278,6 @@ export default class RTC extends Listenable {
                 console.log('++++++++++++++++++++',tracksInfo);
                 return _newCreateLocalTracks(tracksInfo);
             }
-
             return createLocalTracks(tracksInfo, options);
         });
     }
@@ -514,13 +513,6 @@ export default class RTC extends Listenable {
         }
 
         // FIXME: We should rename iceConfig to pcConfig.
-
-        if (browser.supportsInsertableStreams()) {
-            logger.debug('E2EE - setting insertable streams constraints');
-            iceConfig.forceEncodedAudioInsertableStreams = true;
-            iceConfig.forceEncodedVideoInsertableStreams = true;
-        }
-
         if (browser.supportsSdpSemantics()) {
             iceConfig.sdpSemantics = 'plan-b';
         }

@@ -69,8 +69,7 @@ function _initCallStatsBackend(options) {
         aliasName: options.aliasName,
         applicationName: options.applicationName,
         getWiFiStatsMethod: options.getWiFiStatsMethod,
-        confID: options.confID,
-        siteID: options.siteID
+        confID: options.confID
     })) {
         logger.error('CallStats Backend initialization failed bad');
     }
@@ -129,6 +128,8 @@ Statistics.init = function(options) {
  * callstats.
  * @property {string} aliasName - The alias name to use when initializing callstats.
  * @property {string} userName - The user name to use when initializing callstats.
+ * @property {string} callStatsConfIDNamespace - A namespace to prepend the
+ * callstats conference ID with.
  * @property {string} confID - The callstats conference ID to use.
  * @property {string} callStatsID - Callstats credentials - the id.
  * @property {string} callStatsSecret - Callstats credentials - the secret.
@@ -171,6 +172,10 @@ export default function Statistics(xmpp, options) {
 
         if (!this.options.confID) {
             logger.warn('"confID" is not defined');
+        }
+
+        if (!this.options.callStatsConfIDNamespace) {
+            logger.warn('"callStatsConfIDNamespace" is not defined');
         }
     }
 
@@ -368,7 +373,7 @@ Statistics.prototype.startCallStats = function(tpc, remoteUserID) {
         = new CallStats(
             tpc,
             {
-                confID: this.options.confID,
+                confID: this._getCallStatsConfID(),
                 remoteUserID
             });
 
@@ -391,6 +396,19 @@ Statistics._getAllCallStatsInstances = function() {
     }
 
     return csInstances;
+};
+
+/**
+ * Constructs the CallStats conference ID based on the options currently
+ * configured in this instance.
+ * @return {string}
+ * @private
+ */
+Statistics.prototype._getCallStatsConfID = function() {
+    // The conference ID is case sensitive!!!
+    return this.options.callStatsConfIDNamespace
+        ? `${this.options.callStatsConfIDNamespace}/${this.options.roomName}`
+        : this.options.roomName;
 };
 
 /**
@@ -688,7 +706,7 @@ Statistics.prototype.sendFeedback = function(overall, comment) {
             comment
         });
 
-    return CallStats.sendFeedback(this.options.confID, overall, comment);
+    return CallStats.sendFeedback(this._getCallStatsConfID(), overall, comment);
 };
 
 Statistics.LOCAL_JID = require('../../service/statistics/constants').LOCAL_JID;

@@ -172,8 +172,7 @@ describe('ChatRoom', () => {
                 undefined, // statsID
                 'status-text',
                 undefined,
-                undefined,
-                'fulljid'
+                undefined
             ]);
         });
 
@@ -201,8 +200,7 @@ describe('ChatRoom', () => {
                 undefined, // statsID
                 undefined,
                 undefined,
-                undefined,
-                'jid=attr');
+                undefined);
         });
 
         it('parses identity correctly', () => {
@@ -247,8 +245,7 @@ describe('ChatRoom', () => {
                 undefined, // statsID
                 'status-text',
                 expectedIdentity,
-                undefined,
-                'fulljid'
+                undefined
             ]);
         });
 
@@ -279,8 +276,7 @@ describe('ChatRoom', () => {
                 undefined, // statsID
                 'status-text',
                 undefined,
-                expectedBotType,
-                'fulljid'
+                expectedBotType
             ]);
         });
 
