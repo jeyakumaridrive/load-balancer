@@ -96,14 +96,6 @@ export default class JitsiLocalTrack extends JitsiTrack {
             // Cache the constraints of the track in case of any this track
             // model needs to call getUserMedia again, such as when unmuting.
             this._constraints = track.getConstraints();
-
-            // Safari returns an empty constraints object, construct the constraints using getSettings.
-            if (!Object.keys(this._constraints).length && videoType === VideoType.CAMERA) {
-                this._constraints = {
-                    height: track.getSettings().height,
-                    width: track.getSettings().width
-                };
-            }
         } else {
             // FIXME Currently, Firefox is ignoring our constraints about
             // resolutions so we do not store it, to avoid wrong reporting of
@@ -334,7 +326,6 @@ export default class JitsiLocalTrack extends JitsiTrack {
         this._streamEffect = effect;
         this._originalStream = this.stream;
         this._setStream(this._streamEffect.startEffect(this._originalStream));
-        this.track = this.stream.getTracks()[0];
     }
 
     /**
@@ -347,8 +338,6 @@ export default class JitsiLocalTrack extends JitsiTrack {
         if (this._streamEffect) {
             this._streamEffect.stopEffect();
             this._setStream(this._originalStream);
-            this._originalStream = null;
-            this.track = this.stream.getTracks()[0];
         }
     }
 
@@ -554,7 +543,7 @@ export default class JitsiLocalTrack extends JitsiTrack {
                     = RTCUtils.obtainAudioAndVideoPermissions(streamOptions);
             }
 
-            promise = promise.then(streamsInfo => {
+            promise.then(streamsInfo => {
                 // The track kind for presenter track is video as well.
                 const mediaType = this.getType() === MediaType.PRESENTER ? MediaType.VIDEO : this.getType();
                 const streamInfo

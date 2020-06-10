@@ -76,8 +76,7 @@ export default class PingConnectionPlugin extends ConnectionPlugin {
         });
 
         iq.c('ping', { xmlns: Strophe.NS.PING });
-        this.connection.sendIQ2(iq, { timeout })
-            .then(success, error);
+        this.connection.sendIQ(iq, success, error, timeout);
     }
 
     /* eslint-enable max-params */

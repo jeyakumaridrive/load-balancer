@@ -66,20 +66,6 @@ export default class XmppConnection extends Listenable {
 
         this._lastSuccessTracker = new LastSuccessTracker();
         this._lastSuccessTracker.startTracking(this._stropheConn);
-
-        /**
-         * @typedef DeferredSendIQ Object
-         * @property {Element} iq - The IQ to send.
-         * @property {function} resolve - The resolve method of the deferred Promise.
-         * @property {function} reject - The reject method of the deferred Promise.
-         * @property {number} timeout - The ID of the timeout task that needs to be cleared, before sending the IQ.
-         */
-        /**
-         * Deferred IQs to be sent upon reconnect.
-         * @type {Array<DeferredSendIQ>}
-         * @private
-         */
-        this._deferredIQs = [];
     }
 
     /**
@@ -239,10 +225,10 @@ export default class XmppConnection extends Listenable {
 
         let blockCallback = false;
 
-        if (status === Strophe.Status.CONNECTED || status === Strophe.Status.ATTACHED) {
+        if (status === Strophe.Status.CONNECTED) {
             this._maybeEnableStreamResume();
             this._maybeStartWSKeepAlive();
-            this._processDeferredIQs();
+            this._resumeRetryN = 0;
         } else if (status === Strophe.Status.DISCONNECTED) {
             // FIXME add RECONNECTING state instead of blocking the DISCONNECTED update
             blockCallback = this._tryResumingConnection();
@@ -255,18 +241,6 @@ export default class XmppConnection extends Listenable {
             targetCallback(status, ...args);
             this.eventEmitter.emit(XmppConnection.Events.CONN_STATUS_CHANGED, status);
         }
-    }
-
-    /**
-     * Clears the list of IQs and rejects deferred Promises with an error.
-     *
-     * @private
-     */
-    _clearDeferredIQs() {
-        for (const deferred of this._deferredIQs) {
-            deferred.reject(new Error('disconnect'));
-        }
-        this._deferredIQs = [];
     }
 
     /**
@@ -286,7 +260,6 @@ export default class XmppConnection extends Listenable {
     disconnect(...args) {
         clearTimeout(this._resumeTimeout);
         clearTimeout(this._wsKeepAlive);
-        this._clearDeferredIQs();
         this._stropheConn.disconnect(...args);
     }
 
@@ -352,7 +325,7 @@ export default class XmppConnection extends Listenable {
             logger.debug(`Scheduling next WebSocket keep-alive in ${intervalWithJitter}ms`);
 
             this._wsKeepAlive = setTimeout(() => {
-                const url = this.service.replace('wss://', 'https://').replace('ws://', 'http://');
+                const url = this.service.replace('wss', 'https').replace('ws', 'http');
 
                 fetch(url).catch(
                     error => {
@@ -361,30 +334,6 @@ export default class XmppConnection extends Listenable {
                     .then(() => this._maybeStartWSKeepAlive());
             }, intervalWithJitter);
         }
-    }
-
-    /**
-     * Goes over the list of {@link DeferredSendIQ} tasks and sends them.
-     *
-     * @private
-     * @returns {void}
-     */
-    _processDeferredIQs() {
-        for (const deferred of this._deferredIQs) {
-            if (deferred.iq) {
-                clearTimeout(deferred.timeout);
-
-                const timeLeft = Date.now() - deferred.start;
-
-                this.sendIQ(
-                    deferred.iq,
-                    result => deferred.resolve(result),
-                    error => deferred.reject(error),
-                    timeLeft);
-            }
-        }
-
-        this._deferredIQs = [];
     }
 
     /**
@@ -418,41 +367,6 @@ export default class XmppConnection extends Listenable {
         }
 
         return this._stropheConn.sendIQ(elem, callback, errback, timeout);
-    }
-
-    /**
-     * Sends an IQ immediately if connected or puts it on the send queue otherwise(in contrary to other send methods
-     * which would fail immediately if disconnected).
-     *
-     * @param {Element} iq - The IQ to send.
-     * @param {number} timeout - How long to wait for the response. The time when the connection is reconnecting is
-     * included, which means that the IQ may never be sent and still fail with a timeout.
-     */
-    sendIQ2(iq, { timeout }) {
-        return new Promise((resolve, reject) => {
-            if (this.connected) {
-                this.sendIQ(
-                    iq,
-                    result => resolve(result),
-                    error => reject(error));
-            } else {
-                const deferred = {
-                    iq,
-                    resolve,
-                    reject,
-                    start: Date.now(),
-                    timeout: setTimeout(() => {
-                        // clears the IQ on timeout and invalidates the deferred task
-                        deferred.iq = undefined;
-
-                        // Strophe calls with undefined on timeout
-                        reject(undefined);
-                    }, timeout)
-                };
-
-                this._deferredIQs.push(deferred);
-            }
-        });
     }
 
     /**
@@ -500,7 +414,7 @@ export default class XmppConnection extends Listenable {
         body.cnode(pres.tree());
 
         const res = navigator.sendBeacon(
-            this.service.indexOf('https://') === -1 ? `https:${this.service}` : this.service,
+            `https:${this.service}`,
             Strophe.serialize(body.tree()));
 
         logger.info(`Successfully send unavailable beacon ${res}`);
