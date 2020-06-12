@@ -1803,15 +1803,15 @@ class Toolbox extends Component<Props, State> {
             `` + '\n' +
             `One tap mobile` + '\n' +
             `${sessionStorage.phone_numbers.split('\n').map(phone => {
-                var _phone = phone.split(" ");
-                if(_phone.length > 1) {
-                    return _phone[1].replace(/([-])|([A-Z() ])/g,'')+',,'+pin.replace(/ /g,'')+'# '+_phone[0]
-                }
-            }).join("\n")}`+
-            `Or Call ` + '\n' +
-            `${sessionStorage.phone_numbers}` + '\n' +
-            `Use Meeting Pin: ${pin}` + '\n' +
-            ``;
+                var _phone = phone.split(") ");
+                if(_phone.length > 1 && _phone[0] == "(US") {
+                    return _phone[1].replace(/([-])|([A-Z() ])/g,'')+',,'+pin.replace(/ /g,'')+'# '+_phone[0]+')'
+                } else { return '' }
+            }).join("")}`+'\n\n'+
+            `Or Dial ` + '\n' +
+            `${sessionStorage.phone_numbers.split('\n')[0]}` + '\n' +
+            `Use Meeting Pin: ${pin}` + '\n\n' +
+            `Find more numbers: https://meeting.remotepc.com/info/`+meetingInfo.slug;
         event.preventDefault();
 
         const el = document.createElement('textarea');
