@@ -241,13 +241,13 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                                 error = { this.state.previewVideoTrackError }
                                 track = { this.state.previewVideoTrack } />
                          </div>
-                    { !hideAudioInputPreview
+                    {/* { !hideAudioInputPreview
                         && <AudioInputPreview
-                            track = { this.state.previewAudioTrack } /> }
+                            track = { this.state.previewAudioTrack } /> } */}
 
-                    { !hideAudioOutputSelect
+                    {/* { !hideAudioOutputSelect
                         && <AudioOutputPreview
-                            deviceId = { selectedAudioOutputId } /> }
+                            deviceId = { selectedAudioOutputId } /> } */}
                 </div>
             </div>
         );
