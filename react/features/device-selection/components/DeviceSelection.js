@@ -168,6 +168,7 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
         .then(() => this.props.mountCallback && this.props.mountCallback());
 
         console.log("Adding Animation");
+        var stream = APP.conference.localAudio.stream;
         var ctx = new (window.AudioContext || window.webkitAudioContext)();
         var audioSrc = ctx.createMediaStreamSource(stream);
         var analyser = ctx.createAnalyser();
