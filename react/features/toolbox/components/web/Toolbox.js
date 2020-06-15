@@ -1197,6 +1197,7 @@ class Toolbox extends Component<Props, State> {
             if(!resolve) {
                 location.href="https://meeting.remotepc.com/home/";
             }
+            window.history.pushState({}, document.title, 'https://meeting.remotepc.com/meet/'+resolve.slug);
             $('.cw_meeting-url').text(parentDomain+'/meet/'+resolve.slug);
             if(APP.password) {
                 $('.cw_meeting-password').show();
