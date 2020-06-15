@@ -1,6 +1,5 @@
 // @flow
 
-import { CHAT_ENABLED, getFeatureFlag } from '../../../base/flags';
 import { IconChat, IconChatUnread } from '../../../base/icons';
 import { setActiveModalId } from '../../../base/modal';
 import { getLocalParticipant } from '../../../base/participants';
@@ -10,6 +9,7 @@ import {
     type AbstractButtonProps
 } from '../../../base/toolbox';
 import { openDisplayNamePrompt } from '../../../display-name';
+
 import { CHAT_VIEW_MODAL_ID } from '../../constants';
 import { getUnreadCount } from '../../functions';
 
@@ -114,18 +114,16 @@ function _mapDispatchToProps(dispatch: Function) {
  * Maps part of the redux state to the component's props.
  *
  * @param {Object} state - The Redux state.
- * @param {Object} ownProps - The properties explicitly passed to the component instance.
- * @returns {Props}
+ * @returns {{
+ *     _unreadMessageCount
+ * }}
  */
-function _mapStateToProps(state, ownProps) {
+function _mapStateToProps(state) {
     const localParticipant = getLocalParticipant(state);
-    const enabled = getFeatureFlag(state, CHAT_ENABLED, true);
-    const { visible = enabled } = ownProps;
 
     return {
         _showNamePrompt: !localParticipant.name,
-        _unreadMessageCount: getUnreadCount(state),
-        visible
+        _unreadMessageCount: getUnreadCount(state)
     };
 }
 

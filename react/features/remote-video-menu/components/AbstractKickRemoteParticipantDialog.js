@@ -51,8 +51,10 @@ export default class AbstractKickRemoteParticipantDialog
      * @returns {boolean} - True (to note that the modal should be closed).
      */
     _onSubmit() {
+    
         const { dispatch, participantID } = this.props;
-
+        localStorage.setItem('kickuser',participantID);
+        document.getElementById('Kickout').click();
         sendAnalytics(createRemoteVideoMenuButtonEvent(
             'kick.button',
             {

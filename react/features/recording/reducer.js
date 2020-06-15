@@ -1,5 +1,4 @@
 import { ReducerRegistry } from '../base/redux';
-
 import {
     CLEAR_RECORDING_SESSIONS,
     RECORDING_SESSION_UPDATED,

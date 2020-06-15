@@ -61,7 +61,7 @@ export default class LocalVideo extends SmallVideo {
         // 'local' if no id has been assigned yet.
         this.initializeAvatar();
 
-        this.addAudioLevelIndicator();
+        // this.addAudioLevelIndicator();
         this.updateIndicators();
 
         this.container.onclick = this._onContainerClick;
@@ -75,15 +75,29 @@ export default class LocalVideo extends SmallVideo {
 
         containerSpan.classList.add('videocontainer');
         containerSpan.id = this.videoSpanId;
-
+        var dName = APP.store.getState()['features/base/settings'].displayName;
+        if(dName)
+        {
+            var res = dName.match(/\b(\w)/g); 
+            var capName = res.join('');
+            var capName = capName.toUpperCase();
+            var capName = capName.substring(0,2);
+        }
+        else
+        {
+            var capName = '';
+        }
         containerSpan.innerHTML = `
             <div class = 'videocontainer__background'></div>
             <span id = 'localVideoWrapper'></span>
-            <div class = 'videocontainer__toolbar'></div>
             <div class = 'videocontainer__toptoolbar'></div>
+            <div class = 'videocontainer__toolbar'></div>
             <div class = 'videocontainer__hoverOverlay'></div>
             <div class = 'displayNameContainer'></div>
             <div class = 'avatar-container'></div>`;
+            //  <div class = 'avatar-container-2'
+            //  style="top: 50%;left: 50%;position: absolute;transform: translate(-50%,-50%);display: flex;justify-content: center;overflow: hidden;"><div class="avatar  userAvatar " style="background-color: rgba(234, 255, 128); font-size: 180%; height: 100%; width: 100%;"><svg class="avatar-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><text dominant-baseline="central" fill="rgba(255,255,255)" font-size="40pt" text-anchor="middle" x="50" y="50">${capName
+            //     }</text></svg></div></div>`;
 
         return containerSpan;
     }

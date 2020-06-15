@@ -2,6 +2,7 @@
 
 import { ColorSchemeRegistry, schemeColor } from '../../../base/color-scheme';
 import { ColorPalette } from '../../../base/styles';
+
 import { FILMSTRIP_SIZE } from '../../constants';
 
 /**

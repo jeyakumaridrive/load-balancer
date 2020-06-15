@@ -1,4 +1,5 @@
 // @flow
+import { notifyKickedOut } from './actions';
 import { appNavigate } from '../app';
 import {
     CONFERENCE_JOINED,
@@ -6,18 +7,16 @@ import {
     VIDEO_QUALITY_LEVELS,
     conferenceLeft,
     getCurrentConference,
-    setPreferredVideoQuality
+    setPreferredReceiverVideoQuality
 } from '../base/conference';
 import { hideDialog, isDialogOpen } from '../base/dialog';
 import { setActiveModalId } from '../base/modal';
 import { pinParticipant } from '../base/participants';
-import { MiddlewareRegistry, StateListenerRegistry } from '../base/redux';
 import { SET_REDUCED_UI } from '../base/responsive-ui';
+import { MiddlewareRegistry, StateListenerRegistry } from '../base/redux';
 import { FeedbackDialog } from '../feedback';
 import { setFilmstripEnabled } from '../filmstrip';
 import { setToolboxEnabled } from '../toolbox';
-
-import { notifyKickedOut } from './actions';
 
 MiddlewareRegistry.register(store => next => action => {
     const result = next(action);
@@ -33,7 +32,7 @@ MiddlewareRegistry.register(store => next => action => {
         dispatch(setFilmstripEnabled(!reducedUI));
 
         dispatch(
-            setPreferredVideoQuality(
+            setPreferredReceiverVideoQuality(
                 reducedUI
                     ? VIDEO_QUALITY_LEVELS.LOW
                     : VIDEO_QUALITY_LEVELS.HIGH));
@@ -66,7 +65,7 @@ MiddlewareRegistry.register(store => next => action => {
 StateListenerRegistry.register(
     state => getCurrentConference(state),
     (conference, { dispatch, getState }, prevConference) => {
-        const { authRequired, membersOnly, passwordRequired }
+        const { authRequired, passwordRequired }
             = getState()['features/base/conference'];
 
         if (conference !== prevConference) {
@@ -80,7 +79,6 @@ StateListenerRegistry.register(
             // and explicitly check.
             if (typeof authRequired === 'undefined'
                     && typeof passwordRequired === 'undefined'
-                    && typeof membersOnly === 'undefined'
                     && !isDialogOpen(getState(), FeedbackDialog)) {
                 // Conference changed, left or failed... and there is no
                 // pending authentication, nor feedback request, so close any

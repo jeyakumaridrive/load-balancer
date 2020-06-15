@@ -80,7 +80,7 @@ MiddlewareRegistry.register(store => next => action => {
                 conference,
                 id,
                 local: participant.id === id,
-                raisedHand: false
+                // raisedHand: false
             }));
 
         break;
@@ -284,6 +284,7 @@ function _localParticipantJoined({ getState, dispatch }, next, action) {
     return result;
 }
 
+
 /**
  * Signals that the local participant has left.
  *
@@ -380,7 +381,8 @@ function _participantJoinedOrUpdated({ dispatch, getState }, next, action) {
     // Allow the redux update to go through and compare the old avatar
     // to the new avatar and emit out change events if necessary.
     const result = next(action);
-
+    //disabled avatar functional ity
+    
     const { disableThirdPartyRequests } = getState()['features/base/config'];
 
     if (!disableThirdPartyRequests && (avatarURL || email || id || name)) {
@@ -423,6 +425,36 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
     }));
 
     if (raisedHand) {
+        // dispatch(showNotification({
+        //     titleArguments: {
+        //         name: getParticipantDisplayName(getState, pid)
+        //     },
+        //     titleKey: 'notify.raisedHand'
+        // }, NOTIFICATION_TIMEOUT));
+        
+
+
+        var ac = true;
+        if(APP.conference._room.isAdmin == true) {
+            document.getElementById('hand-popup').classList.add('show');
+            var element = document.getElementById("new-toolbox");
+            element.classList.add("visible");
+
+            localStorage.setItem('kickuser',pid);
+             if(APP.conference.getParticipantById(pid)._tracks[0]  != undefined){
+              ac = APP.conference.getParticipantById(pid)._tracks[0].muted;
+            } 
+            var de = '';
+            // if(ac){
+            //     // de = "<button id='unmutesingle2' class='Unmute handraise-button'>Unmute</button> <button class='ignore handraise-button'>Ignore</button>";
+            // }
+            document.getElementById('hidden-jitsi-audio').play();
+        //    APP.store.dispatch(showNotification({
+        //             descriptionKey:de,
+        //              titleKey: getParticipantDisplayName(getState, pid) + ' rased his hand',
+        //             logoIconCustom: getParticipantDisplayName(getState, pid)
+        //     }));
+       }
         dispatch(showNotification({
             titleArguments: {
                 name: getParticipantDisplayName(getState, participantId)
@@ -431,6 +463,9 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
         }, NOTIFICATION_TIMEOUT));
     }
 }
+// function actionHand(pid) {
+//   alert(pid);
+// }
 
 /**
  * Registers sounds related with the participants feature.

@@ -5,6 +5,7 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { Icon, IconCancelSelection } from '../../../base/icons';
 import { connect } from '../../../base/redux';
+
 import AbstractMessageRecipient, {
     _mapDispatchToProps,
     _mapStateToProps,

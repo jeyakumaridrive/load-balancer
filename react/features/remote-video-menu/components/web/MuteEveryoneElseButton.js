@@ -7,11 +7,11 @@ import { openDialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { IconMuteEveryoneElse } from '../../../base/icons';
 import { connect } from '../../../base/redux';
+
 import AbstractMuteButton, {
     _mapStateToProps,
     type Props
 } from '../AbstractMuteButton';
-
 import MuteEveryoneDialog from './MuteEveryoneDialog';
 import RemoteVideoMenuButton from './RemoteVideoMenuButton';
 
@@ -44,7 +44,7 @@ class MuteEveryoneElseButton extends AbstractMuteButton {
         return (
             <RemoteVideoMenuButton
                 buttonText = { t('videothumbnail.domuteOthers') }
-                displayClass = { 'mutelink' }
+                displayClass = { 'mutelink mute-everyone' }
                 icon = { IconMuteEveryoneElse }
                 id = { `mutelink_${participantID}` }
                 // eslint-disable-next-line react/jsx-handler-names

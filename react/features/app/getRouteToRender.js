@@ -37,12 +37,35 @@ export type Route = {
  * {@code getState} function.
  * @returns {Promise<Route>}
  */
+/**
+ * Determines which route is to be rendered in order to depict a specific Redux
+ * store.
+ *
+ * @param {(Function|Object)} stateful - THe redux store, state, or
+ * {@code getState} function.
+ * @returns {Promise<Route>}
+ */
 export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
     const state = toState(stateful);
 
     if (navigator.product === 'ReactNative') {
         return _getMobileRoute(state);
     }
+    const { locationURL } = state['features/base/connection'];
+    let id = locationURL.searchParams.has('id') ? locationURL.searchParams.get('id') : '';
+    if(id != '')
+        sessionStorage.setItem('socket_id',id);
+    let user = locationURL.searchParams.has('user') ? locationURL.searchParams.get('user') : '';
+    if(user != '')
+        sessionStorage.setItem('user',user);
+
+    // console.log(' =?????? recording debug',locationURL,locationURL.hash.search('config.iAmRecorder') == -1);
+    // if(locationURL.hash.search('config.iAmRecorder') != 1)
+    // if (state['features/base/conference'].room == '' || !isRoomValid(state['features/base/conference'].room) || (user == '')) {
+    //     // To stop the ladning page and send the user to the parent site.
+    //     leaveMeeting();
+    //     return Promise.resolve(_getEmptyRoute());
+    // }
 
     return _getWebConferenceRoute(state) || _getWebWelcomePageRoute(state);
 }

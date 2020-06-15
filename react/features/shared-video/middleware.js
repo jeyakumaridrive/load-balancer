@@ -1,6 +1,7 @@
 // @flow
 
 import UIEvents from '../../../service/UI/UIEvents';
+
 import { MiddlewareRegistry } from '../base/redux';
 
 import { TOGGLE_SHARED_VIDEO } from './actionTypes';

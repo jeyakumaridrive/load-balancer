@@ -2,10 +2,10 @@
 
 import { Component } from 'react';
 
-import { renderConferenceTimer } from '../';
-import { getConferenceTimestamp } from '../../base/conference/functions';
-import { getLocalizedDurationFormatter } from '../../base/i18n';
 import { connect } from '../../base/redux';
+import { getLocalizedDurationFormatter } from '../../base/i18n';
+import { getConferenceTimestamp } from '../../base/conference/functions';
+import { renderConferenceTimer } from '../';
 
 /**
  * The type of the React {@code Component} props of {@link ConferenceTimer}.

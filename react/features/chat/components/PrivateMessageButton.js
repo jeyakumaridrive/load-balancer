@@ -1,10 +1,12 @@
 // @flow
 
+import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox';
+
 import { translate } from '../../base/i18n';
 import { IconMessage, IconReply } from '../../base/icons';
 import { getParticipantById } from '../../base/participants';
 import { connect } from '../../base/redux';
-import { AbstractButton, type AbstractButtonProps } from '../../base/toolbox';
+
 import { setPrivateMessageRecipient } from '../actions';
 
 export type Props = AbstractButtonProps & {
@@ -41,7 +43,7 @@ export type Props = AbstractButtonProps & {
 class PrivateMessageButton extends AbstractButton<Props, any> {
     accessibilityLabel = 'toolbar.accessibilityLabel.privateMessage';
     icon = IconMessage;
-    label = 'toolbar.privateMessage';
+    label = 'Reply Privately';
     toggledIcon = IconReply;
 
     /**

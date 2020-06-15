@@ -2,10 +2,11 @@
 
 import React from 'react';
 
-import { translate } from '../../../base/i18n';
 import { CircularLabel } from '../../../base/label';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
+import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
+
 import AbstractRecordingLabel, {
     _mapStateToProps
 } from '../AbstractRecordingLabel';
@@ -29,12 +30,23 @@ class RecordingLabel extends AbstractRecordingLabel {
             return null;
         }
 
+        console.log(this.props.t(this._getLabelKey()));
+        
+
         return (
-            <div>
-                <CircularLabel
-                    className = { this.props.mode }
-                    label = { this.props.t(this._getLabelKey()) } />
-            </div>
+            <React.Fragment>
+                {this.props._status == JitsiRecordingConstants.status.ON ? 
+                    (<div className='remote-recording-label'>
+                        <div className='redot blink' /> Recording...
+                    </div>)
+                
+                :(<div>
+                    <CircularLabel
+                        className = { this.props.mode }
+                        label = { this.props.t(this._getLabelKey()) } />
+                </div>)
+            }       
+            </React.Fragment>
         );
     }
 

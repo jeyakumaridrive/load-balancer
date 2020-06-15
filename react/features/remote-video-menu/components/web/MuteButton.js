@@ -3,8 +3,9 @@
 import React from 'react';
 
 import { translate } from '../../../base/i18n';
-import { IconMicDisabled } from '../../../base/icons';
+import { IconMicrophone, IconMicDisabled } from '../../../base/icons';
 import { connect } from '../../../base/redux';
+
 import AbstractMuteButton, {
     _mapStateToProps,
     type Props
@@ -32,6 +33,7 @@ class MuteButton extends AbstractMuteButton {
         super(props);
 
         this._handleClick = this._handleClick.bind(this);
+        this._handleClickUnmute = this._handleClickUnmute.bind(this);
     }
 
     /**
@@ -44,24 +46,48 @@ class MuteButton extends AbstractMuteButton {
         const { _audioTrackMuted, participantID, t } = this.props;
         const muteConfig = _audioTrackMuted ? {
             translationKey: 'videothumbnail.muted',
-            muteClassName: 'mutelink disabled'
+            muteClassName: 'mutelink customMuteBtn',
+            muteIconName: IconMicDisabled
         } : {
             translationKey: 'videothumbnail.domute',
-            muteClassName: 'mutelink'
+            muteClassName: 'mutelink',
+            muteIconName: IconMicrophone
         };
 
-        return (
-            <RemoteVideoMenuButton
-                buttonText = { t(muteConfig.translationKey) }
-                displayClass = { muteConfig.muteClassName }
-                icon = { IconMicDisabled }
-                id = { `mutelink_${participantID}` }
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick = { this._handleClick } />
-        );
-    }
+        if(_audioTrackMuted)
+        {
+            return (
+                <RemoteVideoMenuButton
+                    buttonText = { t(muteConfig.translationKey) }
+                    displayClass = { muteConfig.muteClassName }
+                    icon = { muteConfig.muteIconName }
+                    id = { `mutelink_${participantID}` }
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onClick = { () => {this._handleClickUnmute(participantID)} } />
+            );
+        }
+        else
+        {
+             return (
+                <RemoteVideoMenuButton
+                    buttonText = { t(muteConfig.translationKey) }
+                    displayClass = { muteConfig.muteClassName }
+                    icon = { muteConfig.muteIconName }
+                    id = { `mutelink_${participantID}` }
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onClick = { this._handleClick } />
+            );           
+        }
 
+    }
+    
+    _handleClickUnmute = (uId) =>
+     {
+        APP.conference._unmuteme(uId);
+     }
     _handleClick: () => void
+
+
 }
 
 export default translate(connect(_mapStateToProps)(MuteButton));

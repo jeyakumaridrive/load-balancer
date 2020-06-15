@@ -3,6 +3,7 @@
 import { PureComponent } from 'react';
 
 import { getParticipantDisplayName } from '../../base/participants';
+
 import { setPrivateMessageRecipient } from '../actions';
 
 export type Props = {

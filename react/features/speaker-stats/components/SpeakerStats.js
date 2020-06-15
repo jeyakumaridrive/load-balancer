@@ -6,6 +6,17 @@ import { Dialog } from '../../base/dialog';
 import { translate } from '../../base/i18n';
 import { getLocalParticipant } from '../../base/participants';
 import { connect } from '../../base/redux';
+import {
+    Icon,
+    IconMicrophone,
+    IconMicDisabled, 
+    IconClose,
+    IconPeople,
+    IconCameraDisabled,
+    IconCamera,
+    IconRaisedHand
+} from '../../base/icons';
+
 
 import SpeakerStatsItem from './SpeakerStatsItem';
 import SpeakerStatsLabels from './SpeakerStatsLabels';
@@ -67,8 +78,45 @@ class SpeakerStats extends Component<Props, State> {
 
         // Bind event handlers so they are only bound once per instance.
         this._updateStats = this._updateStats.bind(this);
+        this.muteall = this.muteall.bind(this);
+        this.unmuteall = this.unmuteall.bind(this);
+        this.unmuteMe = this.unmuteMe.bind(this);
+        this.muteMe = this.muteMe.bind(this);
+        this.LowerHand = this.LowerHand.bind(this);
+        
     }
+      muteall = (e) => {
+        e.preventDefault();
 
+        localStorage.setItem('mutede','true');
+        document.getElementById('muteAll').click();
+        //console.log(APP.conference._room.isAdmin);
+        $('#mute_all').hide();
+        $('#unmuteall_').show();
+     }
+     unmuteall = (e) => {
+        e.preventDefault();
+        localStorage.setItem('mutede','false');
+       document.getElementById('unmuteAll').click();
+       $('#mute_all').show();
+       $('#unmuteall_').hide();
+        //console.log(APP.conference._room.isAdmin);
+     }
+     unmuteMe = (uId) =>
+     {
+        APP.conference._unmuteme(uId);
+     }
+    muteMe = (uId) =>
+     {
+        APP.conference._muteme(uId);
+     }    
+     LowerHand = (uId) =>
+     {
+        APP.conference._LowerHand(uId);
+     }
+     onCloseSidebar = () =>{
+         $('#people_sidebar').removeClass('show-people-list')
+     }
     /**
      * Begin polling for speaker stats updates.
      *
@@ -76,6 +124,11 @@ class SpeakerStats extends Component<Props, State> {
      */
     componentDidMount() {
         this._updateInterval = setInterval(this._updateStats, 1000);
+
+    }
+    componentWillMount() {
+        setInterval(this._updateStats2, 100);
+
     }
 
     /**
@@ -98,16 +151,41 @@ class SpeakerStats extends Component<Props, State> {
         const userIds = Object.keys(this.state.stats);
         const items = userIds.map(userId => this._createStatsItem(userId));
 
+          const isAdmin = APP.conference._room.isAdmin;
+
+          const statClasses =   isAdmin ? 'speaker-stats has-footer' : 'speaker-stats';
+
         return (
-            <Dialog
-                cancelKey = { 'dialog.close' }
-                submitDisabled = { true }
-                titleKey = 'speakerStats.speakerStats'>
-                <div className = 'speaker-stats'>
-                    <SpeakerStatsLabels />
-                    { items }
-                </div>
-            </Dialog>
+           
+                <div className='spear-status-sidebar' id='people_sidebar'>
+                    <div className='people-title'>
+                        <Icon src={IconPeople} />
+                        <span>People</span> <span className='user-count'>({this.props._participants.length}) </span>
+                        <div className='close-sidebar' onClick={this.onCloseSidebar}>
+                            <Icon src = { IconClose } />    
+                        </div>
+                    </div>
+
+                    <div className = {statClasses}>
+                        { items }
+                    </div>
+                    { isAdmin == true ? (
+                        <div className='spearker-stats-footer'>
+                            <div className="mute-controller" >
+                                <button className='btn-mute-all'
+                                    onClick={ this.muteall }
+                                    id='mute_all'>Mute All
+                                </button>
+                                <button className='btn-unmute-all'
+                                    onClick={ this.unmuteall }
+                                    style={{'display':'none'}}
+                                    id='unmuteall_'>Unmute All
+                                </button>
+                            </div>
+                        </div>) : '' }
+                    
+            </div>
+           
         );
     }
 
@@ -131,10 +209,138 @@ class SpeakerStats extends Component<Props, State> {
         const hasLeft = statsModel.hasLeft();
 
         let displayName;
+        let audio_status = '';
+        let video_status = '';
+        let raise_hand = '';
+        //console.log("meooooo2");
+       // console.log(this.state.stats[userId]);
+        var ac = false;
+        let vc = false;
+        let rh = false;
+        if(APP.conference.getParticipantById(userId)!=undefined) {
+            //console.log(APP.conference.getParticipantById(userId));
+            if(APP.conference.getParticipantById(userId)._tracks[0]  != undefined){
+              ac = APP.conference.getParticipantById(userId)._tracks[0].muted;
+            } 
+            if(APP.conference.getParticipantById(userId)._tracks[1]  != undefined){
+              vc = APP.conference.getParticipantById(userId)._tracks[1].muted;
+            } 
+            if(APP.conference.getParticipantById(userId)._properties.raisedHand  != undefined){
+              rh = APP.conference.getParticipantById(userId)._properties.raisedHand;
+            } 
+
+            if(rh==true || rh=='true') {
+                var customStyle = '';
+                if(APP.conference._room.isAdmin)
+                {
+                    customStyle = "pointer";
+                }
+                
+               raise_hand = (
+                     <div className='raisehand-active' title="Lower Hand">
+                        <Icon src={IconRaisedHand} onClick={() => { this.LowerHand(userId)} } style={{ cursor: customStyle }} title="Raise Hand"/>
+                     </div>
+                );
+                 
+            } 
+
+            if(ac==true) {
+                var customStyle = '';
+                if(APP.conference._room.isAdmin)
+                {
+                    customStyle = "pointer";
+                }
+                
+                audio_status = (
+                     <div className='audio-muted' title="Unmute">
+                        <Icon src={IconMicDisabled} onClick={() => { this.unmuteMe(userId) } } style={{ cursor: customStyle }} title="Unmute"/>
+                     </div>
+                );
+                 
+            } else{
+                var customStyle = '';
+                if(APP.conference._room.isAdmin)
+                {
+                    customStyle = "pointer";
+                }
+                audio_status = (
+                    <div className='audio-active' title="Mute">
+                       <Icon src={IconMicrophone} onClick={() => { this.muteMe(userId) } } style={{ cursor: customStyle }} title="Mute"/>
+                    </div>
+                );
+            }
+            if(vc==true) {
+                 video_status = (
+                     <div className='audio-muted'>
+                        <Icon src={IconCameraDisabled} />
+                     </div>
+                 );
+            } else{
+                video_status = (
+                    <div className='audio-active'>
+                       <Icon src={IconCamera} />
+                    </div>
+                );
+            }
+
+        } else {
+            audio_status = 'In Active';
+            video_status = 'In Active';
+        }
+
+        // if(APP.conference.getParticipantById(userId)!=undefined) {
+        //     if(APP.conference.getParticipantById(userId)._tracks[1]  != undefined){
+        //       vc = APP.conference.getParticipantById(userId)._tracks[1].muted;
+        //     } 
+        //     if(vc==true) {
+        //         video_status = (
+        //              <div className='audio-muted'>
+        //                 <Icon src={IconCameraDisabled} />
+        //              </div>
+        //          );
+        //     } else{
+        //         video_status = (
+        //             <div className='audio-active'>
+        //                <Icon src={IconCamera} />
+        //             </div>
+        //         );
+        //     }
+        // } else {
+        //     video_status = 'In Active';
+        // }
+
 
         if (statsModel.isLocalStats()) {
+            var a_status = APP.conference.isLocalAudioMuted();
+            var v_status = APP.conference.isLocalVideoMuted();
+            if(a_status==true) {
+                 audio_status = (
+                     <div className='audio-muted'>
+                        <Icon src={IconMicDisabled} />
+                     </div>
+                 );
+            } else{
+                audio_status = (
+                    <div className='audio-active'>
+                       <Icon src={IconMicrophone} />
+                    </div>
+                );
+            }
+            if(v_status==true) {
+                 video_status = (
+                     <div className='audio-muted'>
+                        <Icon src={IconCameraDisabled} />
+                     </div>
+                 );
+            } else{
+                video_status = (
+                    <div className='audio-active'>
+                       <Icon src={IconCamera} />
+                    </div>
+                );
+            }
             const { t } = this.props;
-            const meString = t('me');
+            const meString = t('You');
 
             displayName = this.props._localDisplayName;
             displayName
@@ -143,12 +349,24 @@ class SpeakerStats extends Component<Props, State> {
             displayName
                 = this.state.stats[userId].getDisplayName()
                     || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME;
-        }
 
+            var isnum = /^[0-9+()-\\s]*$/.test(displayName);
+            if(isnum == true || isnum == 'true')
+            {
+                var n = displayName.replace(/^(.{5})(.*)(.{1})$/, "$1*****$3");
+                displayName = n;
+            }
+        }
+        //var muted = APP.conference.getParticipantById(userId)._tracks[0].muted;
+       
+      //  var muted = 'tru';
         return (
             <SpeakerStatsItem
                 displayName = { displayName }
                 dominantSpeakerTime = { dominantSpeakerTime }
+                audio_status ={audio_status}
+                video_status = {video_status}
+                raise_hand = {raise_hand}
                 hasLeft = { hasLeft }
                 isDominantSpeaker = { isDominantSpeaker }
                 key = { userId } />
@@ -156,6 +374,7 @@ class SpeakerStats extends Component<Props, State> {
     }
 
     _updateStats: () => void;
+    _updateStats2: () => void;
 
     /**
      * Update the internal state with the latest speaker stats.
@@ -164,9 +383,21 @@ class SpeakerStats extends Component<Props, State> {
      * @private
      */
     _updateStats() {
+
         const stats = this.props.conference.getSpeakerStats();
 
         this.setState({ stats });
+    }
+    
+    _updateStats2() {
+       
+         if(localStorage.mutede=='true'){
+            $('#mute_all').hide();
+            $('#unmuteall_').show();
+        } else {
+             $('#mute_all').show();
+            $('#unmuteall_').hide();
+        }
     }
 }
 
@@ -181,6 +412,8 @@ class SpeakerStats extends Component<Props, State> {
  */
 function _mapStateToProps(state) {
     const localParticipant = getLocalParticipant(state);
+    //console.log(state);
+    
 
     return {
         /**
@@ -189,7 +422,8 @@ function _mapStateToProps(state) {
          * @private
          * @type {string|undefined}
          */
-        _localDisplayName: localParticipant && localParticipant.name
+        _localDisplayName: localParticipant && localParticipant.name,
+        _participants: state['features/base/participants']
     };
 }
 

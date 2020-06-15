@@ -56,11 +56,6 @@ export type Props = {
     isDismissAllowed: boolean,
 
     /**
-     * Maximum lines of the description.
-     */
-    maxLines: ?number,
-
-    /**
      * Callback invoked when the user clicks to dismiss the notification.
      */
     onDismissed: Function,
@@ -80,6 +75,7 @@ export type Props = {
      * The translation arguments that may be necessary for the title.
      */
     titleArguments: Object,
+    logoIconCustom: string,
 
     /**
      * The translation key to display as the title of the notification if

@@ -6,7 +6,6 @@ import {
     createToolbarEvent,
     sendAnalytics
 } from '../../../analytics';
-import { RAISE_HAND_ENABLED, getFeatureFlag } from '../../../base/flags';
 import { translate } from '../../../base/i18n';
 import { IconRaisedHand } from '../../../base/icons';
 import {
@@ -97,19 +96,17 @@ class RaiseHandButton extends AbstractButton<Props, *> {
  * Maps part of the Redux state to the props of this component.
  *
  * @param {Object} state - The Redux state.
- * @param {Object} ownProps - The properties explicitly passed to the component instance.
  * @private
- * @returns {Props}
+ * @returns {{
+ *     _raisedHand: boolean
+ * }}
  */
-function _mapStateToProps(state, ownProps): Object {
+function _mapStateToProps(state): Object {
     const _localParticipant = getLocalParticipant(state);
-    const enabled = getFeatureFlag(state, RAISE_HAND_ENABLED, true);
-    const { visible = enabled } = ownProps;
 
     return {
         _localParticipant,
-        _raisedHand: _localParticipant.raisedHand,
-        visible
+        _raisedHand: _localParticipant.raisedHand
     };
 }
 

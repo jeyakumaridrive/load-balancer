@@ -44,6 +44,9 @@ class ParticipantsCount extends PureComponent<Props> {
      */
     constructor(props: Props) {
         super(props);
+        this.state = {
+            
+        }
 
         this._onClick = this._onClick.bind(this);
     }
@@ -58,8 +61,17 @@ class ParticipantsCount extends PureComponent<Props> {
      */
     _onClick() {
         const { dispatch, conference } = this.props;
-
         dispatch(openDialog(SpeakerStats, { conference }));
+        setTimeout(() => {
+            //check if the people toolbar is open
+            var ps = $('#people_sidebar');
+            if(!ps.hasClass('show-people-list')) {
+                var element = document.getElementById("new-toolbox");
+                element.classList.remove("visible");
+                document.getElementById('hand-popup').classList.remove('show');
+            }
+            ps.toggleClass('show-people-list');
+        }, 300);
     }
 
     /**
@@ -69,15 +81,28 @@ class ParticipantsCount extends PureComponent<Props> {
      * @returns {ReactElement}
      */
     render() {
+        
         return (
-            <div
-                className = 'participants-count'
-                onClick = { this._onClick }>
-                <span className = 'participants-count-number'>
-                    {this.props.count}
-                </span>
-                <span className = 'participants-count-icon' />
-            </div>
+            <React.Fragment>
+                <a
+                    type="button" 
+                    className="js-open-modal present-tab"
+                    id='people-trigger'
+                    onClick = { this._onClick }>
+                    <div className = 'participants-count-number'>
+                        {this.props.count}
+                    </div>
+                    <div className = 'participants-count-icon' />
+                    <span>People</span>
+                </a>
+
+                <div 
+                    className='rasie-hand-alert' 
+                    id='hand-popup'
+                    onClick = { this._onClick }>
+                        User raised hand
+                </div>
+            </React.Fragment>
         );
     }
 }
@@ -92,6 +117,7 @@ class ParticipantsCount extends PureComponent<Props> {
  * @returns {Props}
  */
 function mapStateToProps(state) {
+  
     return {
         conference: state['features/base/conference'].conference,
         count: getParticipantCount(state)

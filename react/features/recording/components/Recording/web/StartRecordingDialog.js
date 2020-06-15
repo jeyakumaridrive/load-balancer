@@ -2,9 +2,10 @@
 
 import React from 'react';
 
-import { Dialog } from '../../../../base/dialog';
 import { translate } from '../../../../base/i18n';
+import { Dialog } from '../../../../base/dialog';
 import { connect } from '../../../../base/redux';
+
 import AbstractStartRecordingDialog, {
     mapStateToProps
 } from '../AbstractStartRecordingDialog';
@@ -47,7 +48,7 @@ class StartRecordingDialog extends AbstractStartRecordingDialog {
                 okKey = 'dialog.startRecording'
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.startRecording'
-                width = 'small'>
+                width = 'medium'>
                 <StartRecordingDialogContent
                     fileRecordingsServiceEnabled = { _fileRecordingsServiceEnabled }
                     fileRecordingsServiceSharingEnabled = { _fileRecordingsServiceSharingEnabled }

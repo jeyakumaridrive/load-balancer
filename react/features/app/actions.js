@@ -322,3 +322,25 @@ export function maybeRedirectToWelcomePage(options: Object = {}) {
         }
     };
 }
+
+export function leaveMeeting() {
+    return (dispatch: Dispatch<any>, getState: Function) => {
+        const {
+            parentDomain
+        } = getState()['features/base/config'];
+        if(window.parent.length > 0)
+            parent.window.postMessage({'method':'leavMeeting'},parentDomain);
+        else
+            location.href = parentDomain;
+    }
+}
+export function finishedLoading() {
+    return (dispatch: Dispatch<any>, getState: Function) => {
+        const {
+            parentDomain
+        } = getState()['features/base/config'];
+        console.log(' =>>>>> check',parentDomain,getState()['features/base/config']);
+        parent.window.postMessage({'method':'loaded'},parentDomain);
+    }
+}
+

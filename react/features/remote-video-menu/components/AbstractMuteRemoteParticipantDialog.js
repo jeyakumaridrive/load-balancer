@@ -55,8 +55,12 @@ export default class AbstractMuteRemoteParticipantDialog<P:Props = Props>
      * @returns {boolean} - True (to note that the modal should be closed).
      */
     _onSubmit() {
-        const { dispatch, participantID } = this.props;
 
+        const { dispatch, participantID } = this.props;
+         localStorage.setItem('kickuser',participantID);
+        // alert(APP.store.getState()['features/base/settings'].displayName);
+         localStorage.setItem('kickuserName',APP.conference.getParticipantById(participantID)._displayName);
+        document.getElementById('mute_single').click();
         dispatch(muteRemote(participantID));
 
         return true;

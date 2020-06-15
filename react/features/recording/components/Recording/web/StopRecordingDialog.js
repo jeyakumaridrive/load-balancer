@@ -2,9 +2,10 @@
 
 import React from 'react';
 
-import { Dialog } from '../../../../base/dialog';
 import { translate } from '../../../../base/i18n';
+import { Dialog } from '../../../../base/dialog';
 import { connect } from '../../../../base/redux';
+
 import AbstractStopRecordingDialog, {
     type Props,
     _mapStateToProps
@@ -28,11 +29,13 @@ class StopRecordingDialog extends AbstractStopRecordingDialog<Props> {
 
         return (
             <Dialog
-                okKey = 'dialog.confirm'
+                okKey = 'Yes'
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.recording'
-                width = 'small'>
-                { t('dialog.stopRecordingWarning') }
+                width = 'medium'>
+                    <div className='alert-dialog'>
+                        { t('dialog.stopRecordingWarning') }
+                    </div>
             </Dialog>
         );
     }

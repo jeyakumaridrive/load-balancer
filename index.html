@@ -7,8 +7,33 @@
     <!--#include virtual="base.html" -->
 
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/all.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <button style="display: none;" id="muteAll"></button>
+    <button style="display: none;" id="unmuteAll"></button>
+    <button style="display: none;" id="Kickout"></button>
+    <button style="display: none;" id="mute_single"></button>
+    <button style="display: none;" id="unmute_single"></button>
+    
 
+
+    <link rel="stylesheet" href="css/all.css?v=192">
+    <button style="display: none;" id="ShowMyBoard"></button> 
+    <button style="display: none;" id="closeMyBoard"></button> 
+    <audio id="hidden-jitsi-audio" style="display:none;" src="sounds/alert.mp3"></audio>
+    <input type="hidden" class="true-joining" id="true-joining" value="0">
+     <div style="display: none;">
+        <div class="select">
+            <label for="audioSource">Audio input source: </label><select id="audioSource"></select>
+        </div>
+
+        <div class="select">
+            <label for="audioOutput">Audio output destination: </label><select id="audioOutput"></select>
+        </div>
+
+        <div class="select">
+            <label for="videoSource">Video source: </label><select id="videoSource"></select>
+        </div>
+    </div>
     <script>
         // IE11 and earlier can be identified via their user agent and be
         // redirected to a page that is known to have no newer js syntax.
@@ -140,14 +165,153 @@
         };
         window.addEventListener(
             'error', loadErrHandler, true /* capture phase type of listener */);
+                function parseJSONSafely(str) {
+                try {
+                    return JSON.parse(str);
+                }
+                catch (e) {
+                    //console.err(e);
+                    // Return a default object, or null based on use case.
+                    return 'false'
+                }
+                }
+
+                function getUrlVars()
+                {
+                    var vars = [], hash;
+                    var hashes = decodeURIComponent(window.location.href).slice(window.location.href.indexOf('?') + 1).split('&');
+                    for(var i = 0; i < hashes.length; i++)
+                    {
+                        hash = hashes[i].split('=');
+                        vars.push(hash[0]);
+                        vars[hash[0]] = hash[1];
+                    }
+                    return vars;
+                }
+
+                var configDev = getUrlVars()["config._devices"];
+                var configvideostatus = getUrlVars()["config.startWithVideoMuted"];
+
+                if(configvideostatus)
+                {
+                    var isParseStatus = parseJSONSafely(configvideostatus);
+                    if(isParse != 'false')
+                    {
+                        var camState = JSON.parse(configvideostatus);
+                        if(camState == false || camState == 'false')
+                        {
+                            localStorage.setItem('camstateMuted','false');
+                        }
+                        else
+                        {
+                            localStorage.setItem('camstateMuted', 'true');
+                        }
+                    }
+                }
+
+                if(configDev)
+                {
+                    var isParse = parseJSONSafely(configDev);
+                    if(isParse != 'false')
+                    {
+                        var parseData = JSON.parse(configDev);
+                        var cam = parseData.videoinput.name;
+                        var microphones = parseData.audioinput.name;
+                        var speakerscam = parseData.audiooutput.name;
+                        if(cam)
+                        {
+                            localStorage.setItem('camera',cam);
+                        }
+                        else
+                        {
+                            localStorage.setItem('camera',"");
+                        }
+                        if(microphones)
+                        {
+                            localStorage.setItem('microphones',microphones);
+                        }
+                        else
+                        {
+                           localStorage.setItem('microphones',""); 
+                        }
+                        if(speakerscam)
+                        {
+                            localStorage.setItem('speakerscam',speakerscam);
+                        } 
+                        else
+                        {
+                            localStorage.setItem('speakerscam',"");
+                        }
+                    }
+                    else
+                    {
+                        localStorage.setItem('camera',"");
+                        localStorage.setItem('microphones',"");
+                        localStorage.setItem('speakerscam',"");
+                    }
+
+                }
+                else
+                {
+                    localStorage.setItem('camera',"");
+                    localStorage.setItem('microphones',"");
+                    localStorage.setItem('speakerscam',"");
+                }
+                'use strict';
+
+                const videoElement = document.querySelector('video');
+                const audioInputSelect = document.querySelector('select#audioSource');
+                const audioOutputSelect = document.querySelector('select#audioOutput');
+                const videoSelect = document.querySelector('select#videoSource');
+                const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+
+                //audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
+
+                function gotDevices(deviceInfos) {
+                  // Handles being called several times to update labels. Preserve values.
+                  const values = selectors.map(select => select.value);
+                  selectors.forEach(select => {
+                    while (select.firstChild) {
+                      select.removeChild(select.firstChild);
+                    }
+                  });
+                  for (let i = 0; i !== deviceInfos.length; ++i) {
+                    const deviceInfo = deviceInfos[i];
+                    const option = document.createElement('option');
+                    option.value = deviceInfo.deviceId;
+                    if (deviceInfo.kind === 'audioinput') {
+                      option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
+                      audioInputSelect.appendChild(option);
+                    } else if (deviceInfo.kind === 'audiooutput') {
+                      option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
+                      audioOutputSelect.appendChild(option);
+                    } else if (deviceInfo.kind === 'videoinput') {
+                      option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+                      videoSelect.appendChild(option);
+                    } else {
+                      console.log('Some other kind of source/device: ', deviceInfo);
+                    }
+                  }
+                  selectors.forEach((select, selectorIndex) => {
+                    if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
+                      select.value = values[selectorIndex];
+                    }
+                  });
+                }
+                function handleError(error) {
+                  console.log('navigator.getUserMedia error: ', error);
+                }
+                navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+
+
     </script>
     <script><!--#include virtual="/config.js" --></script><!-- adapt to your needs, i.e. set hosts and bosh path -->
     <!--#include virtual="connection_optimization/connection_optimization.html" -->
     <script src="libs/do_external_connect.min.js?v=1"></script>
     <script><!--#include virtual="/interface_config.js" --></script>
     <script><!--#include virtual="/logging_config.js" --></script>
-    <script src="libs/lib-jitsi-meet.min.js?v=139"></script>
-    <script src="libs/app.bundle.min.js?v=139"></script>
+    <script src="libs/lib-jitsi-meet.min.js?v=x228"></script>
+    <script src="libs/app.bundle.min.js?v=X228"></script>
     <!--#include virtual="title.html" -->
     <!--#include virtual="plugin.head.html" -->
     <!--#include virtual="static/welcomePageAdditionalContent.html" -->
@@ -158,3 +322,30 @@
     <div id="react"></div>
   </body>
 </html>
+<script type="text/javascript">
+    setInterval(function(){
+        let divs = document.getElementsByClassName('styled__NavItem-sc-716rt7-5');
+
+            for (let x = 0; x < divs.length; x++) {
+                let div = divs[x];
+                let content = div.innerHTML.trim();
+
+                if (content == 'Profile' || content == 'More') {
+                    div.style.display = 'none';
+                }
+            }
+            $('#localDisplayName').text('').append('You');
+    },100)
+    $(document).ready(function(){
+        $(document).on('click','#unmutesingle2',function(){
+           
+            $('#unmute_single').click()
+            $('.EDTcm').click()
+        }) 
+        //$('.ignore').on('click',function(){
+        $(document).on('click','.ignore',function(){
+            $('.EDTcm').click()
+        })
+    })
+    
+</script>

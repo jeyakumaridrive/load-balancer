@@ -2,9 +2,8 @@
 
 import React, { Component } from 'react';
 
-import logger from '../../../logger';
-
 import AudioSettingsEntry from './AudioSettingsEntry';
+import logger from '../../../logger';
 import TestButton from './TestButton';
 
 const TEST_SOUND_PATH = 'sounds/ring.wav';

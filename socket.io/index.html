@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<script src="https://remotepc4.codertc.com/socket.io/socket.io.js"></script>
+<script>
+            var socket = io('https://remotepc4.codertc.com');
+            console.log(socket);
+            socket.on('greeting-from-server', function (message) {
+                document.body.appendChild(
+                    document.createTextNode(message.greeting)
+                );
+                socket.emit('greeting-from-client', {
+                    greeting: 'Hello Server'
+                });
+            });
+</script>
+</body>
+</html>

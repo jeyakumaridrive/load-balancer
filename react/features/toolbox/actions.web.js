@@ -3,15 +3,15 @@
 import type { Dispatch } from 'redux';
 
 import {
-    FULL_SCREEN_CHANGED,
-    SET_FULL_SCREEN
-} from './actionTypes';
-import {
     clearToolboxTimeout,
     setToolboxTimeout,
     setToolboxTimeoutMS,
     setToolboxVisible
 } from './actions.native';
+import {
+    FULL_SCREEN_CHANGED,
+    SET_FULL_SCREEN
+} from './actionTypes';
 
 declare var interfaceConfig: Object;
 
@@ -93,7 +93,7 @@ export function hideToolbox(force: boolean = false): Function {
             dispatch(
                 setToolboxTimeout(
                     () => dispatch(hideToolbox()),
-                    timeoutMS));
+                    2900));
         } else {
             dispatch(setToolboxVisible(false));
         }
@@ -131,8 +131,8 @@ export function showToolbox(timeout: number = 0): Object {
             timeoutMS,
             visible
         } = state['features/toolbox'];
-
-        if (enabled && !visible) {
+        var t = $("#people_sidebar");
+        if (enabled && !visible && !(t != undefined && t != null && t.hasClass('show-people-list'))) {
             dispatch(setToolboxVisible(true));
 
             // If the Toolbox is always visible, there's no need for a timeout
@@ -141,7 +141,7 @@ export function showToolbox(timeout: number = 0): Object {
                 dispatch(
                     setToolboxTimeout(
                         () => dispatch(hideToolbox()),
-                        timeout || timeoutMS));
+                        timeout || 2900));
                 dispatch(setToolboxTimeoutMS(interfaceConfig.TOOLBAR_TIMEOUT));
             }
         }

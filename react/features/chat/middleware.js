@@ -10,7 +10,6 @@ import {
     JitsiConferenceErrors,
     JitsiConferenceEvents
 } from '../base/lib-jitsi-meet';
-import { setActiveModalId } from '../base/modal';
 import {
     getLocalParticipant,
     getParticipantById,
@@ -23,15 +22,9 @@ import { isButtonEnabled, showToolbox } from '../toolbox';
 import { SEND_MESSAGE, SET_PRIVATE_MESSAGE_RECIPIENT } from './actionTypes';
 import { addMessage, clearMessages, toggleChat } from './actions';
 import { ChatPrivacyDialog } from './components';
-import {
-    CHAT_VIEW_MODAL_ID,
-    INCOMING_MSG_SOUND_ID,
-    MESSAGE_TYPE_ERROR,
-    MESSAGE_TYPE_LOCAL,
-    MESSAGE_TYPE_REMOTE
-} from './constants';
+import { INCOMING_MSG_SOUND_ID, MESSAGE_TYPE_ERROR, MESSAGE_TYPE_LOCAL, MESSAGE_TYPE_REMOTE } from './constants';
 import { INCOMING_MSG_SOUND_FILE } from './sounds';
-
+import { showNotification } from '../../features/notifications';
 declare var APP: Object;
 declare var interfaceConfig : Object;
 
@@ -101,7 +94,6 @@ MiddlewareRegistry.register(store => next => action => {
     }
 
     case SET_PRIVATE_MESSAGE_RECIPIENT: {
-        Boolean(action.participant) && dispatch(setActiveModalId(CHAT_VIEW_MODAL_ID));
         _maybeFocusField();
         break;
     }
@@ -163,6 +155,31 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.MESSAGE_RECEIVED,
         (id, message, timestamp, nick) => {
+            
+            // let cTye = parseJSONSafely(message);
+            // if(cTye != 'false')
+            // {
+            //     let messageObj = JSON.parse( message );
+                
+            //     if(messageObj.EventType == 1005 || messageObj.EventType == 1006)
+            //     {
+            //         return false;
+            //     }
+            // }
+            // var element =  document.getElementById('chatconversation');
+            // if (!element)
+            // {
+            //     //console.log('reNd&&ID');
+            //     var username = APP.conference.getParticipantById(id);
+              
+            //     APP.store.dispatch(showNotification({
+            //            descriptionKey:username._displayName+" sent a message.",
+            //             logoIconCustom:  username._displayName,
+            //             titleKey: username._displayName
+            //     },1500));
+            //     //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
+                
+            // }
             _handleReceivedMessage(store, {
                 id,
                 message,
@@ -176,6 +193,30 @@ function _addChatMsgListener(conference, store) {
     conference.on(
         JitsiConferenceEvents.PRIVATE_MESSAGE_RECEIVED,
         (id, message, timestamp) => {
+            // let cTye = parseJSONSafely(message);
+            // if(cTye != 'false')
+            // {
+            //     let messageObj = JSON.parse( message );
+                
+            //     if(messageObj.EventType == 1005 || messageObj.EventType == 1006)
+            //     {
+            //         return false;
+            //     }
+            // }
+            // var element =  document.getElementById('chatconversation');
+            // if (!element)
+            // {
+            //     //console.log('reNd&&ID');
+            //     var username = APP.conference.getParticipantById(id);
+              
+            //     APP.store.dispatch(showNotification({
+            //            descriptionKey:username._displayName+" sent you a private message.",
+            //             logoIconCustom:  username._displayName,
+            //             titleKey: username._displayName
+            //     },1500));
+            //     //dispatch(playSound(INCOMING_MSG_SOUND_FILE));
+              
+            // }
             _handleReceivedMessage(store, {
                 id,
                 message,
@@ -216,14 +257,21 @@ function _handleChatError({ dispatch }, error) {
  * @param {Object} message - The message object.
  * @returns {void}
  */
+function parseJSONSafely(str) {
+   try {
+      return JSON.parse(str);
+   }
+   catch (e) {
+      //console.err(e);
+      // Return a default object, or null based on use case.
+      return 'false'
+   }
+}
 function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, privateMessage, timestamp }) {
     // Logic for all platforms:
     const state = getState();
     const { isOpen: isChatOpen } = state['features/chat'];
 
-    if (!isChatOpen) {
-        dispatch(playSound(INCOMING_MSG_SOUND_ID));
-    }
 
     // Provide a default for for the case when a message is being
     // backfilled for a participant that has left the conference.
@@ -234,17 +282,40 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
     const timestampToDate = timestamp
         ? new Date(timestamp) : new Date();
     const millisecondsTimestamp = timestampToDate.getTime();
+    let messageObj = parseJSONSafely(message);
+    if(messageObj=='false')
+    {
+        if(localStorage.muteNotifications == 'false')
+        {
+            var new1 = localStorage.getItem('userPid');
+            if(new1 != id)
+            {
+                if (!isChatOpen) {
+                    dispatch(playSound(INCOMING_MSG_SOUND_ID));
+                    APP.store.dispatch(showNotification({
+                           descriptionKey:message,
+                            logoIconCustom:  displayName,
+                            titleKey: displayName,
+                            timeStamp:millisecondsTimestamp,
+                            newMessage:true,
+                    },2500));
+                }
 
-    dispatch(addMessage({
-        displayName,
-        hasRead,
-        id,
-        messageType: participant.local ? MESSAGE_TYPE_LOCAL : MESSAGE_TYPE_REMOTE,
-        message,
-        privateMessage,
-        recipient: getParticipantDisplayName(state, localParticipant.id),
-        timestamp: millisecondsTimestamp
-    }));
+            }
+        }
+        dispatch(addMessage({
+            displayName,
+            hasRead,
+            id,
+            messageType: participant.local ? MESSAGE_TYPE_LOCAL : MESSAGE_TYPE_REMOTE,
+            message,
+            privateMessage,
+            recipient: getParticipantDisplayName(state, localParticipant.id),
+            timestamp: millisecondsTimestamp
+        }));
+
+
+    }
 
     if (typeof APP !== 'undefined') {
         // Logic for web only:

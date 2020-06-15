@@ -144,7 +144,7 @@ function AddPeopleDialog({
             hideCancelButton = { true }
             submitDisabled = { true }
             titleKey = 'addPeople.inviteMorePrompt'
-            width = { 'small' }>
+            width = { 'medium' }>
             <div className = 'invite-more-dialog'>
                 { !_hideInviteContacts && <InviteContactsSection /> }
                 <CopyMeetingLinkSection url = { _inviteUrl } />

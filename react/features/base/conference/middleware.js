@@ -1,5 +1,7 @@
 // @flow
 
+import { openDisplayNamePrompt } from '../../display-name';
+
 import {
     ACTION_PINNED,
     ACTION_UNPINNED,
@@ -7,11 +9,8 @@ import {
     createPinnedEvent,
     sendAnalytics
 } from '../../analytics';
-import { openDisplayNamePrompt } from '../../display-name';
-import { showErrorNotification } from '../../notifications';
-import { CONNECTION_ESTABLISHED, CONNECTION_FAILED, connectionDisconnected } from '../connection';
+import { CONNECTION_ESTABLISHED, CONNECTION_FAILED } from '../connection';
 import { JitsiConferenceErrors } from '../lib-jitsi-meet';
-import { MEDIA_TYPE } from '../media';
 import {
     getLocalParticipant,
     getParticipantById,
@@ -22,6 +21,15 @@ import {
 import { MiddlewareRegistry, StateListenerRegistry } from '../redux';
 import { TRACK_ADDED, TRACK_REMOVED } from '../tracks';
 
+import { getPropertyValue } from '../settings';
+
+import {
+    conferenceFailed,
+    conferenceWillLeave,
+    createConference,
+    setSubject,
+    setPassword
+} from './actions';
 import {
     CONFERENCE_FAILED,
     CONFERENCE_JOINED,
@@ -33,18 +41,13 @@ import {
     SET_ROOM
 } from './actionTypes';
 import {
-    conferenceFailed,
-    conferenceWillLeave,
-    createConference,
-    setSubject
-} from './actions';
-import {
     _addLocalTracksToConference,
     _removeLocalTracksFromConference,
     forEachConference,
     getCurrentConference
 } from './functions';
 import logger from './logger';
+import { MEDIA_TYPE } from '../media';
 
 declare var APP: Object;
 
@@ -52,7 +55,8 @@ declare var APP: Object;
  * Handler for before unload event.
  */
 let beforeUnloadHandler;
-
+let password = null;
+let passwordSet = false;
 /**
  * Implements the middleware of the feature base/conference.
  *
@@ -114,17 +118,14 @@ StateListenerRegistry.register(
         const {
             conference,
             maxReceiverVideoQuality,
-            preferredVideoQuality
+            preferredReceiverVideoQuality
         } = currentState;
         const changedPreferredVideoQuality
-            = preferredVideoQuality !== previousState.preferredVideoQuality;
+            = preferredReceiverVideoQuality !== previousState.preferredReceiverVideoQuality;
         const changedMaxVideoQuality = maxReceiverVideoQuality !== previousState.maxReceiverVideoQuality;
 
         if (changedPreferredVideoQuality || changedMaxVideoQuality) {
-            _setReceiverVideoConstraint(conference, preferredVideoQuality, maxReceiverVideoQuality);
-        }
-        if (changedPreferredVideoQuality) {
-            _setSenderVideoConstraint(conference, preferredVideoQuality);
+            _setReceiverVideoConstraint(conference, preferredReceiverVideoQuality, maxReceiverVideoQuality);
         }
     });
 
@@ -141,40 +142,13 @@ StateListenerRegistry.register(
  * @private
  * @returns {Object} The value returned by {@code next(action)}.
  */
-function _conferenceFailed({ dispatch, getState }, next, action) {
+function _conferenceFailed(store, next, action) {
     const result = next(action);
+
     const { conference, error } = action;
 
-    // Handle specific failure reasons.
-    switch (error.name) {
-    case JitsiConferenceErrors.CONFERENCE_DESTROYED: {
-        const [ reason ] = error.params;
-
-        dispatch(showErrorNotification({
-            description: reason,
-            titleKey: 'dialog.sessTerminated'
-        }));
-
-        if (typeof APP !== 'undefined') {
-            APP.UI.hideStats();
-        }
-        break;
-    }
-    case JitsiConferenceErrors.CONNECTION_ERROR: {
-        const [ msg ] = error.params;
-
-        dispatch(connectionDisconnected(getState()['features/base/connection'].connection));
-        dispatch(showErrorNotification({
-            descriptionArguments: { msg },
-            descriptionKey: msg ? 'dialog.connectErrorWithMsg' : 'dialog.connectError',
-            titleKey: 'connection.CONNFAIL'
-        }));
-
-        break;
-    }
-    case JitsiConferenceErrors.OFFER_ANSWER_FAILED:
+    if (error.name === JitsiConferenceErrors.OFFER_ANSWER_FAILED) {
         sendAnalytics(createOfferAnswerFailedEvent());
-        break;
     }
 
     // FIXME: Workaround for the web version. Currently, the creation of the
@@ -222,6 +196,9 @@ function _conferenceJoined({ dispatch, getState }, next, action) {
 
     pendingSubjectChange && dispatch(setSubject(pendingSubjectChange));
 
+    password = getPropertyValue(getState(), 'password');
+    APP.server = getPropertyValue(getState(), 'server');
+    APP.password = password;
     // FIXME: Very dirty solution. This will work on web only.
     // When the user closes the window or quits the browser, lib-jitsi-meet
     // handles the process of leaving the conference. This is temporary solution
@@ -464,24 +441,6 @@ function _setReceiverVideoConstraint(conference, preferred, max) {
 }
 
 /**
- * Helper function for updating the preferred sender video constraint, based
- * on the user preference.
- *
- * @param {JitsiConference} conference - The JitsiConference instance for the
- * current call.
- * @param {number} preferred - The user preferred max frame height.
- * @returns {void}
- */
-function _setSenderVideoConstraint(conference, preferred) {
-    if (conference) {
-        conference.setSenderVideoConstraint(preferred)
-            .catch(err => {
-                logger.error(`Changing sender resolution to ${preferred} failed - ${err} `);
-            });
-    }
-}
-
-/**
  * Notifies the feature base/conference that the action
  * {@code SET_ROOM} is being dispatched within a specific
  *  redux store.
@@ -550,12 +509,12 @@ function _syncReceiveVideoQuality({ getState }, next, action) {
     const {
         conference,
         maxReceiverVideoQuality,
-        preferredVideoQuality
+        preferredReceiverVideoQuality
     } = getState()['features/base/conference'];
 
     _setReceiverVideoConstraint(
         conference,
-        preferredVideoQuality,
+        preferredReceiverVideoQuality,
         maxReceiverVideoQuality);
 
     return next(action);
@@ -602,13 +561,21 @@ function _trackAddedOrRemoved(store, next, action) {
  * @private
  * @returns {Object} The value returned by {@code next(action)}.
  */
-function _updateLocalParticipantInConference({ getState }, next, action) {
+function _updateLocalParticipantInConference({ dispatch, getState }, next, action) {
     const { conference } = getState()['features/base/conference'];
     const { participant } = action;
     const result = next(action);
 
     if (conference && participant.local && 'name' in participant) {
         conference.setDisplayName(participant.name);
+    }
+
+    if (conference && conference.getRole() == 'moderator' && password && !passwordSet) {
+        dispatch(setPassword(conference, conference.lock, password)).then((r) => {
+            passwordSet = true;
+        }).catch((e) => {
+            console.log("++++++++ cannot set password", e);
+        });
     }
 
     return result;

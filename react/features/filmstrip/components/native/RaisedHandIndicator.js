@@ -5,6 +5,7 @@ import React from 'react';
 import { IconRaisedHand } from '../../../base/icons';
 import { BaseIndicator } from '../../../base/react';
 import { connect } from '../../../base/redux';
+
 import AbstractRaisedHandIndicator, {
     type Props,
     _mapStateToProps

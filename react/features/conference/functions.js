@@ -1,6 +1,7 @@
-import { isSuboptimalBrowser } from '../base/environment';
 import { translateToHTML } from '../base/i18n';
+import { isSuboptimalBrowser } from '../base/environment';
 import { toState } from '../base/redux';
+
 import {
     areThereNotifications,
     showWarningNotification
@@ -22,10 +23,7 @@ export function maybeShowSuboptimalExperienceNotification(dispatch, t) {
                     titleKey: 'notify.suboptimalExperienceTitle',
                     description: translateToHTML(
                         t,
-                        'notify.suboptimalBrowserWarning',
-                        {
-                            recommendedBrowserPageLink: `${window.location.origin}/static/recommendedBrowsers.html`
-                        }
+                        'notify.suboptimalBrowserWarning'
                     )
                 }
             )

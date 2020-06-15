@@ -22,6 +22,10 @@ export default class AbstractVideoMuteButton<P : Props, S : *>
      * @returns {void}
      */
     _handleClick() {
+        // if(APP.conference.isSharingScreen == true)
+        // {
+        //     return false;
+        // }
         this._setVideoMuted(!this._isVideoMuted());
     }
 

@@ -7,12 +7,16 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import { colors } from '@atlaskit/theme';
 import React from 'react';
 
-import { translate } from '../../../base/i18n';
+import { translate, getLocalizedDateFormatter } from '../../../base/i18n';
+
 import { NOTIFICATION_TYPE } from '../../constants';
+
 import AbstractNotification, {
     type Props
 } from '../AbstractNotification';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
+const TIMESTAMP_FORMAT = 'hh:mm A';
 declare var interfaceConfig: Object;
 
 /**
@@ -50,20 +54,42 @@ class Notification extends AbstractNotification<Props> {
             title,
             titleArguments,
             titleKey,
-            uid
+            uid,
+            logoIconCustom,
+            timeStamp,
+            newMessage,
         } = this.props;
+       
+       
+        var acronym ='';
+        if(logoIconCustom != undefined) {
+            if(logoIconCustom!=''){
+                var matches = logoIconCustom.match(/\b(\w)/g); 
+                 acronym = matches.join('');
 
+            }
+
+        } 
         return (
-            <Flag
-                actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
-                appearance = { appearance }
-                description = { this._renderDescription() }
-                icon = { this._mapAppearanceToIcon() }
-                id = { uid }
-                isDismissAllowed = { isDismissAllowed }
-                onDismissed = { onDismissed }
-                title = { title || t(titleKey, titleArguments) } />
+            <div className="flag-wrapper">
+                {newMessage ? 
+                (<h2 className=""><span className="msg-time">{this._getFormattedTimestamp(timeStamp)}</span><img src="/images/ms-icon.png"/>New message</h2>) : ('')}
+                <Flag
+                    actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
+                    description = { this._renderDescription() }
+                    icon = { this._mapAppearanceToIcon(acronym,logoIconCustom) }
+                    id = { uid }
+                    isDismissAllowed = { isDismissAllowed }
+                    onDismissed = { onDismissed }
+                    className= {'notfications'}
+                    title = { title || t(titleKey, titleArguments) } />
+            </div>
         );
+    }
+
+    _getFormattedTimestamp(timeStamp) {
+        return getLocalizedDateFormatter(new Date(timeStamp))
+            .format(TIMESTAMP_FORMAT);
     }
 
     _getDescription: () => Array<string>
@@ -79,9 +105,9 @@ class Notification extends AbstractNotification<Props> {
      */
     _renderDescription() {
         return (
-            <div>
+            <div className="noto">
                 {
-                    this._getDescription()
+                    ReactHtmlParser(this._getDescription())
                 }
             </div>
         );
@@ -158,17 +184,17 @@ class Notification extends AbstractNotification<Props> {
      * @private
      * @returns {ReactElement}
      */
-    _mapAppearanceToIcon() {
+    _mapAppearanceToIcon(tt,logoIconCustom) {
         const appearance = this.props.appearance;
         const secIconColor = ICON_COLOR[this.props.appearance];
-        const iconSize = 'medium';
+        const iconSize = 'large';
 
         switch (appearance) {
         case NOTIFICATION_TYPE.ERROR:
             return (
                 <ErrorIcon
                     label = { appearance }
-                    secondaryColor = { secIconColor }
+                    primaryColor = { secIconColor }
                     size = { iconSize } />
             );
 
@@ -176,16 +202,21 @@ class Notification extends AbstractNotification<Props> {
             return (
                 <WarningIcon
                     label = { appearance }
-                    secondaryColor = { secIconColor }
+                    primaryColor = { secIconColor }
                     size = { iconSize } />
             );
 
         default:
             return (
-                <EditorInfoIcon
+             <div>
+                { tt!='' ? (
+                 <div className="notification_logo">{tt}</div>) :
+                   <EditorInfoIcon
                     label = { appearance }
-                    secondaryColor = { secIconColor }
+                    primaryColor = { secIconColor }
                     size = { iconSize } />
+                }
+                </div>
             );
         }
     }

@@ -5,6 +5,7 @@ import React from 'react';
 import { Dialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
+
 import { AbstractChatPrivacyDialog, _mapDispatchToProps, _mapStateToProps } from '../AbstractChatPrivacyDialog';
 
 /**
@@ -25,9 +26,11 @@ class ChatPrivacyDialog extends AbstractChatPrivacyDialog {
                 onCancel = { this._onSendGroupMessage }
                 onSubmit = { this._onSendPrivateMessage }
                 titleKey = 'dialog.sendPrivateMessageTitle'
-                width = 'small'>
+                width = 'medium'>
                 <div>
-                    { this.props.t('dialog.sendPrivateMessage') }
+                    <div className='alert-dialog'>
+                        { this.props.t('dialog.sendPrivateMessage') }
+                    </div>
                 </div>
             </Dialog>
         );
