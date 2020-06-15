@@ -298,6 +298,7 @@ export function leaveMeeting() {
             parent.window.postMessage({'method':'leavMeeting'},parentDomain);
         } else {
             if(sessionStorage.temp) {
+                sessionStorage.clear();
                 location.href = parentApi + '/api/v1/logout';
                 return;
             }
