@@ -79,7 +79,13 @@ MiddlewareRegistry.register(store => next => action => {
 
     case TRACK_ADDED:
         if (!action.track.local) {
-            VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
+            console.log(action);
+            if(APP.conference.roomName == "fiq1959hrzu" || APP.conference.roomName == "iarxagr2aw" || APP.conference.roomName == "91js56ahqph") {
+                // alterTrack()
+                alert("ya it is");
+            } else {
+                VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
+            }
         }
 
         break;
