@@ -9,6 +9,7 @@ import { toState } from '../base/redux';
 import { Conference } from '../conference';
 import { getDeepLinkingPage } from '../deep-linking';
 import { UnsupportedDesktopBrowser } from '../unsupported-browser';
+import { leaveMeeting } from './actions';
 import {
     BlankPage,
     WelcomePage,

@@ -68,6 +68,11 @@ class PasswordRequiredPrompt extends Component<Props, State> {
         this._onSubmit = this._onSubmit.bind(this);
     }
 
+    componentDidUpdate() {
+        if(sessionStorage.wrongPassword)
+        sessionStorage.passwordCheck = true;
+    }
+
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -81,9 +86,12 @@ class PasswordRequiredPrompt extends Component<Props, State> {
                 isModal = { false }
                 onCancel = { this._onCancel }
                 onSubmit = { this._onSubmit }
+                okKey = 'Join'
                 titleKey = 'dialog.passwordRequired'
-                width = 'small'>
-                { this._renderBody() }
+                width = 'medium'>
+                    <div className='alert-dialog'>
+                        { this._renderBody() }
+                    </div>
             </Dialog>
         );
     }
@@ -98,7 +106,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
         return (
             <div>
                 <TextField
-                    autoFocus = { true }
+                    autoFocus
                     compact = { true }
                     label = { this.props.t('dialog.passwordLabel') }
                     name = 'lockKey'
@@ -106,6 +114,7 @@ class PasswordRequiredPrompt extends Component<Props, State> {
                     shouldFitContainer = { true }
                     type = 'text'
                     value = { this.state.password } />
+                { sessionStorage.passwordCheck ? <span className="ps_alert" id="ps_alert">Wrong password, Please try again!</span> :''}
             </div>
         );
     }
@@ -159,12 +168,14 @@ class PasswordRequiredPrompt extends Component<Props, State> {
         // again will be marked as locked.
         this.props.dispatch(
             setPassword(conference, conference.join, this.state.password));
-
         // We have used the password so let's clean it.
+        //Don't hide till the validation is not done.
+        //This is causing thr jump of the toolbar
+        //We also need to show the wrong password error.
+        sessionStorage.wrongPassword = true;
         this.setState({
             password: undefined
         });
-
         return true;
     }
 }

@@ -2317,8 +2317,8 @@ export default {
 
         room.on(JitsiConferenceEvents.USER_ROLE_CHANGED, (id, role) => {
                 setTimeout(function(){
-                    localStorage.setItem('muteNotifications','false')
-                },8000)
+                localStorage.setItem('muteNotifications','false')
+                },8000);
              //   alert('s');
             if (this.isLocalId(id)) {
                 logger.info(`My role changed, new role: ${role}`);
@@ -2503,12 +2503,12 @@ export default {
                 if(new1 != messageObj.userID){
                     var nn = messageObj.name+' muted everyone';
                     if(localStorage.muteNotifications=='false'){
-                          APP.store.dispatch(showNotification({
-                               descriptionKey:nn,
-                                //title: messageObj.name,
-                                 titleKey:  messageObj.name,
-                                logoIconCustom: messageObj.name
-                            },2500));
+		                  APP.store.dispatch(showNotification({
+		                       descriptionKey:nn,
+		                        //title: messageObj.name,
+		                         titleKey:  messageObj.name,
+		                        logoIconCustom: messageObj.name
+	                },2500));
 
                     }
                     // if(localStorage.getItem('moderator') =='false'){
@@ -2522,13 +2522,13 @@ export default {
                 if(new1 != messageObj.userID){
                     var nn = messageObj.name+' unmuted everyone';
                      if(localStorage.muteNotifications=='false'){
-                         APP.store.dispatch(showNotification({
-                            descriptionKey: nn,
-                             titleKey:  messageObj.name,
-                           // title: messageObj.name,
-                             logoIconCustom: messageObj.name
-                        },2500));
-                     }
+	                     APP.store.dispatch(showNotification({
+	                        descriptionKey: nn,
+	                         titleKey:  messageObj.name,
+	                       // title: messageObj.name,
+	                         logoIconCustom: messageObj.name
+	                    },2500));
+	                 }
                     // if(localStorage.getItem('moderator') =='false'){
                         muteLocalAudio(false);
                       //$('.button-group-audio').hide();
@@ -2542,14 +2542,14 @@ export default {
                 if(new1 == messageObj.ToParticipantID){
                     var nn = messageObj.name+' Kicked out you';
                      if(localStorage.muteNotifications=='false'){
-                        APP.store.dispatch(showNotification({
-                            descriptionKey: nn,
-                             titleKey:  messageObj.name,
-                            //title: messageObj.name,
-                            //titleKey: 'You are Kicked by host'
-                             logoIconCustom: messageObj.name
-                         },2500));
-                    }
+	                    APP.store.dispatch(showNotification({
+	                        descriptionKey: nn,
+	                         titleKey:  messageObj.name,
+	                        //title: messageObj.name,
+	                        //titleKey: 'You are Kicked by host'
+	                         logoIconCustom: messageObj.name
+	                     },2500));
+	                }
                     APP.store.dispatch(leaveMeeting());
                     // if(localStorage.getItem('moderator') =='false'){
                         // this.hangup(true);
@@ -2569,13 +2569,13 @@ export default {
                 }
                  if(new1 != messageObj.userID){
                      if(localStorage.muteNotifications=='false'){
-                        var nn = messageObj.name+' muted '+messageObj.from+ ' for everyone';
-                         APP.store.dispatch(showNotification({
-                            descriptionKey: nn,
-                            titleKey: messageObj.name,
-                            logoIconCustom: messageObj.name
-                        },2500));
-                     }
+	                    var nn = messageObj.name+' muted '+messageObj.from+ ' for everyone';
+	                     APP.store.dispatch(showNotification({
+	                        descriptionKey: nn,
+	                        titleKey: messageObj.name,
+	                        logoIconCustom: messageObj.name
+	                    },2500));
+	                 }
                  }
             
            

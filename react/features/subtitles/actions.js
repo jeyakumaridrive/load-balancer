@@ -19,6 +19,7 @@ import {
  * }}
  */
 export function endpointMessageReceived(participant: Object, json: Object) {
+    console.log('message received', participant, json);
     return {
         type: ENDPOINT_MESSAGE_RECEIVED,
         participant,

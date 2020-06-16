@@ -326,12 +326,20 @@ export function maybeRedirectToWelcomePage(options: Object = {}) {
 export function leaveMeeting() {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const {
-            parentDomain
+            parentDomain, parentApi
         } = getState()['features/base/config'];
-        if(window.parent.length > 0)
+        if(window.self !== window.top) {
             parent.window.postMessage({'method':'leavMeeting'},parentDomain);
-        else
-            location.href = parentDomain;
+        } else {
+            if(sessionStorage.temp) {
+                sessionStorage.clear();
+                location.href = parentApi + '/api/v1/logout';
+                return;
+            }
+            localStorage.left = true;
+            location.reload();
+            // location.href = parentDomain;
+        }
     }
 }
 export function finishedLoading() {
@@ -343,4 +351,3 @@ export function finishedLoading() {
         parent.window.postMessage({'method':'loaded'},parentDomain);
     }
 }
-
