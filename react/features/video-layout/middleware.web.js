@@ -84,6 +84,8 @@ MiddlewareRegistry.register(store => next => action => {
                 console.log(action);
                 if(
                     APP.conference.getParticipantById(action.track.participantId)._displayName.toLowerCase().indexOf('iphone') != -1
+                    &&
+                    action.track.mediaType == 'audio'
                 ) {
                     gainControl(action).then((action) => {
                         VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
