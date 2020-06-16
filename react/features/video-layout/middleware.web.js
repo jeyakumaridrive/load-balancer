@@ -81,8 +81,14 @@ MiddlewareRegistry.register(store => next => action => {
         if (!action.track.local) {
             console.log(action);
             if(APP.conference.roomName == "fiq1959hrzu" || APP.conference.roomName == "iarxagr2aw" || APP.conference.roomName == "91js56ahqph") {
-                // alterTrack()
-                alert("ya it is");
+                alert(APP.conference.getParticipantById(action.track.participantId)._displayName);
+                if(
+                    APP.conference.getParticipantById(action.track.participantId)._displayName.toLowerCase().indexOf('iphone') != -1
+                ) {
+                    // 
+                } else {
+                    VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
+                }
             } else {
                 VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
             }
