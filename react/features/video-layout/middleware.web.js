@@ -14,7 +14,6 @@ import {
 import { MiddlewareRegistry } from '../base/redux';
 import { TRACK_ADDED, TRACK_REMOVED } from '../base/tracks';
 import { SET_FILMSTRIP_VISIBLE } from '../filmstrip';
-import gainControl from './gain-control';
 
 import './middleware.any';
 
@@ -80,23 +79,7 @@ MiddlewareRegistry.register(store => next => action => {
 
     case TRACK_ADDED:
         if (!action.track.local) {
-            if(APP.conference.roomName == "fiq1959hrzu" || APP.conference.roomName == "91js56ahqph") {
-                console.log(action);
-                if(
-                    (APP.conference.getParticipantById(action.track.participantId)._displayName.toLowerCase().indexOf('iphone') != -1 || APP.conference.getParticipantById(action.track.participantId)._displayName.toLowerCase().indexOf('dev') != -1)
-                    &&
-                    action.track.mediaType == 'audio'
-                ) {
-                    console.log(gainControl);
-                    gainControl(action).then((action) => {
-                        VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
-                    })       
-                } else {
-                    VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
-                }
-            } else {
-                VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
-            }
+            VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
         }
 
         break;
