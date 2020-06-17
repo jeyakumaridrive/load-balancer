@@ -33,20 +33,31 @@ export default function gainControl(action) {
         }
         
         var audioTracks = destination.stream.getAudioTracks();
-        for (var i=0; i < audioTracks.length; i++) {
-            setTimeout(() => {
-                $('audio').each((i, e) => { e.muted = true });
-
+        audioTracks.forEach(audioTrack => {
+            // setTimeout(() => {
+                $('#participant_'+action.track.participantId+' audio')[0].muted  = true;
+                $('#participant_'+action.track.participantId+' audio')[0].volume  = 0;
                 var audio = document.createElement('audio')  
                 var stream = new MediaStream();
-                stream.addTrack(audioTracks[i]);
+                stream.addTrack(audioTrack);
                 audio.srcObject = stream;
                 audio.play();
                 $('body').append(audio);
-            }, 2000);
-            // action.track.jitsiTrack.stream.removeTrack(action.track.jitsiTrack.stream.getAudioTracks()[0]);
-            // action.track.jitsiTrack.stream.addTrack(audioTracks[i]);
-        }
+            // }, 2000);
+        })
+        // for (var i=0; i < audioTracks.length; i++) {
+            
+        //     $('#participant_'+action.track.participantId+' audio')[0].muted  = true;
+
+        //     var audio = document.createElement('audio')  
+        //     var stream = new MediaStream();
+        //     stream.addTrack(audioTracks[i]);
+        //     audio.srcObject = stream;
+        //     audio.play();
+        //     $('body').append(audio);
+        //     // action.track.jitsiTrack.stream.removeTrack(action.track.jitsiTrack.stream.getAudioTracks()[0]);
+        //     // action.track.jitsiTrack.stream.addTrack(audioTracks[i]);
+        // }
 
         resolve(action);
     });
