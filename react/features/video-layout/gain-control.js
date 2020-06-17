@@ -1,5 +1,4 @@
 export default function gainControl(action) {
-    alert();
     return new Promise((resolve, reject) => {
 
         var __stream = new MediaStream(); // action.track.jitsiTrack.stream // real stream
@@ -35,8 +34,15 @@ export default function gainControl(action) {
         
         var audioTracks = destination.stream.getAudioTracks();
         for (var i=0; i < audioTracks.length; i++) {
+            alert();
             action.track.jitsiTrack.stream.removeTrack(action.track.jitsiTrack.stream.getAudioTracks()[0]);
-            action.track.jitsiTrack.stream.addTrack(audioTracks[i]);
+            // action.track.jitsiTrack.stream.addTrack(audioTracks[i]);
+            var audio = document.createElement('audio')  
+            var stream = new MediaStream();
+            stream.addTrack(audioTracks[i]);
+            audio.srcObject = stream;
+            audio.play();
+            $('body').append(audio);
         }
 
         resolve(action);
