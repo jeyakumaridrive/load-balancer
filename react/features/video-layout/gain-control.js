@@ -14,7 +14,9 @@ export default function gainControl(action) {
         compressor.threshold.value = -30;
         compressor.knee.value = 40;
         compressor.ratio.value = 4;
-        compressor.reduction.value = -10;
+        if(compressor.reduction && compressor.reduction.value) {
+            compressor.reduction.value = -10;
+        }
         compressor.attack.value = 0;
         compressor.release.value = 0.25;
     
