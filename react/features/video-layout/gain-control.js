@@ -6,7 +6,7 @@ export default function gainControl(action) {
         
         var context = new AudioContext(); 
         var gainNode = context.createGain();
-        gainNode.gain.value = 1;
+        gainNode.gain.value = 2;
     
         // compress to avoid clipping
         var compressor = context.createDynamicsCompressor();
@@ -34,16 +34,18 @@ export default function gainControl(action) {
         
         var audioTracks = destination.stream.getAudioTracks();
         for (var i=0; i < audioTracks.length; i++) {
-            alert();
-            $('audio').each((i, e) => { e.muted = true })
+            setTimeout(() => {
+                $('audio').each((i, e) => { e.muted = true });
+
+                var audio = document.createElement('audio')  
+                var stream = new MediaStream();
+                stream.addTrack(audioTracks[i]);
+                audio.srcObject = stream;
+                audio.play();
+                $('body').append(audio);
+            }, 2000);
             // action.track.jitsiTrack.stream.removeTrack(action.track.jitsiTrack.stream.getAudioTracks()[0]);
             // action.track.jitsiTrack.stream.addTrack(audioTracks[i]);
-            var audio = document.createElement('audio')  
-            var stream = new MediaStream();
-            stream.addTrack(audioTracks[i]);
-            audio.srcObject = stream;
-            audio.play();
-            $('body').append(audio);
         }
 
         resolve(action);
