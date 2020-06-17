@@ -35,7 +35,8 @@ export default function gainControl(action) {
         var audioTracks = destination.stream.getAudioTracks();
         for (var i=0; i < audioTracks.length; i++) {
             alert();
-            action.track.jitsiTrack.stream.removeTrack(action.track.jitsiTrack.stream.getAudioTracks()[0]);
+            $('audio').each((i, e) => { e.muted = true })
+            // action.track.jitsiTrack.stream.removeTrack(action.track.jitsiTrack.stream.getAudioTracks()[0]);
             // action.track.jitsiTrack.stream.addTrack(audioTracks[i]);
             var audio = document.createElement('audio')  
             var stream = new MediaStream();
