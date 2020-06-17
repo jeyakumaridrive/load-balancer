@@ -35,14 +35,16 @@ export default function gainControl(action) {
         var audioTracks = destination.stream.getAudioTracks();
         audioTracks.forEach(audioTrack => {
             // setTimeout(() => {
-                $('#participant_'+action.track.participantId+' audio')[0].muted  = true;
-                $('#participant_'+action.track.participantId+' audio')[0].volume  = 0;
-                var audio = document.createElement('audio')  
-                var stream = new MediaStream();
-                stream.addTrack(audioTrack);
-                audio.srcObject = stream;
-                audio.play();
-                $('body').append(audio);
+                if($('#participant_'+action.track.participantId+' audio').length) {
+                    $('#participant_'+action.track.participantId+' audio')[0].muted  = true;
+                    $('#participant_'+action.track.participantId+' audio')[0].volume  = 0;
+                    var audio = document.createElement('audio')  
+                    var stream = new MediaStream();
+                    stream.addTrack(audioTrack);
+                    audio.srcObject = stream;
+                    audio.play();
+                    $('body').append(audio);
+                }
             // }, 2000);
         })
         // for (var i=0; i < audioTracks.length; i++) {
