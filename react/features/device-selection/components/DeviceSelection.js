@@ -15,7 +15,6 @@ import AudioInputPreview from './AudioInputPreview';
 import AudioOutputPreview from './AudioOutputPreview';
 import DeviceSelector from './DeviceSelector';
 import VideoInputPreview from './VideoInputPreview';
-import {Icon, IconMicrophone} from '../../base/icons/';
 
 /**
  * The type of the React {@code Component} props of {@link DeviceSelection}.
@@ -150,7 +149,6 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
             previewVideoTrackError: null
         };
         this._unMounted = true;
-
     }
 
     /**
@@ -166,36 +164,6 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
         ])
         .catch(err => logger.warn('Failed to initialize preview tracks', err))
         .then(() => this.props.mountCallback && this.props.mountCallback());
-
-        console.log("Adding Animation");
-        var stream = APP.conference.localAudio.stream;
-        var ctx = new (window.AudioContext || window.webkitAudioContext)();
-        var audioSrc = ctx.createMediaStreamSource(stream);
-        var analyser = ctx.createAnalyser();
-        window.scriptProcessor = ctx.createScriptProcessor();
-        audioSrc.connect(analyser);
-        analyser.connect(scriptProcessor);
-        scriptProcessor.connect(ctx.destination);
-        analyser.fftSize = 32;
-        var ot = 0;
-        window.scriptProcessor.onaudioprocess = function (e) {
-            var tempArray = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(tempArray);
-            var t = 0;
-            for (let i = 0; i < tempArray.length; i++) {
-                t += tempArray[i] / (256 * 16);
-            }
-            // console.log(ot, t);
-            if (t > 0.15 || t > ot + 0.5) {
-                // console.log('animating');
-                $(".audio-preview-container .audio-wave").addClass('animate')
-                ot = t;
-            } else if (t < 0.15 || t < ot - 0.5) {
-                // console.log('not animating');
-                $(".audio-preview-container .audio-wave").removeClass('animate')
-                ot = t;
-            }
-        };
     }
 
     /**
@@ -276,19 +244,10 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                     { !hideAudioInputPreview
                         && <AudioInputPreview
                             track = { this.state.previewAudioTrack } /> }
-                    { hideAudioInputPreview &&
-                        <div className="audio-preview-container">
-                            <Icon src={IconMicrophone} />
-                            <div className="audio-wave">
-                                <span />
-                                <span />
-                                <span />
-                            </div>
-                        </div>
-                    }
+
                     { !hideAudioOutputSelect
                         && <AudioOutputPreview
-                            deviceId = { selectedAudioOutputId } /> } */}
+                            deviceId = { selectedAudioOutputId } /> }
                 </div>
             </div>
         );
