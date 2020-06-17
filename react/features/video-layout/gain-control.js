@@ -7,7 +7,7 @@ export default function gainControl(action) {
         
         var context = new AudioContext(); 
         var gainNode = context.createGain();
-        gainNode.gain.value = 2;
+        gainNode.gain.value = 1;
     
         // compress to avoid clipping
         var compressor = context.createDynamicsCompressor();
