@@ -34,7 +34,7 @@ export default function gainControl(action) {
         
         var audioTracks = destination.stream.getAudioTracks();
         audioTracks.forEach(audioTrack => {
-            // setTimeout(() => {
+            setTimeout(() => {
                 if($('#participant_'+action.track.participantId+' audio').length) {
                     $('#participant_'+action.track.participantId+' audio')[0].muted  = true;
                     $('#participant_'+action.track.participantId+' audio')[0].volume  = 0;
@@ -45,7 +45,7 @@ export default function gainControl(action) {
                     audio.play();
                     $('body').append(audio);
                 }
-            // }, 2000);
+            }, 2000);
         })
         // for (var i=0; i < audioTracks.length; i++) {
             
