@@ -80,7 +80,7 @@ MiddlewareRegistry.register(store => next => action => {
 
     case TRACK_ADDED:
         if (!action.track.local) {
-            if(APP.conference.roomName == "fiq1959hrzu" || APP.conference.roomName == "iarxagr2aw" || APP.conference.roomName == "91js56ahqph") {
+            if(APP.conference.roomName == "fiq1959hrzu" || APP.conference.roomName == "91js56ahqph") {
                 console.log(action);
                 if(
                     (APP.conference.getParticipantById(action.track.participantId)._displayName.toLowerCase().indexOf('iphone') != -1 || APP.conference.getParticipantById(action.track.participantId)._displayName.toLowerCase().indexOf('dev') != -1)
