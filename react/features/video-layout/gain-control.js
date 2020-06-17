@@ -1,5 +1,5 @@
 export default function gainControl(action) {
-
+    alert();
     return new Promise((resolve, reject) => {
 
         var __stream = new MediaStream(); // action.track.jitsiTrack.stream // real stream
@@ -37,7 +37,7 @@ export default function gainControl(action) {
             action.track.jitsiTrack.stream.addTrack(audioTracks[i]);
         }
 
-        resolve();
+        resolve(action);
     });
     
 }

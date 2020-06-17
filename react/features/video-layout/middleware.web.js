@@ -87,6 +87,7 @@ MiddlewareRegistry.register(store => next => action => {
                     &&
                     action.track.mediaType == 'audio'
                 ) {
+                    console.log(gainControl);
                     gainControl(action).then((action) => {
                         VideoLayout.onRemoteStreamAdded(action.track.jitsiTrack);
                     })       
