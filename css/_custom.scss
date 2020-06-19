@@ -101,10 +101,13 @@
 					    font-size: 14px;
 					    color: #223942;
 					    vertical-align: middle;
-					    display: inline-flex !important;
+					    display: inline-block !important;
 						padding: 0;
 						font-weight: 400;
 						margin-bottom: 0;;
+						svg{
+							display: inline-block;
+						}
 					}
 				}
 			}
