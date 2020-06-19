@@ -15,6 +15,8 @@ import AudioInputPreview from './AudioInputPreview';
 import AudioOutputPreview from './AudioOutputPreview';
 import DeviceSelector from './DeviceSelector';
 import VideoInputPreview from './VideoInputPreview';
+import {Icon, IconMicrophone} from '../../base/icons/';
+
 
 /**
  * The type of the React {@code Component} props of {@link DeviceSelection}.
@@ -275,18 +277,21 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                                 track = { this.state.previewVideoTrack } />
                          </div>
 
-
+                       
+                        { !hideAudioInputPreview	
+                    && <AudioInputPreview	
+                        track = { this.state.previewAudioTrack } /> }	
                         
-                         { hideAudioInputPreview &&
-                            <div className="audio-preview-container">
-                                <Icon src={IconMicrophone} />
-                                <div className="audio-wave">
-                                    <span />
-                                    <span />
-                                    <span />
-                                </div>
-                            </div>
-                        }
+                    { hideAudioInputPreview &&	
+                        <div className="audio-preview-container">	
+                            <Icon src={IconMicrophone} />	
+                            <div className="audio-wave">	
+                                <span />	
+                                <span />	
+                                <span />	
+                            </div>	
+                        </div>	
+                    }
                     { !hideAudioOutputSelect
                         && <AudioOutputPreview
                             deviceId = { selectedAudioOutputId } /> }
