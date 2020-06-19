@@ -529,7 +529,7 @@
 .avatar-container {
     @include maxSize(60px);
     @include absoluteAligning();
-    display: flex;
+    display: block;
     justify-content: center;
     height: 50%;
     width: auto;
