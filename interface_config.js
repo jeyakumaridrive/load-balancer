@@ -1,9 +1,14 @@
 /* eslint-disable no-unused-vars, no-var, max-len */
 
 var interfaceConfig = {
+
     // TO FIX: this needs to be handled from SASS variables. There are some
     // methods allowing to use variables both in css and js.
     DEFAULT_BACKGROUND: '#222222',
+    // TO FIX: this needs to be handled from SASS variables. There are some
+    // methods allowing to use variables both in css and js.
+    DEFAULT_BACKGROUND: '#222222',
+
 
     /**
      * Whether or not the blurred video background for large video should be
@@ -228,6 +233,7 @@ var interfaceConfig = {
      * Specify URL for downloading ios mobile app.
      */
      MOBILE_DOWNLOAD_LINK_IOS: 'https://apps.apple.com/us/app/remotepc-meeting/id1512918951#?platform=iphone',
+
 
     /**
      * Specify mobile app scheme for opening the app from the mobile browser.

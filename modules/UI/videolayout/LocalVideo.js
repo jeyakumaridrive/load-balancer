@@ -1,5 +1,6 @@
 /* global $, config, interfaceConfig, APP */
 
+import Logger from 'jitsi-meet-logger';
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
@@ -11,11 +12,11 @@ import { updateSettings } from '../../../react/features/base/settings';
 import { getLocalVideoTrack } from '../../../react/features/base/tracks';
 import { shouldDisplayTileView } from '../../../react/features/video-layout';
 /* eslint-enable no-unused-vars */
-
-const logger = require('jitsi-meet-logger').getLogger(__filename);
-
 import UIEvents from '../../../service/UI/UIEvents';
+
 import SmallVideo from './SmallVideo';
+
+const logger = Logger.getLogger(__filename);
 
 /**
  *
@@ -60,7 +61,7 @@ export default class LocalVideo extends SmallVideo {
         // 'local' if no id has been assigned yet.
         this.initializeAvatar();
 
-        this.addAudioLevelIndicator();
+        // this.addAudioLevelIndicator();
         this.updateIndicators();
 
         this.container.onclick = this._onContainerClick;

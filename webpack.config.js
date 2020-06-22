@@ -1,5 +1,5 @@
 /* global __dirname */
-
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 const process = require('process');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
@@ -11,7 +11,7 @@ const devServerProxyTarget
     = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://meeting.remotepc.com';
 
 const analyzeBundle = process.argv.indexOf('--analyze-bundle') !== -1;
-
+const detectCircularDeps = process.argv.indexOf('--detect-circular-deps') !== -1;
 const minimize
     = process.argv.indexOf('-p') !== -1
         || process.argv.indexOf('--optimize-minimize') !== -1;
@@ -155,6 +155,12 @@ const config = {
             && new BundleAnalyzerPlugin({
                 analyzerMode: 'disabled',
                 generateStatsFile: true
+            }),
+            detectCircularDeps
+            && new CircularDependencyPlugin({
+                allowAsyncCycles: false,
+                exclude: /node_modules/,
+                failOnError: false
             })
     ].filter(Boolean),
     resolve: {
@@ -179,7 +185,7 @@ module.exports = [
         entry: {
             'app.bundle': './app.js'
         },
-        performance: getPerformanceHints(3 * 1024 * 1024)
+        performance: getPerformanceHints(20 * 1024 * 1024)
     }),
     Object.assign({}, config, {
         entry: {

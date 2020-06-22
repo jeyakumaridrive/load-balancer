@@ -4,8 +4,8 @@ import { generateRoomWithoutSeparator } from 'js-utils/random';
 import type { Component } from 'react';
 
 import { isRoomValid } from '../base/conference';
-import { toState } from '../base/redux';
 import { isSupportedBrowser } from '../base/environment';
+import { toState } from '../base/redux';
 import { Conference } from '../conference';
 import { getDeepLinkingPage } from '../deep-linking';
 import { UnsupportedDesktopBrowser } from '../unsupported-browser';
@@ -30,6 +30,14 @@ export type Route = {
     href: ?string
 };
 
+/**
+ * Determines which route is to be rendered in order to depict a specific Redux
+ * store.
+ *
+ * @param {(Function|Object)} stateful - THe redux store, state, or
+ * {@code getState} function.
+ * @returns {Promise<Route>}
+ */
 /**
  * Determines which route is to be rendered in order to depict a specific Redux
  * store.

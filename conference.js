@@ -2317,8 +2317,8 @@ export default {
 
         room.on(JitsiConferenceEvents.USER_ROLE_CHANGED, (id, role) => {
                 setTimeout(function(){
-                	localStorage.setItem('muteNotifications','false')
-                },8000)
+                localStorage.setItem('muteNotifications','false')
+                },8000);
              //   alert('s');
             if (this.isLocalId(id)) {
                 logger.info(`My role changed, new role: ${role}`);
@@ -2508,7 +2508,7 @@ export default {
 		                        //title: messageObj.name,
 		                         titleKey:  messageObj.name,
 		                        logoIconCustom: messageObj.name
-	                    	},2500));
+	                },2500));
 
                     }
                     // if(localStorage.getItem('moderator') =='false'){

@@ -44,9 +44,6 @@ var config = {
     //
 
     testing: {
-        // Enables experimental simulcast support on Firefox.
-        enableFirefoxSimulcast: false,
-
         // P2P test mode disables automatic switching to P2P when there are 2
         // participants in the conference.
         p2pTestMode: false
@@ -57,6 +54,13 @@ var config = {
         // Disables the auto-play behavior of *all* newly created video element.
         // This is useful when the client runs on a host with limited resources.
         // noAutoPlayVideo: false
+
+        // Enable / disable 500 Kbps bitrate cap on desktop tracks. When enabled,
+        // simulcast is turned off for the desktop share. If presenter is turned
+        // on while screensharing is in progress, the max bitrate is automatically
+        // adjusted to 2.5 Mbps. This takes a value between 0 and 1 which determines
+        // the probability for this to be enabled.
+        // capScreenshareBitrate: 1 // 0 to disable
     },
 
     // Disables ICE/UDP by filtering out local and remote UDP candidates in
@@ -213,6 +217,21 @@ var config = {
     // Default value for the channel "last N" attribute. -1 for unlimited.
     channelLastN: -1,
 
+    // // Options for the recording limit notification.
+    // recordingLimit: {
+    //
+    //    // The recording limit in minutes. Note: This number appears in the notification text
+    //    // but doesn't enforce the actual recording time limit. This should be configured in
+    //    // jibri!
+    //    limit: 60,
+    //
+    //    // The name of the app with unlimited recordings.
+    //    appName: 'Unlimited recordings APP',
+    //
+    //    // The URL of the app with unlimited recordings.
+    //    appURL: 'https://unlimited.recordings.app.com/'
+    // },
+
     // Disables or enables RTX (RFC 4588) (defaults to false).
     // disableRtx: false,
 
@@ -229,6 +248,14 @@ var config = {
     // disabled, then bandwidth estimations are disabled.
     // enableRemb: false,
 
+    // Enables ICE restart logic in LJM and displays the page reload overlay on
+    // ICE failure. Current disabled by default because it's causing issues with
+    // signaling when Octo is enabled. Also when we do an "ICE restart"(which is
+    // not a real ICE restart), the client maintains the TCC sequence number
+    // counter, but the bridge resets it. The bridge sends media packets with
+    // TCC sequence numbers starting from 0.
+    // enableIceRestart: false,
+
     // Defines the minimum number of participants to start a call (the default
     // is set in Jicofo and set to 2).
     // minParticipants: 2,
@@ -243,7 +270,7 @@ var config = {
     // Values can be 'datachannel', 'websocket', true (treat it as
     // 'datachannel'), undefined (treat it as 'datachannel') and false (don't
     // open any channel).
-    // openBridgeChannel: true,
+     openBridgeChannel: 'websocket',
 
 
     // UI
@@ -291,6 +318,9 @@ var config = {
     // Enables calendar integration, depends on googleApiApplicationClientID
     // and microsoftApiApplicationClientID
     // enableCalendarIntegration: false,
+
+    // When 'true', it shows an intermediate page before joining, where the user can  configure its devices.
+    // prejoinPageEnabled: false,
 
     // Stats
     //
@@ -342,9 +372,9 @@ var config = {
         // The STUN servers that will be used in the peer to peer connections
         stunServers: [
 
-            // { urls: 'stun:jitsi-meet.example.com:443' },
+            // { urls: 'stun:jitsi-meet.example.com:4446' },
             { urls: 'stun:meet-jit-si-turnrelay.jitsi.net:443' }
-        ],
+        ]
 
         // Sets the ICE transport policy for the p2p connection. At the time
         // of this writing the list of possible values are 'all' and 'relay',
@@ -356,7 +386,7 @@ var config = {
 
         // If set to true, it will prefer to use H.264 for P2P calls (if H.264
         // is supported).
-        preferH264: true
+        // preferH264: true
 
         // If set to true, disable H.264 video codec by stripping it out of the
         // SDP.
@@ -370,6 +400,10 @@ var config = {
     analytics: {
         // The Google Analytics Tracking ID:
         // googleAnalyticsTrackingId: 'your-tracking-id-UA-123456-1'
+
+        // Matomo configuration:
+        // matomoEndpoint: 'https://your-matomo-endpoint/',
+        // matomoSiteID: '42',
 
         // The Amplitude APP Key:
         // amplitudeAPPKey: '<APP_KEY>'
@@ -451,6 +485,14 @@ var config = {
     // the menu has option to flip the locally seen video for local presentations
     // disableLocalVideoFlip: false,
 
+    // Mainly privacy related settings
+
+    // Disables all invite functions from the app (share, invite, dial out...etc)
+    // disableInviteFunctions: true,
+
+    // Disables storing the room name to the recents list
+    // doNotStoreRoom: true,
+
     // Deployment specific URLs.
     // deploymentUrls: {
     //    // If specified a 'Help' button will be displayed in the overflow menu with a link to the specified URL for
@@ -469,6 +511,23 @@ var config = {
 
     // If set to true all muting operations of remote participants will be disabled.
     // disableRemoteMute: true,
+
+    /**
+     External API url used to receive branding specific information.
+     If there is no url set or there are missing fields, the defaults are applied.
+     None of the fieds are mandatory and the response must have the shape:
+     {
+         // The hex value for the colour used as background
+         backgroundColor: '#fff',
+         // The url for the image used as background
+         backgroundImageUrl: 'https://example.com/background-img.png',
+         // The anchor url used when clicking the logo image
+         logoClickUrl: 'https://example-company.org',
+         // The url used for the image used as logo
+         logoImageUrl: 'https://example.com/logo-img.png'
+     }
+    */
+    // brandingDataUrl: '',
 
     // List of undocumented settings used in jitsi-meet
     /**

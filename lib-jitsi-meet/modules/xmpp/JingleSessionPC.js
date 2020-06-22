@@ -56,8 +56,6 @@ const DEFAULT_MAX_STATS = 300;
  * @property {boolean} p2p.preferH264 - Described in the config.js[1].
  * @property {boolean} preferH264 - Described in the config.js[1].
  * @property {Object} testing - Testing and/or experimental options.
- * @property {boolean} testing.enableFirefoxSimulcast - Described in the
- * config.js[1].
  * @property {boolean} webrtcIceUdpDisable - Described in the config.js[1].
  * @property {boolean} webrtcIceTcpDisable - Described in the config.js[1].
  *
@@ -316,8 +314,6 @@ export default class JingleSessionPC extends JingleSession {
                 = options.disableSimulcast
                     || (options.preferH264 && !options.disableH264);
             pcOptions.preferH264 = options.preferH264;
-            pcOptions.enableFirefoxSimulcast
-                = options.testing && options.testing.enableFirefoxSimulcast;
             pcOptions.enableLayerSuspension = options.enableLayerSuspension;
 
             // disable simulcast for screenshare and set the max bitrate to
@@ -723,15 +719,16 @@ export default class JingleSessionPC extends JingleSession {
                     id: this._bridgeSessionId
                 });
 
-        this.connection.sendIQ(
-            sessionInfo,
-            null,
-            this.newJingleErrorHandler(sessionInfo),
-            /*
-             * This message will be often sent when there are connectivity
-             * issues, so make it slightly longer than Prosody's default BOSH
-             * inactivity timeout of 60 seconds.
-             */ 65);
+        this.connection.sendIQ2(
+            sessionInfo, {
+                /*
+                 * This message will be often sent when there are connectivity
+                 * issues, so make it slightly longer than Prosody's default BOSH
+                 * inactivity timeout of 60 seconds.
+                 */
+                timeout: 65
+            })
+            .catch(this.newJingleErrorHandler(sessionInfo));
     }
 
     /**
@@ -1333,6 +1330,16 @@ export default class JingleSessionPC extends JingleSession {
     }
 
     /**
+     * Sets the resolution constraint on the local camera track.
+     * @param {number} maxFrameHeight - The user preferred max frame height.
+     * @returns {Promise} promise that will be resolved when the operation is
+     * successful and rejected otherwise.
+     */
+    setSenderVideoConstraint(maxFrameHeight) {
+        return this.peerconnection.setSenderVideoConstraint(maxFrameHeight);
+    }
+
+    /**
      * @inheritDoc
      */
     terminate(success, failure, options) {
@@ -1617,8 +1624,13 @@ export default class JingleSessionPC extends JingleSession {
                     if (mid > -1) {
                         remoteSdp.media[mid] = remoteSdp.media[mid].replace(`${line}\r\n`, '');
 
-                        // Change the direction to "inactive".
-                        remoteSdp.media[mid] = remoteSdp.media[mid].replace('a=sendonly', 'a=inactive');
+                        // Change the direction to "inactive" only on Firefox. Audio fails on
+                        // Safari (possibly Chrome in unified plan mode) when we try to re-use inactive
+                        // m-lines due to a webkit bug.
+                        // https://bugs.webkit.org/show_bug.cgi?id=211181
+                        if (browser.isFirefox()) {
+                            remoteSdp.media[mid] = remoteSdp.media[mid].replace('a=sendonly', 'a=inactive');
+                        }
                     }
                 });
             }
@@ -1994,29 +2006,28 @@ export default class JingleSessionPC extends JingleSession {
                 return;
             }
             const oldLocalSDP = tpc.localDescription.sdp;
-            const tpcOperation
+            const operationPromise
                 = isMute
-                    ? tpc.removeTrackMute.bind(tpc, track)
-                    : tpc.addTrackUnmute.bind(tpc, track);
+                    ? tpc.removeTrackMute(track)
+                    : tpc.addTrackUnmute(track);
 
-            if (!tpcOperation()) {
-                finishedCallback(`${operationName} failed!`);
-
-            // Do not renegotiate when browser is running in Unified-plan mode.
-            } else if (!oldLocalSDP || !tpc.remoteDescription.sdp || browser.usesUnifiedPlan()) {
-                finishedCallback();
-            } else {
-                this._renegotiate()
-                    .then(() => {
-                        // The results are ignored, as this check failure is not
-                        // enough to fail the whole operation. It will log
-                        // an error inside.
-                        this._verifyNoSSRCChanged(
-                            operationName, new SDP(oldLocalSDP));
+            operationPromise
+                .then(shouldRenegotiate => {
+                    if (shouldRenegotiate && oldLocalSDP && tpc.remoteDescription.sdp) {
+                        this._renegotiate()
+                            .then(() => {
+                                // The results are ignored, as this check failure is not
+                                // enough to fail the whole operation. It will log
+                                // an error inside.
+                                this._verifyNoSSRCChanged(
+                                    operationName, new SDP(oldLocalSDP));
+                                finishedCallback();
+                            });
+                    } else {
                         finishedCallback();
-                    },
-                    finishedCallback /* will be called with an error */);
-            }
+                    }
+                },
+                finishedCallback /* will be called with an error */);
         };
 
         return new Promise((resolve, reject) => {
@@ -2325,7 +2336,7 @@ export default class JingleSessionPC extends JingleSession {
      * @returns the ice connection state for the peer connection.
      */
     getIceConnectionState() {
-        return this.peerconnection.iceConnectionState;
+        return this.peerconnection.getConnectionState();
     }
 
     /**

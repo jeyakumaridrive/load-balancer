@@ -1,12 +1,11 @@
 /* @flow */
 
-import React from 'react';
 import { FieldTextStateless as TextField } from '@atlaskit/field-text';
+import React from 'react';
 
 import { Dialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
-
 import AbstractDisplayNamePrompt, {
     type Props
 } from '../AbstractDisplayNamePrompt';
@@ -59,7 +58,7 @@ class DisplayNamePrompt extends AbstractDisplayNamePrompt<State> {
                 isModal = { false }
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.displayNameRequired'
-                width = 'small'>
+                width = 'medium'>
                 <TextField
                     autoFocus = { true }
                     compact = { true }

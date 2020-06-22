@@ -3,7 +3,6 @@
 import React from 'react';
 
 import { Icon } from '../../../icons';
-
 import AbstractStatelessAvatar, { type Props as AbstractProps } from '../AbstractStatelessAvatar';
 
 type Props = AbstractProps & {
@@ -74,17 +73,21 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
                     className = { `${this._getAvatarClassName()} ${this._getBadgeClassName()}` }
                     id = { this.props.id }
                     style = { this._getAvatarStyle(this.props.color) }>
-                    <div
-                        className = 'avatar-svg'>
-                        <div
-                            height = '100%'
-                            width = '100%'>
-                            <span
-                                className = 'avatar-foreign'>
-                                { initials }
-                            </span>
-                        </div>
-                    </div>
+                    <svg
+                        className = 'avatar-svg'
+                        viewBox = '0 0 100 100'
+                        xmlns = 'http://www.w3.org/2000/svg'
+                        xmlnsXlink = 'http://www.w3.org/1999/xlink'>
+                        <text
+                            dominantBaseline = 'central'
+                            fill = 'rgba(255,255,255)'
+                            fontSize = '40pt'
+                            textAnchor = 'middle'
+                            x = '50'
+                            y = '50'>
+                            { initials }
+                        </text>
+                    </svg>
                 </div>
             );
         }
@@ -112,7 +115,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
 
         return {
             backgroundColor: color || undefined,
-            fontSize: size ? size * 0.5 : '180%',
+            fontSize: size ? size * 0.5 : '225%',
             height: size || '100%',
             width: size || '100%'
         };

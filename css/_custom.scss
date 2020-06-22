@@ -3,7 +3,12 @@
     height: 95px !important;
     float: none;
     margin: 53px auto;
-    box-shadow: 0 0 0 6px #3d3d3d;
+	box-shadow: 0 0 0 6px #3d3d3d;
+	.avatar-foreign{
+		font-weight: 700;
+		font-size: 40px;
+
+	}
 }
 .new-toolbox{
 	a {
@@ -96,10 +101,13 @@
 					    font-size: 14px;
 					    color: #223942;
 					    vertical-align: middle;
-					    display: inline-flex !important;
+					    display: inline-block !important;
 						padding: 0;
 						font-weight: 400;
 						margin-bottom: 0;;
+						svg{
+							display: inline-block;
+						}
 					}
 				}
 			}
@@ -1343,13 +1351,13 @@ form[class^="device-select"]{
 		left: 0;
 		bottom: 0;
 	}
-	.avatar-container, .avatar-container-2{
-		width: 75px !important;
-		height: 75px !important;
-		.avatar-foreign{
-			font-size: 36px !important;
-		}
-	}
+	// .avatar-container, .avatar-container-2{
+	// 	width: 75px !important;
+	// 	height: 75px !important;
+	// 	.avatar-foreign{
+	// 		font-size: 36px !important;
+	// 	}
+	// }
 
 }
 
@@ -1428,10 +1436,10 @@ form[class^="device-select"]{
 		max-width: 60%;
 		width: auto;
 	}
-	.avatar-container-2{
-		width: 40px !important;
-		height: 40px !important;
-	}
+	// .avatar-container-2{
+	// 	width: 40px !important;
+	// 	height: 40px !important;
+	// }
 	.videocontainer .displayname {
 		left: auto;
 		position: relative;
@@ -1449,21 +1457,21 @@ form[class^="device-select"]{
 		bottom: 0;
 	}
 
-	#filmstripLocalVideo{
-		.avatar-container{
-			width: 40px !important;
-			height: 40px !important;
-			.avatar-foreign{
-				font-size: 20px !important;
-			}
-		}
-	}
+	// #filmstripLocalVideo{
+	// 	.avatar-container{
+	// 		width: 40px !important;
+	// 		height: 40px !important;
+	// 		.avatar-foreign{
+	// 			font-size: 20px !important;
+	// 		}
+	// 	}
+	// }
 
-	#filmstripRemoteVideosContainer{
-		.avatar-foreign{
-			font-size: 30px !important;
-		}
-	}
+	// #filmstripRemoteVideosContainer{
+	// 	.avatar-foreign{
+	// 		font-size: 30px !important;
+	// 	}
+	// }
 }
 #ps_alert{
 	font-size: 18px;

@@ -17,6 +17,7 @@ import DeviceSelector from './DeviceSelector';
 import VideoInputPreview from './VideoInputPreview';
 import {Icon, IconMicrophone} from '../../base/icons/';
 
+
 /**
  * The type of the React {@code Component} props of {@link DeviceSelection}.
  */
@@ -150,7 +151,6 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
             previewVideoTrackError: null
         };
         this._unMounted = true;
-
     }
 
     /**
@@ -166,6 +166,8 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
         ])
         .catch(err => logger.warn('Failed to initialize preview tracks', err))
         .then(() => this.props.mountCallback && this.props.mountCallback());
+
+
 
         console.log("Adding Animation");
         var stream = APP.conference.localAudio.stream;
@@ -196,6 +198,7 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                 ot = t;
             }
         };
+
     }
 
     /**
@@ -273,22 +276,26 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                                 error = { this.state.previewVideoTrackError }
                                 track = { this.state.previewVideoTrack } />
                          </div>
-                    { !hideAudioInputPreview
-                        && <AudioInputPreview
-                            track = { this.state.previewAudioTrack } /> }
-                    { hideAudioInputPreview &&
-                        <div className="audio-preview-container">
-                            <Icon src={IconMicrophone} />
-                            <div className="audio-wave">
-                                <span />
-                                <span />
-                                <span />
-                            </div>
-                        </div>
+
+                       
+                        { !hideAudioInputPreview	
+                    && <AudioInputPreview	
+                        track = { this.state.previewAudioTrack } /> }	
+                        
+                    { hideAudioInputPreview &&	
+                        <div className="audio-preview-container">	
+                            <Icon src={IconMicrophone} />	
+                            <div className="audio-wave">	
+                                <span />	
+                                <span />	
+                                <span />	
+                            </div>	
+                        </div>	
                     }
                     { !hideAudioOutputSelect
                         && <AudioOutputPreview
                             deviceId = { selectedAudioOutputId } /> }
+
                 </div>
             </div>
         );
