@@ -38,9 +38,6 @@ const config = {
 
                         // Tell babel to avoid compiling imports into CommonJS
                         // so that webpack may do tree shaking.
-<<<<<<< HEAD
-                        { modules: false }
-=======
                         {
                             modules: false,
 
@@ -54,7 +51,6 @@ const config = {
                                 safari: 11
                             }
                         }
->>>>>>> pre_prod
                     ],
                     '@babel/preset-flow'
                 ],

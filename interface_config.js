@@ -2,8 +2,9 @@
 
 var interfaceConfig = {
 
-    DEFAULT_BACKGROUND: '#474747',
-    DEFAULT_LOGO_URL: '../images/watermark.png',
+    // TO FIX: this needs to be handled from SASS variables. There are some
+    // methods allowing to use variables both in css and js.
+    DEFAULT_BACKGROUND: '#222222',
 
     // TO FIX: this needs to be handled from SASS variables. There are some
     // methods allowing to use variables both in css and js.
@@ -52,11 +53,10 @@ var interfaceConfig = {
      */
     TOOLBAR_BUTTONS: [
         'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
-        'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
+        'fodeviceselection', 'hangup', 'profile', 'info', 'chat', 'recording',
         'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
         'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-        'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone',
-        'e2ee', 'security'
+        'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone'
     ],
 
     SETTINGS_SECTIONS: [ 'devices', 'language', 'moderator', 'profile', 'calendar' ],
@@ -216,7 +216,7 @@ var interfaceConfig = {
     /**
      * When enabled, the kick participant button will not be presented for users without a JWT
      */
-    // HIDE_KICK_BUTTON_FOR_GUESTS: false,
+    // HIDE_KICK_BUTTON_FOR_GUESTS: false
 
     /**
      * How many columns the tile view can expand to. The respected range is
@@ -234,16 +234,6 @@ var interfaceConfig = {
      */
      MOBILE_DOWNLOAD_LINK_IOS: 'https://apps.apple.com/us/app/remotepc-meeting/id1512918951#?platform=iphone',
 
-    /**
-     * Specify Firebase dynamic link properties for the mobile apps.
-     */
-    // MOBILE_DYNAMIC_LINK: {
-    //    APN: 'org.jitsi.meet',
-    //    APP_CODE: 'w2atb',
-    //    CUSTOM_DOMAIN: undefined,
-    //    IBI: 'com.atlassian.JitsiMeet.ios',
-    //    ISI: '1165103905'
-    // },
 
     /**
      * Specify mobile app scheme for opening the app from the mobile browser.
@@ -268,12 +258,6 @@ var interfaceConfig = {
      MOBILE_DYNAMIC_LINK
      PHONE_NUMBER_REGEX
     */
-
-    // Allow all above example options to include a trailing comma and
-    // prevent fear when commenting out the last value.
-    makeJsonParserHappy: 'even if last key had a trailing comma'
-
-    // no configuration value should follow this line.
 };
 
 /* eslint-enable no-unused-vars, no-var, max-len */

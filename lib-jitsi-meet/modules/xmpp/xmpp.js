@@ -147,7 +147,7 @@ export default class XMPP extends Listenable {
         this.caps.addFeature('urn:xmpp:jingle:apps:rtp:audio');
         this.caps.addFeature('urn:xmpp:jingle:apps:rtp:video');
 
-        if (!this.options.disableRtx && browser.supportsRtx()) {
+        if (!this.options.disableRtx) {
             this.caps.addFeature('urn:ietf:rfc:4588');
         }
 
@@ -170,6 +170,10 @@ export default class XMPP extends Listenable {
 
         if (this.connection.rayo) {
             this.caps.addFeature('urn:xmpp:rayo:client:1');
+        }
+
+        if (browser.supportsInsertableStreams()) {
+            this.caps.addFeature('https://jitsi.org/meet/e2ee');
         }
     }
 
@@ -219,7 +223,8 @@ export default class XMPP extends Listenable {
 
             logger.info(`My Jabber ID: ${this.connection.jid}`);
 
-            this.lastErrorMsg = undefined;
+            // XmppConnection emits CONNECTED again on reconnect - a good opportunity to clear any "last error" flags
+            this._resetState();
 
             // Schedule ping ?
             const pingJid = this.connection.domain;
@@ -242,6 +247,10 @@ export default class XMPP extends Listenable {
 
                         if (identity.type === 'conference_duration') {
                             this.conferenceDurationComponentAddress = identity.name;
+                        }
+
+                        if (identity.type === 'lobbyrooms') {
+                            this.lobbySupported = true;
                         }
                     });
 
@@ -464,7 +473,9 @@ export default class XMPP extends Listenable {
      * @returns {Promise} Resolves with an instance of a strophe muc.
      */
     createRoom(roomName, options, onCreateResource) {
-        let roomjid = `${roomName}@${this.options.hosts.muc}/`;
+        // There are cases (when using subdomain) where muc can hold an uppercase part
+        let roomjid = `${roomName}@${options.customDomain
+            ? options.customDomain : this.options.hosts.muc.toLowerCase()}/`;
 
         const mucNickname = onCreateResource
             ? onCreateResource(this.connection.jid, this.authenticatedUser)
