@@ -56,11 +56,7 @@
     "js-md5": "0.6.1",
     "js-utils": "github:jitsi/js-utils#cf11996bd866fdb47326c59a5d3bc24be17282d4",
     "jwt-decode": "2.2.0",
-<<<<<<< HEAD
-    "lib-jitsi-meet": "github:jitsi/lib-jitsi-meet#6af8eee57d1ebdc0881c8c2875d4346e02d01549",
-=======
     "lib-jitsi-meet": "file:lib-jitsi-meet",
->>>>>>> 2060c3df31f22e081c5eb920ddc1c79d04582a0d
     "libflacjs": "github:mmig/libflac.js#93d37e7f811f01cf7d8b6a603e38bd3c3810907d",
     "lodash": "4.17.13",
     "moment": "2.19.4",
@@ -68,12 +64,8 @@
     "pixelmatch": "5.1.0",
     "react": "16.9",
     "react-dom": "16.9",
-<<<<<<< HEAD
-    "react-emoji-render": "1.2.4",
-=======
     "react-emoji-render": "1.0.0",
     "react-html-parser": "^2.0.2",
->>>>>>> 2060c3df31f22e081c5eb920ddc1c79d04582a0d
     "react-i18next": "10.11.4",
     "react-linkify": "1.0.0-alpha",
     "react-native": "github:jitsi/react-native#efd2aff5661d75a230e36406b698cfe0ee545be2",
