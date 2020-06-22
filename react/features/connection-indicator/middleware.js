@@ -1,7 +1,7 @@
 // @flow
 
-import { CONFERENCE_JOINED } from '../base/conference';
 import { MiddlewareRegistry } from '../base/redux';
+import { CONFERENCE_JOINED } from '../base/conference';
 
 import { statsEmitter } from './index';
 

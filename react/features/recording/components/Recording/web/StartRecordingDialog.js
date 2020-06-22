@@ -2,9 +2,10 @@
 
 import React from 'react';
 
-import { Dialog } from '../../../../base/dialog';
 import { translate } from '../../../../base/i18n';
+import { Dialog } from '../../../../base/dialog';
 import { connect } from '../../../../base/redux';
+
 import AbstractStartRecordingDialog, {
     mapStateToProps
 } from '../AbstractStartRecordingDialog';

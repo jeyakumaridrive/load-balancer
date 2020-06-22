@@ -7,6 +7,7 @@ import { Icon, IconConnectionActive, IconSignalFull, IconConnectionInactive, Ico
 import { JitsiParticipantConnectionStatus } from '../../../base/lib-jitsi-meet';
 import { Popover } from '../../../base/popover';
 import { ConnectionStatsTable } from '../../../connection-stats';
+
 import AbstractConnectionIndicator, {
     INDICATOR_DISPLAY_THRESHOLD,
     type Props as AbstractProps,

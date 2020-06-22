@@ -56,11 +56,6 @@ export type Props = {
     isDismissAllowed: boolean,
 
     /**
-     * Maximum lines of the description.
-     */
-    maxLines: ?number,
-
-    /**
      * Callback invoked when the user clicks to dismiss the notification.
      */
     onDismissed: Function,

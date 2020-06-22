@@ -4,6 +4,7 @@ import { FlagGroup } from '@atlaskit/flag';
 import React from 'react';
 
 import { connect } from '../../../base/redux';
+
 import AbstractNotificationsContainer, {
     _abstractMapStateToProps,
     type Props as AbstractProps

@@ -3,6 +3,7 @@
 import { PureComponent } from 'react';
 
 import { getLocalizedDateFormatter } from '../../base/i18n';
+
 import { MESSAGE_TYPE_ERROR, MESSAGE_TYPE_LOCAL } from '../constants';
 
 /**

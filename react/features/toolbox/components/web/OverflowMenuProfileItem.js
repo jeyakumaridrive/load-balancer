@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 
 import { Avatar } from '../../../base/avatar';
-import { translate } from '../../../base/i18n';
 import { getLocalParticipant } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 
@@ -29,12 +28,7 @@ type Props = {
      * The callback to invoke when {@code OverflowMenuProfileItem} is
      * clicked.
      */
-    onClick: Function,
-
-    /**
-     * Invoked to obtain translated strings.
-     */
-    t: Function
+    onClick: Function
 };
 
 /**
@@ -64,7 +58,7 @@ class OverflowMenuProfileItem extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const { _localParticipant, _unclickable, t } = this.props;
+        const { _localParticipant, _unclickable } = this.props;
         const classNames = `overflow-menu-item ${
             _unclickable ? 'unclickable' : ''}`;
         let displayName;
@@ -77,7 +71,7 @@ class OverflowMenuProfileItem extends Component<Props> {
 
         return (
             <li
-                aria-label = { t('toolbar.accessibilityLabel.profile') }
+                aria-label = 'Edit your profile'
                 className = { classNames }
                 onClick = { this._onClick }>
                 <span className = 'overflow-menu-item-icon'>
@@ -125,4 +119,4 @@ function _mapStateToProps(state) {
     };
 }
 
-export default translate(connect(_mapStateToProps)(OverflowMenuProfileItem));
+export default connect(_mapStateToProps)(OverflowMenuProfileItem);

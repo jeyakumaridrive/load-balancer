@@ -3,8 +3,9 @@
 import React, { Component } from 'react';
 
 import { NotificationsContainer } from '../../notifications/components';
-import { shouldDisplayTileView } from '../../video-layout';
+
 import { shouldDisplayNotifications } from '../functions';
+import { shouldDisplayTileView } from '../../video-layout';
 
 /**
  * The type of the React {@code Component} props of {@link AbstractLabels}.

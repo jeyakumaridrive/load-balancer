@@ -38,6 +38,14 @@ export type Route = {
  * {@code getState} function.
  * @returns {Promise<Route>}
  */
+/**
+ * Determines which route is to be rendered in order to depict a specific Redux
+ * store.
+ *
+ * @param {(Function|Object)} stateful - THe redux store, state, or
+ * {@code getState} function.
+ * @returns {Promise<Route>}
+ */
 export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
     const state = toState(stateful);
 

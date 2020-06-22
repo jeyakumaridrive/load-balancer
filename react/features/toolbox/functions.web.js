@@ -51,4 +51,8 @@ export function showToaster(message:string) {
     x.className = "show";
     x.innerText = message;
     setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> pre_prod

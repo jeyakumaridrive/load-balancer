@@ -6,6 +6,7 @@ import React from 'react';
 import { Dialog } from '../../../../base/dialog';
 import { translate } from '../../../../base/i18n';
 import { connect } from '../../../../base/redux';
+
 import {
     GOOGLE_API_STATES,
     GoogleSignInButton,
@@ -16,13 +17,14 @@ import {
     signIn,
     updateProfile
 } from '../../../../google-api';
+
 import AbstractStartLiveStreamDialog, {
     _mapStateToProps as _abstractMapStateToProps,
     type Props as AbstractProps
 } from '../AbstractStartLiveStreamDialog';
 
-import StreamKeyForm from './StreamKeyForm';
 import StreamKeyPicker from './StreamKeyPicker';
+import StreamKeyForm from './StreamKeyForm';
 
 type Props = AbstractProps & {
 

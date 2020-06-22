@@ -1796,6 +1796,7 @@ class Toolbox extends Component<Props, State> {
             `` + '\n' +
             `Join RemotePC Meeting` + '\n' +
             `${parentDomain}/meet/${meetingInfo.slug}` + '\n' +
+<<<<<<< HEAD
             (function() {
                 if(APP.password) {
                     return `Use Meeting Password : `+ APP.password + '\n';
@@ -1803,6 +1804,15 @@ class Toolbox extends Component<Props, State> {
                     return ``;
                 }
             } ()) +
+=======
+			(function() {
+				if(APP.password) {
+					return `Use Meeting Password : `+ APP.password + '\n';
+				} else {
+                    return ``;
+                }
+			} ()) +
+>>>>>>> pre_prod
             `` + '\n' +
             `One tap mobile` + '\n' +
             `${sessionStorage.phone_numbers.split('\n').map(phone => {

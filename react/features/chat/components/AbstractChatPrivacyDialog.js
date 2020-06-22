@@ -2,8 +2,8 @@
 
 import { PureComponent } from 'react';
 
-import { getParticipantById } from '../../base/participants';
 import { sendMessage, setPrivateMessageRecipient } from '../actions';
+import { getParticipantById } from '../../base/participants';
 
 type Props = {
 

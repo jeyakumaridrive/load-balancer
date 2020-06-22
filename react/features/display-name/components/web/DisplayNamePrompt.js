@@ -58,7 +58,7 @@ class DisplayNamePrompt extends AbstractDisplayNamePrompt<State> {
                 isModal = { false }
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.displayNameRequired'
-                width = 'small'>
+                width = 'medium'>
                 <TextField
                     autoFocus = { true }
                     compact = { true }

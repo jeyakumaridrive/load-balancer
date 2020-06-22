@@ -1,6 +1,7 @@
 // @flow
 
 import throttle from 'lodash/throttle';
+
 import type { Dispatch } from 'redux';
 
 import {
@@ -9,6 +10,7 @@ import {
     SET_NOTIFICATIONS_ENABLED,
     SHOW_NOTIFICATION
 } from './actionTypes';
+
 import { NOTIFICATION_TIMEOUT, NOTIFICATION_TYPE } from './constants';
 
 /**

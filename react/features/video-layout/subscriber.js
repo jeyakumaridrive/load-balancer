@@ -11,11 +11,9 @@ import {
     pinParticipant
 } from '../base/participants';
 import { StateListenerRegistry, equals } from '../base/redux';
-import { isFollowMeActive } from '../follow-me';
 import { selectParticipant } from '../large-video';
-
-import { setParticipantsWithScreenShare } from './actions';
 import { shouldDisplayTileView } from './functions';
+import { setParticipantsWithScreenShare } from './actions';
 
 declare var APP: Object;
 declare var interfaceConfig: Object;
@@ -50,11 +48,12 @@ StateListenerRegistry.register(
 StateListenerRegistry.register(
     /* selector */ state => state['features/base/tracks'],
     /* listener */ debounce((tracks, store) => {
-        if (!_getAutoPinSetting() || isFollowMeActive(store)) {
+        if (!_getAutoPinSetting()) {
             return;
         }
 
-        const oldScreenSharesOrder = store.getState()['features/video-layout'].screenShares || [];
+        const oldScreenSharesOrder
+            = store.getState()['features/video-layout'].screenShares || [];
         const knownSharingParticipantIds = tracks.reduce((acc, track) => {
             if (track.mediaType === 'video' && track.videoType === 'desktop') {
                 const skipTrack = _getAutoPinSetting() === 'remote-only' && track.local;

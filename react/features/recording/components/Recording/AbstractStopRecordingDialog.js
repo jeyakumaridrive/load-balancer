@@ -7,6 +7,7 @@ import {
     sendAnalytics
 } from '../../../analytics';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
+
 import { getActiveSession } from '../../functions';
 
 /**

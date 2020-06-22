@@ -5,7 +5,9 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { JitsiModal } from '../../../base/modal';
 import { connect } from '../../../base/redux';
+
 import { CHAT_VIEW_MODAL_ID } from '../../constants';
+
 import AbstractChat, {
     _mapDispatchToProps,
     _mapStateToProps,

@@ -64,7 +64,11 @@
     "pixelmatch": "5.1.0",
     "react": "16.9",
     "react-dom": "16.9",
+<<<<<<< HEAD
     "react-emoji-render": "1.0.0",
+=======
+    "react-emoji-render": "1.2.4",
+>>>>>>> pre_prod
     "react-html-parser": "^2.0.2",
     "react-i18next": "10.11.4",
     "react-linkify": "1.0.0-alpha",
@@ -130,6 +134,7 @@
     "jetifier": "1.6.4",
     "metro-react-native-babel-preset": "0.56.0",
     "node-sass": "4.14.1",
+    "precommit-hook": "3.0.0",
     "string-replace-loader": "2.1.1",
     "style-loader": "0.19.0",
     "unorm": "1.6.0",
@@ -150,5 +155,10 @@
   },
   "browser": {
     "jQuery-Impromptu": "jQuery-Impromptu/src/jquery-impromptu.js"
-  }
+  },
+  "pre-commit": [
+    "lint",
+    "validate",
+    "test"
+  ]
 }

@@ -108,6 +108,13 @@ const XMPPEvents = {
     // received.
     MESSAGE_RECEIVED: 'xmpp.message_received',
 
+<<<<<<< HEAD
+=======
+    // Designates an event indicating that an invite XMPP message in the MUC was
+    // received.
+    INVITE_MESSAGE_RECEIVED: 'xmpp.invite_message_received',
+
+>>>>>>> pre_prod
     // Designates an event indicating that a private XMPP message in the MUC was
     // received.
     PRIVATE_MESSAGE_RECEIVED: 'xmpp.private_message_received',
@@ -127,6 +134,21 @@ const XMPPEvents = {
     // Designates an event indicating that a participant left the XMPP MUC.
     MUC_MEMBER_LEFT: 'xmpp.muc_member_left',
 
+<<<<<<< HEAD
+=======
+    // Designates an event indicating that a participant joined the lobby XMPP MUC.
+    MUC_LOBBY_MEMBER_JOINED: 'xmpp.muc_lobby_member_joined',
+
+    // Designates an event indicating that a participant in the lobby XMPP MUC has been updated
+    MUC_LOBBY_MEMBER_UPDATED: 'xmpp.muc_lobby_member_updated',
+
+    // Designates an event indicating that a participant left the XMPP MUC.
+    MUC_LOBBY_MEMBER_LEFT: 'xmpp.muc_lobby_member_left',
+
+    // Designates an event indicating that a participant was denied access to a conference from the lobby XMPP MUC.
+    MUC_DENIED_ACCESS: 'xmpp.muc_denied access',
+
+>>>>>>> pre_prod
     // Designates an event indicating that local participant left the muc
     MUC_LEFT: 'xmpp.muc_left',
 
@@ -137,6 +159,12 @@ const XMPPEvents = {
     // Designates an event indicating that the MUC has been locked or unlocked.
     MUC_LOCK_CHANGED: 'xmpp.muc_lock_changed',
 
+<<<<<<< HEAD
+=======
+    // Designates an event indicating that the MUC members only config has changed.
+    MUC_MEMBERS_ONLY_CHANGED: 'xmpp.muc_members_only_changed',
+
+>>>>>>> pre_prod
     // Designates an event indicating that a participant in the XMPP MUC has
     // advertised that they have audio muted (or unmuted).
     PARTICIPANT_AUDIO_MUTED: 'xmpp.audio_muted',
@@ -186,6 +214,10 @@ const XMPPEvents = {
     ROOM_CONNECT_ERROR: 'xmpp.room_connect_error',
     ROOM_CONNECT_NOT_ALLOWED_ERROR: 'xmpp.room_connect_error.not_allowed',
     ROOM_JOIN_ERROR: 'xmpp.room_join_error',
+<<<<<<< HEAD
+=======
+    ROOM_CONNECT_MEMBERS_ONLY_ERROR: 'xmpp.room_connect_error.members_only',
+>>>>>>> pre_prod
 
     /**
      * Indicates that max users limit has been reached.

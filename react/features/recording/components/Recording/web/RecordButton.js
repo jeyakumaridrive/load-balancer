@@ -109,4 +109,8 @@ export function _mapStateToProps(state: Object, ownProps: Props): Object {
     };
 }
 
+<<<<<<< HEAD
 export default translate(connect(_mapStateToProps)(RecordButton));
+=======
+export default translate(connect(_mapStateToProps)(RecordButton));
+>>>>>>> pre_prod

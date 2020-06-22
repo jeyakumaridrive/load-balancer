@@ -3,6 +3,7 @@ import {
     PostMessageTransportBackend,
     Transport
 } from '../../../modules/transport';
+
 import { createDeviceChangedEvent, sendAnalytics } from '../analytics';
 import {
     getDeviceLabelById,

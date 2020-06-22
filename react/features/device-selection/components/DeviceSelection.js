@@ -8,6 +8,7 @@ import AbstractDialogTab, {
 import { translate } from '../../base/i18n/functions';
 import JitsiMeetJS from '../../base/lib-jitsi-meet/_';
 import { createLocalTrack } from '../../base/lib-jitsi-meet/functions';
+
 import logger from '../logger';
 
 import AudioInputPreview from './AudioInputPreview';
@@ -15,6 +16,10 @@ import AudioOutputPreview from './AudioOutputPreview';
 import DeviceSelector from './DeviceSelector';
 import VideoInputPreview from './VideoInputPreview';
 import {Icon, IconMicrophone} from '../../base/icons/';
+<<<<<<< HEAD
+=======
+
+>>>>>>> pre_prod
 
 /**
  * The type of the React {@code Component} props of {@link DeviceSelection}.
@@ -166,6 +171,11 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
         .catch(err => logger.warn('Failed to initialize preview tracks', err))
         .then(() => this.props.mountCallback && this.props.mountCallback());
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> pre_prod
         console.log("Adding Animation");
         var stream = APP.conference.localAudio.stream;
         var ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -195,6 +205,10 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                 ot = t;
             }
         };
+<<<<<<< HEAD
+=======
+
+>>>>>>> pre_prod
     }
 
     /**
@@ -272,6 +286,7 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                                 error = { this.state.previewVideoTrackError }
                                 track = { this.state.previewVideoTrack } />
                          </div>
+<<<<<<< HEAD
                     { !hideAudioInputPreview
                         && <AudioInputPreview
                             track = { this.state.previewAudioTrack } /> }
@@ -284,10 +299,28 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                                 <span />
                             </div>
                         </div>
+=======
+
+                       
+                        { !hideAudioInputPreview	
+                    && <AudioInputPreview	
+                        track = { this.state.previewAudioTrack } /> }	
+                        
+                    { hideAudioInputPreview &&	
+                        <div className="audio-preview-container">	
+                            <Icon src={IconMicrophone} />	
+                            <div className="audio-wave">	
+                                <span />	
+                                <span />	
+                                <span />	
+                            </div>	
+                        </div>	
+>>>>>>> pre_prod
                     }
                     { !hideAudioOutputSelect
                         && <AudioOutputPreview
                             deviceId = { selectedAudioOutputId } /> }
+
                 </div>
             </div>
         );

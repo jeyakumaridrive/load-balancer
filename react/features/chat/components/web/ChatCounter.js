@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 
 import { connect } from '../../../base/redux';
+
 import { getUnreadCount } from '../../functions';
 
 /**

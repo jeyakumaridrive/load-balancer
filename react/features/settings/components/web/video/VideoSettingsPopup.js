@@ -1,17 +1,16 @@
 // @flow
 
-import InlineDialog from '@atlaskit/inline-dialog';
 import React from 'react';
+import InlineDialog from '@atlaskit/inline-dialog';
 
+import { toggleVideoSettings } from '../../../actions';
 import {
     getVideoDeviceIds,
-    setVideoInputDeviceAndUpdateSettings
+    setVideoInputDevice as setVideoInputDeviceAction
 } from '../../../../base/devices';
+import { getVideoSettingsVisibility } from '../../../functions';
 import { connect } from '../../../../base/redux';
 import { getCurrentCameraDeviceId } from '../../../../base/settings';
-import { toggleVideoSettings } from '../../../actions';
-import { getVideoSettingsVisibility } from '../../../functions';
-
 import VideoSettingsContent, { type Props as VideoSettingsProps } from './VideoSettingsContent';
 
 
@@ -80,7 +79,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
     onClose: toggleVideoSettings,
-    setVideoInputDevice: setVideoInputDeviceAndUpdateSettings
+    setVideoInputDevice: setVideoInputDeviceAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoSettingsPopup);

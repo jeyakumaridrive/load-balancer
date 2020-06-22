@@ -1,5 +1,4 @@
 /* global __dirname */
-
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const process = require('process');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -13,7 +12,6 @@ const devServerProxyTarget
 
 const analyzeBundle = process.argv.indexOf('--analyze-bundle') !== -1;
 const detectCircularDeps = process.argv.indexOf('--detect-circular-deps') !== -1;
-
 const minimize
     = process.argv.indexOf('-p') !== -1
         || process.argv.indexOf('--optimize-minimize') !== -1;
@@ -158,7 +156,7 @@ const config = {
                 analyzerMode: 'disabled',
                 generateStatsFile: true
             }),
-        detectCircularDeps
+            detectCircularDeps
             && new CircularDependencyPlugin({
                 allowAsyncCycles: false,
                 exclude: /node_modules/,
@@ -187,7 +185,7 @@ module.exports = [
         entry: {
             'app.bundle': './app.js'
         },
-        performance: getPerformanceHints(4 * 1024 * 1024)
+        performance: getPerformanceHints(20 * 1024 * 1024)
     }),
     Object.assign({}, config, {
         entry: {
@@ -288,13 +286,10 @@ module.exports = [
  */
 function devServerProxyBypass({ path }) {
     if (path.startsWith('/css/') || path.startsWith('/doc/')
-            || path.startsWith('/fonts/')
-            || path.startsWith('/images/')
-            || path.startsWith('/lang/')
+            || path.startsWith('/fonts/') || path.startsWith('/images/')
             || path.startsWith('/sounds/')
             || path.startsWith('/static/')
             || path.endsWith('.wasm')) {
-
         return path;
     }
 
