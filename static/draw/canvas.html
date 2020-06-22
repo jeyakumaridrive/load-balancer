@@ -1,0 +1,124 @@
+<div  style="display: none;">
+    <div id="hide-on-datachannel-opened">
+        You can open a private WebRTC room to sync dashboard with private users.
+
+        <br><br>
+
+        <input type="text" id="room-id" value="" placeholder="room-id">
+        <button id="open-room">Open</button>
+    </div>
+</div>
+
+<style>
+    iframe, body {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+</style>
+<!-- 1st step -->
+<script src="canvas-designer-widget.js"></script>
+
+
+<script>
+var designer1 = new CanvasDesigner();
+
+
+// you can place widget.html anywhere
+designer1.widgetHtmlURL = 'widget.html';
+designer1.widgetJsURL = 'widget.js'
+
+
+// designer1.addSyncListener(function(data) {
+//     connection.send({
+//         actualData: data,
+//         designer1: true
+//     });
+// });
+
+
+designer1.setSelected('pencil');
+
+
+designer1.setTools({
+    pencil: true,
+    marker: true,
+    eraser: true,
+    text: true,
+    image: true,
+    pdf: true,
+    dragSingle: true,
+    dragMultiple: true,
+    arc: true,
+    arrow: true,
+    rectangle: true,
+    // bezier: true,
+    undo: true,
+    undoAll: true,
+
+    line: true,
+    colorsPicker: true,
+    lineWidth: true,
+    // extraOptions: true,
+    quadratic: true,
+});
+
+
+designer1.appendTo(document.body);
+//designer1.appendTo(document.getElementById('widget-container-1'));
+//designer2.appendTo(document.getElementById('widget-container-2'));
+
+
+
+var undoOptions = document.getElementById('undo-options');
+
+
+
+var txtNumberOfShapesToUndo = document.getElementById('number-of-shapes-to-undo');
+
+
+if(localStorage.getItem('number-of-shapes-to-undo')){
+    txtNumberOfShapesToUndo.value = localStorage.getItem('number-of-shapes-to-undo');
+    txtNumberOfShapesToUndo.onkeyup();
+}
+
+
+
+
+
+if(localStorage.getItem('undo-options')) {
+    undoOptions.value = localStorage.getItem('undo-options');
+    undoOptions.onchange();
+}
+
+
+function closeUndoPopup() {
+    document.getElementById('light').style.display='none';
+    document.getElementById('fade').style.display='none';
+
+    undoOptions.onchange();
+}
+
+
+function closeDataURLPopup() {
+    document.getElementById('dataURL-popup').style.display='none';
+    document.getElementById('fade').style.display='none';
+
+    dataURLFormat.onchange();
+}
+
+
+
+
+var dataURLFormat = document.getElementById('data-url-format');
+
+
+
+if(localStorage.getItem('data-url-format')) {
+    dataURLFormat.value = localStorage.getItem('data-url-format');
+    dataURLFormat.onchange();
+}
+
+
+</script>
+

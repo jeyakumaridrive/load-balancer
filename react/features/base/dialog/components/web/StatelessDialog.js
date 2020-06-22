@@ -124,7 +124,9 @@ class StatelessDialog extends Component<Props> {
         } = this.props;
 
         return (
+
             <Modal
+                className= { this.props.modalClass }
                 autoFocus = { true }
                 components = {{
                     Header: customHeader
@@ -140,9 +142,10 @@ class StatelessDialog extends Component<Props> {
                     onKeyDown = { this._onKeyDown }
                     ref = { this._setDialogElement }>
                     <form
-                        className = 'modal-dialog-form'
+                        className = 'modal-dialog-form device-select-'
                         id = 'modal-dialog-form'
                         onSubmit = { this._onSubmit }>
+                            
                         { children }
                     </form>
                 </div>
@@ -169,7 +172,7 @@ class StatelessDialog extends Component<Props> {
         ].filter(Boolean);
 
         return (
-            <ModalFooter showKeyline = { propsFromModalFooter.showKeyline } >
+            <ModalFooter className={this.props.footerClass} showKeyline = { propsFromModalFooter.showKeyline } >
                 {
 
                     /**

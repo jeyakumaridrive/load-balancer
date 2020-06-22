@@ -11,13 +11,16 @@ import {
     getDeviceSelectionDialogProps,
     submitDeviceSelectionTab
 } from '../../../device-selection';
-import { submitMoreTab, submitProfileTab } from '../../actions';
-import { SETTINGS_TABS } from '../../constants';
-import { getMoreTabProps, getProfileTabProps } from '../../functions';
+import VideoQualitySlider from '../../../video-quality/components/VideoQualitySlider.web.js';
+
+VideoQualitySlider
 
 import CalendarTab from './CalendarTab';
 import MoreTab from './MoreTab';
 import ProfileTab from './ProfileTab';
+import { getMoreTabProps, getProfileTabProps } from '../../functions';
+import { submitMoreTab, submitProfileTab } from '../../actions';
+import { SETTINGS_TABS } from '../../constants';
 
 declare var APP: Object;
 declare var interfaceConfig: Object;
@@ -97,7 +100,12 @@ class SettingsDialog extends Component<Props> {
                 }
                 onSubmit = { onSubmit }
                 tabs = { tabs }
-                titleKey = 'settings.title' />
+                >   
+                <div className='video-quality-section'>
+                    <div className="video-quality-selector-label">Video Quality</div>
+                    <VideoQualitySlider />
+                </div>
+            </DialogWithTabs>
         );
     }
 

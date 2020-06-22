@@ -80,6 +80,7 @@ export type Props = {
      * The translation arguments that may be necessary for the title.
      */
     titleArguments: Object,
+    logoIconCustom: string,
 
     /**
      * The translation key to display as the title of the notification if

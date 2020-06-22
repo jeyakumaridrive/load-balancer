@@ -21,7 +21,8 @@ import {
 import {
     maybeRedirectToWelcomePage,
     redirectToStaticPage,
-    reloadWithStoredParams
+    reloadWithStoredParams,
+    leaveMeeting
 } from './react/features/app';
 import {
     AVATAR_ID_COMMAND,
@@ -95,6 +96,7 @@ import {
     createLocalPresenterTrack,
     createLocalTracksF,
     destroyLocalTracks,
+    createLocalTracksW,
     isLocalVideoTrackMuted,
     isLocalTrackMuted,
     isUserInteractionRequiredForUnmute,
@@ -139,6 +141,9 @@ const eventEmitter = new EventEmitter();
 
 let room;
 let connection;
+localStorage.setItem('mutede','false');
+localStorage.setItem('muteNotifications','true');
+localStorage.setItem('prevVideoStatus','');
 
 /**
  * The promise is used when the prejoin screen is shown.
@@ -185,6 +190,18 @@ const commands = {
  * @param roomName the room name to use
  * @returns Promise<JitsiConnection>
  */
+
+function parseJSONSafely(str) {
+try {
+    return JSON.parse(str);
+}
+catch (e) {
+    //console.err(e);
+    // Return a default object, or null based on use case.
+    return 'false'
+}
+}
+
 function connect(roomName) {
     return openConnection({
         retry: true,
@@ -200,6 +217,119 @@ function connect(roomName) {
     });
 }
 
+function mute_all(userID) {
+
+    if(APP.conference._room.isAdmin == true) {
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1001;
+        conntrolMessage.userID = userID;
+        conntrolMessage.name = APP.store.getState()['features/base/settings'].displayName;
+        conntrolMessage.Message = 'Toggle mute All!!';
+        conntrolMessage.FromParticipantID = userID;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);
+
+    }
+
+   
+}
+function unmuteAll(userID) {
+    if(APP.conference._room.isAdmin == true) {
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1002;
+        conntrolMessage.userID = userID;
+        conntrolMessage.name = APP.store.getState()['features/base/settings'].displayName;
+        conntrolMessage.Message = 'Toggle unmuteAll!!';
+        conntrolMessage.FromParticipantID = userID;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);
+    }
+
+   
+}
+function Kickout(userID) {
+    var to = localStorage.getItem('kickuser');
+   
+    if(APP.conference._room.isAdmin == true) {
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1003;
+        conntrolMessage.userID = userID;
+        conntrolMessage.Message = 'Kick him!!';
+        conntrolMessage.name = APP.store.getState()['features/base/settings'].displayName;
+        conntrolMessage.ToParticipantID = to;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);
+    }
+
+   
+}
+function mute_single(userID) {
+    var to = localStorage.getItem('kickuser');
+    var from = localStorage.getItem('kickuserName');
+    if(APP.conference._room.isAdmin == true) {
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1004;
+        conntrolMessage.userID = userID;
+        conntrolMessage.name = APP.store.getState()['features/base/settings'].displayName;
+        conntrolMessage.from = from;
+        conntrolMessage.Message = 'Toggle mute!!';
+         conntrolMessage.ToParticipantID = to;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);
+
+    }
+
+   
+}
+
+function unmutesingle(uId=null)
+    {
+        var to = localStorage.getItem('kickuser');
+        uId = to;
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1009;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle unmute single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    }
+function showBoard(userID)
+{
+    let conntrolMessage = new Object();
+    conntrolMessage.EventType = 1005
+    conntrolMessage.userID = userID;
+    conntrolMessage.Message = 'show-board';
+    conntrolMessage.FromParticipantID = userID;
+    let message = JSON.stringify( conntrolMessage );
+    room.sendTextMessage(message);
+
+
+}
+
+function closeBoard(userID)
+{
+
+    setTimeout(function(){ 
+        document.getElementById("myId").style.display = 'none';
+    }, 500);                      
+    
+    APP.conference._turnScreenSharingOff(false, 'fromboard'); 
+    
+
+    // let conntrolMessage = new Object();
+    // conntrolMessage.EventType = 1006
+    // conntrolMessage.userID = userID;
+    // conntrolMessage.Message = 'close-board';
+    // conntrolMessage.FromParticipantID = userID;
+    // let message = JSON.stringify( conntrolMessage );
+    // room.sendTextMessage(message);    
+}
 /**
  * Share data to other users.
  * @param command the command
@@ -278,6 +408,7 @@ class ConferenceConnector {
             this._handleConferenceJoined.bind(this));
         room.on(JitsiConferenceEvents.CONFERENCE_FAILED,
             this._onConferenceFailed.bind(this));
+
     }
 
     /**
@@ -1536,7 +1667,7 @@ export default {
      * in case it fails.
      * @private
      */
-    async _turnScreenSharingOff(didHaveVideo) {
+    async _turnScreenSharingOff(didHaveVideo, fromboard = null) {
         this._untoggleScreenSharing = null;
         this.videoSwitchInProgress = true;
         const { receiver } = APP.remoteControl;
@@ -1549,7 +1680,7 @@ export default {
         if (config.enableScreenshotCapture) {
             APP.store.dispatch(toggleScreenshotCaptureEffect(false));
         }
-
+        this._layoutToPrevStage();
         // It can happen that presenter GUM is in progress while screensharing is being turned off. Here it needs to
         // wait for that GUM to be resolved in order to prevent leaking the presenter track(this.localPresenterVideo
         // will be null when SS is being turned off, but it will initialize once GUM resolves).
@@ -1583,6 +1714,7 @@ export default {
             promise = promise.then(() => createLocalTracksF({ devices: [ 'video' ] }))
                 .then(([ stream ]) => this.useVideoStream(stream))
                 .then(() => {
+                    
                     sendAnalytics(createScreenSharingEvent('stopped'));
                     logger.log('Screen sharing stopped.');
                 })
@@ -1598,7 +1730,17 @@ export default {
         } else {
             promise = promise.then(() => this.useVideoStream(null));
         }
+        if(fromboard && fromboard != null)
+        {
 
+            if(localStorage.getItem('prevVideoStatus') == 'on')
+            {
+                setTimeout(function(){
+                    $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+                },3000)
+                
+            }
+        }
         return promise.then(
             () => {
                 this.videoSwitchInProgress = false;
@@ -1751,7 +1893,48 @@ export default {
             throw error;
         });
     },
+    _createWhiteboardTrack(options = {}) {
+        const externalInstallation = false;
+        const didHaveVideo = !this.isLocalVideoMuted();
+        const getDesktopStreamPromise = options.desktopStream
+            ? Promise.resolve([ options.desktopStream ])
+            : createLocalTracksW({
+                stream: options.stream,
+                devices: ''
+            });
+        
+        return getDesktopStreamPromise.then(desktopStreams => {
+            // Stores the "untoggle" handler which remembers whether was
+            // there any video before and whether was it muted.
+            this._untoggleScreenSharing
+                = this._turnScreenSharingOff.bind(this, didHaveVideo);
 
+            const desktopVideoStream = desktopStreams.find(stream => stream.getType() === MEDIA_TYPE.VIDEO);
+
+            if (desktopVideoStream) {
+                desktopVideoStream.on(
+                    JitsiTrackEvents.LOCAL_TRACK_STOPPED,
+                    () => {
+                        // If the stream was stopped during screen sharing
+                        // session then we should switch back to video.
+                        this.isSharingScreen
+                            && this._untoggleScreenSharing
+                            && this._untoggleScreenSharing();
+                    }
+                );
+            }
+
+            // close external installation dialog on success.
+            externalInstallation && $.prompt.close();
+
+            return desktopStreams;
+        }, error => {
+
+            // close external installation dialog on success.
+            externalInstallation && $.prompt.close();
+            throw error;
+        });
+    },
     /**
      * Creates a new instance of presenter effect. A new video track is created
      * using the new set of constraints that are calculated based on
@@ -1889,15 +2072,112 @@ export default {
         if (this.videoSwitchInProgress) {
             return Promise.reject('Switch in progress.');
         }
-
+        
         this.videoSwitchInProgress = true;
 
         return this._createDesktopTrack(options)
             .then(async streams => {
+                if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+                {
+                    localStorage.setItem('prevLayout', true);
+                    $('.toggle-view').click();
+                }
+                else
+                {
+                    localStorage.setItem('prevLayout', false);
+                }
                 const desktopVideoStream = streams.find(stream => stream.getType() === MEDIA_TYPE.VIDEO);
 
                 if (desktopVideoStream) {
                     await this.useVideoStream(desktopVideoStream);
+                }
+
+                this._desktopAudioStream = streams.find(stream => stream.getType() === MEDIA_TYPE.AUDIO);
+
+                if (this._desktopAudioStream) {
+                    // If there is a localAudio stream, mix in the desktop audio stream captured by the screen sharing
+                    // api.
+                    if (this.localAudio) {
+                        this._mixerEffect = new AudioMixerEffect(this._desktopAudioStream);
+
+                        await this.localAudio.setEffect(this._mixerEffect);
+                    } else {
+                        // If no local stream is present ( i.e. no input audio devices) we use the screen share audio
+                        // stream as we would use a regular stream.
+                        await this.useAudioStream(this._desktopAudioStream);
+                    }
+                }
+            })
+            .then(() => {
+                this.videoSwitchInProgress = false;
+                if (config.enableScreenshotCapture) {
+                    APP.store.dispatch(toggleScreenshotCaptureEffect(true));
+                }
+                sendAnalytics(createScreenSharingEvent('started'));
+                logger.log('Screen sharing started');
+                // setTimeout(function(){
+                // if(APP.conference.isSharingScreen == true)
+                // {
+                //     var videoMutedState = localStorage.getItem('camstateMuted');
+
+                //     if(videoMutedState == 'false' || videoMutedState == false )
+                //     {
+                //         if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true' && APP.conference.isSharingScreen == true)
+                //         {
+                           
+                //                 $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+                            
+                            
+                //            //document.getElementsByClassName('participants-count-icon')[0].click();
+                //            //APP.conference.muteVideo(false);
+                //         }
+                //         else
+                //         {
+
+                //         }
+                        
+                //     } 
+                // }
+                // },3000)  
+
+            })
+            .catch(error => {
+                this.videoSwitchInProgress = false;
+
+                // Pawel: With this call I'm trying to preserve the original
+                // behaviour although it is not clear why would we "untoggle"
+                // on failure. I suppose it was to restore video in case there
+                // was some problem during "this.useVideoStream(desktopStream)".
+                // It's important to note that the handler will not be available
+                // if we fail early on trying to get desktop media (which makes
+                // sense, because the camera video is still being used, so
+                // nothing to "untoggle").
+                if (this._untoggleScreenSharing) {
+                    this._untoggleScreenSharing();
+                }
+
+                // FIXME the code inside of _handleScreenSharingError is
+                // asynchronous, but does not return a Promise and is not part
+                // of the current Promise chain.
+                this._handleScreenSharingError(error);
+
+                return Promise.reject(error);
+            });
+    },
+    _switchToWhiteboardSharing(options = {}) {
+        if (this.videoSwitchInProgress) {
+            return Promise.reject('Switch in progress.');
+        }
+
+        this.videoSwitchInProgress = true;
+
+        return this._createWhiteboardTrack(options)
+            .then(async streams => {
+                console.log(streams);
+                const desktopVideoStream = streams.find(stream => stream.getType() === MEDIA_TYPE.VIDEO);
+
+                if (desktopVideoStream) {
+                    this.useVideoStream(desktopVideoStream);
                 }
 
                 this._desktopAudioStream = streams.find(stream => stream.getType() === MEDIA_TYPE.AUDIO);
@@ -1947,7 +2227,6 @@ export default {
                 return Promise.reject(error);
             });
     },
-
     /**
      * Handles {@link JitsiTrackError} returned by the lib-jitsi-meet when
      * trying to create screensharing track. It will either do nothing if
@@ -2027,8 +2306,62 @@ export default {
      * Setup interaction between conference and UI.
      */
     _setupListeners() {
+        var localParticipantIDs = getLocalParticipant(APP.store.getState());
+        var localParticipantIDs = localParticipantIDs.id;
+        localStorage.setItem('userPid', localParticipantIDs);
+      document.getElementById("muteAll").addEventListener("click", function() { mute_all(localParticipantIDs)});
+      document.getElementById("unmuteAll").addEventListener("click", function() { unmuteAll(localParticipantIDs)});
+      document.getElementById("Kickout").addEventListener("click", function() { Kickout(localParticipantIDs)});
+      document.getElementById("mute_single").addEventListener("click", function() { mute_single(localParticipantIDs)});
+      document.getElementById("unmute_single").addEventListener("click", function() { unmutesingle(localParticipantIDs)});
         // add local streams when joined to the conference
+
+        document.getElementById("ShowMyBoard").addEventListener("click", function() { showBoard(localParticipantIDs); });
+        document.getElementById("closeMyBoard").addEventListener("click", function() { closeBoard(localParticipantIDs); });
+
         room.on(JitsiConferenceEvents.CONFERENCE_JOINED, () => {
+
+            if(window.configDev) {
+                if(JSON.parse(window.configDev).videoinput && JSON.parse(window.configDev).videoinput) {
+                    var camdevice = JSON.parse(window.configDev).videoinput.name;
+                    if(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+                        navigator.mediaDevices.enumerateDevices().then((devices) => {
+                            var camera = devices.find(device => device.label == camdevice);
+                            console.log(camera);
+                            if(camera){
+                                APP.store.getState()['features/base/settings'].userSelectedCameraDeviceId = camera.deviceId;
+                                APP.store.getState()['features/base/settings'].userSelectedCameraDeviceLabel = camera.label;
+                                APP.store.getState()['features/base/settings'].cameraDeviceId = camera.deviceId;
+                            }
+                        });
+                    }
+                }
+            }
+
+            var pp = room.getParticipants().length + 1;
+           //alert(pp)
+        // setTimeout(function(){ 
+            if(pp==2) {
+                //alert(pp)
+             if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+                    $('.toggle-view').click()
+                }
+
+            }
+        // }, 3400);
+           document.getElementById("true-joining").value = '1';
+           if(pp > config.startAudioMuted)
+           {
+                var de = "<button class='ignore handraise-button'>Ok</button>";
+                const displayName
+                = APP.store.getState()['features/base/settings'].displayName;
+
+                APP.store.dispatch(showNotification({
+                        descriptionKey:de,
+                         titleKey: 'Your mic is off due to the size of meeting room.',
+                        logoIconCustom: displayName
+                },10000));
+           }
             this._onConferenceJoined();
         });
 
@@ -2048,12 +2381,24 @@ export default {
             user => APP.UI.onUserFeaturesChanged(user));
         room.on(JitsiConferenceEvents.USER_JOINED, (id, user) => {
             // The logic shared between RN and web.
+            //document.getElementById("true-joining").value = '1';
             commonUserJoinedHandling(APP.store, room, user);
 
             if (user.isHidden()) {
                 return;
             }
+            var pp = room.getParticipants().length + 1;
+           // alert(pp)
+           setTimeout(function(){
+            if(pp==2) {
+             //   alert()
+               // APP.store.getState()['features/video-layout'].tileViewEnabled = true
+               if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+                    $('.toggle-view').click()
+                }
 
+            }
+             }, 3400);
             logger.log(`USER ${id} connnected:`, user);
             APP.UI.addUser(user);
         });
@@ -2082,9 +2427,12 @@ export default {
         });
 
         room.on(JitsiConferenceEvents.USER_ROLE_CHANGED, (id, role) => {
+                setTimeout(function(){
+                	localStorage.setItem('muteNotifications','false')
+                },8000)
+             //   alert('s');
             if (this.isLocalId(id)) {
                 logger.info(`My role changed, new role: ${role}`);
-
                 APP.store.dispatch(localParticipantRoleChanged(role));
                 APP.API.notifyUserRoleChanged(id, role);
             } else {
@@ -2254,6 +2602,258 @@ export default {
 
             // FIXME close
         });
+        room.on(JitsiConferenceEvents.MESSAGE_RECEIVED , ( id, text, ts ) => {
+            let messageCheck = parseJSONSafely(text);
+
+            if(messageCheck != 'false')
+            {
+                let messageObj = JSON.parse( text );
+            
+            if( messageObj.EventType == 1001 )
+            {   
+                var new1=localStorage.getItem('userPid');
+                if(new1 != messageObj.userID){
+                    var nn = messageObj.name+' muted everyone';
+                    if(localStorage.muteNotifications=='false'){
+		                  APP.store.dispatch(showNotification({
+		                       descriptionKey:nn,
+		                        //title: messageObj.name,
+		                         titleKey:  messageObj.name,
+		                        logoIconCustom: messageObj.name
+	                    	},2500));
+
+                    }
+                    // if(localStorage.getItem('moderator') =='false'){
+                        muteLocalAudio(true);
+                      //$('.button-group-audio').hide();
+                }
+                 
+            } else if( messageObj.EventType == 1002) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 != messageObj.userID){
+                    var nn = messageObj.name+' unmuted everyone';
+                     if(localStorage.muteNotifications=='false'){
+	                     APP.store.dispatch(showNotification({
+	                        descriptionKey: nn,
+	                         titleKey:  messageObj.name,
+	                       // title: messageObj.name,
+	                         logoIconCustom: messageObj.name
+	                    },2500));
+	                 }
+                    // if(localStorage.getItem('moderator') =='false'){
+                        muteLocalAudio(false);
+                      //$('.button-group-audio').hide();
+                }
+            
+           
+            //console.log(id);
+            }else if( messageObj.EventType == 1003) {
+                logger.log(messageObj.name+' Kicked out you');
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.ToParticipantID){
+                    var nn = messageObj.name+' Kicked out you';
+                     if(localStorage.muteNotifications=='false'){
+	                    APP.store.dispatch(showNotification({
+	                        descriptionKey: nn,
+	                         titleKey:  messageObj.name,
+	                        //title: messageObj.name,
+	                        //titleKey: 'You are Kicked by host'
+	                         logoIconCustom: messageObj.name
+	                     },2500));
+	                }
+                    APP.store.dispatch(leaveMeeting());
+                    // if(localStorage.getItem('moderator') =='false'){
+                        // this.hangup(true);
+                      //$('.button-group-audio').hide();
+                }
+            
+           
+            //console.log(id);
+            }else if( messageObj.EventType == 1004) {
+
+                var new1=localStorage.getItem('userPid');
+                 if(new1 == messageObj.ToParticipantID){
+               
+                    // if(localStorage.getItem('moderator') =='false'){
+                        muteLocalAudio(true);
+                      //$('.button-group-audio').hide();
+                }
+                 if(new1 != messageObj.userID){
+                     if(localStorage.muteNotifications=='false'){
+	                    var nn = messageObj.name+' muted '+messageObj.from+ ' for everyone';
+	                     APP.store.dispatch(showNotification({
+	                        descriptionKey: nn,
+	                        titleKey: messageObj.name,
+	                        logoIconCustom: messageObj.name
+	                    },2500));
+	                 }
+                 }
+            
+           
+            //console.log(id);
+            }
+
+            else if(messageObj.EventType == 1005)
+            {
+
+                var new1=localStorage.getItem('userPid');
+
+                
+                 if(new1 != messageObj.userID){
+                    // if(localStorage.getItem('canvasRef') != 1)
+                    // {
+                    //     setTimeout(function(){ 
+                    //         document.getElementById('myId').contentDocument.location.reload(true);
+                    //     }, 1500);                       
+                    // }
+
+                    //document.getElementById("myId").style.pointerEvents = 'none';
+                    //document.getElementById("myId").style.display = 'block';
+                }
+
+                
+                //document.getElementById("w-board-wrapper").style.display = 'block';
+                // document.getElementById('myId').contentDocument.location.reload(true);
+
+            }
+            else if(messageObj.EventType == 1006)
+            {
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.userID)
+                {
+                    this.toggleScreenSharing();
+                    setTimeout(function(){ 
+                        document.getElementById("myId").style.display = 'none';
+                    }, 500);                      
+                    
+                }                
+                
+                //document.getElementById("w-board-wrapper").style.display = 'none';
+                // document.getElementById('myId').contentDocument.location.reload(true);
+            }
+            else if(messageObj.EventType == 1007)
+            {
+                var new1 = localStorage.getItem('userPid');
+                if(new1 != messageObj.userID)
+                {
+                    if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+                    {
+                        localStorage.setItem('prevLayout', true);
+                        $('.toggle-view').click();
+                    }
+                    else
+                    {
+                        localStorage.setItem('prevLayout', false);
+                    }
+                }                
+            }
+            else if(messageObj.EventType == 1008)
+            {
+                setTimeout(function(){ 
+                    if(localStorage.getItem('prevLayout') == 'true')
+                   {
+                        $('.toggle-view').click();
+                   }
+                }, 1500);      
+      
+            }
+            else if( messageObj.EventType == 1009) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.userID){
+                    var nn = ' You have been unmuted by Admin';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                        muteLocalAudio(false);
+                }
+                else
+                {
+                    if(messageObj.FromParticipantID != new1)
+                    {
+
+                     var nn = messageObj.name+' have been unmuted by Admin';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                       // muteLocalAudio(false);
+                    }
+                }
+
+            }
+            else if( messageObj.EventType == 1010) {
+
+                var new1=localStorage.getItem('userPid');
+                if(new1 == messageObj.userID){
+                    var nn = ' You have been muted by Admin';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                        muteLocalAudio(true);
+                }
+                else
+                {
+                    if(messageObj.FromParticipantID != new1)
+                    {
+
+                     var nn = messageObj.name+' have been muted by Admin';
+                     if(localStorage.muteNotifications=='false'){
+                         APP.store.dispatch(showNotification({
+                            descriptionKey: nn,
+                             titleKey:  messageObj.name,
+                             logoIconCustom: messageObj.name
+                        },2500));
+                     }
+                       // muteLocalAudio(false);
+                    }
+                }
+
+            }
+            else if( messageObj.EventType == 1011) {
+
+                var new1=localStorage.getItem('userPid');
+                 document.getElementById('hand-popup').classList.remove('show');
+                if(new1 == messageObj.userID)
+                {
+                    document.getElementById('raiseHandId').click();
+                }
+            }
+            else if( messageObj.EventType == 1012) {
+
+                var new1 = localStorage.getItem('userPid');
+                if(new1 != messageObj.userID)
+                {
+                    if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+                    {
+                        localStorage.setItem('prevLayout', true);
+                    }
+                    else
+                    {
+                        localStorage.setItem('prevLayout', false);
+                    }
+                }
+            }
+            else if( messageObj.EventType == 1013) {
+
+              
+                document.getElementById('hand-popup').classList.remove('show');
+               
+            }
+        }
+        });
 
         room.on(JitsiConferenceEvents.PARTICIPANT_KICKED, (kicker, kicked) => {
             APP.store.dispatch(participantKicked(kicker, kicked));
@@ -2267,7 +2867,9 @@ export default {
             this.muteAudio(muted);
         });
         APP.UI.addListener(UIEvents.VIDEO_MUTED, muted => {
+            localStorage.setItem('camstateMuted',muted);
             this.muteVideo(muted);
+
         });
 
         room.addCommandListener(this.commands.defaults.ETHERPAD,
@@ -2587,6 +3189,7 @@ export default {
      * @returns {void}
      */
     _onConferenceJoined() {
+        
         APP.UI.initConference();
 
         APP.keyboardshortcut.init();
@@ -2595,8 +3198,51 @@ export default {
 
         const displayName
             = APP.store.getState()['features/base/settings'].displayName;
-
+        
         APP.UI.changeDisplayName('localVideoContainer', displayName);
+        if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+        {
+            localStorage.setItem('prevLayout', true);
+        }
+        else
+        {
+            localStorage.setItem('prevLayout', false);
+        }
+
+        window.sessionStorage.setItem('white-board', this.roomName);
+        var htmlPath = window.location.origin+'/static/draw/widget.html?widgetJsURL=widget.js&tools={"pencil":true,"marker":true,"eraser":true,"text":true,"image":true,"pdf":true,"dragSingle":true,"dragMultiple":true,"arc":true,"arrow":true,"rectangle":true,"undo":true,"undoAll":true,"line":true,"colorsPicker":true,"lineWidth":true,"quadratic":true}&selectedIcon=pencil&icons={"line":null,"arrow":null,"pencil":null,"dragSingle":null,"dragMultiple":null,"eraser":null,"rectangle":null,"arc":null,"bezier":null,"quadratic":null,"text":null,"image":null,"pdf":null,"pdf_next":null,"pdf_prev":null,"pdf_close":null,"marker":null,"zoom":null,"lineWidth":null,"colorsPicker":null,"extraOptions":null,"code":null}';
+        //var htmlPath = '/static/draw/canvas.html#'+this.roomName;
+        var $iframe = $('#myId');
+        $iframe.attr('src',htmlPath);
+        setTimeout(function(){
+            document.getElementById("true-joining").value = '0';
+        },16000)
+        // setInterval(function(){ 
+        //     if(APP.conference.isSharingScreen == true)
+        //     {
+        //         var videoMutedState = localStorage.getItem('camstateMuted');
+
+        //         if(videoMutedState == 'false' || videoMutedState == false )
+        //         {
+        //             if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true' && APP.conference.isSharingScreen == true)
+        //             {
+                        
+        //                 $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+        //                //document.getElementsByClassName('participants-count-icon')[0].click();
+        //                //APP.conference.muteVideo(false);
+        //             }
+        //             else
+        //             {
+
+        //             }
+                    
+        //         } 
+        //     } 
+        // }, 5000);
+        // setTimeout(function(){ 
+        //     document.getElementById('myId').contentDocument.location.reload(true);
+        // }, 3000);
+        
     },
 
     /**
@@ -2626,7 +3272,17 @@ export default {
      */
     _initDeviceList(setDeviceListChangeHandler = false) {
         const { mediaDevices } = JitsiMeetJS;
-
+        
+        var speakerscam = localStorage.getItem('speakerscam');
+        if(speakerscam != null) {
+            speakerscam = speakerscam.trim().replace("'",' ');
+            var speakerscam = jQuery("#audioOutput option:contains('"+speakerscam+"')").val();
+           // setAudioOutputDeviceId(speakerscam);
+            const { dispatch } = APP.store;
+            const setAudioOutputPromise
+                = setAudioOutputDeviceId(speakerscam, dispatch)
+                    .catch(); 
+        }
         if (mediaDevices.isDeviceListAvailable()
                 && mediaDevices.isDeviceChangeAvailable()) {
             if (setDeviceListChangeHandler) {
@@ -3228,5 +3884,112 @@ export default {
         }
 
         this._proxyConnection = null;
+    },
+
+
+    _switchCallLayout()
+    {
+        var localParticipantIDs = getLocalParticipant(APP.store.getState());
+        var localParticipantIDs = localParticipantIDs.id;
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1007;
+        conntrolMessage.userID = localParticipantIDs;
+        conntrolMessage.Message = 'get-layout';
+        conntrolMessage.FromParticipantID = localParticipantIDs;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);       
+    },
+
+    _layoutToPrevStage()
+    {
+        var localParticipantIDs = getLocalParticipant(APP.store.getState());
+        var localParticipantIDs = localParticipantIDs.id;
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1008;
+        conntrolMessage.userID = localParticipantIDs;
+        conntrolMessage.Message = 'prev-layout';
+        conntrolMessage.FromParticipantID = localParticipantIDs;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message);       
+    },
+
+    _unmuteme(uId)
+    {
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1009;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle unmute single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    },
+    _muteme(uId)
+    {
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1010;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle mute single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    },
+    _LowerHand(uId)
+    {
+        if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1011;
+            conntrolMessage.userID = uId;
+            conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle lower hand single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        }
+    },
+    _oncamerastatus()
+    {
+        console.log('clickme');
+        $('.video-preview .settings-button-container').find('.toolbox-icon').click();
+        $('.present-tab').click();
+       // document.getElementsByClassName('.present-tab').click();
+    },
+    _ChecklayoutForParticipants()
+    {
+        var localParticipantIDs = getLocalParticipant(APP.store.getState());
+        var localParticipantIDs = localParticipantIDs.id;
+        let conntrolMessage = new Object();
+        conntrolMessage.EventType = 1012;
+        conntrolMessage.userID = localParticipantIDs;
+        conntrolMessage.Message = 'prev-layout-participants';
+        conntrolMessage.FromParticipantID = localParticipantIDs;
+        let message = JSON.stringify( conntrolMessage );
+        room.sendTextMessage(message); 
+    }, _LowerHandown(uId)
+    {
+        //if(APP.conference._room.isAdmin == true) {
+            var localParticipantIDs = getLocalParticipant(APP.store.getState());
+            var localParticipantIDs = localParticipantIDs.id;
+            let conntrolMessage = new Object();
+            conntrolMessage.EventType = 1013;
+            conntrolMessage.userID = uId;
+            //conntrolMessage.name = APP.conference.getParticipantById(uId)._displayName;
+            conntrolMessage.Message = 'Toggle lower hand single!!';
+            conntrolMessage.FromParticipantID = localParticipantIDs;
+            let message = JSON.stringify( conntrolMessage );
+            room.sendTextMessage(message);
+        //}
     }
+
 };

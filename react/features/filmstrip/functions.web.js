@@ -99,7 +99,7 @@ export function calculateThumbnailSizeForTileView({
 }: Object) {
     // The distance from the top and bottom of the screen, as set by CSS, to
     // avoid overlapping UI elements.
-    const topBottomPadding = 200;
+    const topBottomPadding = 80;
 
     // Minimum space to keep between the sides of the tiles and the sides
     // of the window.
@@ -112,7 +112,6 @@ export function calculateThumbnailSizeForTileView({
     const aspectRatioHeight = initialWidth / TILE_ASPECT_RATIO;
     const height = Math.floor(Math.min(aspectRatioHeight, viewHeight / visibleRows));
     const width = Math.floor(TILE_ASPECT_RATIO * height);
-
     return {
         height,
         width

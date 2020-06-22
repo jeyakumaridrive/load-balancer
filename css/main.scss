@@ -50,6 +50,7 @@ $flagsImagePath: "../images/";
 @import 'recording';
 @import 'login_menu';
 @import 'chat';
+@import 'custom';
 @import 'ringing/ringing';
 @import 'welcome_page';
 @import 'welcome_page_content';
@@ -75,8 +76,6 @@ $flagsImagePath: "../images/";
 @import 'filmstrip/tile_view_overrides';
 @import 'filmstrip/vertical_filmstrip';
 @import 'filmstrip/vertical_filmstrip_overrides';
-@import 'labels';
-@import 'lobby';
 @import 'unsupported-browser/main';
 @import 'modals/invite/add-people';
 @import 'deep-linking/main';
@@ -92,11 +91,4 @@ $flagsImagePath: "../images/";
 @import 'meter';
 @import 'audio-preview';
 @import 'video-preview';
-@import 'prejoin';
-@import 'prejoin-dialog';
-@import 'country-picker';
-@import 'modals/invite/invite_more';
-@import 'modals/security/security';
-@import 'premeeting-screens';
-
 /* Modules END */

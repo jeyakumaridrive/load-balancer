@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 import { translate } from '../../base/i18n/functions';
 import Audio from '../../base/media/components/Audio';
+import { Icon, IconVolume } from '../../base/icons/';
 
 const TEST_SOUND_PATH = 'sounds/ring.wav';
 
@@ -39,7 +40,9 @@ class AudioOutputPreview extends Component<Props> {
      */
     constructor(props: Props) {
         super(props);
-
+        this.state= {
+            play: false
+        }
         this._audioElement = null;
 
         this._audioElementReady = this._audioElementReady.bind(this);
@@ -64,14 +67,19 @@ class AudioOutputPreview extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
+
+        
         return (
-            <div className = 'audio-output-preview'>
-                <a onClick = { this._onClick }>
-                    { this.props.t('deviceSelection.testAudio') }
-                </a>
-                <Audio
-                    setRef = { this._audioElementReady }
-                    src = { TEST_SOUND_PATH } />
+            <div className = 'audio-output-preview-container'>
+                <Icon src={IconVolume} />
+                <div className = 'audio-output-preview'>
+                    <a onClick = { this._onClick } className={this.state.play ? 'disabled' : '' }>
+                        {!this.state.play ? 'Test' : 'Playing' }
+                    </a>
+                    <Audio
+                        setRef = { this._audioElementReady }
+                        src = { TEST_SOUND_PATH } />
+                </div>
             </div>
         );
     }
@@ -103,6 +111,16 @@ class AudioOutputPreview extends Component<Props> {
     _onClick() {
         this._audioElement
             && this._audioElement.play();
+        this.setState({
+            play: true
+        });
+        
+        setTimeout(() => {
+            this.setState({
+                play: false
+            });
+        }, 1500);
+            
     }
 
     /**

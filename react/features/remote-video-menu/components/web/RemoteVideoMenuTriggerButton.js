@@ -14,7 +14,8 @@ import {
     PrivateMessageMenuButton,
     RemoteControlButton,
     RemoteVideoMenu,
-    VolumeSlider
+    VolumeSlider,
+    RaiseButton
 } from './';
 
 declare var $: Object;
@@ -115,6 +116,9 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
 
         // Bind event handler so it is only bound once for every instance.
         this._onShowRemoteMenu = this._onShowRemoteMenu.bind(this);
+        this.state = {
+            show:false
+        }
     }
 
     /**
@@ -177,10 +181,27 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
             remoteControlState,
             participantID
         } = this.props;
+          const _T = this;
+            var TimIN = setInterval(function(){
+                const isAdmin = typeof APP !== 'undefined' && APP.conference && APP.conference._room ? APP.conference._room.isAdmin : false;
+                
+                if(isAdmin==true) {
+                    if(_T.state.show==false) {
+                        _T.setState({'show':true})
+                        }
+                    }
+                 else {
+                    if(_T.state.show==true) {
+                        _T.setState({'show':false})
+                    }
+                }
 
+
+             }, 1000);
         const buttons = [];
+        
 
-        if (_isModerator) {
+        if (this.state.show == true) {
             if (!_disableRemoteMute) {
                 buttons.push(
                     <MuteButton
@@ -188,13 +209,28 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
                         key = 'mute'
                         participantID = { participantID } />
                 );
+                // buttons.push(
+                //     <MuteEveryoneElseButton
+                //         key = 'mute-others'
+                //         participantID = { participantID } />
+                // );
+            }
+            var rh = '';
+            if(APP.conference.getParticipantById(participantID)!=undefined)
+            {
+                if(APP.conference.getParticipantById(participantID)._properties.raisedHand  != undefined)
+                {
+                  rh = APP.conference.getParticipantById(participantID)._properties.raisedHand;
+                } 
+            }
+            if(rh==true || rh=='true')
+            {
                 buttons.push(
-                    <MuteEveryoneElseButton
-                        key = 'mute-others'
+                  <RaiseButton
+                        key = 'Lower Hand'
                         participantID = { participantID } />
                 );
             }
-
             if (!_disableKick) {
                 buttons.push(
                     <KickButton

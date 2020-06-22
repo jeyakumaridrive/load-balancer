@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 import { translate } from '../../../base/i18n';
-import { IconMessage } from '../../../base/icons';
+import { IconChat } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import {
     _mapDispatchToProps,
@@ -58,7 +58,8 @@ class PrivateMessageMenuButton extends Component<Props> {
         return (
             <RemoteVideoMenuButton
                 buttonText = { t('toolbar.privateMessage') }
-                icon = { IconMessage }
+                icon = { IconChat }
+                displayClass = {'private-message'}
                 id = { `privmsglink_${participantID}` }
                 onClick = { this._onClick } />
         );

@@ -1,12 +1,5 @@
 // @flow
 
-import { hasAvailableDevices } from '../base/devices';
-import {
-    isAudioDisabled,
-    isPrejoinPageVisible,
-    isPrejoinVideoDisabled
-} from '../prejoin';
-
 declare var interfaceConfig: Object;
 
 /**
@@ -53,31 +46,9 @@ export function isToolboxVisible(state: Object) {
                                       || audioSettingsVisible || videoSettingsVisible));
 }
 
-/**
- * Indicates if the audio settings button is disabled or not.
- *
- * @param {string} state - The state from the Redux store.
- * @returns {boolean}
- */
-export function isAudioSettingsButtonDisabled(state: Object) {
-    const devicesMissing = !hasAvailableDevices(state, 'audioInput')
-          && !hasAvailableDevices(state, 'audioOutput');
-
-    return isPrejoinPageVisible(state)
-        ? devicesMissing || isAudioDisabled(state)
-        : devicesMissing;
-}
-
-/**
- * Indicates if the video settings button is disabled or not.
- *
- * @param {string} state - The state from the Redux store.
- * @returns {boolean}
- */
-export function isVideoSettingsButtonDisabled(state: Object) {
-    const devicesMissing = !hasAvailableDevices(state, 'videoInput');
-
-    return isPrejoinPageVisible(state)
-        ? devicesMissing || isPrejoinVideoDisabled(state)
-        : devicesMissing;
+export function showToaster(message:string) {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    x.innerText = message;
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
 }

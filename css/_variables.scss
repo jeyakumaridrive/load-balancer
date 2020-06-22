@@ -3,8 +3,8 @@
 /**
  * Style variables
  */
-$baseFontFamily: -apple-system, BlinkMacSystemFont, 'open_sanslight', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$hangupColor: #bf2117;
+$baseFontFamily: 'Open Sans', sans-serif;
+$hangupColor: #fff;
 $hangupFontSize: 2em;
 
 /**
@@ -44,7 +44,7 @@ $AOTToolbarButtonHoverColor: rgba(14, 20, 35, 0.6);
 $AOTToolbarButtonToggleColor: rgba(14, 20, 35, 1);
 $newToolbarFontSize: 24px;
 $newToolbarHangupFontSize: 32px;
-$newToolbarSize: 40px;
+$newToolbarSize: 50px;
 $newToolbarSizeWithPadding: calc(#{$newToolbarSize} + 24px);
 $toolbarTitleFontSize: 19px;
 $overflowMenuBG: initial;
@@ -93,14 +93,15 @@ $chatActionsSeparatorColor: rgb(173, 105, 112);
 $chatHeaderBackgroundColor: rgba(42, 58, 75, 0.9);
 $chatInputSeparatorColor: #A4B8D1;
 $chatLocalMessageBackgroundColor: rgb(4, 98, 178);
-$chatPrivateMessageBackgroundColor: rgb(153, 69, 77);
+$chatPrivateMessageBackgroundColor: #1896c6;
 $chatRemoteMessageBackgroundColor:  rgb(86, 101, 114);
-$sidebarWidth: 375px;
+$sidebarWidth: 300px;
 
  /**
  * Misc.
  */
-$borderRadius: 4px;
+$borderRadius: 0;
+$defaultWatermarkLink: '../images/watermark.png';
 $popoverMenuPadding: 13px;
 $happySoftwareBackground: transparent;
 $desktopAppDragBarHeight: 25px;

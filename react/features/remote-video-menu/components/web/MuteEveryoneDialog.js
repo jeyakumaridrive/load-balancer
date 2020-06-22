@@ -66,8 +66,8 @@ class MuteEveryoneDialog extends AbstractMuteRemoteParticipantDialog<Props> {
                 okKey = 'dialog.muteParticipantButton'
                 onSubmit = { this._onSubmit }
                 titleString = { title }
-                width = 'small'>
-                <div>
+                width = 'medium'>
+                <div className='alert-dialog'>
                     { content }
                 </div>
             </Dialog>

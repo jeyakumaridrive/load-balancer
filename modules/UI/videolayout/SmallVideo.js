@@ -255,6 +255,11 @@ export default class SmallVideo {
      */
     updateStatusBar() {
         const statusBarContainer = this.container.querySelector('.videocontainer__toolbar');
+        
+        const { NORMAL = 8 } = interfaceConfig.INDICATOR_FONT_SIZES || {};
+
+        const iconSize = NORMAL;
+        const showConnectionIndicator = this.videoIsHovered || !interfaceConfig.CONNECTION_INDICATOR_AUTO_HIDE_ENABLED;
 
         if (!statusBarContainer) {
             return;
@@ -263,6 +268,17 @@ export default class SmallVideo {
         ReactDOM.render(
             <Provider store = { APP.store }>
                 <I18nextProvider i18n = { i18next }>
+                { this._showConnectionIndicator
+                                ? <ConnectionIndicator
+                                    alwaysVisible = { showConnectionIndicator }
+                                    connectionStatus = { this._connectionStatus }
+                                    iconSize = { iconSize }
+                                    isLocalVideo = { this.isLocal }
+                                    enableStatsDisplay = { !interfaceConfig.filmStripOnly }
+                                    participantId = { this.id }
+                                     />
+                                : null }
+
                     <StatusIndicators
                         showAudioMutedIndicator = { this.isAudioMuted }
                         showVideoMutedIndicator = { this.isVideoMuted }
@@ -716,7 +732,7 @@ export default class SmallVideo {
                 <I18nextProvider i18n = { i18next }>
                     <div>
                         <AtlasKitThemeProvider mode = 'dark'>
-                            { this._showConnectionIndicator
+                            {/* { this._showConnectionIndicator
                                 ? <ConnectionIndicator
                                     alwaysVisible = { showConnectionIndicator }
                                     connectionStatus = { this._connectionStatus }
@@ -725,7 +741,7 @@ export default class SmallVideo {
                                     enableStatsDisplay = { !interfaceConfig.filmStripOnly }
                                     participantId = { this.id }
                                     statsPopoverPosition = { statsPopoverPosition } />
-                                : null }
+                                : null } */}
                             <RaisedHandIndicator
                                 iconSize = { iconSize }
                                 participantId = { this.id }
@@ -753,7 +769,7 @@ export default class SmallVideo {
      */
     _onContainerClick(event) {
         const triggerPin = this._shouldTriggerPin(event);
-
+        
         if (event.stopPropagation && triggerPin) {
             event.stopPropagation();
             event.preventDefault();
@@ -761,7 +777,8 @@ export default class SmallVideo {
         if (triggerPin) {
             this.togglePin();
         }
-
+        
+        
         return false;
     }
 
@@ -812,6 +829,13 @@ export default class SmallVideo {
         if (indicatorToolbar) {
             ReactDOM.unmountComponentAtNode(indicatorToolbar);
         }
+
+        // const indicatorRaiseHandToolbar = this.container.querySelector('.videocontainer__raisehandtoolbar');
+
+        // if (indicatorRaiseHandToolbar) {
+        //     ReactDOM.unmountComponentAtNode(indicatorRaiseHandToolbar);
+        // }
+
     }
 
     /**

@@ -9,6 +9,7 @@ import { toState } from '../base/redux';
 import { Conference } from '../conference';
 import { getDeepLinkingPage } from '../deep-linking';
 import { UnsupportedDesktopBrowser } from '../unsupported-browser';
+import { leaveMeeting } from './actions';
 import {
     BlankPage,
     WelcomePage,
@@ -43,6 +44,21 @@ export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
     if (navigator.product === 'ReactNative') {
         return _getMobileRoute(state);
     }
+    const { locationURL } = state['features/base/connection'];
+    let id = locationURL.searchParams.has('id') ? locationURL.searchParams.get('id') : '';
+    if(id != '')
+        sessionStorage.setItem('socket_id',id);
+    let user = locationURL.searchParams.has('user') ? locationURL.searchParams.get('user') : '';
+    if(user != '')
+        sessionStorage.setItem('user',user);
+
+    // console.log(' =?????? recording debug',locationURL,locationURL.hash.search('config.iAmRecorder') == -1);
+    // if(locationURL.hash.search('config.iAmRecorder') != 1)
+    // if (state['features/base/conference'].room == '' || !isRoomValid(state['features/base/conference'].room) || (user == '')) {
+    //     // To stop the ladning page and send the user to the parent site.
+    //     leaveMeeting();
+    //     return Promise.resolve(_getEmptyRoute());
+    // }
 
     return _getWebConferenceRoute(state) || _getWebWelcomePageRoute(state);
 }

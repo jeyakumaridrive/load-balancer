@@ -28,6 +28,7 @@ body {
     overflow: hidden;
     color: $defaultColor;
     background: $defaultBackground;
+    font-family: 'Open Sans', sans-serif !important;
     &.filmstrip-only {
         background: transparent;
     }

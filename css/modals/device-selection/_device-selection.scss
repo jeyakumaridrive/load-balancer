@@ -2,33 +2,36 @@
     .device-selectors {
         font-size: 14px;
 
+        text-align: left;
         > div {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e5e5e5
         }
 
         .device-selector-icon {
             align-self: center;
             color: inherit;
             font-size: 20px;
-            margin-left: 3px;
         }
 
         .device-selector-label {
-            margin-bottom: 1px;
+            margin-bottom: 10px;
+            color: #1896c6;
+            font-weight: 600;
         }
 
         /* device-selector-trigger stylings attempt to mimic AtlasKit button */
         .device-selector-trigger {
-            background-color: #0E1624;
-            border: 1px solid #455166;
+            background-color: #fff;
+            border: 1px solid #fff;
             border-radius: 5px;
             display: flex;
             height: 2.3em;
             justify-content: space-between;
             line-height: 2.3em;
             overflow: hidden;
-            padding: 0 8px;
         }
         .device-selector-trigger-disabled {
             .device-selector-trigger {
@@ -39,7 +42,6 @@
 
         .device-selector-trigger-text {
             overflow: hidden;
-            margin-left: 8px;
             text-overflow: ellipsis;
             white-space: nowrap;
             width: 100%;
@@ -99,33 +101,54 @@
         }
     }
 
-    .audio-output-preview {
-        font-size: 14px;
-
-        a {
-            color: #2684FF;
-            cursor: pointer;
-            text-decoration: none;
+    .audio-output-preview-container{
+        display: flex;
+        height: 80px;
+        justify-content: left;
+        align-items: flex-end;
+        svg{
+            fill: #666;
         }
-
-        a:hover {
-            color: #B3D4FF;
+        .audio-output-preview {
+            font-size: 14px;
+            a {
+                color: #666;
+                cursor: pointer;
+                text-decoration: none;
+                margin-left: 10px;
+                display: block;
+                &.disabled{
+                    pointer-events: none;
+                }
+            }
         }
     }
 
-    .audio-input-preview {
-        background: #1B2638;
-        border-radius: 5px;
-        height: 8px;
-
-        .audio-input-preview-level {
-            background: #4C9AFF;
+    .audio-preview-container{
+        display: flex;
+        height: 95px;
+        justify-content: center;
+        align-items: flex-end;
+        svg{
+            fill: #666;
+        }
+        .audio-input-preview {
+            background: #f5f5f5;
             border-radius: 5px;
-            height: 100%;
-            -webkit-transition: width .1s ease-in-out;
-            -moz-transition: width .1s ease-in-out;
-            -o-transition: width .1s ease-in-out;
-            transition: width .1s ease-in-out;
+            height: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            margin-left: 10px;    
+            .audio-input-preview-level {
+                background: #1896c6;
+                border-radius: 5px;
+                height: 100%;
+                -webkit-transition: width .1s ease-in-out;
+                -moz-transition: width .1s ease-in-out;
+                -o-transition: width .1s ease-in-out;
+                transition: width .1s ease-in-out;
+            }
         }
     }
+
 }

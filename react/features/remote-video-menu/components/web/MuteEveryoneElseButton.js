@@ -44,7 +44,7 @@ class MuteEveryoneElseButton extends AbstractMuteButton {
         return (
             <RemoteVideoMenuButton
                 buttonText = { t('videothumbnail.domuteOthers') }
-                displayClass = { 'mutelink' }
+                displayClass = { 'mutelink mute-everyone' }
                 icon = { IconMuteEveryoneElse }
                 id = { `mutelink_${participantID}` }
                 // eslint-disable-next-line react/jsx-handler-names

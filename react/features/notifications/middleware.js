@@ -45,13 +45,13 @@ MiddlewareRegistry.register(store => next => action => {
             // Do not show the notification for mobile and also when the focus indicator is disabled.
             const displayName = getParticipantDisplayName(getState, p.id);
 
-            dispatch(showNotification({
-                descriptionArguments: { to: displayName || '$t(notify.somebody)' },
-                descriptionKey: 'notify.grantedTo',
-                titleKey: 'notify.somebody',
-                title: displayName
-            },
-            NOTIFICATION_TIMEOUT));
+            // dispatch(showNotification({
+            //     descriptionArguments: { to: displayName || '$t(notify.somebody)' },
+            //     descriptionKey: 'notify.grantedTo',
+            //     titleKey: 'notify.somebody',
+            //     title: displayName
+            // },
+            // NOTIFICATION_TIMEOUT));
         }
 
         return result;
@@ -69,7 +69,8 @@ MiddlewareRegistry.register(store => next => action => {
                 store.dispatch(showNotification({
                     descriptionKey: 'notify.disconnected',
                     titleKey: 'notify.somebody',
-                    title: participant.name
+                    title: participant.name,
+                    logoIconCustom:participant.name
                 }, NOTIFICATION_TIMEOUT));
             }
         }
@@ -90,13 +91,13 @@ MiddlewareRegistry.register(store => next => action => {
         if (oldRole && oldRole !== role && role === PARTICIPANT_ROLE.MODERATOR) {
             const displayName = getParticipantDisplayName(state, id);
 
-            store.dispatch(showNotification({
-                descriptionArguments: { to: displayName || '$t(notify.somebody)' },
-                descriptionKey: 'notify.grantedTo',
-                titleKey: 'notify.somebody',
-                title: displayName
-            },
-            NOTIFICATION_TIMEOUT));
+            // store.dispatch(showNotification({
+            //     descriptionArguments: { to: displayName || '$t(notify.somebody)' },
+            //     descriptionKey: 'notify.grantedTo',
+            //     titleKey: 'notify.somebody',
+            //     title: displayName
+            // },
+            // NOTIFICATION_TIMEOUT));
         }
 
         return next(action);

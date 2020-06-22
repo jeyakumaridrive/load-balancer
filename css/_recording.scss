@@ -5,25 +5,24 @@
 .recording-dialog {
     flex: 0;
     flex-direction: column;
+    margin-top: 15px;
 
     .recording-header {
         display: flex;
         flex: 0;
         flex-direction: row;
-        justify-content: space-between;
-        padding-top: 32px;
+        padding: 15px;
 
         .recording-title {
             display: inline-flex;
             align-items: center;
-            font-size: 16px;
-            margin-left: 16px;
+            font-size: 18x;
         }
     }
 
-    .recording-header-line {
-        border-top: 1px solid #5e6d7a;
-    }
+    // .recording-header-line {
+    //     border-top: 1px solid #e5e5e5;
+    // }
 
     .recording-switch-disabled {
         opacity: 0.5;
@@ -35,8 +34,8 @@
     }
 
     .recording-icon {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         object-fit: contain;
     }
 

@@ -15,6 +15,7 @@ import AbstractMuteRemoteParticipantDialog
  * @extends Component
  */
 class MuteRemoteParticipantDialog extends AbstractMuteRemoteParticipantDialog {
+    
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -22,14 +23,24 @@ class MuteRemoteParticipantDialog extends AbstractMuteRemoteParticipantDialog {
      * @returns {ReactElement}
      */
     render() {
+       // alert(this.props.participantID)
+       // alert(localStorage.getItem('dialog_name'));
+       // alert(APP.conference.getSpeakerStats()[this.props.participantID].displayName);
+        if(APP.conference.getSpeakerStats()[this.props.participantID].displayName != undefined) {
+            name = APP.conference.getSpeakerStats()[this.props.participantID].displayName;
+        } else {
+            name = '';
+        }
+        var name = APP.conference.getSpeakerStats()[this.props.participantID].displayName;
+        var text = 'Mute '+name+' for everyone in the meeting? '+name+' can unmute themselves.';
         return (
             <Dialog
                 okKey = 'dialog.muteParticipantButton'
                 onSubmit = { this._onSubmit }
                 titleKey = 'dialog.muteParticipantTitle'
-                width = 'small'>
-                <div>
-                    { this.props.t('dialog.muteParticipantBody') }
+                width = 'medium'>
+                <div className='alert-dialog'>
+                    { text }
                 </div>
             </Dialog>
         );

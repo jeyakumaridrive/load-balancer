@@ -42,11 +42,11 @@ function createContainer(spanId) {
     container.innerHTML = `
         <div class = 'videocontainer__background'></div>
         <div class = 'videocontainer__toptoolbar'></div>
-        <div class = 'videocontainer__toolbar'></div>
         <div class = 'videocontainer__hoverOverlay'></div>
+        <div class = 'videocontainer__toolbar'></div>
         <div class = 'displayNameContainer'></div>
         <div class = 'avatar-container'></div>
-        <div class ='presence-label-container'></div>
+        <div class ='presence-label-container' style='display:none;'></div>
         <span class = 'remotevideomenu'></span>`;
 
     const remoteVideosContainer
@@ -196,7 +196,7 @@ export default class RemoteVideo extends SmallVideo {
         if (currentLayout === LAYOUTS.TILE_VIEW) {
             remoteMenuPosition = 'left top';
         } else if (currentLayout === LAYOUTS.VERTICAL_FILMSTRIP_VIEW) {
-            remoteMenuPosition = 'left bottom';
+            remoteMenuPosition = 'left top';
         } else {
             remoteMenuPosition = 'top center';
         }
