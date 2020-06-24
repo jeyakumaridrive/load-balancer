@@ -31,7 +31,11 @@ export function parseURLParams(
     }
 
     paramParts.forEach(part => {
-        const param = part.split('=');
+        // const param = part.split('=');
+        
+        const a = part.split('=');
+        const param = [a.shift(), a.join("=")];
+
         const key = param[0];
 
         if (!key) {
