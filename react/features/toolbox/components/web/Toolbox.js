@@ -1195,10 +1195,10 @@ class Toolbox extends Component<Props, State> {
         $.get(fullUrl)
         .then(resolve => {
             if(!resolve) {
-                location.href="https://meeting.remotepc.com/home/";
+                location.href=location.origin+"/home/";
             }
             setTimeout(() => {
-                window.history.pushState({}, document.title, 'https://meeting.remotepc.com/meet/'+resolve.slug);
+                window.history.pushState({}, document.title, location.origin+'/meet/'+resolve.slug);
             }, 1000);
             $('.cw_meeting-url').text(parentDomain+'/meet/'+resolve.slug);
             if(APP.password) {
