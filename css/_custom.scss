@@ -1590,3 +1590,9 @@ form[class^="device-select"]{
 }
 
 
+
+@-moz-document url-prefix() { 
+    .video-quality-dialog .video-quality-dialog-contents .video-quality-dialog-label-container.active::before {
+        top: -20px !important;
+    }
+  }
