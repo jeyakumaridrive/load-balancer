@@ -104,7 +104,7 @@ class RemoteControlButton extends Component<Props> {
         return (
             <RemoteVideoMenuButton
                 buttonText = { t('videothumbnail.remoteControl') }
-                displayClass = { className }
+                displayClass = {` ${className} hide-remote-control-menu` }
                 icon = { icon }
                 id = { `remoteControl_${participantID}` }
                 onClick = { this._onClick } />
