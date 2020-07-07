@@ -69,6 +69,9 @@
         .button-group-right {
             display: flex;
             width: 33%;
+            @media (max-width: 1200px) {
+                width: auto;
+            }
         }
 
         .button-group-center {
