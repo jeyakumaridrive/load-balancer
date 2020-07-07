@@ -1591,8 +1591,40 @@ form[class^="device-select"]{
 
 
 
+
 @-moz-document url-prefix() { 
     .video-quality-dialog .video-quality-dialog-contents .video-quality-dialog-label-container.active::before {
         top: -20px !important;
     }
   }
+
+
+
+  /* app share */
+.desktop-picker-pane {
+	&.source-type-screen {
+		.desktop-picker-source{
+			width: 49% !important;
+			display: inline-block !important;
+		}
+	}
+	.desktop-picker-source {
+		.desktop-source-preview-image-container {
+			padding: 5px;
+			img {
+				box-shadow: none;
+			}
+		}
+		.desktop-source-preview-label {
+			font-size: 13px;
+			padding: 0 3px;
+		}
+		&.is-selected {
+			background-color: #1896c6;
+			border-radius: 4px;
+			.desktop-source-preview-label{
+				color: #fff;
+			}
+		}
+	}
+}
