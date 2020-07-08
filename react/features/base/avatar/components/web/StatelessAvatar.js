@@ -41,31 +41,31 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
     render() {
         const { initials, url } = this.props;
 
-        // if (this._isIcon(url)) {
-        //     return (
-        //         <div
-        //             className = { `${this._getAvatarClassName()} ${this._getBadgeClassName()}` }
-        //             id = { this.props.id }
-        //             style = { this._getAvatarStyle(this.props.color) }>
-        //             <Icon
-        //                 size = '50%'
-        //                 src = { url } />
-        //         </div>
-        //     );
-        // }
+        if (this._isIcon(url)) {
+            return (
+                <div
+                    className = { `${this._getAvatarClassName()} ${this._getBadgeClassName()}` }
+                    id = { this.props.id }
+                    style = { this._getAvatarStyle(this.props.color) }>
+                    <Icon
+                        size = '50%'
+                        src = { url } />
+                </div>
+            );
+        }
 
-        // if (url) {
-        //     return (
-        //         <div className = { this._getBadgeClassName() }>
-        //             <img
-        //                 className = { this._getAvatarClassName() }
-        //                 id = { this.props.id }
-        //                 onError = { this.props.onAvatarLoadError }
-        //                 src = { url }
-        //                 style = { this._getAvatarStyle() } />
-        //         </div>
-        //     );
-        // }
+        if (url) {
+            return (
+                <div className = { this._getBadgeClassName() }>
+                    <img
+                        className = { this._getAvatarClassName() }
+                        id = { this.props.id }
+                        onError = { this.props.onAvatarLoadError }
+                        src = { url }
+                        style = { this._getAvatarStyle() } />
+                </div>
+            );
+        }
 
         if (initials || url) {
             return (
