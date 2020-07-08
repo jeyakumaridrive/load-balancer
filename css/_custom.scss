@@ -137,6 +137,9 @@
 				    margin: 0;
 				    padding: 8px 20px;
 					display: block;
+					@media (max-width: 1367px) {
+						padding:  8px 15px;
+					}
 					
 				    svg {
 						margin: 0 auto;
@@ -212,12 +215,17 @@
 			    border-right: none;
 			    a {
 					padding: 20px 15px;
+					@media (max-width: 1367px) {
+						padding: 20px 10px;
+					}
 					svg{
 						width: 24px;
 					}
 				}
 				min-width: auto;
 			}
+
+
 		}
 
 		.cw_bottom-left-menu-list{
@@ -255,6 +263,9 @@
 				    margin: 0;
 				    padding: 20px;
 					display: block;
+					@media (max-width: 1367px) {
+						padding:  8px 15px;
+					}
 				    svg {
 						margin: 0 auto;
 						display: block;
@@ -1599,9 +1610,15 @@ form[class^="device-select"]{
   }
 
 
-
+  
   /* app share */
 .desktop-picker-pane {
+	[class^="Checkbox__Label"]{
+		display: none;
+	}
+	.desktop-picker-pane-spinner{
+		max-height: 300px !important;
+	}
 	&.source-type-screen {
 		.desktop-picker-source{
 			width: 49% !important;
