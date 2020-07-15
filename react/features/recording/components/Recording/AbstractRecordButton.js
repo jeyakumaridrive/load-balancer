@@ -122,6 +122,7 @@ export function _mapStateToProps(state: Object, ownProps: Props): Object {
         // above all, but if not, the button should be autonomus and decide on
         // its own to be visible or not.
         const isModerator = isLocalParticipantModerator(state);
+        //const isModerator = true;
         const {
             enableFeaturesBasedOnToken,
             fileRecordingsEnabled
