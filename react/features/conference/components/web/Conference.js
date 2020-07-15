@@ -285,7 +285,7 @@ class Conference extends AbstractConference<Props, *> {
                 { this.renderNotificationsContainer() }
 
                 <CalleeInfoContainer />
-                {(this.props.isModerator && recordingStatus.length >= 1) && <div className='remote-recording-label'>
+                {(recordingStatus.length >= 1) && <div className='remote-recording-label'>
                         <div className='redot blink' /> Recording...
                     </div>}
             </div>
