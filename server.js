@@ -17,14 +17,14 @@ app.get('/', (req, res) => {
         // res.end(`Hi, PID: ${process.pid}`);
 })
 
-const PORT_LIST = [8000, 8001, 8002];
-const PORT = PORT_LIST[Math.floor(Math.random() * PORT_LIST.length)];
+// const PORT_LIST = [8000, 8001, 8002];
+// const PORT = PORT_LIST[Math.floor(Math.random() * PORT_LIST.length)];
 
-const server = app.listen(process.env.PORT || PORT);
+const server = app.listen(process.env.PORT);
 //socket.io instantiation
 const io = require("socket.io")(server)
 
-console.log(`Server running on ${process.env.PORT || PORT} port, PID: ${process.pid}`);
+console.log(`Server running on ${process.env.PORT} port, PID: ${process.pid}`);
 
 function SessionManager(user) {
     this.sub = redis.createClient();
