@@ -7,6 +7,8 @@ import { openDialog } from '../../../base/dialog';
 import { getParticipantCount } from '../../../base/participants';
 import { connect } from '../../../base/redux';
 import { SpeakerStats } from '../../../speaker-stats';
+import { clientResized } from '../../../base/responsive-ui/actions';
+import VideoLayout from '../../../../../modules/UI/videolayout/VideoLayout';
 
 /**
  * The type of the React {@code Component} props of {@link ParticipantsCount}.
@@ -64,12 +66,18 @@ class ParticipantsCount extends PureComponent<Props> {
         dispatch(openDialog(SpeakerStats, { conference }));
         setTimeout(() => {
             //check if the people toolbar is open
+            
             var ps = $('#people_sidebar');
             if(!ps.hasClass('show-people-list')) {
                 var element = document.getElementById("new-toolbox");
                 element.classList.remove("visible");
                 document.getElementById('hand-popup').classList.remove('show');
             }
+
+            $('#videoconference_page').addClass('shrink');
+            APP.store.dispatch(clientResized(innerWidth - 300, innerHeight));
+            VideoLayout.onResize(true);
+
             ps.toggleClass('show-people-list');
         }, 300);
     }

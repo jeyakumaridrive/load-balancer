@@ -443,13 +443,18 @@ class Toolbox extends Component<Props, State> {
             ))
         {
             this.offAllPopups();
+
+            $('#videoconference_page').removeClass('shrink');
+            APP.store.dispatch(clientResized(innerWidth, innerHeight));
+            VideoLayout.onResize(true);
+
+            var element = document.getElementById("new-toolbox");
+            element.classList.add("visible");
         }   
     }
 
     offAllPopups() {
-        $('#videoconference_page').removeClass('shrink');
-        APP.store.dispatch(clientResized(innerWidth, innerHeight));
-        VideoLayout.onResize();
+        
         var isAvailable = document.getElementsByClassName('chat-close');
         if (isAvailable.length > 0)
         {
@@ -1039,7 +1044,7 @@ class Toolbox extends Component<Props, State> {
             }));
         !this.props._chatOpen ? $('#videoconference_page').addClass('shrink') : $('#videoconference_page').removeClass('shrink')
         APP.store.dispatch(clientResized(innerWidth - 300, innerHeight));
-        VideoLayout.onResize();
+        VideoLayout.onResize(true);
         this._doToggleChat();
     }
 

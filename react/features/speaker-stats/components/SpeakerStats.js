@@ -20,6 +20,8 @@ import {
 
 import SpeakerStatsItem from './SpeakerStatsItem';
 import SpeakerStatsLabels from './SpeakerStatsLabels';
+import { clientResized } from '../../base/responsive-ui/actions';
+import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';
 
 declare var interfaceConfig: Object;
 
@@ -116,6 +118,13 @@ class SpeakerStats extends Component<Props, State> {
      }
      onCloseSidebar = () =>{
          $('#people_sidebar').removeClass('show-people-list')
+
+         $('#videoconference_page').removeClass('shrink');
+         APP.store.dispatch(clientResized(innerWidth, innerHeight));
+         VideoLayout.onResize(true);
+
+         var element = document.getElementById("new-toolbox");
+         element.classList.add("visible");
      }
     /**
      * Begin polling for speaker stats updates.
