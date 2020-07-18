@@ -334,8 +334,12 @@ export default class LargeVideoManager {
      */
     resizeContainer(type, animate = false) {
         const container = this.getContainer(type);
-
-        container.resize(this.width, this.height, animate);
+        // console.log("##2", this.width, this.height, animate);
+        if($("#videoconference_page").hasClass('shrink')) {
+            container.resize(this.width-300, this.height, animate);
+        } else {
+            container.resize(this.width, this.height, animate);
+        }
     }
 
     /**

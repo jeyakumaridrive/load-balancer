@@ -1,6 +1,11 @@
+#videoconference_page.shrink {
+    .subject {
+        right: 300px;
+    }
+}
 .subject {
     top: -120px;
-    transition: top .3s ease-in;
+    transition: all .3s ease-in;
     height: 95px;
     width: 100%;
     pointer-events: none;

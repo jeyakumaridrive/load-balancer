@@ -90,6 +90,9 @@ import {
     ClosedCaptionButton
 } from '../../../subtitles';
 import ParticipantsCount from '../../../conference/components/web/ParticipantsCount';
+import { clientResized } from '../../../base/responsive-ui/actions';
+import VideoLayout from '../../../../../modules/UI/videolayout/VideoLayout';
+
 /**
  * The type of the React {@code Component} props of {@link Toolbox}.
  */
@@ -444,6 +447,9 @@ class Toolbox extends Component<Props, State> {
     }
 
     offAllPopups() {
+        $('#videoconference_page').removeClass('shrink');
+        APP.store.dispatch(clientResized(innerWidth, innerHeight));
+        VideoLayout.onResize();
         var isAvailable = document.getElementsByClassName('chat-close');
         if (isAvailable.length > 0)
         {
@@ -1031,6 +1037,9 @@ class Toolbox extends Component<Props, State> {
             {
                 enable: !this.props._chatOpen
             }));
+        !this.props._chatOpen ? $('#videoconference_page').addClass('shrink') : $('#videoconference_page').removeClass('shrink')
+        APP.store.dispatch(clientResized(innerWidth - 300, innerHeight));
+        VideoLayout.onResize();
         this._doToggleChat();
     }
 
