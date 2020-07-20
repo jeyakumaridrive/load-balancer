@@ -1,6 +1,10 @@
 /**
  * CSS styles that are specific to the filmstrip that shows the thumbnail tiles.
  */
+ #videoconference_page.shrink.tile-view #filmstripRemoteVideos {
+    width: calc(100vw - 300px);
+}
+
 .tile-view {
     /**
      * Add a border around the active speaker to make the thumbnail easier to
@@ -15,9 +19,10 @@
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        height: calc(100vh - 80px);
-        width: 100vw;
+        height: calc(100vh);
+        width: calc(100vw);
         margin: 40px 0px;
+        transition: all 0.3s;
     }
 
     .filmstrip__videos .videocontainer {
