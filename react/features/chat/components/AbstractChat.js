@@ -6,6 +6,8 @@ import type { Dispatch } from 'redux';
 import { getLocalParticipant } from '../../base/participants';
 
 import { sendMessage, toggleChat } from '../actions';
+import { clientResized } from '../../base/responsive-ui/actions';
+import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';
 
 /**
  * The type of the React {@code Component} props of {@code AbstractChat}.
@@ -73,6 +75,14 @@ export function _mapDispatchToProps(dispatch: Dispatch<any>) {
          * @returns {Function}
          */
         _onToggleChat() {
+
+            $('#videoconference_page').removeClass('shrink');
+            APP.store.dispatch(clientResized(innerWidth, innerHeight));
+            VideoLayout.onResize(true);
+
+            var element = document.getElementById("new-toolbox");
+            element.classList.add("visible");
+
             dispatch(toggleChat());
         },
 
