@@ -360,14 +360,14 @@ class Toolbox extends Component<Props, State> {
      *
      * @inheritdoc
      */
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, nextProps) {
         
         document.addEventListener('mousedown', this.handleClickOutside);
         // Ensure the dialog is closed when the toolbox becomes hidden.
         if (prevProps._overflowMenuVisible && !this.props._visible) {
             this._onSetOverflowVisible(false);
         }
-     
+
         if (prevProps._overflowMenuVisible
             && !prevProps._dialog
             && this.props._dialog) {
@@ -607,10 +607,19 @@ class Toolbox extends Component<Props, State> {
 
         this.props.dispatch(setFullScreen(fullScreen));
         this.props.dispatch(setToolbarHovered(false));
-
-        
-        
     }
+
+
+    _doToggleVideoBlur = () => {
+        this.setState({
+            togglePresent: false,
+            toggleSettingsMenu: false
+        }) 
+    
+    }
+
+
+
 
     /**
      * Dispatches an action to show or hide the profile edit panel.
@@ -1071,6 +1080,7 @@ class Toolbox extends Component<Props, State> {
         })
     }
 
+    
     _onToolbarToggleProfile: () => void;
 
     /**
@@ -1780,7 +1790,7 @@ class Toolbox extends Component<Props, State> {
                 <div className="cw_present-menu cw_settings-menu" id="cw_settings_menu">
                     <ul> 
                         <li>
-                            <a>
+                            <a onClick={this._doToggleVideoBlur}>
                                 <VideoBlurButton
                                 key = 'videobackgroundblur'
                                 showLabel = { true }
@@ -2177,6 +2187,7 @@ function _mapStateToProps(state) {
             || sharedVideoStatus === 'start'
             || sharedVideoStatus === 'pause',
         _visible: isToolboxVisible(state),
+        _isVideoBlurred: Boolean(state['features/blur'].blurEnabled),
         _visibleButtons: equals(visibleButtons, buttons) ? visibleButtons : buttons
     };
 }
