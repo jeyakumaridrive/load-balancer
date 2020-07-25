@@ -1080,15 +1080,7 @@ class Toolbox extends Component<Props, State> {
         })
     }
 
-
-    _onTollbarToggleBlur = () => {
-        const { _isVideoBlurred, dispatch } = this.props;
-        const value = !_isVideoBlurred;
-
-        sendAnalytics(createVideoBlurEvent(value ? 'started' : 'stopped'));
-        dispatch(toggleBlurEffect(value));
-    }
-
+    
     _onToolbarToggleProfile: () => void;
 
     /**
