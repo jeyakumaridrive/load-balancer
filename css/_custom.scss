@@ -347,7 +347,17 @@
 					    display: block;
 					    padding: 12px 23px;
 					    text-decoration: none;
-
+						li{
+							.jitsi-icon {
+								margin-left: -2px;
+							}
+							span{
+								display: inline-block;
+							}
+						}
+						.fullscreen_text{
+							margin-left: 5px;
+						}
 					    svg {
 					    	vertical-align: middle;
 						    display: inline-block;
