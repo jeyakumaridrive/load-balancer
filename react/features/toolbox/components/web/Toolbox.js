@@ -360,14 +360,14 @@ class Toolbox extends Component<Props, State> {
      *
      * @inheritdoc
      */
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, nextProps) {
         
         document.addEventListener('mousedown', this.handleClickOutside);
         // Ensure the dialog is closed when the toolbox becomes hidden.
         if (prevProps._overflowMenuVisible && !this.props._visible) {
             this._onSetOverflowVisible(false);
         }
-     
+
         if (prevProps._overflowMenuVisible
             && !prevProps._dialog
             && this.props._dialog) {
@@ -607,10 +607,19 @@ class Toolbox extends Component<Props, State> {
 
         this.props.dispatch(setFullScreen(fullScreen));
         this.props.dispatch(setToolbarHovered(false));
-
-        
-        
     }
+
+
+    _doToggleVideoBlur = () => {
+        this.setState({
+            togglePresent: false,
+            toggleSettingsMenu: false
+        }) 
+    
+    }
+
+
+
 
     /**
      * Dispatches an action to show or hide the profile edit panel.
@@ -1071,6 +1080,7 @@ class Toolbox extends Component<Props, State> {
         })
     }
 
+    
     _onToolbarToggleProfile: () => void;
 
     /**
@@ -1779,6 +1789,15 @@ class Toolbox extends Component<Props, State> {
         return (
                 <div className="cw_present-menu cw_settings-menu" id="cw_settings_menu">
                     <ul> 
+                        <li>
+                            <a onClick={this._doToggleVideoBlur}>
+                                <VideoBlurButton
+                                key = 'videobackgroundblur'
+                                showLabel = { true }
+                                visible = { true } />
+                            </a>
+                        </li>
+
                             <li>
                                 <a onClick={this._onToolbarToggleFullScreen}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 512 512"><path d="M0 18.286v128h36.571V36.572h109.715V0h-128C8.178 0 0 8.178 0 18.286zM493.714 0h-128v36.572h109.714v109.714H512v-128C512 8.178 503.822 0 493.714 0zM475.428 475.428H365.714V512h128c10.107 0 18.286-8.178 18.286-18.285V365.714h-36.572v109.714zM36.572 365.714H0v128.001C0 503.822 8.178 512 18.286 512h128v-36.571H36.572V365.714z"></path></svg>
@@ -1793,6 +1812,8 @@ class Toolbox extends Component<Props, State> {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 48.352 48.352"><g><g><g><path d="M47.369 20.046l-5.824-1.092a17.799 17.799 0 00-1.394-3.371l3.37-4.927c.313-.456.247-1.143-.144-1.532l-4.155-4.156c-.391-.391-1.076-.454-1.53-.143l-4.93 3.372a18.009 18.009 0 00-3.474-1.421L28.202.982C28.101.44 27.573 0 27.019 0h-5.876c-.553 0-1.082.439-1.185.982L18.86 6.834a17.854 17.854 0 00-3.334 1.392L10.66 4.897c-.456-.312-1.142-.248-1.532.143L4.972 9.196c-.391.392-.454 1.076-.143 1.532l3.35 4.896a18.125 18.125 0 00-1.371 3.331L.984 20.046c-.542.103-.981.632-.981 1.185v5.876c0 .554.439 1.082.981 1.187l5.82 1.091a18.013 18.013 0 001.401 3.399l-3.313 4.842c-.312.456-.248 1.142.144 1.531l4.154 4.154c.392.393 1.076.454 1.532.146l4.84-3.313a18.086 18.086 0 003.299 1.375l1.098 5.854c.103.543.632.98 1.185.98h5.877c.555 0 1.081-.438 1.186-.98l1.087-5.795c1.2-.354 2.354-.821 3.438-1.401l4.901 3.354c.456.313 1.142.248 1.532-.145l4.152-4.153c.394-.392.455-1.074.146-1.531l-3.335-4.873a18.08 18.08 0 001.423-3.44l5.819-1.091c.541-.104.979-.633.979-1.187v-5.876c.004-.557-.437-1.086-.98-1.189zM24.178 34.261c-5.568 0-10.083-4.515-10.083-10.086 0-5.567 4.515-10.083 10.083-10.083 5.57 0 10.086 4.516 10.086 10.083 0 5.571-4.518 10.086-10.086 10.086z"></path></g></g></g></svg> Settings
                                 </a>
                             </li>
+
+
                         </ul>
                 </div>
             )
@@ -2166,6 +2187,7 @@ function _mapStateToProps(state) {
             || sharedVideoStatus === 'start'
             || sharedVideoStatus === 'pause',
         _visible: isToolboxVisible(state),
+        _isVideoBlurred: Boolean(state['features/blur'].blurEnabled),
         _visibleButtons: equals(visibleButtons, buttons) ? visibleButtons : buttons
     };
 }
