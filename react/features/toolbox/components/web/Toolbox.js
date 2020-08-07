@@ -1849,7 +1849,7 @@ class Toolbox extends Component<Props, State> {
             `Or Dial ` + '\n' +
             `${sessionStorage.phone_numbers.split('\n')[0]}` + '\n' +
             `Use Meeting Pin: ${pin}` + '\n\n' +
-            `Find more numbers: https://meeting.remotepc.com/info/`+meetingInfo.slug;
+            `Find more numbers: ${parentDomain}/info/`+meetingInfo.slug;
         event.preventDefault();
 
         const el = document.createElement('textarea');
