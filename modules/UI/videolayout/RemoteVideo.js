@@ -27,6 +27,8 @@ import UIUtils from '../util/UIUtil';
 
 import SmallVideo from './SmallVideo';
 
+import * as bodyPix from '@tensorflow-models/body-pix';
+
 const logger = Logger.getLogger(__filename);
 
 /**
@@ -38,9 +40,12 @@ function createContainer(spanId) {
 
     container.id = spanId;
     container.className = 'videocontainer';
+    
+    var span_bg = spanId+'_virtual_bg';
 
     container.innerHTML = `
         <div class = 'videocontainer__background'></div>
+        <canvas id="`+span_bg+`" class="person2" ></canvas>
         <div class = 'videocontainer__toptoolbar'></div>
         <div class = 'videocontainer__hoverOverlay'></div>
         <div class = 'videocontainer__toolbar'></div>
@@ -70,6 +75,10 @@ export default class RemoteVideo extends SmallVideo {
      * @param {VideoLayout} VideoLayout the video layout instance.
      * @constructor
      */
+    _inputVideoElement: HTMLVideoElement;
+      _segmentationData: Object;
+      _bpModel: Object;
+      _outputCanvasElement:HTMLCanvasElement;
     constructor(user, VideoLayout) {
         super(VideoLayout);
 
@@ -88,7 +97,9 @@ export default class RemoteVideo extends SmallVideo {
         this.isLocal = false;
         this.popupMenuIsHovered = false;
         this._isRemoteControlSessionActive = false;
-
+        this._inputVideoElement = document.createElement('video');
+        this._inputVideoElement.id = this.id+'_newvideo';
+        this._outputCanvasElement = '';
         /**
          * The flag is set to <tt>true</tt> after the 'canplay' event has been
          * triggered on the current video element. It goes back to <tt>false</tt>
@@ -97,6 +108,13 @@ export default class RemoteVideo extends SmallVideo {
          * @type {boolean}
          */
         this._canPlayEventReceived = false;
+        // this._bpModel = bodyPix.load({
+        //     architecture: 'MobileNetV1',
+        //     outputStride: 16,
+        //     multiplier: 0.50,
+        //     quantBytes: 2
+        // });
+
 
         /**
          * The flag is set to <tt>true</tt> if remote participant's video gets muted
@@ -489,7 +507,7 @@ export default class RemoteVideo extends SmallVideo {
             return;
         }
 
-        let streamElement = SmallVideo.createStreamElement(stream);
+        let streamElement = SmallVideo.createStreamElement(stream, this.id);
 
         // Put new stream element always in front
         streamElement = UIUtils.prependChild(this.container, streamElement);
@@ -498,6 +516,118 @@ export default class RemoteVideo extends SmallVideo {
 
         this.waitForPlayback(streamElement, stream);
         stream.attach(streamElement);
+        
+        
+      /*  var bpModel = setTimeout(function() {
+                bodyPix.load({
+                architecture: 'MobileNetV1',
+                outputStride: 16,
+                multiplier: 0.75,
+                quantBytes: 2
+            })
+        });
+        
+        
+        if(stream.isVideoTrack()) {
+            var stream_element_id = SmallVideo.getStreamElementID(stream);
+            //alert(stream_element_id); 
+        }
+        
+        var video_element = document.getElementById(stream_element_id);
+        
+        var maskInProgress = true;
+        var segmentationData = setTimeout(function() {  bpModel.segmentPerson(video_element, {
+                // internalResolution: 'medium', // resized to 0.5 times of the original resolution before inference
+                // maxDetections: 1, // max. number of person poses to detect per image
+                // segmentationThreshold: 0.7 // represents probability that a pixel belongs to a person
+                flipHorizontal:true,
+                internalResolution:'medium',
+                maxDetections: 1,
+                segmentationThreshold:0.7
+            })
+        });
+        
+        
+        var canvas_id = this.videoSpanId+'_virtual_bg';
+                
+        var firstVideoTrack = APP.conference.getParticipantById(this.id)._tracks[1].stream.getVideoTracks()[0];
+        const { height, frameRate, width }
+            = firstVideoTrack.getSettings ? firstVideoTrack.getSettings() : firstVideoTrack.getConstraints();
+        
+        setInterval(function() {
+            var canvasPerson = document.getElementById(canvas_id);
+            let contextPerson = canvasPerson.getContext('2d');
+
+            var video_detail = document.getElementById(stream_element_id);
+
+            contextPerson.drawImage(video_detail, 0, 0, '300', '300');
+            var imageData = contextPerson.getImageData(0,0, '300', '300');
+            var pixel = imageData.data;
+            for (var p = 0; p<pixel.length; p+=4)
+            {
+                if (segmentationData.data[p/4] == 0) {
+                    pixel[p+3] = 0;
+                }
+            }
+            contextPerson.imageSmoothingEnabled = true;
+            contextPerson.putImageData(imageData,0,0);
+        }, 1000 / parseInt(frameRate, 10));
+        
+        document.getElementById(stream_element_id).hide();
+        $('participant_'+this.id).find('.videocontainer__background').addClass('container1');
+        */
+        /*
+        var video_custom = document.createElement('video');
+        video_custom.id = this.id+'custom_video_stream';        
+        
+        var canvas_id = this.videoSpanId+'_virtual_bg';
+        var video_element = this.id+'_video_virtual_bg';
+        const canvasPerson = document.getElementById(canvas_id);
+        let contextPerson = canvasPerson.getContext('2d');
+        
+        //setTimeout(function() {
+            var video_detail = document.getElementsByClassName(video_element)[0];
+
+            contextPerson.drawImage(streamElement, 0, 0, '300', '300');
+            var imageData = contextPerson.getImageData(0,0, '300', '300');
+            contextPerson.imageSmoothingEnabled = true;
+            contextPerson.putImageData(imageData,0,0);
+        //}, 10);
+       
+        video_custom.autoplay = true;
+        video_custom.srcObject = stream.getOriginalStream();
+        */
+        /*
+        video_custom.addEventListener('onloadeddata', function () {
+            var $this = this; //cache
+            (function loop() {
+                if (!$this.paused && !$this.ended) {
+                    contextPerson.drawImage($this, 0, 0);
+                    setTimeout(loop, 1000 / 30); // drawing at 30fps
+                }
+            })();
+        }, 0);
+        */
+        /*
+        var video_detail = document.getElementsByClassName(video_element)[0];
+        video_detail.onplay = function() {
+            // Set the source of one <video> element to be a stream from another.
+            var stream = video_detail.captureStream();
+            video_custom.srcObject = stream;
+            
+        };
+        */
+        if(isVideo) {
+
+            // streamElement.onloadeddata = () => {
+            //      var firstVideoTrack = APP.conference.getParticipantById(this.id)._tracks[1].stream.getVideoTracks()[0];
+            // var height =  firstVideoTrack.getSettings().height;
+            // var width =  firstVideoTrack.getSettings().width;
+            // streamElement.height=parseInt(height, 10);;
+            // streamElement.width=parseInt(width, 10);;
+            //     this._renderMask(streamElement)
+            // }
+        }
 
         if (!isVideo) {
             this._audioStreamElement = streamElement;
@@ -514,6 +644,68 @@ export default class RemoteVideo extends SmallVideo {
      *
      * @returns {void}
      */
+
+    async _renderMask(streamElement) {
+        this._maskInProgress = true;
+         this._bpModel = await bodyPix.load({
+            architecture: 'MobileNetV1',
+            outputStride: 16,
+            multiplier: 0.50,
+            quantBytes: 2
+        });
+        var firstVideoTrack = APP.conference.getParticipantById(this.id)._tracks[1].stream.getVideoTracks()[0];
+       var frameRate = firstVideoTrack.getSettings ? firstVideoTrack.getSettings().frameRate : firstVideoTrack.getConstraints().frameRate;
+        var THIS = this;
+         $(streamElement).hide();
+        var video_element =  streamElement;
+        this._inputVideoElement = video_element;
+       setInterval( async () => {
+           ///  frameRate = firstVideoTrack.getSettings ? firstVideoTrack.getSettings().frameRate : firstVideoTrack.getConstraints().frameRate;
+            this._maskInProgress = true;
+            if(!this.maskInProgress){
+                THIS._segmentationData = await THIS._bpModel.segmentPerson(THIS._inputVideoElement, {
+                    // internalResolution: 'medium', // resized to 0.5 times of the original resolution before inference
+                    // maxDetections: 1, // max. number of person poses to detect per image
+                    // segmentationThreshold: 0.7 // represents probability that a pixel belongs to a person
+                   // flipHorizontal:true,
+                    internalResolution:'medium',
+                    maxDetections: 1,
+                    segmentationThreshold:0.7
+                });
+                THIS._maskInProgress = false;
+                // var firstVideoTrack = APP.conference.getParticipantById(this.id)._tracks[1].stream.getVideoTracks()[0];
+                // const { height, frameRate, width }
+                //     = firstVideoTrack.getSettings ? firstVideoTrack.getSettings() : firstVideoTrack.getConstraints();
+                var canvas_id = THIS.videoSpanId+'_virtual_bg';
+                const { height, width }
+                = firstVideoTrack.getSettings ? firstVideoTrack.getSettings() : firstVideoTrack.getConstraints();
+                THIS._outputCanvasElement = document.getElementById(canvas_id);
+                // THIS._outputCanvasElement.width = parseInt(height, 10);
+                // THIS._outputCanvasElement.height = parseInt(width, 10);
+                let contextPerson =  THIS._outputCanvasElement.getContext('2d');
+                contextPerson.drawImage(THIS._inputVideoElement, 0, 0, streamElement.width, streamElement.height);
+                var imageData = contextPerson.getImageData(0,0, streamElement.width, streamElement.height);
+                var pixel = imageData.data;
+                for (var p = 0; p<pixel.length; p+=4)
+                {
+                  if (THIS._segmentationData.data[p/4] == 0) {
+                      pixel[p+3] = 0;
+                  }
+                }
+                contextPerson.imageSmoothingEnabled = true;
+                contextPerson.putImageData(imageData,0,0);
+             }
+        }, 1000 / parseInt(frameRate, 10));
+      
+       
+        
+        // this._outputCanvasElement.width = parseInt(width, 10);
+        // this._outputCanvasElement.height = parseInt(height, 10);
+        // this._inputVideoElement.width = parseInt(width, 10);
+        // this._inputVideoElement.height = parseInt(height, 10);
+        // this._inputVideoElement.autoplay = true;
+        // this._inputVideoElement.srcObject = APP.conference.getParticipantById(this.id)._tracks[1].stream;
+    }
     updateDisplayName() {
         if (!this.container) {
             logger.warn(`Unable to set displayName - ${this.videoSpanId} does not exist`);
