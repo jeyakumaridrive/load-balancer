@@ -1643,7 +1643,17 @@ filter: FlipH;
 }
 .virtual-background-selectable {
     display: inline-block;
-    margin: 10px 10px;
+    margin: 15px 15px; 
+    /*margin-top: 0px; */
+}
+.margin-top-0 {
+    margin-top: 0px;
+}
+.margin-top-13-neg {
+    margin-top: -13px;
+}
+.margin-top-28-neg {
+    margin-top: -28px;
 }
 .selected-bar-vb {
     background: #000000; /*#000000c2;*/
@@ -1654,8 +1664,13 @@ filter: FlipH;
     top: 28px;
     font-size: 14px;
 }
+.selected-bar-vb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .hide {
-    display: none;
+    display: none; 
 }
 .virtual-background-section .modal-header {
     padding: 0 15px;
@@ -1686,13 +1701,16 @@ filter: FlipH;
     margin-bottom: 15px;
     margin-top: 2px;
 }
+.virtual-background-dialog-contents {
+    width: 100%;
+}
 .virtual-background-dialog-contents .vb-left {
-    width: 300px;
-    padding-right: 30px;
+    width: 50%; /*300px;*/
+    padding-right: 50px;
     float: left;
 }
 .virtual-background-dialog-contents .vb-right {
-    width: 350px;
+    width: 40%; /*350px;*/
     padding-left: 30px;
     max-height: 500px;
     overflow-y: scroll;
@@ -1701,10 +1719,19 @@ filter: FlipH;
 .virtual-background-dialog-contents .border-line {
     position: relative;
 }
+.virtual-background-dialog-contents .border-line:after {
+    content: '';
+    height: 85%;
+    width: 1px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #eaeaea;
+}
 .vb-preview {
-    background-image: url(/images/bg1.jpg);
-    width: 350px;
-    height: 300px;
+    /*background-image: url(/images/bg1.jpg);*/
+    width: 480px;
+    height: 350px;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1753,6 +1780,9 @@ filter: FlipH;
     white-space: nowrap;
     transition: opacity 0.3s ease 0s;
     opacity: 1;
+}
+div[class^=Modal__PositionerAbsolute] {
+    width: 1000px;
 }
 
 

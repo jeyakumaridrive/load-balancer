@@ -114,98 +114,9 @@ class SettingsDialog extends Component<Props> {
                 <div className='video-quality-section'>
                     <div className="video-quality-selector-label">Video Quality</div>
                     <VideoQualitySlider />
-                </div>
-                <div className='virtual-background-section'>
-                    <div className="virtual-background-selector-label">Virtual Background Settings</div>
-                    <div class="virtual-background-dialog">
-                        <div class="hide-warning"></div>
-                        <div class="virtual-background-dialog-contents">
-                            <p class="virtual-background-select">Choose an image</p>
-                            <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg1","images/bg1.jpg")}>
-                                <div className={"selected-bar-vb selected_bar_bg1 " + ((window.$default_virtual_background_image == "/images/bg1.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                <img src="images/bg1.jpg" alt="bg1" width="150" height="150"/>
-                            </div>
-                            <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg2","images/bg2.jpg")}>
-                                <div className={"selected-bar-vb selected_bar_bg2 " + ((window.$default_virtual_background_image == "/images/bg2.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                <img src="images/bg2.jpg" alt="bg2" width="150" height="150"/>
-                            </div>
-                            <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg3","images/bg3.jpg")}>
-                                <div className={"selected-bar-vb selected_bar_bg3 " + ((window.$default_virtual_background_image == "/images/bg3.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                <img src="images/bg3.jpg" alt="bg3" width="150" height="150"/>
-                            </div>
-                            <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg4","images/bg4.jpg")}>
-                                <div className={"selected-bar-vb selected_bar_bg4 " + ((window.$default_virtual_background_image == "/images/bg4.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                <img src="images/bg4.jpg" alt="bg4" width="150" height="150"/>
-                            </div>
-                            <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg5","images/bg5.jpg")}>
-                                <div className={"selected-bar-vb selected_bar_bg5 " + ((window.$default_virtual_background_image == "/images/bg5.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                <img src="images/bg5.jpg" alt="bg5" width="150" height="150"/>
-                            </div>
-                            <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg6","images/bg6.jpg")}>
-                                <div className={"selected-bar-vb selected_bar_bg6 " + ((window.$default_virtual_background_image == "/images/bg6.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                <img src="images/bg6.jpg" alt="bg6" width="150" height="150"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div>                
             </DialogWithTabs>
         );
-    }
-    
-    changeVirtualBackground(selected_div,virtual_background_image) { 
-        $('.selected-bar-vb').addClass('hide');
-        //console.log(div_vb.find('img').attr('src'));
-        var selected_image = '/'+virtual_background_image; //$(this).find('img').attr('src');
-        //$('container1').css('background-image', selected_image);
-        //selected_image = './'+selected_image;
-        //document.getElementById("myDiv").style.backgroundImage = "url('"+selected_image+"')";
-
-        window.$default_virtual_background = window.location.hostname+selected_image;
-        window.$default_virtual_background_image = selected_image;
-        //alert(window.$default_virtual_background);
-        $('.'+selected_div).removeClass('hide');
-        
-        //console.log(VideoVirtualBackgroundButton._mapStateToProps(APP.store.getState()));
-        //console.log(APP.store.getState()['features/virtual-background']);
-        //console.log(APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled);
-         
-        if(APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled 
-            && APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled == true) {
-            var { _isVideoVirtualBackground, dispatch } = this.props;
-            
-            //alert(APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled);
-            APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled = false;
-        
-            _isVideoVirtualBackground = APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled;
-            // stop effect            
-            var value = !_isVideoVirtualBackground; 
-            //alert('value '+value);
-
-            sendAnalytics(createVideoVirtualBackgroundEvent(value ? 'started' : 'stopped'));
-            dispatch(toggleVirtualBackgroundEffect(value));
-            /*
-            if(dispatch(toggleVirtualBackgroundEffect(value))) {
-                // start effect
-                value = !value;
-                alert('value '+value);
-                //var value = true;
-
-                sendAnalytics(createVideoVirtualBackgroundEvent(value ? 'started' : 'stopped'));
-                dispatch(toggleVirtualBackgroundEffect(value));
-            }
-            */
-            /*
-            // start effect
-            value = !value;
-            alert('value '+value);
-            //var value = true;
-
-            sendAnalytics(createVideoVirtualBackgroundEvent(value ? 'started' : 'stopped'));
-            dispatch(toggleVirtualBackgroundEffect(value));
-            */
-        }
-        
-        
     }
 
     _closeDialog: () => void;

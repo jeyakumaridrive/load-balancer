@@ -166,11 +166,11 @@ class VirtualBackgroundDialog extends Component<Props> {
         // Workaround for FF issue https://bugzilla.mozilla.org/show_bug.cgi?id=1388974
         this._outputCanvasElement = document.querySelector('#vb-preview');
         const canvas = this._outputCanvasElement;
-        this._inputVideoElement = document.querySelector('#webcam')
-        
+        this._inputVideoElement = document.querySelector('#webcam');
+                
 
     }
-      componentDidMount() {
+      componentDidMount() { 
           init()
           
        }
@@ -219,10 +219,10 @@ class VirtualBackgroundDialog extends Component<Props> {
                             <div class="vb-left virtual-background-preview">
                                 <p class="vb-title virtual-background-preview-title">Preview</p>
                                 <div class="virtual-background-preview">
-                                 <video id="webcam" width="350" height="300" autoplay={true} playsinline></video>
+                                 <video id="webcam" width="480" height="300" autoplay={true} playsinline></video>
                                     <div id="errorMsg" autoplay></div>
                                    
-                                     <canvas width="350" height="300" class="vb-preview" id="vb-preview"></canvas>
+                                     <canvas width="480" height="300" class="vb-preview" id="vb-preview"></canvas>
                                 </div>
                                 <div class="virtual-background-buttons">
                                     <button type="button" class="vb-btn vb-enable-btn" onClick={() => this.enableVirtualBackground()}>Enable</button>
@@ -233,44 +233,92 @@ class VirtualBackgroundDialog extends Component<Props> {
                             <span class="border-line"></span>
                             <div class="vb-right virtual-background-images">
                                 <p class="vb-title virtual-background-select-title">Select Virtual Background</p>
-                                <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg1","images/bg1.jpg")}>
+                                <div className={"virtual-background-selectable " + ((window.$default_virtual_background_image == "/images/bg1.jpg" || window.$default_virtual_background_image == "/images/bg2.jpg") ? ' margin-top-28-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg1","selected_bar_bg2","images/bg1.jpg")}>
                                     <div className={"selected-bar-vb selected_bar_bg1 " + ((window.$default_virtual_background_image == "/images/bg1.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                    <img src="images/bg1.jpg" alt="bg1" width="150" height="150"/>
+                                    <img src="images/bg1.jpg" alt="bg1" width="150" height="120"/>
                                 </div>
-                                <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg2","images/bg2.jpg")}>
+                                <div className={"virtual-background-selectable " + ((window.$default_virtual_background_image == "/images/bg1.jpg" || window.$default_virtual_background_image == "/images/bg2.jpg") ? ' margin-top-28-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg2","selected_bar_bg1","images/bg2.jpg")}>
                                     <div className={"selected-bar-vb selected_bar_bg2 " + ((window.$default_virtual_background_image == "/images/bg2.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                    <img src="images/bg2.jpg" alt="bg2" width="150" height="150"/>
+                                    <img src="images/bg2.jpg" alt="bg2" width="150" height="120"/>
                                 </div>
-                                <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg3","images/bg3.jpg")}>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg3.jpg" || window.$default_virtual_background_image == "/images/bg4.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg3","selected_bar_bg4","images/bg3.jpg")}>
                                     <div className={"selected-bar-vb selected_bar_bg3 " + ((window.$default_virtual_background_image == "/images/bg3.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                    <img src="images/bg3.jpg" alt="bg3" width="150" height="150"/>
+                                    <img src="images/bg3.jpg" alt="bg3" width="150" height="120"/>
                                 </div>
-                                <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg4","images/bg4.jpg")}>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg3.jpg" || window.$default_virtual_background_image == "/images/bg4.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg4","selected_bar_bg3","images/bg4.jpg")}>
                                     <div className={"selected-bar-vb selected_bar_bg4 " + ((window.$default_virtual_background_image == "/images/bg4.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                    <img src="images/bg4.jpg" alt="bg4" width="150" height="150"/>
+                                    <img src="images/bg4.jpg" alt="bg4" width="150" height="120"/>
                                 </div>
-                                <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg5","images/bg5.jpg")}>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg5.jpg" || window.$default_virtual_background_image == "/images/bg6.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg5","selected_bar_bg6","images/bg5.jpg")}>
                                     <div className={"selected-bar-vb selected_bar_bg5 " + ((window.$default_virtual_background_image == "/images/bg5.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                    <img src="images/bg5.jpg" alt="bg5" width="150" height="150"/>
+                                    <img src="images/bg5.jpg" alt="bg5" width="150" height="120"/>
                                 </div>
-                                <div className="virtual-background-selectable" onClick={() => this.changeVirtualBackground("selected_bar_bg6","images/bg6.jpg")}>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg5.jpg" || window.$default_virtual_background_image == "/images/bg6.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg6","selected_bar_bg5","images/bg6.jpg")}>
                                     <div className={"selected-bar-vb selected_bar_bg6 " + ((window.$default_virtual_background_image == "/images/bg6.jpg") ? ' ' : ' hide')}>Currently Selected</div>
-                                    <img src="images/bg6.jpg" alt="bg6" width="150" height="150"/>
+                                    <img src="images/bg6.jpg" alt="bg6" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg7.jpg" || window.$default_virtual_background_image == "/images/bg8.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg7","selected_bar_bg8","images/bg7.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg7 " + ((window.$default_virtual_background_image == "/images/bg7.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg7.jpg" alt="bg7" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg7.jpg" || window.$default_virtual_background_image == "/images/bg8.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg8","selected_bar_bg7","images/bg8.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg8 " + ((window.$default_virtual_background_image == "/images/bg8.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg8.jpg" alt="bg8" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg9.jpg" || window.$default_virtual_background_image == "/images/bg10.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg9","selected_bar_bg10","images/bg9.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg9 " + ((window.$default_virtual_background_image == "/images/bg9.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg9.jpg" alt="bg9" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg9.jpg" || window.$default_virtual_background_image == "/images/bg10.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg10","selected_bar_bg9","images/bg10.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg10 " + ((window.$default_virtual_background_image == "/images/bg10.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg10.jpg" alt="bg10" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg11.jpg" || window.$default_virtual_background_image == "/images/bg12.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg11","selected_bar_bg12","images/bg11.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg11 " + ((window.$default_virtual_background_image == "/images/bg11.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg11.jpg" alt="bg11" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg11.jpg" || window.$default_virtual_background_image == "/images/bg12.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg12","selected_bar_bg11","images/bg12.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg12 " + ((window.$default_virtual_background_image == "/images/bg12.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg12.jpg" alt="bg12" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg13.jpg" || window.$default_virtual_background_image == "/images/bg14.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg13","selected_bar_bg14","images/bg13.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg13 " + ((window.$default_virtual_background_image == "/images/bg13.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg13.jpg" alt="bg13" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg13.jpg" || window.$default_virtual_background_image == "/images/bg14.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg14","selected_bar_bg13","images/bg14.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg14 " + ((window.$default_virtual_background_image == "/images/bg14.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg14.jpg" alt="bg14" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg15.jpg" || window.$default_virtual_background_image == "/images/bg16.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg15","selected_bar_bg16","images/bg15.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg15 " + ((window.$default_virtual_background_image == "/images/bg15.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg15.jpg" alt="bg15" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg15.jpg" || window.$default_virtual_background_image == "/images/bg16.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg16","selected_bar_bg15","images/bg16.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg16 " + ((window.$default_virtual_background_image == "/images/bg16.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg16.jpg" alt="bg16" width="150" height="120"/>
+                                </div>
+                                <div className={"virtual-background-selectable" + ((window.$default_virtual_background_image == "/images/bg17.jpg") ? ' margin-top-13-neg ' : ' ')} onClick={() => this.changeVirtualBackground("selected_bar_bg17","selected_bar_bg17","images/bg17.jpg")}>
+                                    <div className={"selected-bar-vb selected_bar_bg17 " + ((window.$default_virtual_background_image == "/images/bg17.jpg") ? ' ' : ' hide')}>Currently Selected</div>
+                                    <img src="images/bg17.jpg" alt="bg17" width="150" height="120"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>                
-        
+                { this.vb_preview() }
             </Dialog>    
                 
         );
     }
 
 
+    vb_preview() {
+        $('#vb-preview').css('background-image', 'url('+window.$default_virtual_background_image+')');
+    }
+
  
     async _renderMask() {
-        console.log('sss');
+        //console.log('sss');
         this._inputVideoElement = document.querySelector('#webcam');
 
         this._maskInProgress = true;
@@ -316,8 +364,7 @@ class VirtualBackgroundDialog extends Component<Props> {
      * @param {MediaStream} stream - Stream to be used for processing.
      * @returns {MediaStream} - The stream with the applied effect.
      */
-    async startEffect() {
-      
+    async startEffect() {       
 
         this._isopen = true;
         this._bpModel = await bodyPix.load({
@@ -327,8 +374,8 @@ class VirtualBackgroundDialog extends Component<Props> {
             quantBytes: 2
         });
         this._inputVideoElement = document.querySelector('#webcam');
-         this._outputCanvasElement = document.querySelector('#vb-preview');
-      
+        this._outputCanvasElement = document.querySelector('#vb-preview');
+                     
         var THIS = this;    
         if(this._isopen == true) {
            this.intervalnew = setInterval( async () => {
@@ -352,16 +399,13 @@ class VirtualBackgroundDialog extends Component<Props> {
         this._isopen = false;
     }
 
-
-
-
-
-
-
     
     
-    changeVirtualBackground(selected_div,virtual_background_image) {    
-        $('.selected-bar-vb').addClass('hide');
+    changeVirtualBackground(selected_div, adjacent_div, virtual_background_image) {    
+        $('.selected-bar-vb').addClass('hide');        
+        $('.virtual-background-selectable').removeClass('margin-top-28-neg');
+        $('.virtual-background-selectable').removeClass('margin-top-13-neg');
+        
         //console.log(div_vb.find('img').attr('src'));
         var selected_image = '/'+virtual_background_image; //$(this).find('img').attr('src');
         //$('container1').css('background-image', selected_image);
@@ -375,6 +419,15 @@ class VirtualBackgroundDialog extends Component<Props> {
         
         //alert(window.$default_virtual_background);
         $('.'+selected_div).removeClass('hide');
+        if(virtual_background_image == "selected_bar_bg1" || virtual_background_image == "selected_bar_bg2") {
+            $('.'+selected_div).parent().addClass('margin-top-28-neg');
+            $('.'+adjacent_div).parent().addClass('margin-top-28-neg');
+        }
+        else {
+            $('.'+selected_div).parent().addClass('margin-top-13-neg');
+            $('.'+adjacent_div).parent().addClass('margin-top-13-neg');
+        }
+        
         
         //console.log(VideoVirtualBackgroundButton._mapStateToProps(APP.store.getState()));
         //console.log(APP.store.getState()['features/virtual-background']);
@@ -402,6 +455,10 @@ class VirtualBackgroundDialog extends Component<Props> {
     
     
     enableVirtualBackground() { 
+        if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true') {
+            APP.conference.muteVideo(false); 
+        }
+        
         this._closeDialog();
         
         // stop blur effect
