@@ -1653,14 +1653,12 @@ filter: FlipH;
     font-size: 14px;
 }
 .virtual-background-selectable {
-    display: inline-block;
-    margin: 15px 15px; 
-    /*margin-top: 0px; */
-    max-width: 140px;
-    height: 83px;
-    float: left;
+	display: inline-block;
+    margin: 0 7.5px 15px;
+    max-width: calc(50% - 30px);
+    height: 100px;
+	float: left;
     margin-bottom: 10px;
-    width: 140px;
     position: relative; 
 }
 .margin-top-0 {
@@ -1701,7 +1699,7 @@ filter: FlipH;
 		border-top-left-radius: 10px;
 	}
 	.virtual-background-dialog{
-		padding: 15px 0;
+		padding: 15px;
 		display: flex;
 	}
 } 
