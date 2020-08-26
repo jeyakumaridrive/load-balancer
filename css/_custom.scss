@@ -362,7 +362,18 @@
 					    	vertical-align: middle;
 						    display: inline-block;
 						    margin-right: 10px;
-					    }
+						}
+						&#virtualBackgroundFeatureButton{
+							.jitsi-icon{
+								svg{
+									width: 20px;
+									height: 20px;
+								}
+							}
+							.overflow-menu-item-icon + span {
+								margin-left: 5px;
+							}
+						}
 				    }
 			    }
 		    }
@@ -1645,6 +1656,12 @@ filter: FlipH;
     display: inline-block;
     margin: 15px 15px; 
     /*margin-top: 0px; */
+    max-width: 140px;
+    height: 83px;
+    float: left;
+    margin-bottom: 10px;
+    width: 140px;
+    position: relative; 
 }
 .margin-top-0 {
     margin-top: 0px;
@@ -1662,9 +1679,9 @@ filter: FlipH;
     text-align: center;
     position: relative;
     top: 28px;
-    font-size: 14px;
+    font-size: 14px; 
 }
-.selected-bar-vb img {
+.virtual-background-selectable img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1672,14 +1689,22 @@ filter: FlipH;
 .hide {
     display: none; 
 }
-.virtual-background-section .modal-header {
-    padding: 0 15px;
-    border-bottom: 1px solid #e5e5e5;
-    text-align: center;
-    position: relative;
-    margin: -7px -20px 2px;
-    background-color: #e8e9eb;
-}
+.virtual-background-section {
+	.modal-header {
+		padding: 0 15px;
+		border-bottom: 1px solid #e5e5e5;
+		text-align: center;
+		position: relative;
+		margin: -7px -20px 2px;
+		background-color: #e8e9eb;
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+	}
+	.virtual-background-dialog{
+		padding: 15px 0;
+		display: flex;
+	}
+} 
 .virtual-background-section .modal-title {
     padding: 18px 0;
     /*width: 150px;*/
@@ -1707,7 +1732,8 @@ filter: FlipH;
 .virtual-background-dialog-contents .vb-left {
     width: 50%; /*300px;*/
     padding-right: 50px;
-    float: left;
+	float: left;
+	border-right: 1px solid #eaeaea;
 }
 .virtual-background-dialog-contents .vb-right {
     width: 40%; /*350px;*/
@@ -1783,6 +1809,25 @@ filter: FlipH;
 }
 div[class^=Modal__PositionerAbsolute] {
     width: 1000px;
+}
+.virtual-background-selectable.active i {
+    background: url(/images/selected-image-bg.png) no-repeat center center;
+    background-size: cover;
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+.virtual-background-selectable.active i:after { 
+    content: "";
+    position: absolute;
+    top: 30px;
+    right: 3px;
+    bottom: 7px;
+    left: 54px;
+    background: url(/images/selected.png) no-repeat 4px 1px;
 }
 
 

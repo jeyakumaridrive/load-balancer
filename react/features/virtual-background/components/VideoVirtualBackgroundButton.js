@@ -62,18 +62,6 @@ class VideoVirtualBackgroundButton extends AbstractButton<Props, *> {
     toggledLabel = 'toolbar.stopvideovirtualbackground';
 
     /**
-     * Helper function to be implemented by subclasses, which returns
-     * a React Element to display (a beta tag) at the end of the button.
-     *
-     * @override
-     * @protected
-     * @returns {ReactElement}
-     */
-    _getElementAfter() {
-        return <BetaTag />;
-    }
-
-    /**
      * Handles clicking / pressing the button, and toggles the virtual background effect
      * state accordingly.
      *
