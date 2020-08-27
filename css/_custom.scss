@@ -1827,6 +1827,13 @@ div[class^=Modal__PositionerAbsolute] {
     left: 54px;
     background: url(/images/selected.png) no-repeat 4px 1px;
 }
+.new-toolbox .toolbox-content .cw_present-menu {
+    max-width: 250px;
+    width: 250px;
+}
+.new-toolbox .toolbox-content .cw_present-menu ul li a {
+    padding: 12px 13px;
+}
 
 
 #background {
