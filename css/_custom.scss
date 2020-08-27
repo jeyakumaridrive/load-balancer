@@ -1789,6 +1789,7 @@ filter: FlipH;
     opacity: 1;
     background-color: #1896c6 !important;
     border: 1px solid #1896c6 !important;
+    outline-color: #1896c6;
 }
 .vb-cancel-btn {
     background: transparent;
@@ -1804,6 +1805,7 @@ filter: FlipH;
     white-space: nowrap;
     transition: opacity 0.3s ease 0s;
     opacity: 1;
+    outline-color: #8f8f8f;
 }
 div[class^=Modal__PositionerAbsolute] {
     width: 1000px;
