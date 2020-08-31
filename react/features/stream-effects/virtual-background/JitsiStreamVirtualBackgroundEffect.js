@@ -197,8 +197,6 @@ export default class JitsiStreamVirtualBackgroundEffect {
         this._maskCanvasElement.width = width;
         this._maskCanvasElement.height = height;
 
-        console.log(window.$default_virtual_background);
-
         this._maskCanvasContext = this._maskCanvasElement.getContext('2d');
         this._ima = new Image();
         this._secCanvasContext.canvas.width = width;
@@ -211,8 +209,8 @@ export default class JitsiStreamVirtualBackgroundEffect {
             new Uint32Array(this._data_imgd.buffer);
         });
         //this._ima.src = "https://remotepc3.codertc.com/images/waterfall.jpg";
-        this._ima.src = window.$default_virtual_background; 
-        console.log(window.$default_virtual_background);
+        this._ima.src = server+window.$default_virtual_background_image; //window.$default_virtual_background; 
+        console.log(server+window.$default_virtual_background_image);
         
         this._videoFrameTimerWorker.postMessage({
             id: SET_INTERVAL,
