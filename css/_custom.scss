@@ -362,7 +362,18 @@
 					    	vertical-align: middle;
 						    display: inline-block;
 						    margin-right: 10px;
-					    }
+						}
+						&#virtualBackgroundFeatureButton{
+							.jitsi-icon{
+								svg{
+									width: 20px;
+									height: 20px;
+								}
+							}
+							.overflow-menu-item-icon + span {
+								margin-left: 5px;
+							}
+						}
 				    }
 			    }
 		    }
@@ -1609,9 +1620,285 @@ form[class^="device-select"]{
 .videocontainer>.audioindicator-container, .videocontainer>span.audioindicator, .hide-remote-control-menu{
 	display: none !important;
 }
+.person
+{
+   height:100vh;
+   width:100vh;
+   background-color: transparent;
+position: absolute;
+height: auto;
+z-index: 9999;
+margin: auto;
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
+margin-left: auto;
+margin-right: auto;
+-moz-transform: scale(-1, 1);
+-webkit-transform: scale(-1, 1);
+-o-transform: scale(-1, 1);
+transform: scale(-1, 1);
+filter: FlipH;
+}
 
 
+.virtual-background-selector-label{
+    /*margin-bottom: 15px;*/
+    color: #1896c6;
+    font-weight: 600;
+    font-size: 14px;
+}
+.virtual-background-select {
+    font-size: 14px;
+}
+.virtual-background-selectable {
+	display: inline-block;
+    margin: 0 7.5px 15px;
+    max-width: calc(50% - 30px);
+    height: 100px;
+	float: left;
+    margin-bottom: 10px;
+    position: relative; 
+}
+.margin-top-0 {
+    margin-top: 0px;
+}
+.margin-top-13-neg {
+    margin-top: -13px;
+}
+.margin-top-28-neg {
+    margin-top: -28px;
+}
+.selected-bar-vb {
+    background: #000000; /*#000000c2;*/
+    color: white;
+    /*padding: 4px;*/
+    text-align: center;
+    position: relative;
+    top: 28px;
+    font-size: 14px; 
+}
+.virtual-background-selectable img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.hide {
+    display: none; 
+}
+.virtual-background-section {
+	.modal-header {
+		padding: 0 15px;
+		border-bottom: 1px solid #e5e5e5;
+		text-align: center;
+		position: relative;
+		margin: -7px -20px 2px;
+		background-color: #e8e9eb;
+		border-top-right-radius: 10px;
+		border-top-left-radius: 10px;
+	}
+	.virtual-background-dialog{
+		padding: 15px;
+		display: flex;
+	}
+} 
+.virtual-background-section .modal-title {
+    padding: 18px 0;
+    /*width: 150px;*/
+    text-align: left;
+    /*text-transform: uppercase;*/
+    margin: 0 auto;
+    color: #8f8f8f;
+    vertical-align: middle;
+    display: flex;
+    /*align-items: center;
+    justify-content: center;*/
+    font-weight: 600;
+    position: relative;
+    font-size: 16px;
+    line-height: 28px;
+}
+.vb-title {
+    color: #8f8f8f;
+    margin-bottom: 15px;
+    margin-top: 2px;
+}
+.virtual-background-dialog-contents {
+    width: 100%;
+}
+.virtual-background-dialog-contents .vb-left {
+    width: 50%; /*300px;*/
+    padding-right: 50px;
+	float: left;
+	border-right: 1px solid #eaeaea;
+}
+.virtual-background-dialog-contents .vb-right {
+    width: 40%; /*350px;*/
+    padding-left: 30px;
+    max-height: 500px;
+    overflow-y: scroll;
+    float: left;
+}
+.virtual-background-dialog-contents .border-line {
+    position: relative;
+}
+.virtual-background-dialog-contents .border-line:after {
+    content: '';
+    height: 85%;
+    width: 1px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #eaeaea;
+}
+.vb-preview {
+    /*background-image: url(/images/bg1.jpg);*/
+    width: 480px;
+    height: 350px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+}
+.virtual-background-buttons {
+    margin-top: 25px;
+}
+.vb-btn {
+    background: #0373bd;
+    padding: 7px 12px;
+    font-size: 14px;
+    border-radius: 2px;
+    color: #fff;
+    float: left;
+    display: inline-block;
+    margin-right: 13px;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+.vb-enable-btn {
+    align-items: center;
+    align-self: center;
+    flex: 1 1 auto;
+    margin: 0px 4px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: opacity 0.3s ease 0s;
+    opacity: 1;
+    background-color: #1896c6 !important;
+    border: 1px solid #1896c6 !important;
+    outline-color: #1896c6;
+}
+.vb-cancel-btn {
+    background: transparent;
+    color: #8f8f8f;
+    border: 1px solid #8f8f8f;
+    align-items: center;
+    align-self: center;
+    flex: 1 1 auto;
+    margin: 0px 4px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: opacity 0.3s ease 0s;
+    opacity: 1;
+    outline-color: #8f8f8f;
+}
+div[class^=Modal__PositionerAbsolute] {
+    width: 1000px;
+}
+.virtual-background-selectable.active i {
+    background: url(/images/selected-image-bg.png) no-repeat center center;
+    background-size: cover;
+    content: '';
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+.virtual-background-selectable.active i:after { 
+    content: "";
+    position: absolute;
+    top: 30px;
+    right: 3px;
+    bottom: 7px;
+    left: 54px;
+    background: url(/images/selected.png) no-repeat 4px 1px;
+}
+.new-toolbox .toolbox-content .cw_present-menu {
+    max-width: 250px;
+    width: 250px;
+}
+.new-toolbox .toolbox-content .cw_present-menu ul li a {
+    padding: 12px 13px;
+}
 
+
+#background {
+    height: 100vh;
+    width: 100vw;
+   background-image: url(/images/waterfall.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+   }
+   
+   .container1
+   {
+       height: 100vh;
+    width: 100vw;
+    z-index:10;
+   background-image: url(/images/waterfall.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+   
+   }   
+   .container2
+   {
+       height: 100%;
+    width: 100%;
+    z-index:10;
+   background-image: url(/images/waterfall.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+   
+   }
+   .person2
+{
+   	height:100vh;
+   	width:100vh;
+   	background-color: transparent;
+	position: absolute;
+	height: auto;
+	z-index: 9999;
+	margin: auto;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	-moz-transform: scale(-1, 1);
+	-webkit-transform: scale(-1, 1);
+	-o-transform: scale(-1, 1);
+	transform: scale(-1, 1);
+	filter: FlipH;
+
+}
+   .startseg
+{
+   	display: none;
+
+}
 
 @-moz-document url-prefix() { 
     .video-quality-dialog .video-quality-dialog-contents .video-quality-dialog-label-container.active::before {

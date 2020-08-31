@@ -2,17 +2,17 @@
 
 import * as bodyPix from '@tensorflow-models/body-pix';
 
-import JitsiStreamBlurEffect from './JitsiStreamBlurEffect';
+import JitsiStreamVirtualBackgroundEffect from './JitsiStreamVirtualBackgroundEffect';
 
 /**
- * Creates a new instance of JitsiStreamBlurEffect. This loads the bodyPix model that is used to
+ * Creates a new instance of JitsiStreamVirtualBackgroundEffect. This loads the bodyPix model that is used to
  * extract person segmentation.
  *
- * @returns {Promise<JitsiStreamBlurEffect>}
+ * @returns {Promise<JitsiStreamVirtualBackgroundEffect>}
  */
-export async function createBlurEffect() {
+export async function createVirtualBackgroundEffect() {
     if (!MediaStreamTrack.prototype.getSettings && !MediaStreamTrack.prototype.getConstraints) {
-        throw new Error('JitsiStreamBlurEffect not supported!');
+        throw new Error('JitsiStreamVirtualBackgroundEffect not supported!');
     }
 
     // An output stride of 16 and a multiplier of 0.5 are used for improved
@@ -24,5 +24,5 @@ export async function createBlurEffect() {
         quantBytes: 2
     });
 
-    return new JitsiStreamBlurEffect(bpModel);
+    return new JitsiStreamVirtualBackgroundEffect(bpModel);
 }

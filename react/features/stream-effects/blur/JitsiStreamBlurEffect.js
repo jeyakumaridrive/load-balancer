@@ -84,8 +84,8 @@ export default class JitsiStreamBlurEffect {
             12, // Constant for background blur, integer values between 0-20
             7 // Constant for edge blur, integer values between 0-20
         );
-    }
-
+            }
+       
     /**
      * Checks if the local track supports this effect.
      *
@@ -103,7 +103,7 @@ export default class JitsiStreamBlurEffect {
      * @param {MediaStream} stream - Stream to be used for processing.
      * @returns {MediaStream} - The stream with the applied effect.
      */
-    startEffect(stream: MediaStream) {
+    startEffect(stream: MediaStream) { 
         const firstVideoTrack = stream.getVideoTracks()[0];
         const { height, frameRate, width }
             = firstVideoTrack.getSettings ? firstVideoTrack.getSettings() : firstVideoTrack.getConstraints();
@@ -119,7 +119,7 @@ export default class JitsiStreamBlurEffect {
                 id: SET_INTERVAL,
                 timeMs: 1000 / parseInt(frameRate, 10)
             });
-        };
+        };           
 
         return this._outputCanvasElement.captureStream(parseInt(frameRate, 10));
     }
@@ -127,7 +127,7 @@ export default class JitsiStreamBlurEffect {
     /**
      * Stops the capture and render loop.
      *
-     * @returns {void}
+     * @returns {void} 
      */
     stopEffect() {
         this._maskFrameTimerWorker.postMessage({

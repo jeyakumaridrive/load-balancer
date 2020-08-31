@@ -233,6 +233,19 @@ module.exports = [
     // prod and dev mode.
     Object.assign({}, config, {
         entry: {
+            'video-virtual-background-effect': './react/features/stream-effects/virtual-background/index.js'
+        },
+        output: Object.assign({}, config.output, {
+            library: [ 'JitsiMeetJS', 'app', 'effects' ],
+            libraryTarget: 'window',
+            filename: '[name].min.js',
+            sourceMapFilename: '[name].min.map'
+        }),
+        performance: getPerformanceHints(1 * 1024 * 1024)
+    }),
+    
+    Object.assign({}, config, {
+        entry: {
             'video-blur-effect': './react/features/stream-effects/blur/index.js'
         },
         output: Object.assign({}, config.output, {
