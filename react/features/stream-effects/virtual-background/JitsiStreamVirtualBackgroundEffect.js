@@ -196,6 +196,8 @@ export default class JitsiStreamVirtualBackgroundEffect {
         // virtual bg code
         this._maskCanvasElement.width = width;
         this._maskCanvasElement.height = height;
+        
+        console.log(server+window.$default_virtual_background_image);
 
         this._maskCanvasContext = this._maskCanvasElement.getContext('2d');
         this._ima = new Image();
