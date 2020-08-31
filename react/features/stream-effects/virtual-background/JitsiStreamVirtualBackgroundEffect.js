@@ -201,7 +201,6 @@ export default class JitsiStreamVirtualBackgroundEffect {
 
         this._maskCanvasContext = this._maskCanvasElement.getContext('2d');
         this._ima = new Image();
-        this.ima.crossOrigin = "Anonymous";
         this._secCanvasContext.canvas.width = width;
         this._secCanvasContext.canvas.height = height;
         this._ima.addEventListener('load', e => {
