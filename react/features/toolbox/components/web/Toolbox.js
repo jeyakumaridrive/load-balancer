@@ -33,7 +33,6 @@ import { connect, equals } from '../../../base/redux';
 import { OverflowMenuItem } from '../../../base/toolbox';
 import { getLocalVideoTrack, toggleScreensharing } from '../../../base/tracks';
 import { VideoBlurButton } from '../../../blur';
-import { VideoVirtualBackgroundButton } from '../../../virtual-background';
 import { ChatCounter, toggleChat } from '../../../chat';
 import { SharedDocumentButton } from '../../../etherpad';
 import { openFeedbackDialog } from '../../../feedback';
@@ -275,9 +274,6 @@ class Toolbox extends Component<Props, State> {
         };
         this._onToolbarToggleWhiteboard = this._onToolbarToggleWhiteboard.bind(this);
         this.showMoreNumbers = this.showMoreNumbers.bind(this);
-        
-        this.blurEffectEnabledFeature = false;
-        this.virtualBackgroundEnabledFeature = false;
     }
 
     /**
@@ -619,14 +615,10 @@ class Toolbox extends Component<Props, State> {
             togglePresent: false,
             toggleSettingsMenu: false
         }) 
-    }
     
-    _doToggleVirtualBackground = () => {
-        this.setState({
-            togglePresent: false,
-            toggleSettingsMenu: false
-        }) 
     }
+
+
 
 
     /**
@@ -1399,10 +1391,6 @@ class Toolbox extends Component<Props, State> {
                 key = 'videobackgroundblur'
                 showLabel = { true }
                 visible = { this._shouldShowButton('videobackgroundblur') && !_screensharing } />,
-            <VideoVirtualBackgroundButton
-                key = 'virtualbackground'
-                showLabel = { true }
-                visible = { this._shouldShowButton('virtualbackground') && !_screensharing } />,
             <SettingsButton
                 key = 'settings'
                 showLabel = { true }
@@ -1802,7 +1790,7 @@ class Toolbox extends Component<Props, State> {
                 <div className="cw_present-menu cw_settings-menu" id="cw_settings_menu">
                     <ul> 
                         <li>
-                            <a onClick={this._doToggleVideoBlur} id="blurFeatureButton">
+                            <a onClick={this._doToggleVideoBlur}>
                                 <VideoBlurButton
                                 key = 'videobackgroundblur'
                                 showLabel = { true }
@@ -1869,7 +1857,7 @@ class Toolbox extends Component<Props, State> {
             `Or Dial ` + '\n' +
             `${sessionStorage.phone_numbers.split('\n')[0]}` + '\n' +
             `Use Meeting Pin: ${pin}` + '\n\n' +
-            `Find more numbers: https://meeting.remotepc.com/info/`+meetingInfo.slug;
+            `Find more numbers: ${parentDomain}/info/`+meetingInfo.slug;
         event.preventDefault();
 
         const el = document.createElement('textarea');
@@ -2208,7 +2196,6 @@ function _mapStateToProps(state) {
             || sharedVideoStatus === 'pause',
         _visible: isToolboxVisible(state),
         _isVideoBlurred: Boolean(state['features/blur'].blurEnabled),
-        _isVideoVirtualBackground: Boolean(state['features/virtual-background'].virtualBackgroundEnabled),
         _visibleButtons: equals(visibleButtons, buttons) ? visibleButtons : buttons
     };
 }

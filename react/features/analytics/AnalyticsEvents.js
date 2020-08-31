@@ -539,21 +539,6 @@ export function createRemoteVideoMenuButtonEvent(buttonName, attributes) {
 }
 
 /**
- * Creates an event indicating that an action related to video virtual background
- * occurred (e.g. It was started or stopped).
- *
- * @param {string} action - The action which occurred.
- * @returns {Object} The event in a format suitable for sending via
- * sendAnalytics.
- */
-export function createVideoVirtualBackgroundEvent(action) {
-    return {
-        action,
-        actionSubject: 'video.virtualbackground'
-    };
-}
-
-/**
  * Creates an event indicating that an action related to video blur
  * occurred (e.g. It was started or stopped).
  *

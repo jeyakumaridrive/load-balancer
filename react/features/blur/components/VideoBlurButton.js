@@ -2,16 +2,13 @@
 
 import React from 'react';
 
-import { createVideoBlurEvent, createVideoVirtualBackgroundEvent, sendAnalytics } from '../../analytics';
+import { createVideoBlurEvent, sendAnalytics } from '../../analytics';
 import { translate } from '../../base/i18n';
 import { IconBlurBackground } from '../../base/icons';
 import { connect } from '../../base/redux';
 import { AbstractButton, BetaTag } from '../../base/toolbox';
 import type { AbstractButtonProps } from '../../base/toolbox';
 import { toggleBlurEffect } from '../actions';
-
-import VideoVirtualBackgroundButton from '../../virtual-background'; 
-import { toggleVirtualBackgroundEffect } from '../../virtual-background/actions';
 
 /**
  * The type of the React {@code Component} props of {@link VideoBlurButton}.
@@ -22,11 +19,6 @@ type Props = AbstractButtonProps & {
      * True if the video background is blurred or false if it is not.
      */
     _isVideoBlurred: boolean,
-    
-    /**
-     * True if the video background is virtual or false if it is not.
-     */
-    _isVideoVirtualBackground: boolean,
 
     /**
      * The redux {@code dispatch} function.
@@ -66,23 +58,6 @@ class VideoBlurButton extends AbstractButton<Props, *> {
     _handleClick() {
         const { _isVideoBlurred, dispatch } = this.props;
         const value = !_isVideoBlurred;
-        
-        // stop virtual background effect
-        if(APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled 
-            && APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled == true) {
-            var { _isVideoVirtualBackground } = this.props;
-            
-            //alert(APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled);
-            //APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled = false;
-        
-            _isVideoVirtualBackground = APP.store.getState()['features/virtual-background'].virtualBackgroundEnabled;
-            // stop effect            
-            var value_vb = !_isVideoVirtualBackground; 
-            //alert('value '+value);
-
-            sendAnalytics(createVideoVirtualBackgroundEvent(value_vb ? 'started' : 'stopped'));
-            dispatch(toggleVirtualBackgroundEffect(value_vb));
-        }
 
         sendAnalytics(createVideoBlurEvent(value ? 'started' : 'stopped'));
         dispatch(toggleBlurEffect(value));
