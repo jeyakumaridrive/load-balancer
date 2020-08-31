@@ -12,7 +12,7 @@
     <button style="display: none;" id="unmuteAll"></button>
     <button style="display: none;" id="Kickout"></button>
     <button style="display: none;" id="mute_single"></button>
-    <button style="display: none;" id="unmute_single"></button>
+    <button style="display: none;" id="unmute_single"></button> 
     
 
 
@@ -362,7 +362,15 @@
     }
        
     window.user_selected_image = default_selected_image;
+    
+    localStorage.setItem('virtual_bg_setting', "default");
        
+    if(window.location.hostname == "meeting.remotepc.com" || window.location.hostname == "meet.remotepc.com" ||
+        window.location.hostname == "www.epyc.com") {
+        localStorage.setItem('virtual_bg_setting', "https://meeting.remotepc.com/");
+    }
+        
     window.$default_virtual_background = window.location.hostname+default_selected_image;
     window.$default_virtual_background_image = default_selected_image;
+    console.log(window.$default_virtual_background);
 </script>

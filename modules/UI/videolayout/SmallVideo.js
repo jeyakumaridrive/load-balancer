@@ -160,17 +160,13 @@ export default class SmallVideo {
     /**
      * Creates an audio or video element for a particular MediaStream.
      */
-    static createStreamElement(stream, user_id) {
+    static createStreamElement(stream) {
         const isVideo = stream.isVideoTrack();
         const element = isVideo ? document.createElement('video') : document.createElement('audio');
 
         if (isVideo) {
             element.setAttribute('muted', 'true');
             element.setAttribute('playsInline', 'true'); /* for Safari on iOS to work */
-           // element.className = user_id+'_video_virtual_bg';
-            
-            //  element.height = 300;
-            // element.width =  300;
         } else if (config.startSilent) {
             element.muted = true;
         }

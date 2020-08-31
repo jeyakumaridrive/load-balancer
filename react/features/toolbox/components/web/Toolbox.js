@@ -1811,7 +1811,7 @@ class Toolbox extends Component<Props, State> {
                         </li>
                         <li>
                             <a onClick={this._doToggleVirtualBackground} id="virtualBackgroundFeatureButton">
-                                <VideoVirtualBackgroundButton
+                                <VideoVirtualBackgroundButton 
                                 key = 'virtualbackground'
                                 showLabel = { true }
                                 visible = { true } />
