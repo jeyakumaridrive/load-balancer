@@ -197,8 +197,6 @@ export default class JitsiStreamVirtualBackgroundEffect {
         this._maskCanvasElement.width = width;
         this._maskCanvasElement.height = height;
         
-        console.log(window.server+window.$default_virtual_background_image);
-
         this._maskCanvasContext = this._maskCanvasElement.getContext('2d');
         this._ima = new Image();
         this._secCanvasContext.canvas.width = width;
@@ -210,9 +208,15 @@ export default class JitsiStreamVirtualBackgroundEffect {
             this._data_imgd = this._data_img.data;
             new Uint32Array(this._data_imgd.buffer);
         });
-        //this._ima.src = "https://remotepc3.codertc.com/images/waterfall.jpg";
-        this._ima.src = window.server+window.$default_virtual_background_image; //window.$default_virtual_background; 
-        console.log(window.server+window.$default_virtual_background_image);
+        //this._ima.src = "https://meet.remotepc.com/images/bg1.jpg";
+        if(localStorage.getItem('virtual_bg_setting') == "default") {
+            this._ima.src = window.$default_virtual_background;  
+        }
+        else {
+            this._ima.src = localStorage.getItem('virtual_bg_setting')+window.$default_virtual_background_image; //window.$default_virtual_background; 
+        }
+        
+        console.log(this._ima.src);
         
         this._videoFrameTimerWorker.postMessage({
             id: SET_INTERVAL,
