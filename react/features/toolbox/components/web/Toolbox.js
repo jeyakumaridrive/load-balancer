@@ -1797,6 +1797,14 @@ class Toolbox extends Component<Props, State> {
                                 visible = { true } />
                             </a>
                         </li>
+                        <li>
+                            <a onClick={this._doToggleVirtualBackground} id="virtualBackgroundFeatureButton">
+                                <VideoVirtualBackgroundButton
+                                key = 'virtualbackground' 
+                                showLabel = { true }
+                                visible = { true } />
+                            </a>
+                        </li>
 
                             <li>
                                 <a onClick={this._onToolbarToggleFullScreen}>
