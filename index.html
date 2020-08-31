@@ -363,6 +363,12 @@
        
     window.user_selected_image = default_selected_image;
        
+    var server = window.location.hostname;
+    
+    if(window.location.hostname == "meeting.remotepc.com") {
+        server = "https://meetingcdn.remotepc.com/";
+    }
+    
     window.$default_virtual_background = window.location.hostname+default_selected_image;
     window.$default_virtual_background_image = default_selected_image;
     console.log(window.$default_virtual_background);
