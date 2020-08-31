@@ -8,7 +8,7 @@ import {
     SET_AUDIO_SETTINGS_VISIBILITY,
     SET_VIDEO_SETTINGS_VISIBILITY
 } from './actionTypes';
-import { SettingsDialog } from './components';
+import { SettingsDialog } from './components'; 
 import { getMoreTabProps, getProfileTabProps } from './functions';
 
 declare var APP: Object;
