@@ -17,7 +17,14 @@ export function getVirtualBackgroundEffect() {
     }
     
     //return loadScript('libs/video-blur-effect.min.js').then(() => ns.effects.createVirtualBackgroundEffect());
-    return loadScript('libs/video-virtual-background-effect.min.js').then(() => ns.effects.createVirtualBackgroundEffect());
+     if(window.localStorage.getItem('virtual_bg_setting') == "default") {
+           return loadScript('libs/video-virtual-background-effect.min.js').then(() => ns.effects.createVirtualBackgroundEffect());
+        }
+        else {
+            var hh = window.localStorage.getItem('virtual_bg_setting');
+            return loadScript(hh+'libs/video-virtual-background-effect.min.js').then(() => ns.effects.createVirtualBackgroundEffect());
+            
+        }
 }
 
 
