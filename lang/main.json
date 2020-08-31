@@ -175,7 +175,6 @@
         "dismiss": "Dismiss",
         "displayNameRequired": "Hi! What’s your name?",
         "done": "Done",
-        "enable": "Enable",
         "enterDisplayName": "Please enter your name here",
         "error": "Error",
         "externalInstallationMsg": "You need to install our desktop sharing extension.",
@@ -540,8 +539,7 @@
         "speakers": "Speakers",
         "startAudioMuted": "Everyone starts muted",
         "startVideoMuted": "Everyone starts hidden",
-        "title": "Settings",
-        "virtualbackground": "Choose Virtual Background"
+        "title": "Settings"
     },
     "settingsView": {
         "advanced": "Advanced",
@@ -623,8 +621,7 @@
             "toggleCamera": "Toggle camera",
             "toggleFilmstrip": "Toggle filmstrip",
             "videomute": "Toggle mute video",
-            "videoblur": "Toggle video blur",
-            "videovirtualbackground": "Toggle virtual background"
+            "videoblur": "Toggle video blur"
         },
         "addPeople": "Add people to your call",
         "audioOnlyOff": "Disable low bandwidth mode",
@@ -680,9 +677,7 @@
         "toggleCamera": "Toggle camera",
         "videomute": "Start / Stop camera",
         "startvideoblur": "Blur background",
-        "stopvideoblur": "Disable blur",
-        "startvideovirtualbackground": "Virtual background",
-        "stopvideovirtualbackground": "Disable virtual background"
+        "stopvideoblur": "Disable blur"
     },
     "transcribing": {
         "ccButtonTooltip": "Start / Stop subtitles",

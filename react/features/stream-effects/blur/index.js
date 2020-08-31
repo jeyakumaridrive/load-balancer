@@ -20,7 +20,7 @@ export async function createBlurEffect() {
     const bpModel = await bodyPix.load({
         architecture: 'MobileNetV1',
         outputStride: 16,
-        multiplier: 0.75,
+        multiplier: 0.50,
         quantBytes: 2
     });
 

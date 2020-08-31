@@ -350,19 +350,3 @@
     })
     
 </script>
-
-
-<script type="text/javascript">
-    var default_selected_image = '/images/bg1.jpg'; 
-    
-    // get saved cookie value
-    if(document.cookie.replace(/(?:(?:^|.*;\s*)virtual_background\s*\=\s*([^;]*).*$)|^.*$/, "$1")) {
-        //console.log(document.cookie.replace(/(?:(?:^|.*;\s*)virtual_background\s*\=\s*([^;]*).*$)|^.*$/, "$1"));
-        default_selected_image = document.cookie.replace(/(?:(?:^|.*;\s*)virtual_background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    }
-       
-    window.user_selected_image = default_selected_image;
-       
-    window.$default_virtual_background = window.location.hostname+default_selected_image;
-    window.$default_virtual_background_image = default_selected_image;
-</script>

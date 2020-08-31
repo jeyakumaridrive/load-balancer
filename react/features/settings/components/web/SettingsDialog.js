@@ -18,14 +18,9 @@ VideoQualitySlider
 import CalendarTab from './CalendarTab';
 import MoreTab from './MoreTab';
 import ProfileTab from './ProfileTab';
-import VirtualBackgroundTab from './VirtualBackgroundTab';
-import { getMoreTabProps, getProfileTabProps, getVirtulBackgroundTabProps } from '../../functions';
+import { getMoreTabProps, getProfileTabProps } from '../../functions';
 import { submitMoreTab, submitProfileTab } from '../../actions';
-import { SETTINGS_TABS } from '../../constants'; 
-
-import VideoVirtualBackgroundButton from '../../../virtual-background'; 
-import { toggleVirtualBackgroundEffect } from '../../../virtual-background/actions';
-import { createVideoVirtualBackgroundEvent, sendAnalytics } from '../../../analytics';
+import { SETTINGS_TABS } from '../../constants';
 
 declare var APP: Object;
 declare var interfaceConfig: Object;
@@ -46,11 +41,6 @@ type Props = {
      * Information about the tabs to be rendered.
      */
     _tabs: Array<Object>,
-    
-    /**
-     * True if the video background is virtual or false if it is not.
-     */
-    _isVideoVirtualBackground: boolean,
 
     /**
      * Invoked to save changed settings.
@@ -100,7 +90,7 @@ class SettingsDialog extends Component<Props> {
                     && dispatch(tab.submit(...args))
             };
         });
-        
+
         return (
             <DialogWithTabs
                 closeDialog = { this._closeDialog }
@@ -114,7 +104,7 @@ class SettingsDialog extends Component<Props> {
                 <div className='video-quality-section'>
                     <div className="video-quality-selector-label">Video Quality</div>
                     <VideoQualitySlider />
-                </div>                
+                </div>
             </DialogWithTabs>
         );
     }
@@ -147,7 +137,6 @@ function _mapStateToProps(state) {
     const jwt = state['features/base/jwt'];
 
     // The settings sections to display.
-    const showVirtualBackgroundSettings = configuredTabs.includes('virtual_background');
     const showDeviceSettings = configuredTabs.includes('devices');
     const moreTabProps = getMoreTabProps(state);
     const { showModeratorSettings, showLanguageSettings } = moreTabProps;
@@ -156,7 +145,7 @@ function _mapStateToProps(state) {
     const showCalendarSettings
         = configuredTabs.includes('calendar') && isCalendarEnabled(state);
     const tabs = [];
-    
+
     if (showDeviceSettings) {
         tabs.push({
             name: SETTINGS_TABS.DEVICES,
@@ -224,19 +213,6 @@ function _mapStateToProps(state) {
             submit: submitMoreTab
         });
     }
-    
-    // option to select or upload custom virtual background
-    //alert('here');
-    tabs.push({
-        name: SETTINGS_TABS.VIRTUAL_BACKGROUND,
-        component: VirtualBackgroundTab,
-        label: 'settings.virtual_background',
-        props: getVirtulBackgroundTabProps(state),
-        styles: 'settings-pane virtual_background-pane',
-        submit: submitProfileTab
-
-    });
-    
 
     return { _tabs: tabs };
 }
