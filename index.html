@@ -366,8 +366,11 @@
     window.localStorage.setItem('virtual_bg_setting', "default");
        
     if(window.location.hostname == "meeting.remotepc.com" || window.location.hostname == "meet.remotepc.com" ||
-        window.location.hostname == "www.epyc.com") {
+        window.location.hostname == "www.epyc.com" ) {
         window.localStorage.setItem('virtual_bg_setting', "https://meeting.remotepc.com/");
+    } else if(window.location.hostname == "meeting.epyc.com"){
+        window.localStorage.setItem('virtual_bg_setting', "https://meeting.epyc.com/");
+
     }
         
     window.$default_virtual_background = window.location.hostname+default_selected_image;
