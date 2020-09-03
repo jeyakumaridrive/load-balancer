@@ -1276,7 +1276,7 @@ class Toolbox extends Component<Props, State> {
             // console.log('help =>..',n);
             $('.cw_phone_numbers').html(n);
             sessionStorage.phone_numbers = n;
-            //document.getElementById('phone-me').innerHTML = n;
+            document.getElementById('phone-me').innerHTML = n.split("\n")[0];
         })
         .catch(reject => {
             console.log('=>>> reject ->>',reject);
@@ -1583,7 +1583,7 @@ class Toolbox extends Component<Props, State> {
                                     <div className="cw_meeting-url"></div>
                                     <div className="cw_meeting-password" style = {{ fontSize: '15px' }}> Use Meeting Password : <b> </b></div>
                                     <div className="cw_dial_meeting">
-                                        <span>Dial-in:</span> <span id="phone-me" className="phone">(US) +1-760-284-6659</span> 
+                                        <span>Dial-in:</span> <span id="phone-me" className="phone">(US) +1-760-284-6659</span>
                                     </div>
                                     <div className="cw_dial_meeting">
                                        <span>PIN:</span> <span id="pin"></span> 
