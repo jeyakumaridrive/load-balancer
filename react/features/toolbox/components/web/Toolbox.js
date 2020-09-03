@@ -1263,7 +1263,8 @@ class Toolbox extends Component<Props, State> {
         return monthNames[x.getMonth()]+' '+x.getDate()+', '+x.getFullYear()+' '+strTime+' '+meetingInfo.timezone;
     }
     getSIP() {
-        const fullUrl = `https://api-meeting.remotepc.com/`;
+        const fullUrl = location.hostname == 'meeting.remotepc.com' ? `https://api-meeting.remotepc.com/` : 'https://api-dev-meet.remotepc.com/';
+        // const fullUrl = `https://api-meeting.remotepc.com/`;
         $.get(fullUrl)
         .then(resolve => {
             var n = '';
