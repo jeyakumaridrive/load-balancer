@@ -1263,19 +1263,20 @@ class Toolbox extends Component<Props, State> {
         return monthNames[x.getMonth()]+' '+x.getDate()+', '+x.getFullYear()+' '+strTime+' '+meetingInfo.timezone;
     }
     getSIP() {
-        const fullUrl = `https://api-meeting.remotepc.com/`;
+        const fullUrl = location.hostname == 'meeting.remotepc.com' ? `https://api-meeting.remotepc.com/` : 'https://api-dev-meet.remotepc.com/';
+        // const fullUrl = `https://api-meeting.remotepc.com/`;
         $.get(fullUrl)
         .then(resolve => {
             var n = '';
             for ( var num in resolve.numbers) {
-                if(resolve.numbers[num][0] != "+NA")
+                if(resolve.numbers[num][0] != "+NA" && resolve.numbers[num][0] != "NA") {
                 n += '('+num+')'+' '+resolve.numbers[num][0].replace(/[.]/g,'-')+'\n';
                 // console.log('=>>>>',n,num,resolve.numbers[num][0]);
             }
             // console.log('help =>..',n);
             $('.cw_phone_numbers').html(n);
             sessionStorage.phone_numbers = n;
-            //document.getElementById('phone-me').innerHTML = n;
+            document.getElementById('phone-me').innerHTML = n.split("\n")[0];
         })
         .catch(reject => {
             console.log('=>>> reject ->>',reject);
@@ -1582,7 +1583,7 @@ class Toolbox extends Component<Props, State> {
                                     <div className="cw_meeting-url"></div>
                                     <div className="cw_meeting-password" style = {{ fontSize: '15px' }}> Use Meeting Password : <b> </b></div>
                                     <div className="cw_dial_meeting">
-                                        <span>Dial-in:</span> <span id="phone-me" className="phone">(US) +1-760-284-6659</span> 
+                                        <span>Dial-in:</span> <span id="phone-me" className="phone">(US) +1-760-284-6659</span>
                                     </div>
                                     <div className="cw_dial_meeting">
                                        <span>PIN:</span> <span id="pin"></span> 
