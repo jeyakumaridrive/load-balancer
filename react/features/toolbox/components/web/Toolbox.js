@@ -1270,8 +1270,9 @@ class Toolbox extends Component<Props, State> {
             var n = '';
             for ( var num in resolve.numbers) {
                 if(resolve.numbers[num][0] != "+NA" && resolve.numbers[num][0] != "NA") {
-                n += '('+num+')'+' '+resolve.numbers[num][0].replace(/[.]/g,'-')+'\n';
-                // console.log('=>>>>',n,num,resolve.numbers[num][0]);
+                    n += '('+num+')'+' '+resolve.numbers[num][0].replace(/[.]/g,'-')+'\n';
+                    // console.log('=>>>>',n,num,resolve.numbers[num][0]);
+                }
             }
             // console.log('help =>..',n);
             $('.cw_phone_numbers').html(n);
