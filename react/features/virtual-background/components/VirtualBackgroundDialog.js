@@ -124,7 +124,11 @@ type Props = {
       });
 
       videoElem.srcObject = null;
-}
+    }
+
+
+    
+
 /**
  * A React {@code Component} for displaying a dialog to modify local settings
  * and conference-wide (moderator) settings. This version is connected to
@@ -159,7 +163,7 @@ class VirtualBackgroundDialog extends Component<Props> {
         this._closeDialog = this._closeDialog.bind(this);
         this.intervalnew = null;
 
-        this._bpModel = bpModel;
+        //this._bpModel = bpModel;
 
         // Bind event handler so it is only bound once for every instance.
       
@@ -171,7 +175,9 @@ class VirtualBackgroundDialog extends Component<Props> {
 
     }
       componentDidMount() { 
-          init()
+          init();       
+          //const MOBILENET_BASE_URL = window.localStorage.getItem('virtual_bg_setting')+'tensorflow saved models js/';
+          //this.loadModel();
           
        }
 
@@ -198,6 +204,7 @@ class VirtualBackgroundDialog extends Component<Props> {
                     && dispatch(tab.submit(...args))
             };
         });
+        
         
         //onSubmit = { this._onSubmit } 
         return (
@@ -315,10 +322,24 @@ class VirtualBackgroundDialog extends Component<Props> {
     vb_preview() {
         $('#vb-preview').css('background-image', 'url('+window.user_selected_image+')');
     }
+    
+    
+    async loadModel() {
+        this._bpModel = await bodyPix.load({
+            architecture: 'MobileNetV1',
+            outputStride: 16,
+            multiplier: 0.75,
+            quantBytes: 2
+        });
+        
+        console.log(this._bpModel);
+        
+    }
 
  
     async _renderMask() {
         //console.log('sss');
+        //console.log(this._bpModel);
         this._inputVideoElement = document.querySelector('#webcam');
 
         this._maskInProgress = true;
@@ -366,13 +387,22 @@ class VirtualBackgroundDialog extends Component<Props> {
      */
     async startEffect() {       
 
-        this._isopen = true;
+        this._isopen = true;             
+        
+        //console.log(window.bodyPixModel);
+        
+        this._bpModel = window.bodyPixModel;
+        
+        /*
         this._bpModel = await bodyPix.load({
             architecture: 'MobileNetV1',
             outputStride: 16,
             multiplier: 0.75,
             quantBytes: 2
-        });
+        }); 
+        */
+        //console.log(this._bpModel);
+        
         this._inputVideoElement = document.querySelector('#webcam');
         this._outputCanvasElement = document.querySelector('#vb-preview');
                      
