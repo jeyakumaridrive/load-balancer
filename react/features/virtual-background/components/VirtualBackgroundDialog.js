@@ -174,12 +174,21 @@ class VirtualBackgroundDialog extends Component<Props> {
                 
 
     }
-      componentDidMount() { 
-          init();       
+    componentDidMount() { 
+        if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true') {
+            APP.conference.muteVideo(false); 
+            setTimeout(()=>{
+                init();  
+            },1000)
+             
+        }
+          
+          
+            
           //const MOBILENET_BASE_URL = window.localStorage.getItem('virtual_bg_setting')+'tensorflow saved models js/';
           //this.loadModel();
           
-       }
+    }
 
 
     /**
