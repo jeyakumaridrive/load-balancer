@@ -180,7 +180,7 @@ class VirtualBackgroundDialog extends Component<Props> {
             APP.conference.muteVideo(false); 
             setTimeout(()=>{
                 console.log(APP.conference.isLocalVideoMuted());
-                init(1000);  
+                init(1500);  
             },1000);
             
         }
@@ -243,7 +243,7 @@ class VirtualBackgroundDialog extends Component<Props> {
                                  <video id="webcam" width="480" height="300" autoplay={true} playsinline></video>
                                     <div id="errorMsg" autoplay></div>
                                    
-                                     <canvas width="480" height="300" class="vb-preview" id="vb-preview"></canvas>
+                                     <canvas width="480" height="300" class="vb-preview vb-preview-loading" id="vb-preview"></canvas>
                                 </div>
                                 <div class="virtual-background-buttons">
                                     <button type="button" class="vb-btn vb-enable-btn" onClick={() => this.enableVirtualBackground()}>Enable</button>
@@ -335,6 +335,7 @@ class VirtualBackgroundDialog extends Component<Props> {
 
     vb_preview() {
         $('#vb-preview').css('background-image', 'url('+window.user_selected_image+')');
+        $('#vb-preview').removeClass('vb-preview-loading');
     }
     
     

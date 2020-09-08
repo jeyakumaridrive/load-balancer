@@ -1754,12 +1754,18 @@ filter: FlipH;
 }
 .vb-preview {
     /*background-image: url(/images/bg1.jpg);*/
+    background-image: url(/images/loader.gif);
     width: 480px;
     height: 350px;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
     background-color: transparent;
+}
+.vb-preview-loading {
+    background-size: unset;
+    position: relative;
+    left: -80px;
 }
 .virtual-background-buttons {
     margin-top: 25px;
