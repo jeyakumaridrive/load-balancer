@@ -70,7 +70,7 @@ type Props = {
     dispatch: Function
 };
 
-    function  handleSuccess(stream) {
+    function  handleSuccess(stream, timeout_settings) {
       
       const video = document.querySelector('#webcam');
       const videoTracks = stream.getVideoTracks();
@@ -82,7 +82,7 @@ type Props = {
       $(video).hide();
       setTimeout(()=>{
         $('.startseg').click();
-      },2000)
+      },timeout_settings)
       // $(video).height($('#webcam').get()[0].height);
       // $(video).width($('#webcam').get()[0].width);
 
@@ -107,10 +107,10 @@ type Props = {
         console.error(error);
       }
     }
-    async function init() {
+    async function init(timeout_settings) {
       try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        handleSuccess(stream);
+        handleSuccess(stream, timeout_settings);
       } catch (e) {
         handleError(e);
       }
@@ -171,7 +171,7 @@ class VirtualBackgroundDialog extends Component<Props> {
         this._outputCanvasElement = document.querySelector('#vb-preview');
         const canvas = this._outputCanvasElement;
         this._inputVideoElement = document.querySelector('#webcam');
-                
+                        
 
     }
     componentDidMount() { 
@@ -179,12 +179,13 @@ class VirtualBackgroundDialog extends Component<Props> {
             console.log(APP.conference.isLocalVideoMuted());
             APP.conference.muteVideo(false); 
             setTimeout(()=>{
-                init();  
+                console.log(APP.conference.isLocalVideoMuted());
+                init(2000);  
             },1000);
-             
+            
         }
         else {
-            init();  
+            init(300);  
         }
           //init();  
           
