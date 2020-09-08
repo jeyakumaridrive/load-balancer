@@ -70,7 +70,7 @@ type Props = {
     dispatch: Function
 };
 
-    function  handleSuccess(stream) {
+    function  handleSuccess(stream, timeout_settings) {
       
       const video = document.querySelector('#webcam');
       const videoTracks = stream.getVideoTracks();
@@ -82,7 +82,7 @@ type Props = {
       $(video).hide();
       setTimeout(()=>{
         $('.startseg').click();
-      },2000)
+      },timeout_settings)
       // $(video).height($('#webcam').get()[0].height);
       // $(video).width($('#webcam').get()[0].width);
 
@@ -107,10 +107,10 @@ type Props = {
         console.error(error);
       }
     }
-    async function init() {
+    async function init(timeout_settings) {
       try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        handleSuccess(stream);
+        handleSuccess(stream, timeout_settings);
       } catch (e) {
         handleError(e);
       }
@@ -124,7 +124,11 @@ type Props = {
       });
 
       videoElem.srcObject = null;
-}
+    }
+
+
+    
+
 /**
  * A React {@code Component} for displaying a dialog to modify local settings
  * and conference-wide (moderator) settings. This version is connected to
@@ -159,7 +163,7 @@ class VirtualBackgroundDialog extends Component<Props> {
         this._closeDialog = this._closeDialog.bind(this);
         this.intervalnew = null;
 
-        this._bpModel = bpModel;
+        //this._bpModel = bpModel;
 
         // Bind event handler so it is only bound once for every instance.
       
@@ -167,13 +171,29 @@ class VirtualBackgroundDialog extends Component<Props> {
         this._outputCanvasElement = document.querySelector('#vb-preview');
         const canvas = this._outputCanvasElement;
         this._inputVideoElement = document.querySelector('#webcam');
-                
+                        
 
     }
-      componentDidMount() { 
-          init()
+    componentDidMount() { 
+        if(APP.conference.isLocalVideoMuted() == true || APP.conference.isLocalVideoMuted() == 'true') {
+            console.log(APP.conference.isLocalVideoMuted());
+            APP.conference.muteVideo(false); 
+            setTimeout(()=>{
+                console.log(APP.conference.isLocalVideoMuted());
+                init(1500);  
+            },1000);
+            
+        }
+        else {
+            init(300);  
+        }
+          //init();  
           
-       }
+            
+          //const MOBILENET_BASE_URL = window.localStorage.getItem('virtual_bg_setting')+'tensorflow saved models js/';
+          //this.loadModel();
+          
+    }
 
 
     /**
@@ -199,6 +219,7 @@ class VirtualBackgroundDialog extends Component<Props> {
             };
         });
         
+        
         //onSubmit = { this._onSubmit } 
         return (
             <Dialog
@@ -222,7 +243,7 @@ class VirtualBackgroundDialog extends Component<Props> {
                                  <video id="webcam" width="480" height="300" autoplay={true} playsinline></video>
                                     <div id="errorMsg" autoplay></div>
                                    
-                                     <canvas width="480" height="300" class="vb-preview" id="vb-preview"></canvas>
+                                     <canvas width="480" height="300" class="vb-preview vb-preview-loading" id="vb-preview"></canvas>
                                 </div>
                                 <div class="virtual-background-buttons">
                                     <button type="button" class="vb-btn vb-enable-btn" onClick={() => this.enableVirtualBackground()}>Enable</button>
@@ -314,11 +335,26 @@ class VirtualBackgroundDialog extends Component<Props> {
 
     vb_preview() {
         $('#vb-preview').css('background-image', 'url('+window.user_selected_image+')');
+        $('#vb-preview').removeClass('vb-preview-loading');
+    }
+    
+    
+    async loadModel() {
+        this._bpModel = await bodyPix.load({
+            architecture: 'MobileNetV1',
+            outputStride: 16,
+            multiplier: 0.75,
+            quantBytes: 2
+        });
+        
+        console.log(this._bpModel);
+        
     }
 
  
     async _renderMask() {
         //console.log('sss');
+        //console.log(this._bpModel);
         this._inputVideoElement = document.querySelector('#webcam');
 
         this._maskInProgress = true;
@@ -366,13 +402,22 @@ class VirtualBackgroundDialog extends Component<Props> {
      */
     async startEffect() {       
 
-        this._isopen = true;
+        this._isopen = true;             
+        
+        //console.log(window.bodyPixModel);
+        
+        this._bpModel = window.bodyPixModel;
+        
+        /*
         this._bpModel = await bodyPix.load({
             architecture: 'MobileNetV1',
             outputStride: 16,
             multiplier: 0.75,
             quantBytes: 2
-        });
+        }); 
+        */
+        //console.log(this._bpModel);
+        
         this._inputVideoElement = document.querySelector('#webcam');
         this._outputCanvasElement = document.querySelector('#vb-preview');
                      
