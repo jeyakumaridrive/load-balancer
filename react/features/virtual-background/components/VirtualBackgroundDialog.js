@@ -180,7 +180,7 @@ class VirtualBackgroundDialog extends Component<Props> {
             APP.conference.muteVideo(false); 
             setTimeout(()=>{
                 console.log(APP.conference.isLocalVideoMuted());
-                init(2000);  
+                init(1000);  
             },1000);
             
         }
