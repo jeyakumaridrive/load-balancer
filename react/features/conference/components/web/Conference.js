@@ -143,6 +143,7 @@ class Conference extends AbstractConference<Props, *> {
         }
         this._start();
         var _t = this;
+        $('body').removeClass('loading');
         var interval = setInterval(function() {
             console.log('Interval is running!');
             if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {

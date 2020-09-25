@@ -1,5 +1,6 @@
 <html itemscope itemtype="http://schema.org/Product" prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/html">
-  <head>
+
+<head>
     <!--#include virtual="head.html" -->
     <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -8,20 +9,35 @@
 
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/all.css?v=245">
+
+    <!--#include virtual="title.html" -->
+    <!--#include virtual="plugin.head.html" -->
+    <!--#include virtual="static/welcomePageAdditionalContent.html" -->
+    <!--#include virtual="static/settingsToolbarAdditionalContent.html" -->
+</head>
+
+<body class="loading">
+    <div class="loading">
+        <div class="loader-a"></div>
+    </div>
+    <!--#include virtual="body.html" -->
+    <div id="react"></div>
+
+
     <button style="display: none;" id="muteAll"></button>
     <button style="display: none;" id="unmuteAll"></button>
     <button style="display: none;" id="Kickout"></button>
     <button style="display: none;" id="mute_single"></button>
-    <button style="display: none;" id="unmute_single"></button> 
-    
+    <button style="display: none;" id="unmute_single"></button>
 
 
-    <link rel="stylesheet" href="css/all.css?v=245">
-    <button style="display: none;" id="ShowMyBoard"></button> 
-    <button style="display: none;" id="closeMyBoard"></button> 
+
+    <button style="display: none;" id="ShowMyBoard"></button>
+    <button style="display: none;" id="closeMyBoard"></button>
     <audio id="hidden-jitsi-audio" style="display:none;" src="sounds/alert.mp3"></audio>
     <input type="hidden" class="true-joining" id="true-joining" value="0">
-     <div style="display: none;">
+    <div style="display: none;">
         <div class="select">
             <label for="audioSource">Audio input source: </label><select id="audioSource"></select>
         </div>
@@ -57,15 +73,15 @@
             "app.bundle.min.js",
             "all.css"
         ];
-        var loadErrHandler = function(e) {
+        var loadErrHandler = function (e) {
             var target = e.target;
             // Error on <script> and <link>(CSS)
             // <script> will have .src and <link> .href
             var fileRef = (target.src ? target.src : target.href);
             if (("SCRIPT" === target.tagName || "LINK" === target.tagName)
                 && criticalFiles.some(
-                    function(file) { return fileRef.indexOf(file) !== -1 })) {
-                window.onload = function() {
+                    function (file) { return fileRef.indexOf(file) !== -1 })) {
+                window.onload = function () {
                     // The whole complex part below implements page reloads with
                     // "exponential backoff". The retry attempt is passes as
                     // "rCounter" query parameter
@@ -132,24 +148,24 @@
 
                     var showMoreElem = document.getElementById("showMore");
                     showMoreElem.addEventListener('click', function () {
-                            var moreInfoElem
-                                    = document.getElementById("moreInfo");
+                        var moreInfoElem
+                            = document.getElementById("moreInfo");
 
-                            if (showMoreElem.innerHTML === showMoreText) {
-                                moreInfoElem.setAttribute(
-                                    "style",
-                                    "display: block;"
-                                    + "color:#FF991F;"
-                                    + "font-size:small;"
-                                    + "user-select:text;");
-                                showMoreElem.innerHTML = showLessText;
-                            }
-                            else {
-                                moreInfoElem.setAttribute(
-                                    "style", "display: none;");
-                                showMoreElem.innerHTML = showMoreText;
-                            }
-                        });
+                        if (showMoreElem.innerHTML === showMoreText) {
+                            moreInfoElem.setAttribute(
+                                "style",
+                                "display: block;"
+                                + "color:#FF991F;"
+                                + "font-size:small;"
+                                + "user-select:text;");
+                            showMoreElem.innerHTML = showLessText;
+                        }
+                        else {
+                            moreInfoElem.setAttribute(
+                                "style", "display: none;");
+                            showMoreElem.innerHTML = showMoreText;
+                        }
+                    });
 
                     window.setTimeout(
                         function () { window.location.replace(href); }, delay);
@@ -165,143 +181,127 @@
         };
         window.addEventListener(
             'error', loadErrHandler, true /* capture phase type of listener */);
-                function parseJSONSafely(str) {
-                try {
-                    return JSON.parse(str);
-                }
-                catch (e) {
-                    //console.err(e);
-                    // Return a default object, or null based on use case.
-                    return 'false'
-                }
-                }
+        function parseJSONSafely(str) {
+            try {
+                return JSON.parse(str);
+            }
+            catch (e) {
+                //console.err(e);
+                // Return a default object, or null based on use case.
+                return 'false'
+            }
+        }
 
-                function getUrlVars()
-                {
-                    var vars = [], hash;
-                    var hashes = decodeURIComponent(window.location.href).slice(window.location.href.indexOf('?') + 1).split('&');
-                    for(var i = 0; i < hashes.length; i++)
-                    {
-                        hash = hashes[i].split('=');
-                        vars.push(hash[0]);
-                        vars[hash[0]] = hash[1];
-                    }
-                    return vars;
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = decodeURIComponent(window.location.href).slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+
+        var configDev = getUrlVars()["config._devices"];
+        var configvideostatus = getUrlVars()["config.startWithVideoMuted"];
+
+        if (configvideostatus) {
+            var isParseStatus = parseJSONSafely(configvideostatus);
+            if (isParse != 'false') {
+                var camState = JSON.parse(configvideostatus);
+                if (camState == false || camState == 'false') {
+                    localStorage.setItem('camstateMuted', 'false');
                 }
-
-                var configDev = getUrlVars()["config._devices"];
-                var configvideostatus = getUrlVars()["config.startWithVideoMuted"];
-
-                if(configvideostatus)
-                {
-                    var isParseStatus = parseJSONSafely(configvideostatus);
-                    if(isParse != 'false')
-                    {
-                        var camState = JSON.parse(configvideostatus);
-                        if(camState == false || camState == 'false')
-                        {
-                            localStorage.setItem('camstateMuted','false');
-                        }
-                        else
-                        {
-                            localStorage.setItem('camstateMuted', 'true');
-                        }
-                    }
+                else {
+                    localStorage.setItem('camstateMuted', 'true');
                 }
+            }
+        }
 
-                if(configDev)
-                {
-                    var isParse = parseJSONSafely(configDev);
-                    if(isParse != 'false')
-                    {
-                        var parseData = JSON.parse(configDev);
-                        var cam = parseData.videoinput.name;
-                        var microphones = parseData.audioinput.name;
-                        var speakerscam = parseData.audiooutput.name;
-                        if(cam)
-                        {
-                            localStorage.setItem('camera',cam);
-                        }
-                        else
-                        {
-                            localStorage.setItem('camera',"");
-                        }
-                        if(microphones)
-                        {
-                            localStorage.setItem('microphones',microphones);
-                        }
-                        else
-                        {
-                           localStorage.setItem('microphones',""); 
-                        }
-                        if(speakerscam)
-                        {
-                            localStorage.setItem('speakerscam',speakerscam);
-                        } 
-                        else
-                        {
-                            localStorage.setItem('speakerscam',"");
-                        }
-                    }
-                    else
-                    {
-                        localStorage.setItem('camera',"");
-                        localStorage.setItem('microphones',"");
-                        localStorage.setItem('speakerscam',"");
-                    }
-
+        if (configDev) {
+            var isParse = parseJSONSafely(configDev);
+            if (isParse != 'false') {
+                var parseData = JSON.parse(configDev);
+                var cam = parseData.videoinput.name;
+                var microphones = parseData.audioinput.name;
+                var speakerscam = parseData.audiooutput.name;
+                if (cam) {
+                    localStorage.setItem('camera', cam);
                 }
-                else
-                {
-                    localStorage.setItem('camera',"");
-                    localStorage.setItem('microphones',"");
-                    localStorage.setItem('speakerscam',"");
+                else {
+                    localStorage.setItem('camera', "");
                 }
-                'use strict';
-
-                const videoElement = document.querySelector('video');
-                const audioInputSelect = document.querySelector('select#audioSource');
-                const audioOutputSelect = document.querySelector('select#audioOutput');
-                const videoSelect = document.querySelector('select#videoSource');
-                const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
-
-                //audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
-
-                function gotDevices(deviceInfos) {
-                  // Handles being called several times to update labels. Preserve values.
-                  const values = selectors.map(select => select.value);
-                  selectors.forEach(select => {
-                    while (select.firstChild) {
-                      select.removeChild(select.firstChild);
-                    }
-                  });
-                  for (let i = 0; i !== deviceInfos.length; ++i) {
-                    const deviceInfo = deviceInfos[i];
-                    const option = document.createElement('option');
-                    option.value = deviceInfo.deviceId;
-                    if (deviceInfo.kind === 'audioinput') {
-                      option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
-                      audioInputSelect.appendChild(option);
-                    } else if (deviceInfo.kind === 'audiooutput') {
-                      option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
-                      audioOutputSelect.appendChild(option);
-                    } else if (deviceInfo.kind === 'videoinput') {
-                      option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
-                      videoSelect.appendChild(option);
-                    } else {
-                      console.log('Some other kind of source/device: ', deviceInfo);
-                    }
-                  }
-                  selectors.forEach((select, selectorIndex) => {
-                    if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
-                      select.value = values[selectorIndex];
-                    }
-                  });
+                if (microphones) {
+                    localStorage.setItem('microphones', microphones);
                 }
-                function handleError(error) {
-                  console.log('navigator.getUserMedia error: ', error);
+                else {
+                    localStorage.setItem('microphones', "");
                 }
-                navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+                if (speakerscam) {
+                    localStorage.setItem('speakerscam', speakerscam);
+                }
+                else {
+                    localStorage.setItem('speakerscam', "");
+                }
+            }
+            else {
+                localStorage.setItem('camera', "");
+                localStorage.setItem('microphones', "");
+                localStorage.setItem('speakerscam', "");
+            }
+
+        }
+        else {
+            localStorage.setItem('camera', "");
+            localStorage.setItem('microphones', "");
+            localStorage.setItem('speakerscam', "");
+        }
+        'use strict';
+
+        const videoElement = document.querySelector('video');
+        const audioInputSelect = document.querySelector('select#audioSource');
+        const audioOutputSelect = document.querySelector('select#audioOutput');
+        const videoSelect = document.querySelector('select#videoSource');
+        const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+
+        //audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
+
+        function gotDevices(deviceInfos) {
+            // Handles being called several times to update labels. Preserve values.
+            const values = selectors.map(select => select.value);
+            selectors.forEach(select => {
+                while (select.firstChild) {
+                    select.removeChild(select.firstChild);
+                }
+            });
+            for (let i = 0; i !== deviceInfos.length; ++i) {
+                const deviceInfo = deviceInfos[i];
+                const option = document.createElement('option');
+                option.value = deviceInfo.deviceId;
+                if (deviceInfo.kind === 'audioinput') {
+                    option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
+                    audioInputSelect.appendChild(option);
+                } else if (deviceInfo.kind === 'audiooutput') {
+                    option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
+                    audioOutputSelect.appendChild(option);
+                } else if (deviceInfo.kind === 'videoinput') {
+                    option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+                    videoSelect.appendChild(option);
+                } else {
+                    console.log('Some other kind of source/device: ', deviceInfo);
+                }
+            }
+            selectors.forEach((select, selectorIndex) => {
+                if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
+                    select.value = values[selectorIndex];
+                }
+            });
+        }
+        function handleError(error) {
+            console.log('navigator.getUserMedia error: ', error);
+        }
+        navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
 
 
     </script>
@@ -310,90 +310,84 @@
     <script src="libs/do_external_connect.min.js?v=1"></script>
     <script><!--#include virtual="/interface_config.js" --></script>
     <script><!--#include virtual="/logging_config.js" --></script>
-    <script src="libs/lib-jitsi-meet.min.js?v=x280"></script>
-    <script src="libs/app.bundle.min.js?v=X280"></script>
-    
+    <script src="libs/lib-jitsi-meet.min.js?v=x282"></script>
+    <script src="libs/app.bundle.min.js?v=X282"></script>
+
     <!-- Load TensorFlow.js -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.5.1"></script>
     <!-- Load BodyPix -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.0.4"></script>
 
-    <!--#include virtual="title.html" -->
-    <!--#include virtual="plugin.head.html" -->
-    <!--#include virtual="static/welcomePageAdditionalContent.html" -->
-    <!--#include virtual="static/settingsToolbarAdditionalContent.html" -->
-  </head>
-  <body>
-    <!--#include virtual="body.html" -->
-    <div id="react"></div>
-  </body>
-</html>
-<script type="text/javascript">
-    setInterval(function(){
-        let divs = document.getElementsByClassName('styled__NavItem-sc-716rt7-5');
+    <script type="text/javascript">
+            setInterval(function () {
+                let divs = document.getElementsByClassName('styled__NavItem-sc-716rt7-5');
 
-            for (let x = 0; x < divs.length; x++) {
-                let div = divs[x];
-                let content = div.innerHTML.trim();
+                for (let x = 0; x < divs.length; x++) {
+                    let div = divs[x];
+                    let content = div.innerHTML.trim();
 
-                if (content == 'Profile' || content == 'More') {
-                    div.style.display = 'none';
+                    if (content == 'Profile' || content == 'More') {
+                        div.style.display = 'none';
+                    }
                 }
-            }
-            $('#localDisplayName').text('').append('You');
-    },100)
-    $(document).ready(function(){
-        $(document).on('click','#unmutesingle2',function(){
-           
-            $('#unmute_single').click()
-            $('.EDTcm').click()
-        }) 
-        //$('.ignore').on('click',function(){
-        $(document).on('click','.ignore',function(){
-            $('.EDTcm').click()
+                $('#localDisplayName').text('').append('You');
+            }, 100)
+        $(document).ready(function () {
+            $(document).on('click', '#unmutesingle2', function () {
+
+                $('#unmute_single').click()
+                $('.EDTcm').click()
+            })
+            //$('.ignore').on('click',function(){
+            $(document).on('click', '.ignore', function () {
+                $('.EDTcm').click()
+            })
         })
-    })
-    
-</script>
+
+    </script>
 
 
-<script>
+    <script>
 
-    async function loadAndPredict() {
-        const net = await bodyPix.load({
+        async function loadAndPredict() {
+            const net = await bodyPix.load({
                 architecture: 'MobileNetV1',
                 outputStride: 16,
                 multiplier: 0.75,
                 quantBytes: 2
             });
-        console.log(net);
-        window.bodyPixModel = net;
-    }
-    loadAndPredict();
-  </script>
+            console.log(net);
+            window.bodyPixModel = net;
+        }
+        loadAndPredict();
+    </script>
 
-<script type="text/javascript">
-    var default_selected_image = '/images/bg1.jpg'; 
-    
-    // get saved cookie value
-    if(document.cookie.replace(/(?:(?:^|.*;\s*)virtual_background\s*\=\s*([^;]*).*$)|^.*$/, "$1")) {
-        //console.log(document.cookie.replace(/(?:(?:^|.*;\s*)virtual_background\s*\=\s*([^;]*).*$)|^.*$/, "$1"));
-        default_selected_image = document.cookie.replace(/(?:(?:^|.*;\s*)virtual_background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    }
-       
-    window.user_selected_image = default_selected_image;
-    
-    window.localStorage.setItem('virtual_bg_setting', "default");
-       
-    if(window.location.hostname == "meeting.remotepc.com" || window.location.hostname == "meet.remotepc.com" ||
-        window.location.hostname == "www.epyc.com" ) {
-        window.localStorage.setItem('virtual_bg_setting', "https://meeting.remotepc.com/");
-    } else if(window.location.hostname == "meeting.epyc.com"){
-        window.localStorage.setItem('virtual_bg_setting', "https://meeting.epyc.com/");
+    <script type="text/javascript">
+        var default_selected_image = '/images/bg1.jpg';
 
-    }
-        
-    window.$default_virtual_background = window.location.hostname+default_selected_image;
-    window.$default_virtual_background_image = default_selected_image;
-    console.log(window.$default_virtual_background);
-</script>
+        // get saved cookie value
+        if (document.cookie.replace(/(?:(?:^|.*;\s*)virtual_background\s*\=\s*([^;]*).*$)|^.*$/, "$1")) {
+            //console.log(document.cookie.replace(/(?:(?:^|.*;\s*)virtual_background\s*\=\s*([^;]*).*$)|^.*$/, "$1"));
+            default_selected_image = document.cookie.replace(/(?:(?:^|.*;\s*)virtual_background\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        }
+
+        window.user_selected_image = default_selected_image;
+
+        window.localStorage.setItem('virtual_bg_setting', "default");
+
+        if (window.location.hostname == "meeting.remotepc.com" || window.location.hostname == "meet.remotepc.com" ||
+            window.location.hostname == "www.epyc.com") {
+            window.localStorage.setItem('virtual_bg_setting', "https://meeting.remotepc.com/");
+        } else if (window.location.hostname == "meeting.epyc.com") {
+            window.localStorage.setItem('virtual_bg_setting', "https://meeting.epyc.com/");
+
+        }
+
+        window.$default_virtual_background = window.location.hostname + default_selected_image;
+        window.$default_virtual_background_image = default_selected_image;
+        console.log(window.$default_virtual_background);
+    </script>
+
+</body>
+
+</html>
