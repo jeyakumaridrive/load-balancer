@@ -1613,9 +1613,9 @@ class Toolbox extends Component<Props, State> {
                         </div>
                     </div>
                 </li>
-                    <RecordButton
+                    { location.hostname == "meeting.epyc.com" && <RecordButton
                         key = 'record'
-                        showLabel = { true } />
+                        showLabel = { true } />}
             </ul>
             
             )
