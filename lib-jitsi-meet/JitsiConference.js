@@ -1676,7 +1676,9 @@ JitsiConference.prototype.onRemoteTrackAdded = function(track) {
     }
 
     // Setup E2EE handling, if supported.
-    this._setupReceiverE2EEForTrack(track);
+    // if(!this.isP2PActive()) {
+    //     this._setupReceiverE2EEForTrack(track);
+    // }
 
     const id = track.getParticipantId();
     const participant = this.getParticipantById(id);
