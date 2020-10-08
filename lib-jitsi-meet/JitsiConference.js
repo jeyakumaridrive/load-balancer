@@ -3505,9 +3505,10 @@ JitsiConference.prototype.lobbyApproveAccess = function(id) {
  * @returns {void}
  */
 JitsiConference.prototype._setupSenderE2EEForTrack = function(session, track) {
-    if (!this._e2eeCtx) {
-        return;
-    }
+    // if (!this._e2eeCtx) {
+    //     return;
+    // }
+    return;
     const pc = session.peerconnection;
     const sender = pc.findSenderForTrack(track.track);
 
