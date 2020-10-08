@@ -3525,9 +3525,10 @@ JitsiConference.prototype._setupSenderE2EEForTrack = function(session, track) {
  * @returns {void}
  */
 JitsiConference.prototype._setupReceiverE2EEForTrack = function(track) {
-    if (!this._e2eeCtx) {
-        return;
-    }
+    // if (!this._e2eeCtx) {
+    //     return;
+    // }
+    return;
     const session = track.isP2P ? this.p2pJingleSession : this.jvbJingleSession;
     const pc = session && session.peerconnection;
 
