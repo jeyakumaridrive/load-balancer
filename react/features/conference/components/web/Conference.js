@@ -144,6 +144,20 @@ class Conference extends AbstractConference<Props, *> {
         this._start();
         var _t = this;
         $('body').removeClass('loading');
+        (function () {
+            var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            link.type = 'image/x-icon';
+            link.rel = 'shortcut icon';
+            link.href = '/assets/favicon.ico';
+            if (location.hostname == "meeting.epyc.com" || location.hostname == "localhost") {
+                link.href = 'https://www.epyc.com/source/images/fav-epyc.ico';
+                document.querySelector("title").innerText = "Epyc Meeting"
+            } else {
+                link.href = "/assets/favicon.ico";
+                document.querySelector("title").innerText = "RemotePC Meeting"
+            }
+            document.getElementsByTagName('head')[0].appendChild(link);
+        })();
         var interval = setInterval(function() {
             console.log('Interval is running!');
             if (typeof APP !== 'undefined' && APP.conference && APP.conference._room) {
