@@ -1613,9 +1613,10 @@ class Toolbox extends Component<Props, State> {
                         </div>
                     </div>
                 </li>
-                <RecordButton
+                { JSON.parse(sessionStorage.user).subscription_type != 'FREE_TRIAL' && 
+                    <RecordButton
                     key = 'record'
-                    showLabel = { true } />
+                    showLabel = { true } />}
             </ul>
             
             )
