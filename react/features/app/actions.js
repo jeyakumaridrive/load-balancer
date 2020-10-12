@@ -348,6 +348,7 @@ export function finishedLoading() {
             parentDomain
         } = getState()['features/base/config'];
         console.log(' =>>>>> check',parentDomain,getState()['features/base/config']);
+        $('body').removeClass('loading');
         parent.window.postMessage({'method':'loaded'},parentDomain);
     }
 }

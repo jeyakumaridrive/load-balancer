@@ -143,7 +143,6 @@ class Conference extends AbstractConference<Props, *> {
         }
         this._start();
         var _t = this;
-        $('body').removeClass('loading');
         (function () {
             var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
             link.type = 'image/x-icon';
