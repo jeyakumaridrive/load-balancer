@@ -1613,9 +1613,9 @@ class Toolbox extends Component<Props, State> {
                         </div>
                     </div>
                 </li>
-                <RecordButton
+                { (JSON.parse(sessionStorage.user).subscription_type != 'FREE_TRIAL' && location.hostname == 'meeting.epyc.com') || (location.hostname != 'meeting.epyc.com') && <RecordButton
                     key = 'record'
-                    showLabel = { true } />
+                    showLabel = { true } />}
             </ul>
             
             )
@@ -1846,12 +1846,12 @@ class Toolbox extends Component<Props, State> {
         let { parentDomain } = APP.store.getState()['features/base/config'];
         console.log('=>>>> meeting info =>>>>',meetingInfo);
         var pin = $('#pin').text(),phone = $('.phone').text(),timeStr = this.getTimeString(meetingInfo);
-        var text = APP.conference.getLocalDisplayName()+` is inviting you to a scheduled RemotePC Meeting.` + '\n' +
+        var text = APP.conference.getLocalDisplayName()+` is inviting you to a scheduled `+(location.hostname == 'meeting.remotepc.com' ? 'RemotePC' : 'Epyc')+` Meeting.` + '\n' +
             `` + '\n' +
             `Topic: ${meetingInfo.name}` + '\n' +
             (meetingInfo.meeting_on ? `Time: ${timeStr}` + '\n' : ``)+
             `` + '\n' +
-            `Join RemotePC Meeting` + '\n' +
+            `Join `+(location.hostname == 'meeting.remotepc.com' ? 'RemotePC' : 'Epyc')+` Meeting` + '\n' +
             `${parentDomain}/meet/${meetingInfo.slug}` + '\n' +
 			(function() {
 				if(APP.password) {
@@ -1871,7 +1871,7 @@ class Toolbox extends Component<Props, State> {
             `Or Dial ` + '\n' +
             `${sessionStorage.phone_numbers.split('\n')[0]}` + '\n' +
             `Use Meeting Pin: ${pin}` + '\n\n' +
-            `Find more numbers: https://meeting.remotepc.com/info/`+meetingInfo.slug;
+            `Find more numbers: ${parentDomain}/info/`+meetingInfo.slug;
         event.preventDefault();
 
         const el = document.createElement('textarea');
