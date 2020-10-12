@@ -1613,9 +1613,9 @@ class Toolbox extends Component<Props, State> {
                         </div>
                     </div>
                 </li>
-                { (JSON.parse(sessionStorage.user).subscription_type != 'FREE_TRIAL' && location.hostname == 'meeting.epyc.com') || (location.hostname != 'meeting.epyc.com') && <RecordButton
+                <RecordButton
                     key = 'record'
-                    showLabel = { true } />}
+                    showLabel = { true } />
             </ul>
             
             )
