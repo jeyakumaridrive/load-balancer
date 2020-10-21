@@ -24,6 +24,7 @@ import {
 } from '../AbstractConference';
 import type { AbstractProps } from '../AbstractConference';
 import socketIOClient from "socket.io-client";
+import { getLocalParticipant, PARTICIPANT_ROLE } from '../../../base/participants';
 
 import Labels from './Labels';
 import { default as Notice } from './Notice';
