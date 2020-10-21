@@ -6,8 +6,8 @@ import { createVideoBlurEvent, createVideoVirtualBackgroundEvent, sendAnalytics 
 import { translate } from '../../base/i18n';
 import { IconBlurBackground } from '../../base/icons';
 import { connect } from '../../base/redux';
-import { AbstractButton, BetaTag } from '../../base/toolbox';
-import type { AbstractButtonProps } from '../../base/toolbox';
+import { AbstractButton, BetaTag } from '../../base/toolbox/components';
+import type { AbstractButtonProps } from '../../base/toolbox/components';
 import { toggleBlurEffect } from '../actions';
 
 import VideoVirtualBackgroundButton from '../../virtual-background'; 
@@ -42,6 +42,7 @@ class VideoBlurButton extends AbstractButton<Props, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.videoblur';
     icon = IconBlurBackground;
     label = 'toolbar.startvideoblur';
+    tooltip = 'toolbar.startvideoblur';
     toggledLabel = 'toolbar.stopvideoblur';
 
     /**
