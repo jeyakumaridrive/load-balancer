@@ -95,9 +95,6 @@ export default class LocalVideo extends SmallVideo {
             <div class = 'videocontainer__hoverOverlay'></div>
             <div class = 'displayNameContainer'></div>
             <div class = 'avatar-container'></div>`;
-            //  <div class = 'avatar-container-2'
-            //  style="top: 50%;left: 50%;position: absolute;transform: translate(-50%,-50%);display: flex;justify-content: center;overflow: hidden;"><div class="avatar  userAvatar " style="background-color: rgba(234, 255, 128); font-size: 180%; height: 100%; width: 100%;"><svg class="avatar-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><text dominant-baseline="central" fill="rgba(255,255,255)" font-size="40pt" text-anchor="middle" x="50" y="50">${capName
-            //     }</text></svg></div></div>`;
 
         return containerSpan;
     }
@@ -290,9 +287,12 @@ export default class LocalVideo extends SmallVideo {
 
         // Ensure the video gets play() called on it. This may be necessary in the
         // case where the local video container was moved and re-attached, in which
-        // case video does not autoplay.
+        // case video does not autoplay. Also, set the playsinline attribute on the
+        // video element so that local video doesn't open in full screen by default
+        // in Safari browser on iOS.
         const video = this.container.querySelector('video');
 
+        video && video.setAttribute('playsinline', 'true');
         video && !config.testing?.noAutoPlayVideo && video.play();
     }
 }

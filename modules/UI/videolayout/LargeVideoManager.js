@@ -12,9 +12,10 @@ import {
     JitsiParticipantConnectionStatus
 } from '../../../react/features/base/lib-jitsi-meet';
 import { VIDEO_TYPE } from '../../../react/features/base/media';
+import { CHAT_SIZE } from '../../../react/features/chat';
 import {
     updateKnownLargeVideoResolution
-} from '../../../react/features/large-video';
+} from '../../../react/features/large-video/actions';
 import { PresenceLabel } from '../../../react/features/presence-status';
 /* eslint-enable no-unused-vars */
 import UIEvents from '../../../service/UI/UIEvents';
@@ -67,7 +68,30 @@ export default class LargeVideoManager {
         // use the same video container to handle desktop tracks
         this.addContainer(DESKTOP_CONTAINER_TYPE, this.videoContainer);
 
+        /**
+         * The preferred width passed as an argument to {@link updateContainerSize}.
+         *
+         * @type {number|undefined}
+         */
+        this.preferredWidth = undefined;
+
+        /**
+         * The preferred height passed as an argument to {@link updateContainerSize}.
+         *
+         * @type {number|undefined}
+         */
+        this.preferredHeight = undefined;
+
+        /**
+         * The calculated width that will be used for the large video.
+         * @type {number}
+         */
         this.width = 0;
+
+        /**
+         * The calculated height that will be used for the large video.
+         * @type {number}
+         */
         this.height = 0;
 
         /**
@@ -322,9 +346,27 @@ export default class LargeVideoManager {
     /**
      * Update container size.
      */
-    updateContainerSize() {
-        this.width = UIUtil.getAvailableVideoWidth();
-        this.height = window.innerHeight;
+    updateContainerSize(width, height) {
+        if (typeof width === 'number') {
+            this.preferredWidth = width;
+        }
+        if (typeof height === 'number') {
+            this.preferredHeight = height;
+        }
+
+        let widthToUse = this.preferredWidth || window.innerWidth;
+        const { isOpen } = APP.store.getState()['features/chat'];
+
+        if (isOpen) {
+            /**
+             * If chat state is open, we re-compute the container width
+             * by subtracting the default width of the chat.
+             */
+            // widthToUse -= CHAT_SIZE;
+        }
+
+        this.width = widthToUse;
+        this.height = this.preferredHeight || window.innerHeight;
     }
 
     /**
