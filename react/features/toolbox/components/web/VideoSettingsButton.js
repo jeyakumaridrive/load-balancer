@@ -10,7 +10,7 @@ import { ToolboxButtonWithIcon } from '../../../base/toolbox/components';
 import { getLocalJitsiVideoTrack } from '../../../base/tracks';
 import { getMediaPermissionPromptVisibility } from '../../../overlay';
 import { toggleVideoSettings, VideoSettingsPopup } from '../../../settings';
-import { isVideoSettingsButtonDisabled } from '../../functions';
+import { isVideoSettingsButtonDisabled } from '../../functions.web';
 import VideoMuteButton from '../VideoMuteButton';
 
 type Props = {
