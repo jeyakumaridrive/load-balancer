@@ -460,7 +460,7 @@ function _mapStateToProps(state) {
         _layoutClassName: LAYOUT_CLASSNAMES[getCurrentLayout(state)],
         _isLobbyScreenVisible: state['features/base/dialog']?.component === LobbyScreen,
         _roomName: getConferenceNameForTitle(state),
-        _showPrejoin: isPrejoinPageVisible(state)
+        _showPrejoin: isPrejoinPageVisible(state),
         isModerator,
         recordingSessions      
 
