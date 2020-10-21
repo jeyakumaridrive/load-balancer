@@ -66,9 +66,6 @@ import {
 import { toggleSharedVideo } from '../../../shared-video';
 import { SpeakerStats } from '../../../speaker-stats';
 import {
-    ClosedCaptionButton
-} from '../../../subtitles';
-import {
     TileViewButton,
     shouldDisplayTileView,
     toggleTileView
