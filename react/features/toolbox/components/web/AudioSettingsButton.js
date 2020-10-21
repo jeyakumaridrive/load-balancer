@@ -9,7 +9,7 @@ import { connect } from '../../../base/redux';
 import { ToolboxButtonWithIcon } from '../../../base/toolbox/components';
 import { getMediaPermissionPromptVisibility } from '../../../overlay';
 import { AudioSettingsPopup, toggleAudioSettings } from '../../../settings';
-import { isAudioSettingsButtonDisabled } from '../../functions';
+import { isAudioSettingsButtonDisabled } from '../../functions.web';
 import AudioMuteButton from '../AudioMuteButton';
 
 type Props = {
