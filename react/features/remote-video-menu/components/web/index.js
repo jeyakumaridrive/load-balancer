@@ -1,7 +1,10 @@
 // @flow
 
+export { default as GrantModeratorButton } from './GrantModeratorButton';
+export {
+    default as GrantModeratorDialog
+} from './GrantModeratorDialog';
 export { default as KickButton } from './KickButton';
-export { default as RaiseButton } from './RaiseButton';
 export {
     default as KickRemoteParticipantDialog
 } from './KickRemoteParticipantDialog';

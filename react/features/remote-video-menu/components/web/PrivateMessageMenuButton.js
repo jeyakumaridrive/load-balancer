@@ -3,14 +3,14 @@
 import React, { Component } from 'react';
 
 import { translate } from '../../../base/i18n';
-import { IconChat } from '../../../base/icons';
+import { IconMessage } from '../../../base/icons';
 import { connect } from '../../../base/redux';
 import {
     _mapDispatchToProps,
     _mapStateToProps as _abstractMapStateToProps,
     type Props as AbstractProps
 } from '../../../chat/components/PrivateMessageButton';
-import { isButtonEnabled } from '../../../toolbox';
+import { isButtonEnabled } from '../../../toolbox/functions.web';
 
 import RemoteVideoMenuButton from './RemoteVideoMenuButton';
 
@@ -58,7 +58,7 @@ class PrivateMessageMenuButton extends Component<Props> {
         return (
             <RemoteVideoMenuButton
                 buttonText = { t('toolbar.privateMessage') }
-                icon = { IconChat }
+                icon = { IconMessage }
                 displayClass = {'private-message'}
                 id = { `privmsglink_${participantID}` }
                 onClick = { this._onClick } />
