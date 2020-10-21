@@ -1,13 +1,11 @@
 // @flow
 
-import { jitsiLocalStorage } from 'js-utils';
-import { randomHexString } from 'js-utils/random';
+import { jitsiLocalStorage } from '@jitsi/js-utils';
 import _ from 'lodash';
 
-import { APP_WILL_MOUNT } from '../app';
+import { APP_WILL_MOUNT } from '../app/actionTypes';
 import { browser } from '../lib-jitsi-meet';
-import { ReducerRegistry } from '../redux';
-import { PersistenceRegistry } from '../storage';
+import { PersistenceRegistry, ReducerRegistry } from '../redux';
 import { assignIfDefined } from '../util';
 
 import { SETTINGS_UPDATED } from './actionTypes';
@@ -134,8 +132,7 @@ function _initSettings(featureState) {
     // is a defined value, it will override any value found in local storage.
     // The workaround is sidestepping _.escape when the value is not set in
     // local storage.
-    const displayName
-        = savedDisplayName === null ? undefined : _.escape(savedDisplayName);
+    const displayName = savedDisplayName === null ? undefined : _.escape(savedDisplayName);
     const email = savedEmail === null ? undefined : _.escape(savedEmail);
 
     if (!avatarID) {
