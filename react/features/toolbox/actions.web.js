@@ -3,15 +3,15 @@
 import type { Dispatch } from 'redux';
 
 import {
+    FULL_SCREEN_CHANGED,
+    SET_FULL_SCREEN
+} from './actionTypes';
+import {
     clearToolboxTimeout,
     setToolboxTimeout,
     setToolboxTimeoutMS,
     setToolboxVisible
 } from './actions.native';
-import {
-    FULL_SCREEN_CHANGED,
-    SET_FULL_SCREEN
-} from './actionTypes';
 
 declare var interfaceConfig: Object;
 
@@ -93,7 +93,7 @@ export function hideToolbox(force: boolean = false): Function {
             dispatch(
                 setToolboxTimeout(
                     () => dispatch(hideToolbox()),
-                    2900));
+                    timeoutMS));
         } else {
             dispatch(setToolboxVisible(false));
         }
@@ -141,7 +141,7 @@ export function showToolbox(timeout: number = 0): Object {
                 dispatch(
                     setToolboxTimeout(
                         () => dispatch(hideToolbox()),
-                        timeout || 2900));
+                        timeout || timeoutMS));
                 dispatch(setToolboxTimeoutMS(interfaceConfig.TOOLBAR_TIMEOUT));
             }
         }

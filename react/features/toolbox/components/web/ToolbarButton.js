@@ -4,7 +4,6 @@ import Tooltip from '@atlaskit/tooltip';
 import React from 'react';
 
 import { Icon } from '../../../base/icons';
-
 import AbstractToolbarButton from '../AbstractToolbarButton';
 import type { Props as AbstractToolbarButtonProps }
     from '../AbstractToolbarButton';
@@ -50,13 +49,13 @@ class ToolbarButton extends AbstractToolbarButton<Props> {
         super(props);
 
         this._onKeyDown = this._onKeyDown.bind(this);
-        this._onKeyUp = this._onKeyUp.bind(this);
     }
 
     _onKeyDown: (Object) => void;
 
     /**
      * Handles 'Enter' key on the button to trigger onClick for accessibility.
+     * We should be handling Space onKeyUp but it conflicts with PTT.
      *
      * @param {Object} event - The key event.
      * @private
@@ -70,33 +69,6 @@ class ToolbarButton extends AbstractToolbarButton<Props> {
         }
 
         if (event.key === 'Enter') {
-            event.preventDefault();
-            event.stopPropagation();
-            this.props.onClick();
-        } else if (event.key === ' ') {
-            // Space triggers button onKeyUp but we need to prevent default here
-            event.preventDefault();
-        }
-    }
-
-    _onKeyUp: (Object) => void;
-
-    /**
-     * Handles ' '(Space) key on the button to trigger onClick for
-     * accessibility.
-     *
-     * @param {Object} event - The key event.
-     * @private
-     * @returns {void}
-     */
-    _onKeyUp(event) {
-        // If the event coming to the dialog has been subject to preventDefault
-        // we don't handle it here.
-        if (event.defaultPrevented) {
-            return;
-        }
-
-        if (event.key === ' ') {
             event.preventDefault();
             event.stopPropagation();
             this.props.onClick();
@@ -119,7 +91,6 @@ class ToolbarButton extends AbstractToolbarButton<Props> {
                 className = 'toolbox-button'
                 onClick = { this.props.onClick }
                 onKeyDown = { this._onKeyDown }
-                onKeyUp = { this._onKeyUp }
                 role = 'button'
                 tabIndex = { 0 }>
                 { this.props.tooltip
