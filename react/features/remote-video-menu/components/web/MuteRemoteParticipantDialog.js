@@ -5,7 +5,6 @@ import React from 'react';
 import { Dialog } from '../../../base/dialog';
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
-
 import AbstractMuteRemoteParticipantDialog
     from '../AbstractMuteRemoteParticipantDialog';
 
@@ -16,7 +15,6 @@ import AbstractMuteRemoteParticipantDialog
  * @extends Component
  */
 class MuteRemoteParticipantDialog extends AbstractMuteRemoteParticipantDialog {
-    
     /**
      * Implements React's {@link Component#render()}.
      *

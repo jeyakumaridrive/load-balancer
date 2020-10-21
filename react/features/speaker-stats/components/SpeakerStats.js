@@ -17,7 +17,6 @@ import {
     IconRaisedHand
 } from '../../base/icons';
 
-
 import SpeakerStatsItem from './SpeakerStatsItem';
 import SpeakerStatsLabels from './SpeakerStatsLabels';
 import { clientResized } from '../../base/responsive-ui/actions';
@@ -85,7 +84,6 @@ class SpeakerStats extends Component<Props, State> {
         this.unmuteMe = this.unmuteMe.bind(this);
         this.muteMe = this.muteMe.bind(this);
         this.LowerHand = this.LowerHand.bind(this);
-        
     }
       muteall = (e) => {
         e.preventDefault();
@@ -165,7 +163,6 @@ class SpeakerStats extends Component<Props, State> {
           const statClasses =   isAdmin ? 'speaker-stats has-footer' : 'speaker-stats';
 
         return (
-           
                 <div className='spear-status-sidebar' id='people_sidebar'>
                     <div className='people-title'>
                         <Icon src={IconPeople} />
@@ -194,7 +191,6 @@ class SpeakerStats extends Component<Props, State> {
                         </div>) : '' }
                     
             </div>
-           
         );
     }
 
@@ -366,9 +362,7 @@ class SpeakerStats extends Component<Props, State> {
                 displayName = n;
             }
         }
-        //var muted = APP.conference.getParticipantById(userId)._tracks[0].muted;
-       
-      //  var muted = 'tru';
+
         return (
             <SpeakerStatsItem
                 displayName = { displayName }
@@ -392,7 +386,6 @@ class SpeakerStats extends Component<Props, State> {
      * @private
      */
     _updateStats() {
-
         const stats = this.props.conference.getSpeakerStats();
 
         this.setState({ stats });
@@ -421,8 +414,6 @@ class SpeakerStats extends Component<Props, State> {
  */
 function _mapStateToProps(state) {
     const localParticipant = getLocalParticipant(state);
-    //console.log(state);
-    
 
     return {
         /**

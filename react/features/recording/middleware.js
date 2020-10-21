@@ -20,16 +20,17 @@ import {
     unregisterSound
 } from '../base/sounds';
 
+import { RECORDING_SESSION_UPDATED } from './actionTypes';
 import {
     clearRecordingSessions,
     hidePendingRecordingNotification,
     showPendingRecordingNotification,
     showRecordingError,
+    showRecordingLimitNotification,
     showStartedRecordingNotification,
     showStoppedRecordingNotification,
     updateRecordingSessionData
 } from './actions';
-import { RECORDING_SESSION_UPDATED } from './actionTypes';
 import {
     LIVE_STREAMING_OFF_SOUND_ID,
     LIVE_STREAMING_ON_SOUND_ID,
@@ -43,6 +44,8 @@ import {
     RECORDING_OFF_SOUND_FILE,
     RECORDING_ON_SOUND_FILE
 } from './sounds';
+
+declare var interfaceConfig: Object;
 
 /**
  * StateListenerRegistry provides a reliable way to detect the leaving of a
@@ -83,9 +86,9 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
         //     LIVE_STREAMING_ON_SOUND_ID,
         //     LIVE_STREAMING_ON_SOUND_FILE));
 
-       // dispatch(registerSound(
-          //  RECORDING_OFF_SOUND_ID,
-            //RECORDING_OFF_SOUND_FILE));
+        // dispatch(registerSound(
+        //     RECORDING_OFF_SOUND_ID,
+        //     RECORDING_OFF_SOUND_FILE));
 
         // dispatch(registerSound(
         //     RECORDING_ON_SOUND_ID,
@@ -131,7 +134,8 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
         const {
             iAmRecorder,
             iAmSipGateway,
-            disableRecordAudioNotification
+            disableRecordAudioNotification,
+            recordingLimit
         } = getState()['features/base/config'];
 
         if (iAmRecorder && !iAmSipGateway) {
@@ -151,9 +155,16 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
 
             if (updatedSessionData.status === ON
                 && (!oldSessionData || oldSessionData.status !== ON)) {
-                const initiatorName = initiator && getParticipantDisplayName(getState, initiator.getId());
+                if (initiator) {
+                    const initiatorName = initiator && getParticipantDisplayName(getState, initiator.getId());
 
-                initiatorName && dispatch(showStartedRecordingNotification(mode, initiatorName));
+                    initiatorName && dispatch(showStartedRecordingNotification(mode, initiatorName));
+                } else if (typeof recordingLimit === 'object') {
+                    // Show notification with additional information to the initiator.
+                    dispatch(showRecordingLimitNotification(mode));
+                }
+
+
                 sendAnalytics(createRecordingEvent('start', mode));
 
                 if (disableRecordAudioNotification) {
@@ -169,7 +180,7 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
                 }
 
                 if (soundID) {
-                   // dispatch(playSound(soundID));
+                    // dispatch(playSound(soundID));
                 }
             } else if (updatedSessionData.status === OFF
                 && (!oldSessionData || oldSessionData.status !== OFF)) {
@@ -196,8 +207,8 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
                 }
 
                 if (soundOff && soundOn) {
-                   // dispatch(stopSound(soundOn));
-                   /// dispatch(playSound(soundOff));
+                    // dispatch(stopSound(soundOn));
+                    // dispatch(playSound(soundOff));
                 }
             }
         }

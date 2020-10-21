@@ -12,9 +12,6 @@ import {
     submitDeviceSelectionTab
 } from '../../../device-selection';
 import VideoQualitySlider from '../../../video-quality/components/VideoQualitySlider.web.js';
-
-VideoQualitySlider
-
 import CalendarTab from './CalendarTab';
 import MoreTab from './MoreTab';
 import ProfileTab from './ProfileTab';
@@ -51,6 +48,7 @@ type Props = {
      * True if the video background is virtual or false if it is not.
      */
     _isVideoVirtualBackground: boolean,
+
 
     /**
      * Invoked to save changed settings.
@@ -100,7 +98,7 @@ class SettingsDialog extends Component<Props> {
                     && dispatch(tab.submit(...args))
             };
         });
-        
+
         return (
             <DialogWithTabs
                 closeDialog = { this._closeDialog }
@@ -110,6 +108,7 @@ class SettingsDialog extends Component<Props> {
                 }
                 onSubmit = { onSubmit }
                 tabs = { tabs }
+                titleKey = 'settings.title'
                 >   
                 <div className='video-quality-section'>
                     <div className="video-quality-selector-label">Video Quality</div>
@@ -150,13 +149,13 @@ function _mapStateToProps(state) {
     const showVirtualBackgroundSettings = configuredTabs.includes('virtual_background');
     const showDeviceSettings = configuredTabs.includes('devices');
     const moreTabProps = getMoreTabProps(state);
-    const { showModeratorSettings, showLanguageSettings } = moreTabProps;
+    const { showModeratorSettings, showLanguageSettings, showPrejoinSettings } = moreTabProps;
     const showProfileSettings
         = configuredTabs.includes('profile') && jwt.isGuest;
     const showCalendarSettings
         = configuredTabs.includes('calendar') && isCalendarEnabled(state);
     const tabs = [];
-    
+
     if (showDeviceSettings) {
         tabs.push({
             name: SETTINGS_TABS.DEVICES,
@@ -203,7 +202,7 @@ function _mapStateToProps(state) {
         });
     }
 
-    if (showModeratorSettings || showLanguageSettings) {
+    if (showModeratorSettings || showLanguageSettings || showPrejoinSettings) {
         tabs.push({
             name: SETTINGS_TABS.MORE,
             component: MoreTab,
@@ -216,6 +215,7 @@ function _mapStateToProps(state) {
                     ...newProps,
                     currentLanguage: tabState.currentLanguage,
                     followMeEnabled: tabState.followMeEnabled,
+                    showPrejoinPage: tabState.showPrejoinPage,
                     startAudioMuted: tabState.startAudioMuted,
                     startVideoMuted: tabState.startVideoMuted
                 };

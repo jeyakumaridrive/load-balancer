@@ -8,6 +8,7 @@ import { Popover } from '../../../base/popover';
 import { connect } from '../../../base/redux';
 
 import {
+    GrantModeratorButton,
     MuteButton,
     MuteEveryoneElseButton,
     KickButton,
@@ -198,8 +199,9 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
 
 
              }, 1000);
+
         const buttons = [];
-        
+
 
         if (this.state.show == true) {
             if (!_disableRemoteMute) {
@@ -231,6 +233,13 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
                         participantID = { participantID } />
                 );
             }
+
+            // buttons.push(
+            //     <GrantModeratorButton
+            //         key = 'grant-moderator'
+            //         participantID = { participantID } />
+            // );
+
             if (!_disableKick) {
                 buttons.push(
                     <KickButton

@@ -5,7 +5,6 @@ import React from 'react';
 import { translate } from '../../../base/i18n';
 import { IconMicrophone, IconMicDisabled } from '../../../base/icons';
 import { connect } from '../../../base/redux';
-
 import AbstractMuteButton, {
     _mapStateToProps,
     type Props
@@ -54,6 +53,7 @@ class MuteButton extends AbstractMuteButton {
             muteIconName: IconMicrophone
         };
 
+
         if(_audioTrackMuted)
         {
             return (
@@ -78,16 +78,14 @@ class MuteButton extends AbstractMuteButton {
                     onClick = { this._handleClick } />
             );           
         }
-
     }
+
     
     _handleClickUnmute = (uId) =>
      {
         APP.conference._unmuteme(uId);
      }
     _handleClick: () => void
-
-
 }
 
 export default translate(connect(_mapStateToProps)(MuteButton));

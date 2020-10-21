@@ -1,7 +1,6 @@
 // @flow
 
 import throttle from 'lodash/throttle';
-
 import type { Dispatch } from 'redux';
 
 import {
@@ -10,7 +9,6 @@ import {
     SET_NOTIFICATIONS_ENABLED,
     SHOW_NOTIFICATION
 } from './actionTypes';
-
 import { NOTIFICATION_TIMEOUT, NOTIFICATION_TYPE } from './constants';
 
 /**
@@ -133,22 +131,18 @@ const _throttledNotifyParticipantConnected = throttle((dispatch: Dispatch<any>) 
     if (joinedParticipantsCount >= 3) {
         // notificationProps = {
         //     titleArguments: {
-        //         name: participant_name,
+        //         name: joinedParticipantsNames[0],
         //         count: joinedParticipantsCount - 1
         //     },
-        //     titleKey: 'notify.connectedThreePlusMembers',
-        //     descriptionKey: 'others joined this meeting',
-        //     logoIconCustom: participant_name
+        //     titleKey: 'notify.connectedThreePlusMembers'
         // };
     } else if (joinedParticipantsCount === 2) {
         // notificationProps = {
         //     titleArguments: {
-        //         first: participant_name,
-        //         second: joinedParticipantsNames[1] != '' && joinedParticipantsNames[1].match(/^[0-9]+$/) != null && joinedParticipantsNames[1].match(/^[0-9]+$/).length > 0 ? joinedParticipantsNames[1].toString().replace(/^(.{5})(.*)(.{1})$/, "$1*****$3") : joinedParticipantsNames[1]
+        //         first: joinedParticipantsNames[0],
+        //         second: joinedParticipantsNames[1]
         //     },
-        //     titleKey: 'notify.connectedTwoMembers',
-        //     descriptionKey: 'notify.connectedOneMember',
-        //     logoIconCustom: participant_name
+        //     titleKey: 'notify.connectedTwoMembers'
         // };
     } else if (joinedParticipantsCount) {
         var cDDc = document.getElementById("true-joining").value;

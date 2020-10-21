@@ -74,16 +74,17 @@ class Notification extends AbstractNotification<Props> {
             <div className="flag-wrapper">
                 {newMessage ? 
                 (<h2 className=""><span className="msg-time">{this._getFormattedTimestamp(timeStamp)}</span><img src="/images/ms-icon.png"/>New message</h2>) : ('')}
-                <Flag
-                    actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
-                    description = { this._renderDescription() }
-                    icon = { this._mapAppearanceToIcon(acronym,logoIconCustom) }
-                    id = { uid }
-                    isDismissAllowed = { isDismissAllowed }
-                    onDismissed = { onDismissed }
-                    className= {'notfications'}
-                    title = { title || t(titleKey, titleArguments) } />
-            </div>
+            <Flag
+                actions = { this._mapAppearanceToButtons(hideErrorSupportLink) }
+                appearance = { appearance }
+                description = { this._renderDescription() }
+                icon = { this._mapAppearanceToIcon() }
+                id = { uid }
+                isDismissAllowed = { isDismissAllowed }
+                onDismissed = { onDismissed }
+                className= {'notfications'}
+                testId = { titleKey }
+                title = { title || t(titleKey, titleArguments) } />
         );
     }
 
@@ -93,6 +94,8 @@ class Notification extends AbstractNotification<Props> {
     }
 
     _getDescription: () => Array<string>
+
+    _getDescriptionKey: () => string
 
     _onDismissed: () => void;
 
@@ -104,10 +107,13 @@ class Notification extends AbstractNotification<Props> {
      * @returns {ReactElement}
      */
     _renderDescription() {
+        const description = this._getDescription();
+
+        // the id is used for testing the UI
         return (
             <div className="noto">
                 {
-                    ReactHtmlParser(this._getDescription())
+                    ReactHtmlParser(description)
                 }
             </div>
         );
@@ -194,7 +200,7 @@ class Notification extends AbstractNotification<Props> {
             return (
                 <ErrorIcon
                     label = { appearance }
-                    primaryColor = { secIconColor }
+                    secondaryColor = { secIconColor }
                     size = { iconSize } />
             );
 
@@ -202,7 +208,7 @@ class Notification extends AbstractNotification<Props> {
             return (
                 <WarningIcon
                     label = { appearance }
-                    primaryColor = { secIconColor }
+                    secondaryColor = { secIconColor }
                     size = { iconSize } />
             );
 
@@ -213,7 +219,7 @@ class Notification extends AbstractNotification<Props> {
                  <div className="notification_logo">{tt}</div>) :
                    <EditorInfoIcon
                     label = { appearance }
-                    primaryColor = { secIconColor }
+                    secondaryColor = { secIconColor }
                     size = { iconSize } />
                 }
                 </div>

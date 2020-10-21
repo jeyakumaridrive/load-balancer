@@ -278,9 +278,9 @@ class DeviceSelection extends AbstractDialogTab<Props, State> {
                          </div>
 
                        
-                        { !hideAudioInputPreview	
-                    && <AudioInputPreview	
-                        track = { this.state.previewAudioTrack } /> }	
+                        { !hideAudioInputPreview 
+                    && <AudioInputPreview 
+                        track = { this.state.previewAudioTrack } /> } 
                         
                     { hideAudioInputPreview &&	
                         <div className="audio-preview-container">	
