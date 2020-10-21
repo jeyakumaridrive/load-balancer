@@ -5,11 +5,13 @@
     <meta charset="utf-8">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2A3A4B">
     <!--#include virtual="base.html" -->
 
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/all.css?v=246">
+    <link rel="manifest" href="static/pwa/manifest.json">
 
     <!--#include virtual="title.html" -->
     <!--#include virtual="plugin.head.html" -->
@@ -21,6 +23,9 @@
     <div class="loading">
         <div class="loader-a"></div>
     </div>
+    <noscript>
+        <div>JavaScript is disabled. </br>For this site to work you have to enable JavaScript.</div>
+    </noscript>
     <!--#include virtual="body.html" -->
     <div id="react"></div>
 
@@ -50,6 +55,31 @@
             <label for="videoSource">Video source: </label><select id="videoSource"></select>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!JitsiMeetJS.app) {
+                return;
+            }
+
+            JitsiMeetJS.app.renderEntryPoint({
+                Component: JitsiMeetJS.app.entryPoints.APP
+            })
+
+            const isElectron = navigator.userAgent.includes('Electron');
+            const shouldRegisterWorker = !isElectron && 'serviceWorker' in navigator;
+
+            if (shouldRegisterWorker) {
+                navigator.serviceWorker
+                    .register('pwa-worker.js')
+                    .then(reg => {
+                        console.log('Service worker registered.', reg);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+        })
+    </script>
     <script>
         // IE11 and earlier can be identified via their user agent and be
         // redirected to a page that is known to have no newer js syntax.
@@ -88,15 +118,15 @@
             "app.bundle.min.js",
             "all.css"
         ];
-        var loadErrHandler = function (e) {
+        var loadErrHandler = function(e) {
             var target = e.target;
             // Error on <script> and <link>(CSS)
             // <script> will have .src and <link> .href
             var fileRef = (target.src ? target.src : target.href);
             if (("SCRIPT" === target.tagName || "LINK" === target.tagName)
                 && criticalFiles.some(
-                    function (file) { return fileRef.indexOf(file) !== -1 })) {
-                window.onload = function () {
+                    function(file) { return fileRef.indexOf(file) !== -1 })) {
+                window.onload = function() {
                     // The whole complex part below implements page reloads with
                     // "exponential backoff". The retry attempt is passes as
                     // "rCounter" query parameter
