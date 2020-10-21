@@ -85,6 +85,7 @@ class Notification extends AbstractNotification<Props> {
                 className= {'notfications'}
                 testId = { titleKey }
                 title = { title || t(titleKey, titleArguments) } />
+            </div>
         );
     }
 
