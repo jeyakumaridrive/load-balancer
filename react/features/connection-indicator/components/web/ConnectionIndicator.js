@@ -1,13 +1,17 @@
 // @flow
 
 import React from 'react';
+import type { Dispatch } from 'redux';
 
 import { translate } from '../../../base/i18n';
-import { Icon, IconConnectionActive, IconSignalFull, IconConnectionInactive, IconSignalAverage } from '../../../base/icons';
+import { Icon, IconConnectionActive, IconConnectionInactive } from '../../../base/icons';
 import { JitsiParticipantConnectionStatus } from '../../../base/lib-jitsi-meet';
+import { MEDIA_TYPE } from '../../../base/media';
 import { Popover } from '../../../base/popover';
+import { connect } from '../../../base/redux';
+import { getTrackByMediaTypeAndParticipant } from '../../../base/tracks';
 import { ConnectionStatsTable } from '../../../connection-stats';
-
+import { saveLogs } from '../../actions';
 import AbstractConnectionIndicator, {
     INDICATOR_DISPLAY_THRESHOLD,
     type Props as AbstractProps,
@@ -64,10 +68,20 @@ type Props = AbstractProps & {
     alwaysVisible: boolean,
 
     /**
+     * The audio SSRC of this client.
+     */
+    audioSsrc: number,
+
+    /**
      * The current condition of the user's connection, matching one of the
      * enumerated values in the library.
      */
     connectionStatus: string,
+
+    /**
+     * The Redux dispatch function.
+     */
+    dispatch: Dispatch<any>,
 
     /**
      * Whether or not clicking the indicator should display a popover for more
@@ -94,7 +108,17 @@ type Props = AbstractProps & {
     /**
      * Invoked to obtain translated strings.
      */
-    t: Function
+    t: Function,
+
+    /**
+     * The video SSRC of this client.
+     */
+    videoSsrc: number,
+
+    /**
+     * Invoked to save the conference logs.
+     */
+    _onSaveLogs: Function
 };
 
 /**
@@ -145,22 +169,10 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
         const visibilityClass = this._getVisibilityClass();
         const rootClassNames = `indicator-container ${visibilityClass}`;
 
-        let colorClass = this._getConnectionColorClass();
+        const colorClass = this._getConnectionColorClass();
         const indicatorContainerClassNames
             = `connection-indicator indicator ${colorClass}`;
-        let connectionIcon;
-        if(colorClass == 'status-high') {
-            connectionIcon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA0MDIuNSAyNTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMi41IDI1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQo8L3N0eWxlPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTYxLjIsMjU0LjlIMTIuN2MtNC40LDAtOC0zLjYtOC04di03Ni41YzAtNC40LDMuNi04LDgtOGg0OC41YzQuNCwwLDgsMy42LDgsOHY3Ni41DQoJQzY5LjIsMjUxLjMsNjUuNiwyNTQuOSw2MS4yLDI1NC45eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTE2My40LDI1NC44aC00OC41Yy00LjQsMC04LTMuNi04LTh2LTExM2MwLTQuNCwzLjYtOCw4LThoNDguNWM0LjQsMCw4LDMuNiw4LDh2MTEzDQoJQzE3MS40LDI1MS4yLDE2Ny44LDI1NC44LDE2My40LDI1NC44eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTI3NC42LDI1NS4xaC00OS45Yy00LDAtNy4zLTQuMS03LjMtOS4yVjY4LjZjMC01LDMuMy05LjIsNy4zLTkuMmg0OS45YzQsMCw3LjMsNC4xLDcuMyw5LjJ2MTc3LjMNCglDMjgxLjksMjUwLjksMjc4LjcsMjU1LjEsMjc0LjYsMjU1LjF6Ii8+DQo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzg4LjQsMjU1LjFoLTQ4LjVjLTQuNCwwLTgtNC41LTgtMTBWMTIuOGMwLTUuNSwzLjYtMTAsOC0xMGg0OC41YzQuNCwwLDgsNC41LDgsMTBWMjQ1DQoJQzM5Ni40LDI1MC41LDM5Mi44LDI1NS4xLDM4OC40LDI1NS4xeiIvPg0KPC9zdmc+DQo='
-        } 
-        if(colorClass == 'status-med'){
-            connectionIcon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA0MDIuNSAyNTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMi41IDI1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQoJLnN0MXtmaWxsOiM2RDZFNzE7fQ0KPC9zdHlsZT4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik02MS4yLDI1NC45SDEyLjdjLTQuNCwwLTgtMy42LTgtOHYtNzYuNWMwLTQuNCwzLjYtOCw4LThoNDguNWM0LjQsMCw4LDMuNiw4LDh2NzYuNQ0KCUM2OS4yLDI1MS4zLDY1LjYsMjU0LjksNjEuMiwyNTQuOXoiLz4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xNjMuNCwyNTQuOGgtNDguNWMtNC40LDAtOC0zLjYtOC04di0xMTNjMC00LjQsMy42LTgsOC04aDQ4LjVjNC40LDAsOCwzLjYsOCw4djExMw0KCUMxNzEuNCwyNTEuMiwxNjcuOCwyNTQuOCwxNjMuNCwyNTQuOHoiLz4NCjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yNzQuNiwyNTUuMWgtNDkuOWMtNCwwLTcuMy00LjEtNy4zLTkuMlY2OC42YzAtNSwzLjMtOS4yLDcuMy05LjJoNDkuOWM0LDAsNy4zLDQuMSw3LjMsOS4ydjE3Ny4zDQoJQzI4MS45LDI1MC45LDI3OC43LDI1NS4xLDI3NC42LDI1NS4xeiIvPg0KPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4OC40LDI1NS4xaC00OC41Yy00LjQsMC04LTQuNS04LTEwVjEyLjhjMC01LjUsMy42LTEwLDgtMTBoNDguNWM0LjQsMCw4LDQuNSw4LDEwVjI0NQ0KCUMzOTYuNCwyNTAuNSwzOTIuOCwyNTUuMSwzODguNCwyNTUuMXoiLz4NCjwvc3ZnPg0K'
-        }
-        if(colorClass == 'status-low' || colorClass == 'status-other'){
-            connectionIcon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA0MDIuNSAyNTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMi41IDI1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6I0ZGRkZGRjt9DQoJLnN0MXtmaWxsOiM2RDZFNzE7fQ0KPC9zdHlsZT4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik02MS4yLDI1NC45SDEyLjdjLTQuNCwwLTgtMy42LTgtOHYtNzYuNWMwLTQuNCwzLjYtOCw4LThoNDguNWM0LjQsMCw4LDMuNiw4LDh2NzYuNQ0KCUM2OS4yLDI1MS4zLDY1LjYsMjU0LjksNjEuMiwyNTQuOXoiLz4NCjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xNjMuNCwyNTQuOGgtNDguNWMtNC40LDAtOC0zLjYtOC04di0xMTNjMC00LjQsMy42LTgsOC04aDQ4LjVjNC40LDAsOCwzLjYsOCw4djExMw0KCUMxNzEuNCwyNTEuMiwxNjcuOCwyNTQuOCwxNjMuNCwyNTQuOHoiLz4NCjxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0yNzQuNiwyNTUuMWgtNDkuOWMtNCwwLTcuMy00LjEtNy4zLTkuMlY2OC42YzAtNSwzLjMtOS4yLDcuMy05LjJoNDkuOWM0LDAsNy4zLDQuMSw3LjMsOS4ydjE3Ny4zDQoJQzI4MS45LDI1MC45LDI3OC43LDI1NS4xLDI3NC42LDI1NS4xeiIvPg0KPHBhdGggY2xhc3M9InN0MSIgZD0iTTM4OC40LDI1NS4xaC00OC41Yy00LjQsMC04LTQuNS04LTEwVjEyLjhjMC01LjUsMy42LTEwLDgtMTBoNDguNWM0LjQsMCw4LDQuNSw4LDEwVjI0NQ0KCUMzOTYuNCwyNTAuNSwzOTIuOCwyNTUuMSwzODguNCwyNTUuMXoiLz4NCjwvc3ZnPg0K'
-        }
-        if(colorClass == 'status-lost'){
-            connectionIcon = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA0MDIuNSAyNTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQwMi41IDI1NjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6IzZENkU3MTt9DQo8L3N0eWxlPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTYxLjIsMjU0LjlIMTIuN2MtNC40LDAtOC0zLjYtOC04di03Ni41YzAtNC40LDMuNi04LDgtOGg0OC41YzQuNCwwLDgsMy42LDgsOHY3Ni41DQoJQzY5LjIsMjUxLjMsNjUuNiwyNTQuOSw2MS4yLDI1NC45eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTE2My40LDI1NC44aC00OC41Yy00LjQsMC04LTMuNi04LTh2LTExM2MwLTQuNCwzLjYtOCw4LThoNDguNWM0LjQsMCw4LDMuNiw4LDh2MTEzDQoJQzE3MS40LDI1MS4yLDE2Ny44LDI1NC44LDE2My40LDI1NC44eiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTI3NC42LDI1NS4xaC00OS45Yy00LDAtNy4zLTQuMS03LjMtOS4yVjY4LjZjMC01LDMuMy05LjIsNy4zLTkuMmg0OS45YzQsMCw3LjMsNC4xLDcuMyw5LjJ2MTc3LjMNCglDMjgxLjksMjUwLjksMjc4LjcsMjU1LjEsMjc0LjYsMjU1LjF6Ii8+DQo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzg4LjQsMjU1LjFoLTQ4LjVjLTQuNCwwLTgtNC41LTgtMTBWMTIuOGMwLTUuNSwzLjYtMTAsOC0xMGg0OC41YzQuNCwwLDgsNC41LDgsMTBWMjQ1DQoJQzM5Ni40LDI1MC41LDM5Mi44LDI1NS4xLDM4OC40LDI1NS4xeiIvPg0KPC9zdmc+DQo='
-        }
+
         return (
             <Popover
                 className = { rootClassNames }
@@ -172,8 +184,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                         className = { indicatorContainerClassNames }
                         style = {{ fontSize: this.props.iconSize }}>
                         <div className = 'connection indicatoricon'>
-                            {/* {this._renderIcon()} */}
-                            <img src={connectionIcon}  alt='satus'/>
+                            { this._renderIcon() }
                         </div>
                     </div>
                 </div>
@@ -265,6 +276,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
      */
     _getVisibilityClass() {
         const { connectionStatus } = this.props;
+
         return this.state.showIndicator
             || this.props.alwaysVisible
             || connectionStatus === JitsiParticipantConnectionStatus.INTERRUPTED
@@ -306,7 +318,6 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
 
         let iconWidth;
         let emptyIconWrapperClassName = 'connection_empty';
-        
 
         if (this.props.connectionStatus
             === JitsiParticipantConnectionStatus.INTERRUPTED) {
@@ -330,7 +341,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                 <Icon
                     className = 'icon-gsm-bars'
                     size = '1em'
-                    src = { IconSignalAverage } />
+                    src = { IconConnectionActive } />
             </span>,
             <span
                 className = 'connection_full'
@@ -339,7 +350,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                 <Icon
                     className = 'icon-gsm-bars'
                     size = '1em'
-                    src = { IconSignalAverage } />
+                    src = { IconConnectionActive } />
             </span>
         ];
     }
@@ -354,8 +365,10 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
             bandwidth,
             bitrate,
             bridgeCount,
+            codec,
             e2eRtt,
             framerate,
+            maxEnabledResolution,
             packetLoss,
             region,
             resolution,
@@ -365,22 +378,77 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
 
         return (
             <ConnectionStatsTable
+                audioSsrc = { this.props.audioSsrc }
                 bandwidth = { bandwidth }
                 bitrate = { bitrate }
                 bridgeCount = { bridgeCount }
+                codec = { codec }
                 connectionSummary = { this._getConnectionStatusTip() }
                 e2eRtt = { e2eRtt }
                 framerate = { framerate }
                 isLocalVideo = { this.props.isLocalVideo }
+                maxEnabledResolution = { maxEnabledResolution }
+                onSaveLogs = { this.props._onSaveLogs }
                 onShowMore = { this._onToggleShowMore }
                 packetLoss = { packetLoss }
+                participantId = { this.props.participantId }
                 region = { region }
                 resolution = { resolution }
                 serverRegion = { serverRegion }
                 shouldShowMore = { this.state.showMoreStats }
-                transport = { transport } />
+                transport = { transport }
+                videoSsrc = { this.props.videoSsrc } />
         );
     }
 }
 
-export default translate(ConnectionIndicator);
+
+/**
+ * Maps redux actions to the props of the component.
+ *
+ * @param {Function} dispatch - The redux action {@code dispatch} function.
+ * @returns {{
+ *     _onSaveLogs: Function,
+ * }}
+ * @private
+ */
+export function _mapDispatchToProps(dispatch: Dispatch<any>) {
+    return {
+        /**
+         * Saves the conference logs.
+         *
+         * @returns {Function}
+         */
+        _onSaveLogs() {
+            dispatch(saveLogs());
+        }
+    };
+}
+
+
+/**
+ * Maps part of the Redux state to the props of this component.
+ *
+ * @param {Object} state - The Redux state.
+ * @param {Props} ownProps - The own props of the component.
+ * @returns {Props}
+ */
+export function _mapStateToProps(state: Object, ownProps: Props) {
+
+    const conference = state['features/base/conference'].conference;
+
+    if (conference) {
+        const firstVideoTrack = getTrackByMediaTypeAndParticipant(
+            state['features/base/tracks'], MEDIA_TYPE.VIDEO, ownProps.participantId);
+        const firstAudioTrack = getTrackByMediaTypeAndParticipant(
+            state['features/base/tracks'], MEDIA_TYPE.AUDIO, ownProps.participantId);
+
+        return {
+            audioSsrc: firstAudioTrack ? conference.getSsrcByTrack(firstAudioTrack.jitsiTrack) : undefined,
+            videoSsrc: firstVideoTrack ? conference.getSsrcByTrack(firstVideoTrack.jitsiTrack) : undefined
+        };
+    }
+
+    return {};
+}
+export default translate(connect(_mapStateToProps, _mapDispatchToProps)(ConnectionIndicator));

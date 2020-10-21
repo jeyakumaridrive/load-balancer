@@ -4,7 +4,6 @@ import { Component } from 'react';
 import type { Dispatch } from 'redux';
 
 import { getLocalParticipant } from '../../base/participants';
-
 import { sendMessage, toggleChat } from '../actions';
 import { clientResized } from '../../base/responsive-ui/actions';
 import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';

@@ -150,11 +150,8 @@ class Chat extends AbstractChat<Props> {
     _renderPanelContent: (string) => React$Node | null;
 
     /**
-     * Renders the contents of the chat panel, depending on the current
-     * animation state provided by {@code Transition}.
+     * Renders the contents of the chat panel.
      *
-     * @param {string} state - The current display transition state of the
-     * {@code Chat} component, as provided by {@code Transition}.
      * @private
      * @returns {ReactElement | null}
      */

@@ -14,8 +14,6 @@ import { connect } from '../../../base/redux';
 
 import SmileysPanel from './SmileysPanel';
 
-declare var APP: Object;
-
 /**
  * The type of the React {@code Component} props of {@link ChatInput}.
  */
@@ -218,7 +216,7 @@ class ChatInput extends Component<Props, State> {
                 </div>
                 </div>
             </React.Fragment>
-                
+
         );
     }
 
