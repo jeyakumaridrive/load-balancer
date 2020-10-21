@@ -24,6 +24,7 @@ import {
     reloadWithStoredParams
 } from './react/features/app/actions';
 import {
+    AVATAR_ID_COMMAND,
     AVATAR_URL_COMMAND,
     EMAIL_COMMAND,
     authStatusChanged,
