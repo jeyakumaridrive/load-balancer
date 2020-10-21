@@ -16,6 +16,7 @@ import { KnockingParticipantList, LobbyScreen } from '../../../lobby';
 import { Prejoin, isPrejoinPageVisible } from '../../../prejoin';
 import { fullScreenChanged, setToolboxAlwaysVisible, showToolbox } from '../../../toolbox/actions.web';
 import { updateSettings } from '../../../base/settings';
+import { finishedLoading } from '../../../app';
 import { Toolbox } from '../../../toolbox/components/web';
 import { LAYOUTS, getCurrentLayout } from '../../../video-layout';
 import { maybeShowSuboptimalExperienceNotification } from '../../functions';
@@ -456,10 +457,10 @@ function _mapStateToProps(state) {
     return {
         ...abstractMapStateToProps(state),
         _iAmRecorder: state['features/base/config'].iAmRecorder,
-        _layoutClassName: LAYOUT_CLASSNAMES[currentLayout],
+        _layoutClassName: LAYOUT_CLASSNAMES[getCurrentLayout(state)],
         _isLobbyScreenVisible: state['features/base/dialog']?.component === LobbyScreen,
         _roomName: getConferenceNameForTitle(state),
-        _showPrejoin: isPrejoinPageVisible(state),
+        _showPrejoin: isPrejoinPageVisible(state)
         isModerator,
         recordingSessions      
 
