@@ -25,7 +25,12 @@ type Props = AbstractProps & {
     /**
      * One of the expected status strings (e.g. 'available') to render a badge on the avatar, if necessary.
      */
-    status?: ?string
+    status?: ?string,
+
+    /**
+     * TestId of the element, if any.
+     */
+    testId?: string
 };
 
 /**
@@ -45,6 +50,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
             return (
                 <div
                     className = { `${this._getAvatarClassName()} ${this._getBadgeClassName()}` }
+                    data-testid = { this.props.testId }
                     id = { this.props.id }
                     style = { this._getAvatarStyle(this.props.color) }>
                     <Icon
@@ -59,6 +65,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
                 <div className = { this._getBadgeClassName() }>
                     <img
                         className = { this._getAvatarClassName() }
+                        data-testid = { this.props.testId }
                         id = { this.props.id }
                         onError = { this.props.onAvatarLoadError }
                         src = { url }
@@ -67,10 +74,11 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
             );
         }
 
-        if (initials || url) {
+        if (initials) {
             return (
                 <div
                     className = { `${this._getAvatarClassName()} ${this._getBadgeClassName()}` }
+                    data-testid = { this.props.testId }
                     id = { this.props.id }
                     style = { this._getAvatarStyle(this.props.color) }>
                     <svg
@@ -80,7 +88,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
                         xmlnsXlink = 'http://www.w3.org/1999/xlink'>
                         <text
                             dominantBaseline = 'central'
-                            fill = 'rgba(255,255,255)'
+                            fill = 'rgba(255,255,255,.6)'
                             fontSize = '40pt'
                             textAnchor = 'middle'
                             x = '50'
@@ -97,6 +105,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
             <div className = { this._getBadgeClassName() }>
                 <img
                     className = { this._getAvatarClassName('defaultAvatar') }
+                    data-testid = { this.props.testId }
                     id = { this.props.id }
                     src = { this.props.defaultAvatar || 'images/avatar.png' }
                     style = { this._getAvatarStyle() } />
@@ -115,7 +124,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
 
         return {
             backgroundColor: color || undefined,
-            fontSize: size ? size * 0.5 : '225%',
+            fontSize: size ? size * 0.5 : '180%',
             height: size || '100%',
             width: size || '100%'
         };

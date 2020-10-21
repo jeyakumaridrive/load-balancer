@@ -1,9 +1,9 @@
 // @flow
 
+import { LOCKED_LOCALLY, LOCKED_REMOTELY } from '../../room-lock';
 import { CONNECTION_WILL_CONNECT, SET_LOCATION_URL } from '../connection';
 import { JitsiConferenceErrors } from '../lib-jitsi-meet';
 import { assign, ReducerRegistry, set } from '../redux';
-import { LOCKED_LOCALLY, LOCKED_REMOTELY } from '../../room-lock';
 
 import {
     AUTH_STATUS_CHANGED,
@@ -31,13 +31,13 @@ import { isRoomValid } from './functions';
 
 const DEFAULT_STATE = {
     conference: undefined,
+    e2eeSupported: undefined,
     joining: undefined,
     leaving: undefined,
     locked: undefined,
-    maxReceiverVideoQuality: VIDEO_QUALITY_LEVELS.HIGH,
+    membersOnly: undefined,
     password: undefined,
-    passwordRequired: undefined,
-    preferredReceiverVideoQuality: VIDEO_QUALITY_LEVELS.HIGH
+    passwordRequired: undefined
 };
 
 /**
@@ -160,11 +160,17 @@ function _conferenceFailed(state, { conference, error }) {
     }
 
     let authRequired;
+    let membersOnly;
     let passwordRequired;
 
     switch (error.name) {
     case JitsiConferenceErrors.AUTHENTICATION_REQUIRED:
         authRequired = conference;
+        break;
+
+    case JitsiConferenceErrors.CONFERENCE_ACCESS_DENIED:
+    case JitsiConferenceErrors.MEMBERS_ONLY_ERROR:
+        membersOnly = conference;
         break;
 
     case JitsiConferenceErrors.PASSWORD_REQUIRED:
@@ -175,6 +181,7 @@ function _conferenceFailed(state, { conference, error }) {
     return assign(state, {
         authRequired,
         conference: undefined,
+        e2eeSupported: undefined,
         error,
         joining: undefined,
         leaving: undefined,
@@ -187,6 +194,7 @@ function _conferenceFailed(state, { conference, error }) {
          * @type {string}
          */
         locked: passwordRequired ? LOCKED_REMOTELY : undefined,
+        membersOnly,
         password: undefined,
 
         /**
@@ -226,7 +234,11 @@ function _conferenceJoined(state, { conference }) {
          * @type {JitsiConference}
          */
         conference,
+
+        e2eeSupported: conference.isE2EESupported(),
+
         joining: undefined,
+        membersOnly: undefined,
         leaving: undefined,
 
         /**
@@ -373,34 +385,30 @@ function _setDesktopSharingEnabled(state, action) {
 function _setPassword(state, { conference, method, password }) {
     switch (method) {
     case conference.join:
-        if (state.passwordRequired === conference) {
-            return assign(state, {
-                // XXX 1. The JitsiConference which transitions away from
-                // passwordRequired MUST remain in the redux state
-                // features/base/conference until it transitions into
-                // conference; otherwise, there is a span of time during which
-                // the redux state does not even know that there is a
-                // JitsiConference whatsoever.
-                //
-                // 2. The redux action setPassword will attempt to join the
-                // JitsiConference so joining is an appropriate transitional
-                // redux state.
-                //
-                // 3. The redux action setPassword will perform the same check
-                // before it proceeds with the re-join.
-                joining: state.conference ? state.joining : conference,
-                locked: LOCKED_REMOTELY,
+        return assign(state, {
+            // 1. The JitsiConference which transitions away from
+            // passwordRequired MUST remain in the redux state
+            // features/base/conference until it transitions into
+            // conference; otherwise, there is a span of time during which
+            // the redux state does not even know that there is a
+            // JitsiConference whatsoever.
+            //
+            // 2. The redux action setPassword will attempt to join the
+            // JitsiConference so joining is an appropriate transitional
+            // redux state.
+            //
+            // 3. The redux action setPassword will perform the same check
+            // before it proceeds with the re-join.
+            joining: state.conference ? state.joining : conference,
+            locked: LOCKED_REMOTELY,
 
-                /**
-                 * The password with which the conference is to be joined.
-                 *
-                 * @type {string}
-                 */
-                password,
-                passwordRequired: undefined
-            });
-        }
-        break;
+            /**
+             * The password with which the conference is to be joined.
+             *
+             * @type {string}
+             */
+            password
+        });
 
     case conference.lock:
         return assign(state, {
