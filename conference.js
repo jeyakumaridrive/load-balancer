@@ -94,6 +94,7 @@ import {
 import {
     createLocalPresenterTrack,
     createLocalTracksF,
+    createLocalTracksW,
     destroyLocalTracks,
     getLocalJitsiAudioTrack,
     getLocalJitsiVideoTrack,
