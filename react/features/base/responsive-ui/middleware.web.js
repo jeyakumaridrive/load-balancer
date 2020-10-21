@@ -51,7 +51,7 @@ function _appWillMount(store) {
 
         store.dispatch(clientResized(innerWidth, innerHeight));
     };
-    // console.log("##3", innerWidth, innerHeight)    
+
     window.addEventListener('resize', handler);
 }
 

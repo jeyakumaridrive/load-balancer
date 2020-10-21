@@ -546,7 +546,7 @@ export function urlObjectToString(o: Object): ?string {
 
     let { hash } = url;
 
-    for (const urlPrefix of [ 'config', 'interfaceConfig', 'devices', 'userInfo' ]) {
+    for (const urlPrefix of [ 'config', 'interfaceConfig', 'devices', 'userInfo', 'appData' ]) {
         const urlParamsArray
             = _objectToURLParamsArray(
                 o[`${urlPrefix}Overwrite`]
@@ -590,4 +590,14 @@ export function addHashParamsToURL(url: URL, hashParamsToAdd: Object = {}) {
     }
 
     return url;
+}
+
+/**
+ * Returns the decoded URI.
+ *
+ * @param {string} uri - The URI to decode.
+ * @returns {string}
+ */
+export function getDecodedURI(uri: string) {
+    return decodeURI(uri.replace(/^https?:\/\//i, ''));
 }

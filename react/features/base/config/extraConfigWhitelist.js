@@ -1,7 +1,4 @@
 /**
  * Deploy-specific configuration whitelists
  */
-export default [
-    'password',
-    'server'
-];
+export default [];
