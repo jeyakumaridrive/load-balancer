@@ -51,8 +51,8 @@ export function setTileView(enabled: ?boolean) {
  */
 export function toggleTileView() {
     return (dispatch: Dispatch<any>, getState: Function) => {
-        const tileViewActive = shouldDisplayTileView(getState());
-
-        dispatch(setTileView(!tileViewActive));
+        // const tileViewActive = shouldDisplayTileView(getState());
+        const { tileViewEnabled } = getState()['features/video-layout'];
+        dispatch(setTileView(!tileViewEnabled));
     };
 }
