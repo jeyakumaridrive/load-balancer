@@ -1,5 +1,6 @@
 /* globals $ */
 import { $iq } from 'strophe.js';
+
 import SDP from './SDP';
 
 /**
@@ -22,6 +23,7 @@ describe('SDP', () => {
             'c=IN IP4 0.0.0.0\r\n',
             'a=rtpmap:111 opus/48000/2\r\n',
             'a=rtpmap:126 telephone-event/8000\r\n',
+            'a=fmtp:126 0-15\r\n',
             'a=fmtp:111 minptime=10;useinbandfec=1\r\n',
             'a=rtcp:9 IN IP4 0.0.0.0\r\n',
             'a=setup:active\r\n',
@@ -114,7 +116,9 @@ describe('SDP', () => {
             </payload-type>
             <payload-type clockrate='16000' name='ISAC' id='103'/>
             <payload-type clockrate='32000' name='ISAC' id='104'/>
-            <payload-type clockrate='8000' name='telephone-event' id='126'/>
+            <payload-type clockrate='8000' name='telephone-event' id='126'>
+                <parameter name="" value="0-15"/>
+            </payload-type>
             <rtp-hdrext uri='urn:ietf:params:rtp-hdrext:ssrc-audio-level' id='1' xmlns='urn:xmpp:jingle:apps:rtp:rtp-hdrext:0'/>
             <rtp-hdrext uri='http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01' id='5' xmlns='urn:xmpp:jingle:apps:rtp:rtp-hdrext:0'/>
             <rtcp-mux/>
@@ -180,6 +184,8 @@ a=ice-ufrag:someufrag
 a=ice-pwd:somepwd
 a=fingerprint:sha-256 09:B1:51:0F:85:4C:80:19:A1:AF:81:73:47:EE:ED:3D:00:3A:84:C7:76:C1:4E:34:BE:56:F6:42:AD:15:D5:D7
 a=setup:actpass
+a=candidate:1 1 udp 2130706431 10.0.0.1 10000 typ host generation 0
+a=candidate:2 1 udp 1694498815 10.0.0.2 10000 typ srflx raddr 10.0.0.1 rport 10000 generation 0
 a=sendrecv
 a=mid:audio
 a=rtcp-mux
@@ -189,10 +195,9 @@ a=rtcp-fb:111 transport-cc
 a=rtpmap:103 ISAC/16000
 a=rtpmap:104 ISAC/32000
 a=rtpmap:126 telephone-event/8000
+a=fmtp:126 0-15
 a=extmap:1 urn:ietf:params:rtp-hdrext:ssrc-audio-level
 a=extmap:5 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
-a=candidate:1 1 udp 2130706431 10.0.0.1 10000 typ host generation 0
-a=candidate:2 1 udp 1694498815 10.0.0.2 10000 typ srflx raddr 10.0.0.1 rport 10000 generation 0
 a=ssrc:4039389863 cname:mixed
 a=ssrc:4039389863 label:mixedlabelaudio0
 a=ssrc:4039389863 msid:mixedmslabel mixedlabelaudio0
@@ -204,6 +209,8 @@ a=ice-ufrag:someufrag
 a=ice-pwd:somepwd
 a=fingerprint:sha-256 09:B1:51:0F:85:4C:80:19:A1:AF:81:73:47:EE:ED:3D:00:3A:84:C7:76:C1:4E:34:BE:56:F6:42:AD:15:D5:D7
 a=setup:actpass
+a=candidate:1 1 udp 2130706431 10.0.0.1 10000 typ host generation 0
+a=candidate:2 1 udp 1694498815 10.0.0.2 10000 typ srflx raddr 10.0.0.1 rport 10000 generation 0
 a=sendrecv
 a=mid:video
 a=rtcp-mux
@@ -221,8 +228,6 @@ a=rtcp-fb:96 nack
 a=rtcp-fb:96 nack pli
 a=extmap:3 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time
 a=extmap:5 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
-a=candidate:1 1 udp 2130706431 10.0.0.1 10000 typ host generation 0
-a=candidate:2 1 udp 1694498815 10.0.0.2 10000 typ srflx raddr 10.0.0.1 rport 10000 generation 0
 a=ssrc:3758540092 cname:mixed
 a=ssrc:3758540092 label:mixedlabelvideo0
 a=ssrc:3758540092 msid:mixedmslabel mixedlabelvideo0

@@ -14,11 +14,6 @@ export const AUDIO_INPUT_STATE_CHANGE = 'conference.audio_input_state_changed';
 export const AUTH_STATUS_CHANGED = 'conference.auth_status_changed';
 
 /**
- * A participant avatar has changed.
- */
-export const AVATAR_CHANGED = 'conference.avatarChanged';
-
-/**
  * Fired just before the statistics module is disposed and it's the last chance
  * to submit some logs to the statistics service (ex. CallStats if enabled),
  * before it's disconnected.
@@ -147,6 +142,20 @@ export const LOCK_STATE_CHANGED = 'conference.lock_state_changed';
  * @type {string} the region.
  */
 export const SERVER_REGION_CHANGED = 'conference.server_region_changed';
+
+/**
+ * An event(library-private) fired when a new media session is added to the conference.
+ * @type {string}
+ * @private
+ */
+export const _MEDIA_SESSION_STARTED = 'conference.media_session.started';
+
+/**
+ * An event(library-private) fired when the conference switches the currently active media session.
+ * @type {string}
+ * @private
+ */
+export const _MEDIA_SESSION_ACTIVE_CHANGED = 'conference.media_session.active_changed';
 
 /**
  * Indicates that the conference had changed to members only enabled/disabled.

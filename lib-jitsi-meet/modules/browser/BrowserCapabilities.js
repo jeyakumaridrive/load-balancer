@@ -1,5 +1,5 @@
+import { BrowserDetection } from '@jitsi/js-utils';
 import { getLogger } from 'jitsi-meet-logger';
-import { BrowserDetection } from 'js-utils';
 
 const logger = getLogger(__filename);
 
@@ -62,6 +62,15 @@ export default class BrowserCapabilities extends BrowserDetection {
     }
 
     /**
+     * Checks whether current running context is a Trusted Web Application.
+     *
+     * @returns {boolean} Whether the current context is a TWA.
+     */
+    isTwa() {
+        return 'matchMedia' in window && window.matchMedia('(display-mode:standalone)').matches;
+    }
+
+    /**
      * Checks if the current browser is supported.
      *
      * @returns {boolean} true if the browser is supported, false otherwise.
@@ -80,7 +89,7 @@ export default class BrowserCapabilities extends BrowserDetection {
      * @returns {boolean}
      */
     isUserInteractionRequiredForUnmute() {
-        return (this.isFirefox() && this.isVersionLessThan('68')) || this.isSafari();
+        return this.isFirefox() && this.isVersionLessThan('68');
     }
 
     /**
@@ -105,6 +114,21 @@ export default class BrowserCapabilities extends BrowserDetection {
     }
 
     /**
+     * Checks if the current browser supports setting codec preferences on the transceiver.
+     * @returns {boolean}
+     */
+    supportsCodecPreferences() {
+        return this.usesUnifiedPlan()
+            && typeof window.RTCRtpTransceiver !== 'undefined'
+            && Object.keys(window.RTCRtpTransceiver.prototype).indexOf('setCodecPreferences') > -1
+            && Object.keys(RTCRtpSender.prototype).indexOf('getCapabilities') > -1
+
+            // this is not working on Safari because of the following bug
+            // https://bugs.webkit.org/show_bug.cgi?id=215567
+            && !this.isSafari();
+    }
+
+    /**
      * Checks if the current browser support the device change event.
      * @return {boolean}
      */
@@ -123,6 +147,24 @@ export default class BrowserCapabilities extends BrowserDetection {
     }
 
     /**
+     * Checks if the current browser supports the Long Tasks API that lets us observe
+     * performance measurement events and be notified of tasks that take longer than
+     * 50ms to execute on the main thread.
+     */
+    supportsPerformanceObserver() {
+        return typeof window.PerformanceObserver !== 'undefined'
+            && PerformanceObserver.supportedEntryTypes.indexOf('longtask') > -1;
+    }
+
+    /**
+     * Checks if the current browser supports audio level stats on the receivers.
+     */
+    supportsReceiverStats() {
+        return typeof window.RTCRtpReceiver !== 'undefined'
+            && Object.keys(RTCRtpReceiver.prototype).indexOf('getSynchronizationSources') > -1;
+    }
+
+    /**
      * Checks if the current browser reports round trip time statistics for
      * the ICE candidate pair.
      * @return {boolean}
@@ -137,15 +179,6 @@ export default class BrowserCapabilities extends BrowserDetection {
         // https://bugzilla.mozilla.org/show_bug.cgi?id=1241066
         // For Chrome and others we rely on 'googRtt'.
         return !this.isFirefox();
-    }
-
-    /**
-     * Checks whether the browser supports RTPSender.
-     *
-     * @returns {boolean}
-     */
-    supportsRtpSender() {
-        return this.isFirefox() || this.isSafari();
     }
 
     /**
@@ -257,10 +290,35 @@ export default class BrowserCapabilities extends BrowserDetection {
      * @returns {boolean} {@code true} if the browser supports insertable streams.
      */
     supportsInsertableStreams() {
-        return false;
-        return Boolean(typeof window.RTCRtpSender !== 'undefined'
+        if (!(typeof window.RTCRtpSender !== 'undefined'
             && (window.RTCRtpSender.prototype.createEncodedStreams
-                || window.RTCRtpSender.prototype.createEncodedVideoStreams));
+                || window.RTCRtpSender.prototype.createEncodedVideoStreams))) {
+            return false;
+        }
+
+        // Feature-detect transferable streams which we need to operate in a worker.
+        // See https://groups.google.com/a/chromium.org/g/blink-dev/c/1LStSgBt6AM/m/hj0odB8pCAAJ
+        const stream = new ReadableStream();
+
+        try {
+            window.postMessage(stream, '*', [ stream ]);
+
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Whether the browser supports the RED format for audio.
+     */
+    supportsAudioRed() {
+        return Boolean(window.RTCRtpSender
+            && window.RTCRtpSender.getCapabilities
+            && window.RTCRtpSender.getCapabilities('audio').codecs.some(codec => codec.mimeType === 'audio/red')
+            && window.RTCRtpReceiver
+            && window.RTCRtpReceiver.getCapabilities
+            && window.RTCRtpReceiver.getCapabilities('audio').codecs.some(codec => codec.mimeType === 'audio/red'));
     }
 
     /**
