@@ -126,7 +126,7 @@ class StatelessDialog extends Component<Props> {
         return (
 
             <Modal
-                className= { this.props.modalClass }
+                // className= { this.props.modalClass }
                 autoFocus = { true }
                 components = {{
                     Header: customHeader
