@@ -50,7 +50,7 @@ function InviteMore({
     t
 }: Props) {
     return (
-        _visible
+        _visible && false
             ? <div className = { `invite-more-container${_tileViewEnabled ? ' elevated' : ''}` }>
                 <div className = 'invite-more-header'>
                     {t('addPeople.inviteMoreHeader')}
