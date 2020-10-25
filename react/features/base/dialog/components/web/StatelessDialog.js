@@ -124,6 +124,7 @@ class StatelessDialog extends Component<Props> {
         } = this.props;
 
         return (
+
             <Modal
                 className= { this.props.modalClass }
                 autoFocus = { true }
@@ -144,6 +145,7 @@ class StatelessDialog extends Component<Props> {
                         className = 'modal-dialog-form device-select-'
                         id = 'modal-dialog-form'
                         onSubmit = { this._onSubmit }>
+                            
                         { children }
                     </form>
                 </div>

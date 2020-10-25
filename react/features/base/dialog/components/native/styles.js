@@ -172,7 +172,9 @@ ColorSchemeRegistry.register('BottomSheet', {
     },
 
     expandIcon: {
-        color: schemeColor('icon')
+        color: schemeColor('icon'),
+        fontSize: 48,
+        opacity: 0.8
     },
 
     /**
