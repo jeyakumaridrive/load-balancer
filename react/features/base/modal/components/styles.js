@@ -11,6 +11,6 @@ export default {
 ColorSchemeRegistry.register('Modal', {
     page: {
         alignItems: 'stretch',
-        // backgroundColor: schemeColor('background')
+        backgroundColor: '#f00'
     }
 });
