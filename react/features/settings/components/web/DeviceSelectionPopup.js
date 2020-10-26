@@ -240,7 +240,7 @@ export default class DeviceSelectionPopup {
 
         ReactDOM.render(
             <I18nextProvider i18n = { this._i18next }>
-                {/* <AtlasKitThemeProvider mode = 'light'> */}
+                <AtlasKitThemeProvider mode = 'dark'>
                     <DialogWithTabs
                         closeDialog = { this.close }
                         cssClassName = 'settings-dialog'
@@ -252,7 +252,7 @@ export default class DeviceSelectionPopup {
                             submit: this._onSubmit
                         } ] }
                         titleKey = 'settings.title' />
-                {/* </AtlasKitThemeProvider> */}
+                </AtlasKitThemeProvider>
             </I18nextProvider>,
             document.getElementById('react'));
     }
