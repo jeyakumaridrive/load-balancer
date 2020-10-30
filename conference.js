@@ -2271,7 +2271,7 @@ export default {
         // setTimeout(function(){ 
             if(pp==2) {
                 //alert(pp)
-             if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+             if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
                     $('.toggle-view').click()
                 }
 
