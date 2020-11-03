@@ -566,11 +566,16 @@ div[class^="Content__Header"] {
   div[class^="Modal__Dialog"]{
 	  position: relative;
 	  border-radius: 6px !important;
+	  background-color: #ffffff !important;
+	  color: #333333 !important;
 	  .mute-controller{
 		  position: absolute;
 		  bottom: 20px;
 		  left: 20px;
 		  z-index: 100;
+	  }
+	  [class^="styled__NavLine"]{
+		  display: none;
 	  }
   }
 
@@ -1144,11 +1149,39 @@ form[class^="device-select"]{
 }
 
 
-
+.flag-wrapper {
+	.noto {
+		color: #333333 !important;
+	}
+	span {
+		color: #000000 !important;
+	}
+	
+	span {
+		&[aria-label^="normal"] {
+			color: #0373bd !important;
+		}
+		&[aria-label^="error"] {
+			color: #de350b !important;
+		}
+		&[aria-label^="info"] {
+			color: #42526e !important;
+		}
+		&[aria-label^="success"] {
+			color: #00875a !important;
+		}
+		&[aria-label^="warning"] {
+			color: #ffc400 !important;
+		}
+	}
+}
 [role^="alert"]{
 	border-radius: 6px;
 	font-size: 14px;
 	background-color: #ffffff !important;
+	span, .noto {
+		margin-left: 10px;
+	}
 
 	.notification_logo{
 		width: 42px;
@@ -1160,9 +1193,10 @@ form[class^="device-select"]{
 		display: flex;
 		align-items: center;
 		margin-right: 10px;
-		color: #fff;
+		color: #fff !important;
 		justify-content: center;
 	}
+
 
 	[class^="styledFlag__Title"]{
 		margin-left: 10px;
@@ -1178,14 +1212,20 @@ form[class^="device-select"]{
 	[class^="styledFlag__DismissButton"]{
     	margin-top: -15px;
 	}
-	[class^="styledFlagActions__StyledButton"] {
+
+	button[class^="css-"]{
 		margin-top: 5px;
 		border-radius: 2px !important;
 		padding: 2px 8px !important;
 		background-color: #0373bd !important;
-		color: #fff !important;
 		height: auto !important;
 		text-decoration: none;
+		margin-left: 10px;
+		span {
+			margin: 0 !important;
+			color: #fff !important;
+			text-decoration: none;
+		}
 		&:hover{
 			background-color: darken(#0373bd, 10) !important;
 		}
@@ -1655,9 +1695,8 @@ filter: FlipH;
 .virtual-background-selectable {
 	display: inline-block;
     margin: 0 7.5px 15px;
-    max-width: calc(50% - 30px);
+    max-width: calc(50% - 20px);
     height: 100px;
-	float: left;
     margin-bottom: 10px;
     position: relative; 
 }
@@ -1729,16 +1768,17 @@ filter: FlipH;
 }
 .virtual-background-dialog-contents .vb-left {
     width: 50%; /*300px;*/
-    padding-right: 50px;
+    padding-right: 40px;
 	float: left;
-	border-right: 1px solid #eaeaea;
+	
 }
 .virtual-background-dialog-contents .vb-right {
-    width: 40%; /*350px;*/
+    width: 42%; /*350px;*/
     padding-left: 30px;
     max-height: 500px;
     overflow-y: scroll;
-    float: left;
+	float: left;
+	border-left: 1px solid #eaeaea;
 }
 .virtual-background-dialog-contents .border-line {
     position: relative;
@@ -1755,8 +1795,8 @@ filter: FlipH;
 .vb-preview {
     /*background-image: url(/images/bg1.jpg);*/
     background-image: url(/images/loader.gif);
-    width: 480px;
-    height: 350px;
+    width: 100%;
+    // height: 350px;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -1813,9 +1853,9 @@ filter: FlipH;
     opacity: 1;
     outline-color: #8f8f8f;
 }
-div[class^=Modal__PositionerAbsolute] {
-    width: 1000px;
-}
+// div[class^=Modal__PositionerAbsolute] {
+//     width: 1000px;
+// }
 .virtual-background-selectable.active i {
     background: url(/images/selected-image-bg.png) no-repeat center center;
     background-size: cover;
