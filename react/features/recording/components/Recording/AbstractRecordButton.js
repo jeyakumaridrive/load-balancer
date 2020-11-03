@@ -5,7 +5,7 @@ import {
     sendAnalytics
 } from '../../../analytics';
 import { openDialog } from '../../../base/dialog';
-import { IconToggleRecording } from '../../../base/icons';
+import { IconRpcRecord, IconRpcStopRecord } from '../../../base/icons';
 import { JitsiRecordingConstants } from '../../../base/lib-jitsi-meet';
 import {
     getLocalParticipant,
@@ -53,7 +53,8 @@ export type Props = AbstractButtonProps & {
  */
 export default class AbstractRecordButton<P: Props> extends AbstractButton<P, *> {
     accessibilityLabel = 'toolbar.accessibilityLabel.recording';
-    icon = IconToggleRecording;
+    icon = IconRpcRecord;
+    toggledIcon = IconRpcStopRecord;
     label = 'dialog.startRecording';
     toggledLabel = 'dialog.stopRecording';
 
@@ -64,7 +65,8 @@ export default class AbstractRecordButton<P: Props> extends AbstractButton<P, *>
      * @returns {string}
      */
     _getTooltip() {
-        return this.props._tooltip || '';
+        const { _isRecordingRunning} = this.props;
+        return this.tooltip || _isRecordingRunning ? 'Stop Recording' : 'Start Recording';
     }
 
     /**

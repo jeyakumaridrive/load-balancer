@@ -227,7 +227,7 @@ class VirtualBackgroundDialog extends Component<Props> {
                 okKey = 'dialog.enable'
                 titleKey = 'settings.virtualbackground'                
                 submitDisabled = { true }
-                width = 'large'>
+                width = 'x-large'>
                 <div className='virtual-background-section'>
                     <div class="modal-header">
                         <h4 class="modal-title">Choose Virtual Background</h4>
