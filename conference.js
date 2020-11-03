@@ -21,7 +21,8 @@ import {
 import {
     maybeRedirectToWelcomePage,
     redirectToStaticPage,
-    reloadWithStoredParams
+    reloadWithStoredParams,
+    leaveMeeting
 } from './react/features/app/actions';
 import {
     AVATAR_ID_COMMAND,
