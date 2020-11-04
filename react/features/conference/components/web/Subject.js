@@ -51,21 +51,21 @@ class Subject extends Component<Props> {
         this.state = {
             galleryView: !this.props._tileViewEnabled
         };
-        var _this = this;
-        setInterval(()=>{
-            if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
-            {
-                _this.setState({
-                    galleryView: false
-                })
-            }
-            else
-            {
-                   _this.setState({
-                    galleryView: true
-                })
-            }
-        },100)
+        // var _this = this;
+        // setInterval(()=>{
+        //     if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+        //     {
+        //         _this.setState({
+        //             galleryView: false
+        //         })
+        //     }
+        //     else
+        //     {
+        //            _this.setState({
+        //             galleryView: true
+        //         })
+        //     }
+        // },100)
     }
     /**
      * Implements React's {@link Component#render()}.
