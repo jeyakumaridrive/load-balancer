@@ -2273,7 +2273,7 @@ export default {
             if(pp==2) {
                 //alert(pp)
              if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
-                    $('.toggle-view').click()
+                    APP.store.getState()['features/video-layout'].tileViewEnabled = true;
                 }
 
             }
@@ -2322,8 +2322,10 @@ export default {
             if(pp==2) {
              //   alert()
                // APP.store.getState()['features/video-layout'].tileViewEnabled = true
-               if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+               if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
                     $('.toggle-view').click()
+
+        // APP.store.getState()['features/video-layout'].tileViewEnabled = true;
                 }
 
             }
