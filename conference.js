@@ -2025,6 +2025,7 @@ export default {
                 {
                     localStorage.setItem('prevLayout', true);
                     $('.toggle-view').click();
+                    APP.store.getState()['features/video-layout'].tileViewEnabled = false;
                 }
                 else
                 {
@@ -2323,9 +2324,7 @@ export default {
              //   alert()
                // APP.store.getState()['features/video-layout'].tileViewEnabled = true
                if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
-                    $('.toggle-view').click()
-
-        // APP.store.getState()['features/video-layout'].tileViewEnabled = true;
+                    APP.store.getState()['features/video-layout'].tileViewEnabled = true;
                 }
 
             }
@@ -2671,7 +2670,8 @@ export default {
                     if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
                     {
                         localStorage.setItem('prevLayout', true);
-                        $('.toggle-view').click();
+                        // $('.toggle-view').click();
+                        APP.store.getState()['features/video-layout'].tileViewEnabled = false;
                     }
                     else
                     {
