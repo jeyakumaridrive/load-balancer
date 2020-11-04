@@ -2024,7 +2024,7 @@ export default {
                 if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
                 {
                     localStorage.setItem('prevLayout', true);
-                    $('.toggle-view').click();
+                    // $('.toggle-view').click();
                     APP.store.getState()['features/video-layout'].tileViewEnabled = false;
                 }
                 else
@@ -2684,7 +2684,8 @@ export default {
                 setTimeout(function(){ 
                     if(localStorage.getItem('prevLayout') == 'true')
                    {
-                        $('.toggle-view').click();
+                        // $('.toggle-view').click();
+                        APP.store.getState()['features/video-layout'].tileViewEnabled = !APP.store.getState()['features/video-layout'].tileViewEnabled;
                    }
                 }, 1500);      
       
