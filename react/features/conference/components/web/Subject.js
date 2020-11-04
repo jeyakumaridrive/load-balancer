@@ -75,7 +75,8 @@ class Subject extends Component<Props> {
      */
 
     _doToggleTileView = () => {
-        this.props.dispatch(toggleTileView());
+        // this.props.dispatch(toggleTileView());
+        APP.store.getState()['features/video-layout'].tileViewEnabled = !APP.store.getState()['features/video-layout'].tileViewEnabled;
         this.setState({
             galleryView: APP.store.getState()['features/video-layout'].tileViewEnabled
         })
