@@ -49,7 +49,7 @@ class Subject extends Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            galleryView: APP.store.getState()['features/video-layout'].tileViewEnabled
+            galleryView: false
         };
         var _this = this;
         setInterval(()=>{
