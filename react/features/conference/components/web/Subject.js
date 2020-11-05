@@ -49,11 +49,11 @@ class Subject extends Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            galleryView: false
+            galleryView: !this.props._tileViewEnabled
         };
         var _this = this;
         setInterval(()=>{
-            if(APP.store.getState()['features/video-layout'].tileViewEnabled)
+            if(APP.store.getState()['features/video-layout'].tileViewEnabled == false)
             {
                 _this.setState({
                     galleryView: false
@@ -61,7 +61,7 @@ class Subject extends Component<Props> {
             }
             else
             {
-                   _this.setState({
+                _this.setState({
                     galleryView: true
                 })
             }
