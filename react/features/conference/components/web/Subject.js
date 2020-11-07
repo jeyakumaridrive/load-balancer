@@ -53,6 +53,7 @@ class Subject extends Component<Props> {
         this.state = {
             galleryView: true
         };
+        this._handleClick = this._handleClick.bind(this);
     }
 
     _handleClick() {
