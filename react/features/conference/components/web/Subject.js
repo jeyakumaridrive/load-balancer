@@ -51,7 +51,7 @@ class Subject extends Component<Props> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            galleryView: true
+            galleryView: APP.store.getState()['features/video-layout'].tileViewEnabled
         };
         this._handleClick = this._handleClick.bind(this);
     }
@@ -65,9 +65,11 @@ class Subject extends Component<Props> {
                 'is_enabled': _tileViewEnabled
             }));
         const value = !_tileViewEnabled;
-        console.log('--------------- 88888888888888888888888');
         console.log(`Tile view ${value ? 'enable' : 'disable'}`);
         dispatch(setTileView(value));
+        this.setState({
+            galleryView: _tileViewEnabled
+        });
     }
     /**
      * Implements React's {@link Component#render()}.
