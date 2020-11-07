@@ -2024,8 +2024,7 @@ export default {
                 if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
                 {
                     localStorage.setItem('prevLayout', true);
-                    // $('.toggle-view').click();
-                    APP.store.getState()['features/video-layout'].tileViewEnabled = false;
+                    $('.toggle-view').click();
                 }
                 else
                 {
@@ -2274,7 +2273,7 @@ export default {
             if(pp==2) {
                 //alert(pp)
              if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
-                    APP.store.getState()['features/video-layout'].tileViewEnabled = true;
+                    $('.toggle-view').click()
                 }
 
             }
@@ -2323,8 +2322,8 @@ export default {
             if(pp==2) {
              //   alert()
                // APP.store.getState()['features/video-layout'].tileViewEnabled = true
-               if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
-                    APP.store.getState()['features/video-layout'].tileViewEnabled = true;
+               if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+                    $('.toggle-view').click()
                 }
 
             }
@@ -2670,8 +2669,7 @@ export default {
                     if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
                     {
                         localStorage.setItem('prevLayout', true);
-                        // $('.toggle-view').click();
-                        APP.store.getState()['features/video-layout'].tileViewEnabled = false;
+                        $('.toggle-view').click();
                     }
                     else
                     {
@@ -2684,8 +2682,7 @@ export default {
                 setTimeout(function(){ 
                     if(localStorage.getItem('prevLayout') == 'true')
                    {
-                        // $('.toggle-view').click();
-                        APP.store.getState()['features/video-layout'].tileViewEnabled = !APP.store.getState()['features/video-layout'].tileViewEnabled;
+                        $('.toggle-view').click();
                    }
                 }, 1500);      
       
