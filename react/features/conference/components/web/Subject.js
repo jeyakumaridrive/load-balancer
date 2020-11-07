@@ -50,6 +50,9 @@ class Subject extends Component<Props> {
 
     constructor(props: Props) {
         super(props);
+        this.state = {
+            galleryView: true
+        };
     }
 
     _handleClick() {
