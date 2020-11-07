@@ -2642,9 +2642,9 @@ export default {
                     }
                 }
                 else if (messageObj.EventType == 1008) {
-                    setTimeout(function () {
-                        localStorage.tileViewWasEnabled ? APP.store.dispatch(setTileView(true)) : null
-                    }, 1500);
+                    // setTimeout(function () {
+                    //     localStorage.tileViewWasEnabled ? APP.store.dispatch(setTileView(true)) : null
+                    // }, 1500);
                 }
                 else if (messageObj.EventType == 1009) {
 
