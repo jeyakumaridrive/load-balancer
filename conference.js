@@ -2270,17 +2270,20 @@ export default {
             }
 
             var pp = room.getParticipants().length + 1;
-           //alert(pp)
-        // setTimeout(function(){ 
-            if(pp==2) {
-                //alert(pp)
-             if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
-                    // $('.toggle-view').click()
-                    APP.store.dispatch(setTileView(false));
-                }
-
+            if(APP.store.getState()['features/video-layout'].tileViewEnabled == undefined) {
+                APP.store.getState()['features/video-layout'].tileViewEnabled = false;
             }
-        // }, 3400);
+           //alert(pp)
+            // setTimeout(function(){ 
+                if(pp==2) {
+                    //alert(pp)
+                if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
+                        // $('.toggle-view').click()
+                        APP.store.dispatch(setTileView(false));
+                    }
+
+                }
+            // }, 3400);
            document.getElementById("true-joining").value = '1';
            if(pp > config.startAudioMuted)
            {
@@ -2684,13 +2687,13 @@ export default {
             }
             else if(messageObj.EventType == 1008)
             {
-                setTimeout(function(){ 
-                    if(localStorage.getItem('prevLayout') == 'true') {
-                        // $('.toggle-view').click();
-                        APP.store.dispatch(setTileView(true));
-                    }
-                }, 1500);      
-      
+                // setTimeout(function(){ 
+                //     if(localStorage.getItem('prevLayout') == 'true')
+                //    {
+                //         $('.toggle-view').click();
+                //         APP.store.dispatch(setTileView(false));
+                //    }
+                // }, 1500);
             }
             else if( messageObj.EventType == 1009) {
 
