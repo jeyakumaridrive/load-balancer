@@ -826,7 +826,7 @@ class Toolbox extends Component<Props, State> {
     _onShortcutToggleFullScreen: () => void;
     
     startScreenShare() {
-        // APP.conference._ChecklayoutForParticipants();
+        APP.conference._ChecklayoutForParticipants();
         this.togglePresentTab();
         APP.conference.toggleScreenSharing();
     }    

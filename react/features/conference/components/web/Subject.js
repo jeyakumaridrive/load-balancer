@@ -53,6 +53,7 @@ class Subject extends Component<Props> {
         this.state = {
             galleryView: APP.store.getState()['features/video-layout'].tileViewEnabled
         };
+        APP.store.getState()['features/video-layout'].tileViewEnabled = localStorage.tileViewWasEnabled ? true : false;
         setInterval(() => {
             if(APP.store.getState()['features/video-layout'].tileViewEnabled) {
                 this.setState({
@@ -62,8 +63,6 @@ class Subject extends Component<Props> {
                 this.setState({
                     galleryView: false
                 });
-            } else {
-                APP.store.getState()['features/video-layout'].tileViewEnabled = localStorage.tileViewWasEnabled ? true : false;
             }
         }, 500);
         this._handleClick = this._handleClick.bind(this);

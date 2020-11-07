@@ -2258,7 +2258,6 @@ export default {
             var pp = room.getParticipants().length + 1;
             if (pp == 2) {
                 localStorage.tileViewWasEnabled = true;
-                alert(1);
                 APP.store.dispatch(setTileView(true));
             }
 
@@ -2304,7 +2303,6 @@ export default {
             // setTimeout(function () {
                 if (pp == 2) {
                     localStorage.tileViewWasEnabled = true;
-                    alert(2);
                     APP.store.dispatch(setTileView(true));
                 }
             // }, 3400);
@@ -2645,7 +2643,6 @@ export default {
                 }
                 else if (messageObj.EventType == 1008) {
                     setTimeout(function () {
-                        alert(3);
                         localStorage.tileViewWasEnabled ? APP.store.dispatch(setTileView(true)) : null
                     }, 1500);
                 }
