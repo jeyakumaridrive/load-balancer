@@ -79,7 +79,7 @@ class Subject extends Component<Props> {
         console.log(`Tile view ${value ? 'enable' : 'disable'}`);
         dispatch(setTileView(value));
         this.setState({
-            galleryView: _tileViewEnabled
+            galleryView: !_tileViewEnabled
         });
     }
     /**
@@ -97,7 +97,7 @@ class Subject extends Component<Props> {
                 {/* { _showParticipantCount && <ParticipantsCount /> }
                 <ConferenceTimer /> */}
                 <div className='view-settings'><div className='toggle-view' onClick={this._handleClick}>
-                       {this.state.galleryView ? 
+                    { this.state.galleryView ? 
                         <React.Fragment>
                         <svg
                             viewBox="0 0 50 39">
