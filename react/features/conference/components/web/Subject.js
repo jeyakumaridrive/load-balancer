@@ -79,9 +79,10 @@ class Subject extends Component<Props> {
             }));
         const value = !_tileViewEnabled;
         console.log(`Tile view ${value ? 'enable' : 'disable'}`);
+        value ? localStorage.tileViewWasEnabled = true : delete localStorage.tileViewWasEnabled;
         dispatch(setTileView(value));
         this.setState({
-            galleryView: !_tileViewEnabled
+            galleryView: value
         });
     }
     /**

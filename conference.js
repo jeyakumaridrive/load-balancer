@@ -74,6 +74,7 @@ import {
     setVideoAvailable,
     setVideoMuted
 } from './react/features/base/media';
+import { setTileView } from './react/features/video-layout/actions';
 import {
     dominantSpeakerChanged,
     getLocalParticipant,
@@ -2021,15 +2022,15 @@ export default {
 
         return this._createDesktopTrack(options)
             .then(async streams => {
-                if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
-                {
-                    localStorage.setItem('prevLayout', true);
-                    $('.toggle-view').click();
-                }
-                else
-                {
-                    localStorage.setItem('prevLayout', false);
-                }
+                // if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
+                // {
+                //     localStorage.setItem('prevLayout', true);
+                //     $('.toggle-view').click();
+                // }
+                // else
+                // {
+                //     localStorage.setItem('prevLayout', false);
+                // }
                 const desktopVideoStream = streams.find(stream => stream.getType() === MEDIA_TYPE.VIDEO);
 
                 if (desktopVideoStream) {
