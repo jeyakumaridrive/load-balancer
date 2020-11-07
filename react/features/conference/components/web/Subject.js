@@ -57,7 +57,8 @@ class Subject extends Component<Props> {
     }
 
     _handleClick() {
-        const { _tileViewEnabled, dispatch } = this.props;
+        const { dispatch } = this.props;
+        const _tileViewEnabled = APP.store.getState()['features/video-layout'].tileViewEnabled;
         sendAnalytics(createToolbarEvent(
             'tileview.button',
             {
