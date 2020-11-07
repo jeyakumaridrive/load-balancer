@@ -56,11 +56,11 @@ class Subject extends Component<Props> {
         setInterval(() => {
             if(APP.store.getState()['features/video-layout'].tileViewEnabled) {
                 this.setState({
-                    galleryView: false
+                    galleryView: true
                 });
             } else {
                 this.setState({
-                    galleryView: true
+                    galleryView: false
                 });
             }
         }, 500);
@@ -99,30 +99,29 @@ class Subject extends Component<Props> {
                 <div className='view-settings'><div className='toggle-view' onClick={this._handleClick}>
                        {this.state.galleryView ? 
                         <React.Fragment>
-                            <svg 
-                                viewBox="0 0 50 38.6">
-                                <rect x="1.1" y="1.2" fill="#FFFFFF" width="13.8" height="10.2"/>
-                                <rect x="1.2" y="14.2" fill="#FFFFFF" width="13.8" height="10.2"/>
-                                <rect x="1.2" y="27.3" fill="#FFFFFF" width="13.8" height="10.2"/>
-                                <rect x="18" y="1" fill="#FFFFFF" width="13.8" height="10.2"/>
-                                <rect x="18.1" y="14.1" fill="#FFFFFF" width="13.8" height="10.2"/>
-                                <rect x="18.1" y="27.2" fill="#FFFFFF" width="13.8" height="10.2"/>
-                                <rect x="34.9" y="0.9" fill="#FFFFFF" width="13.8" height="10.2"/>
-                                <rect x="35" y="14" fill="#FFFFFF" width="13.8" height="10.2"/>
-                                <rect x="35.1" y="27.1" fill="#FFFFFF" width="13.8" height="10.2"/>
-                            </svg>
-                            <span id="tile-view">Gallery View</span> 
-                        </React.Fragment> :
-                        <React.Fragment>
-                            <svg
-                                viewBox="0 0 50 39">
-                                <rect x="1" y="1.3" fill="#FFFFFF" width="33.1" height="36.5"/>
-                                <rect x="36.6" y="1.4" fill="#FFFFFF" width="12.6" height="10.2"/>
-                                <rect x="36.6" y="14.5" fill="#FFFFFF" width="12.6" height="10.2"/>
-                                <rect x="36.7" y="27.6" fill="#FFFFFF" width="12.6" height="10.2"/>
-                            </svg>
-                            <span id="tile-view">Speaker View</span> 
-                        </React.Fragment> 
+                        <svg
+                            viewBox="0 0 50 39">
+                            <rect x="1" y="1.3" fill="#FFFFFF" width="33.1" height="36.5"/>
+                            <rect x="36.6" y="1.4" fill="#FFFFFF" width="12.6" height="10.2"/>
+                            <rect x="36.6" y="14.5" fill="#FFFFFF" width="12.6" height="10.2"/>
+                            <rect x="36.7" y="27.6" fill="#FFFFFF" width="12.6" height="10.2"/>
+                        </svg>
+                        <span id="tile-view">Speaker View</span> 
+                    </React.Fragment> : <React.Fragment>
+                         <svg 
+                             viewBox="0 0 50 38.6">
+                             <rect x="1.1" y="1.2" fill="#FFFFFF" width="13.8" height="10.2"/>
+                             <rect x="1.2" y="14.2" fill="#FFFFFF" width="13.8" height="10.2"/>
+                             <rect x="1.2" y="27.3" fill="#FFFFFF" width="13.8" height="10.2"/>
+                             <rect x="18" y="1" fill="#FFFFFF" width="13.8" height="10.2"/>
+                             <rect x="18.1" y="14.1" fill="#FFFFFF" width="13.8" height="10.2"/>
+                             <rect x="18.1" y="27.2" fill="#FFFFFF" width="13.8" height="10.2"/>
+                             <rect x="34.9" y="0.9" fill="#FFFFFF" width="13.8" height="10.2"/>
+                             <rect x="35" y="14" fill="#FFFFFF" width="13.8" height="10.2"/>
+                             <rect x="35.1" y="27.1" fill="#FFFFFF" width="13.8" height="10.2"/>
+                         </svg>
+                         <span id="tile-view">Gallery View</span> 
+                     </React.Fragment>
                     } 
                     </div>
                 </div>
