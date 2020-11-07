@@ -66,7 +66,6 @@ import {
     JitsiTrackErrors,
     JitsiTrackEvents
 } from './react/features/base/lib-jitsi-meet';
-import { setTileView } from './react/features/video-layout/actions';
 import {
     isVideoMutedByUser,
     MEDIA_TYPE,
@@ -2025,8 +2024,7 @@ export default {
                 if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
                 {
                     localStorage.setItem('prevLayout', true);
-                    // $('.toggle-view').click();
-                    APP.store.dispatch(setTileView(false));
+                    $('.toggle-view').click();
                 }
                 else
                 {
@@ -2271,16 +2269,15 @@ export default {
 
             var pp = room.getParticipants().length + 1;
            //alert(pp)
-            // setTimeout(function(){ 
-                if(pp==2) {
-                    //alert(pp)
-                if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
-                        // $('.toggle-view').click()
-                        APP.store.dispatch(setTileView(false));
-                    }
-
+        // setTimeout(function(){ 
+            if(pp==2) {
+                //alert(pp)
+             if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
+                    $('.toggle-view').click()
                 }
-            // }, 3400);
+
+            }
+        // }, 3400);
            document.getElementById("true-joining").value = '1';
            if(pp > config.startAudioMuted)
            {
@@ -2325,9 +2322,8 @@ export default {
             if(pp==2) {
              //   alert()
                // APP.store.getState()['features/video-layout'].tileViewEnabled = true
-               if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
-                    // $('.toggle-view').click()
-                    APP.store.dispatch(setTileView(true));
+               if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
+                    $('.toggle-view').click()
                 }
 
             }
@@ -2673,8 +2669,7 @@ export default {
                     if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
                     {
                         localStorage.setItem('prevLayout', true);
-                        // $('.toggle-view').click();
-                        APP.store.dispatch(setTileView(false));
+                        $('.toggle-view').click();
                     }
                     else
                     {
@@ -2687,10 +2682,10 @@ export default {
                 setTimeout(function(){ 
                     if(localStorage.getItem('prevLayout') == 'true')
                    {
-                        // $('.toggle-view').click();
-                        APP.store.dispatch(setTileView(false));
+                        $('.toggle-view').click();
                    }
-                }, 1500);
+                }, 1500);      
+      
             }
             else if( messageObj.EventType == 1009) {
 
