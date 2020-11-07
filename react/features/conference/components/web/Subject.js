@@ -63,7 +63,7 @@ class Subject extends Component<Props> {
                     galleryView: false
                 });
             } else {
-                APP.store.getState()['features/video-layout'].tileViewEnabled = false;
+                APP.store.getState()['features/video-layout'].tileViewEnabled = localStorage.tileViewWasEnabled;
             }
         }, 500);
         this._handleClick = this._handleClick.bind(this);
