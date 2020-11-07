@@ -66,6 +66,7 @@ import {
     JitsiTrackErrors,
     JitsiTrackEvents
 } from './react/features/base/lib-jitsi-meet';
+import { setTileView } from './react/features/video-layout/actions';
 import {
     isVideoMutedByUser,
     MEDIA_TYPE,
