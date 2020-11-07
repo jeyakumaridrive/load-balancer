@@ -50,6 +50,9 @@ class Subject extends Component<Props> {
 
     constructor(props: Props) {
         super(props);
+        if(APP.store.getState()['features/video-layout'].tileViewEnabled == undefined) {
+            APP.store.getState()['features/video-layout'].tileViewEnabled = false;
+        }
         this.state = {
             galleryView: APP.store.getState()['features/video-layout'].tileViewEnabled
         };

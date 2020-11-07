@@ -2270,9 +2270,6 @@ export default {
             }
 
             var pp = room.getParticipants().length + 1;
-            if(APP.store.getState()['features/video-layout'].tileViewEnabled == undefined) {
-                APP.store.getState()['features/video-layout'].tileViewEnabled = false;
-            }
            //alert(pp)
             // setTimeout(function(){ 
                 if(pp==2) {
