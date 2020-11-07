@@ -2685,11 +2685,10 @@ export default {
             else if(messageObj.EventType == 1008)
             {
                 setTimeout(function(){ 
-                    if(localStorage.getItem('prevLayout') == 'true')
-                   {
-                        $('.toggle-view').click();
-                        APP.store.dispatch(setTileView(false));
-                   }
+                    if(localStorage.getItem('prevLayout') == 'true') {
+                        // $('.toggle-view').click();
+                        APP.store.dispatch(setTileView(true));
+                    }
                 }, 1500);      
       
             }
