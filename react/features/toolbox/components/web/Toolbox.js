@@ -863,16 +863,7 @@ class Toolbox extends Component<Props, State> {
         {
             localStorage.setItem('prevVideoStatus', 'on');
         }
-        
-        if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
-        {
-            localStorage.setItem('prevLayout', true);
-            $('.toggle-view').click();
-        }
-        else
-        {
-            localStorage.setItem('prevLayout', false);
-        }
+        APP.store.dispatch(setTileView(false));
         APP.conference._switchCallLayout();
         document.getElementById("myId").style.display = 'block';
         setTimeout(() => {
