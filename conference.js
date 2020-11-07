@@ -2024,7 +2024,8 @@ export default {
                 if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
                 {
                     localStorage.setItem('prevLayout', true);
-                    $('.toggle-view').click();
+                    // $('.toggle-view').click();
+                    APP.store.dispatch(setTileView(false));
                 }
                 else
                 {
@@ -2273,7 +2274,8 @@ export default {
             if(pp==2) {
                 //alert(pp)
              if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
-                    $('.toggle-view').click()
+                    // $('.toggle-view').click()
+                    APP.store.dispatch(setTileView(false));
                 }
 
             }
@@ -2322,8 +2324,9 @@ export default {
             if(pp==2) {
              //   alert()
                // APP.store.getState()['features/video-layout'].tileViewEnabled = true
-               if(APP.store.getState()['features/video-layout'].tileViewEnabled == false) {
-                    $('.toggle-view').click()
+               if(!APP.store.getState()['features/video-layout'].tileViewEnabled) {
+                    // $('.toggle-view').click()
+                    APP.store.dispatch(setTileView(true));
                 }
 
             }
@@ -2669,7 +2672,8 @@ export default {
                     if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
                     {
                         localStorage.setItem('prevLayout', true);
-                        $('.toggle-view').click();
+                        // $('.toggle-view').click();
+                        APP.store.dispatch(setTileView(false));
                     }
                     else
                     {
@@ -2683,6 +2687,7 @@ export default {
                     if(localStorage.getItem('prevLayout') == 'true')
                    {
                         $('.toggle-view').click();
+                        APP.store.dispatch(setTileView(false));
                    }
                 }, 1500);      
       
