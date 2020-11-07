@@ -53,6 +53,17 @@ class Subject extends Component<Props> {
         this.state = {
             galleryView: APP.store.getState()['features/video-layout'].tileViewEnabled
         };
+        setInterval(() => {
+            if(APP.store.getState()['features/video-layout'].tileViewEnabled) {
+                this.setState({
+                    galleryView: true
+                });
+            } else {
+                this.setState({
+                    galleryView: false
+                });
+            }
+        }, 500);
         this._handleClick = this._handleClick.bind(this);
     }
 
