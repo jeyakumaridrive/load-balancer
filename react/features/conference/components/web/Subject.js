@@ -86,9 +86,9 @@ class Subject extends Component<Props> {
         return (
             <div className = { `subject ${_visible ? 'visible' : ''}` }>
                 <span className = 'subject-text'>{ _subject }</span>
-                {/* <ConferenceTimer /> */}
-                {/* { _showParticipantCount && <ParticipantsCount /> } */}
-                <div className='view-settings'>
+                <ConferenceTimer />
+                { _showParticipantCount && <ParticipantsCount /> }
+                {/* <div className='view-settings'>
                     
                     <div className='toggle-view' onClick={this._doToggleTileView}>
                        {this.state.galleryView ? 
@@ -119,7 +119,7 @@ class Subject extends Component<Props> {
                         </React.Fragment> 
                     } 
                     </div>
-                </div>
+                </div> */}
             </div>
         );
     }
