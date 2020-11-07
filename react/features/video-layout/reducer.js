@@ -20,7 +20,7 @@ const DEFAULT_STATE = {
      * @public
      * @type {boolean}
      */
-    tileViewEnabled: undefined
+    tileViewEnabled: false
 };
 
 const STORE_NAME = 'features/video-layout';
