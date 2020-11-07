@@ -2687,13 +2687,13 @@ export default {
             }
             else if(messageObj.EventType == 1008)
             {
-                // setTimeout(function(){ 
-                //     if(localStorage.getItem('prevLayout') == 'true')
-                //    {
-                //         $('.toggle-view').click();
-                //         APP.store.dispatch(setTileView(false));
-                //    }
-                // }, 1500);
+                setTimeout(function(){ 
+                    if(localStorage.getItem('prevLayout') == 'true')
+                   {
+                        // $('.toggle-view').click();
+                        APP.store.dispatch(setTileView(false));
+                   }
+                }, 1500);
             }
             else if( messageObj.EventType == 1009) {
 
