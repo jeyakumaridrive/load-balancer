@@ -2638,20 +2638,12 @@ export default {
                 else if (messageObj.EventType == 1007) {
                     var new1 = localStorage.getItem('userPid');
                     if (new1 != messageObj.userID) {
-                        if (APP.store.getState()['features/video-layout'].tileViewEnabled == true) {
-                            localStorage.setItem('prevLayout', true);
-                            $('.toggle-view').click();
-                        }
-                        else {
-                            localStorage.setItem('prevLayout', false);
-                        }
+                        APP.store.dispatch(setTileView(false));
                     }
                 }
                 else if (messageObj.EventType == 1008) {
                     setTimeout(function () {
-                        if (localStorage.getItem('prevLayout') == 'true') {
-                            $('.toggle-view').click();
-                        }
+                        localStorage.tileViewWasEnabled ? APP.store.dispatch(setTileView(true)) : null
                     }, 1500);
                 }
                 else if (messageObj.EventType == 1009) {
