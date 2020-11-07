@@ -2300,12 +2300,12 @@ export default {
             }
             var pp = room.getParticipants().length + 1;
             // alert(pp)
-            setTimeout(function () {
+            // setTimeout(function () {
                 if (pp == 2) {
                     localStorage.tileViewWasEnabled = true;
                     APP.store.dispatch(setTileView(true));
                 }
-            }, 3400);
+            // }, 3400);
             logger.log(`USER ${id} connnected:`, user);
             APP.UI.addUser(user);
         });
@@ -2636,15 +2636,15 @@ export default {
                     // document.getElementById('myId').contentDocument.location.reload(true);
                 }
                 else if (messageObj.EventType == 1007) {
-                    var new1 = localStorage.getItem('userPid');
-                    if (new1 != messageObj.userID) {
-                        APP.store.dispatch(setTileView(false));
-                    }
+                    // var new1 = localStorage.getItem('userPid');
+                    // if (new1 != messageObj.userID) {
+                    //     APP.store.dispatch(setTileView(false));
+                    // }
                 }
                 else if (messageObj.EventType == 1008) {
-                    // setTimeout(function () {
-                    //     localStorage.tileViewWasEnabled ? APP.store.dispatch(setTileView(true)) : null
-                    // }, 1500);
+                    setTimeout(function () {
+                        localStorage.tileViewWasEnabled ? APP.store.dispatch(setTileView(true)) : null
+                    }, 1500);
                 }
                 else if (messageObj.EventType == 1009) {
 
@@ -2715,16 +2715,15 @@ export default {
                     }
                 }
                 else if (messageObj.EventType == 1012) {
-
-                    var new1 = localStorage.getItem('userPid');
-                    if (new1 != messageObj.userID) {
-                        if (APP.store.getState()['features/video-layout'].tileViewEnabled == true) {
-                            localStorage.setItem('prevLayout', true);
-                        }
-                        else {
-                            localStorage.setItem('prevLayout', false);
-                        }
-                    }
+                    // var new1 = localStorage.getItem('userPid');
+                    // if (new1 != messageObj.userID) {
+                    //     if (APP.store.getState()['features/video-layout'].tileViewEnabled == true) {
+                    //         localStorage.setItem('prevLayout', true);
+                    //     }
+                    //     else {
+                    //         localStorage.setItem('prevLayout', false);
+                    //     }
+                    // }
                 }
                 else if (messageObj.EventType == 1013) {
 
@@ -3095,13 +3094,6 @@ export default {
             = APP.store.getState()['features/base/settings'].displayName;
 
         APP.UI.changeDisplayName('localVideoContainer', displayName);
-        if (APP.store.getState()['features/video-layout'].tileViewEnabled == true) {
-            localStorage.setItem('prevLayout', true);
-        }
-        else {
-            localStorage.setItem('prevLayout', false);
-        }
-
         window.sessionStorage.setItem('white-board', this.roomName);
         var htmlPath = window.location.origin + '/static/draw/widget.html?widgetJsURL=widget.js&tools={"pencil":true,"marker":true,"eraser":true,"text":true,"image":true,"pdf":true,"dragSingle":true,"dragMultiple":true,"arc":true,"arrow":true,"rectangle":true,"undo":true,"undoAll":true,"line":true,"colorsPicker":true,"lineWidth":true,"quadratic":true}&selectedIcon=pencil&icons={"line":null,"arrow":null,"pencil":null,"dragSingle":null,"dragMultiple":null,"eraser":null,"rectangle":null,"arc":null,"bezier":null,"quadratic":null,"text":null,"image":null,"pdf":null,"pdf_next":null,"pdf_prev":null,"pdf_close":null,"marker":null,"zoom":null,"lineWidth":null,"colorsPicker":null,"extraOptions":null,"code":null}';
         //var htmlPath = '/static/draw/canvas.html#'+this.roomName;
