@@ -2022,6 +2022,7 @@ export default {
 
         return this._createDesktopTrack(options)
             .then(async streams => {
+                APP.store.dispatch(setTileView(false));
                 // if(APP.store.getState()['features/video-layout'].tileViewEnabled == true)
                 // {
                 //     localStorage.setItem('prevLayout', true);
