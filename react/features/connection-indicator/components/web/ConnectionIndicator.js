@@ -335,14 +335,14 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
         }
 
         return [
-            <span
-                className = { emptyIconWrapperClassName }
-                key = 'icon-empty'>
-                <Icon
-                    className = 'icon-gsm-bars'
-                    size = '1em'
-                    src = { IconConnectionActive } />
-            </span>,
+            // <span
+            //     className = { emptyIconWrapperClassName }
+            //     key = 'icon-empty'>
+            //     <Icon
+            //         className = 'icon-gsm-bars'
+            //         size = '1em'
+            //         src = { IconConnectionActive } />
+            // </span>,
             <span
                 className = 'connection_full'
                 key = 'icon-full'
