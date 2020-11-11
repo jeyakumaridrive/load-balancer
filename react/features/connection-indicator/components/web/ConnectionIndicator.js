@@ -311,7 +311,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                     <Icon
                         className = 'icon-ninja'
                         size = '1.5em'
-                        src = { IconConnectionInactive } />
+                        src = { IconConnectionActive } />
                 </span>
             );
         }
