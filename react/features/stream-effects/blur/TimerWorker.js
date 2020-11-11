@@ -1,34 +1,34 @@
 
 /**
- * SET_TIMEOUT constant is used to set interval and it is set in
+ * SET_INTERVAL constant is used to set interval and it is set in
  * the id property of the request.data property. timeMs property must
  * also be set. request.data example:
  *
  * {
- *      id: SET_TIMEOUT,
+ *      id: SET_INTERVAL,
  *      timeMs: 33
  * }
  */
-export const SET_TIMEOUT = 1;
+export const SET_INTERVAL = 1;
 
 /**
- * CLEAR_TIMEOUT constant is used to clear the interval and it is set in
+ * CLEAR_INTERVAL constant is used to clear the interval and it is set in
  * the id property of the request.data property.
  *
  * {
- *      id: CLEAR_TIMEOUT
+ *      id: CLEAR_INTERVAL
  * }
  */
-export const CLEAR_TIMEOUT = 2;
+export const CLEAR_INTERVAL = 2;
 
 /**
- * TIMEOUT_TICK constant is used as response and it is set in the id property.
+ * INTERVAL_TIMEOUT constant is used as response and it is set in the id property.
  *
  * {
- *      id: TIMEOUT_TICK
+ *      id: INTERVAL_TIMEOUT
  * }
  */
-export const TIMEOUT_TICK = 3;
+export const INTERVAL_TIMEOUT = 3;
 
 /**
  * The following code is needed as string to create a URL from a Blob.
@@ -40,15 +40,15 @@ const code = `
 
     onmessage = function(request) {
         switch (request.data.id) {
-        case ${SET_TIMEOUT}: {
-            timer = setTimeout(() => {
-                postMessage({ id: ${TIMEOUT_TICK} });
+        case ${SET_INTERVAL}: {
+            timer = setInterval(() => {
+                postMessage({ id: ${INTERVAL_TIMEOUT} });
             }, request.data.timeMs);
             break;
         }
-        case ${CLEAR_TIMEOUT}: {
+        case ${CLEAR_INTERVAL}: {
             if (timer) {
-                clearTimeout(timer);
+                clearInterval(timer);
             }
             break;
         }
