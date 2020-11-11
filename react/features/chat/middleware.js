@@ -281,6 +281,7 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
     const state = getState();
     const { isOpen: isChatOpen } = state['features/chat'];
 
+    console.log({ id, message, nick, privateMessage, timestamp });
     if (!isChatOpen) {
         dispatch(playSound(INCOMING_MSG_SOUND_ID));
     }
