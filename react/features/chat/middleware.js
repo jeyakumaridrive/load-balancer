@@ -281,9 +281,15 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
     const state = getState();
     const { isOpen: isChatOpen } = state['features/chat'];
 
-    console.log({ id, message, nick, privateMessage, timestamp });
     if (!isChatOpen) {
-        dispatch(playSound(INCOMING_MSG_SOUND_ID));
+        try {
+            const t = JSON.parse(message);
+            if(t.EventType != 1012 && t.EventType != 1008) {
+                dispatch(playSound(INCOMING_MSG_SOUND_ID));
+            }
+        } catch($e) {
+            dispatch(playSound(INCOMING_MSG_SOUND_ID));   
+        }
     }
 
     // Provide a default for for the case when a message is being
