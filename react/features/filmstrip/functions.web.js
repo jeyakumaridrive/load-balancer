@@ -69,7 +69,7 @@ export function shouldRemoteVideosBeVisible(state: Object) {
  * @returns {{local: {height, width}, remote: {height, width}}}
  */
 export function calculateThumbnailSizeForHorizontalView(clientHeight: number = 0) {
-    const topBottomMargin = 15;
+    const topBottomMargin = 40;
     const availableHeight = Math.min(clientHeight, (interfaceConfig.FILM_STRIP_MAX_HEIGHT || 120) + topBottomMargin);
     const height = availableHeight - topBottomMargin;
 
