@@ -284,7 +284,7 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
     if (!isChatOpen) {
         try {
             const t = JSON.parse(message);
-            if(t.EventType != 1012 && t.EventType != 1008 && t.EventType != 1007 && t.EventType != 1013) {
+            if(t.EventType != 1012 && t.EventType != 1008 && t.EventType != 1007 && t.EventType != 1013 && t.EventType != 1011) {
                 dispatch(playSound(INCOMING_MSG_SOUND_ID));
             }
         } catch($e) {
