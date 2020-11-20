@@ -243,7 +243,7 @@ class VirtualBackgroundDialog extends Component<Props> {
                                  <video id="webcam" width="480" height="300" autoplay={true} playsinline></video>
                                     <div id="errorMsg" autoplay></div>
                                    
-                                     <canvas width="480" height="300" class="vb-preview vb-preview-loading" id="vb-preview"></canvas>
+                                     <canvas width="480" height="300" class="vb-preview" id="vb-preview"></canvas>
                                 </div>
                                 <div class="virtual-background-buttons">
                                     <button type="button" class="vb-btn vb-enable-btn" onClick={() => this.enableVirtualBackground()}>Enable</button>
