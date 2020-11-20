@@ -95,7 +95,7 @@ export default class JitsiStreamVirtualBackgroundEffect {
         
         var background = new Image();
         background.src = "https://remotepc3.codertc.com/images/waterfall.jpg";
-        let contextPerson =  this._outputCanvasElement.getContext('2d');
+        // let contextPerson =  this._outputCanvasElement.getContext('2d');
         // background.onload = function(){
         //     contextPerson.drawImage(background,0,0);   
         // }
@@ -123,7 +123,7 @@ export default class JitsiStreamVirtualBackgroundEffect {
         var height = this._segmentationData.height;
         var data = this._segmentationData.data;
         this._maskCanvasContext.drawImage(this._inputVideoElement, 0, 0, width, height);
-        let contextPerson =  this._outputCanvasElement.getContext('2d');
+        // let contextPerson =  this._outputCanvasElement.getContext('2d');
         this._secCanvasContext.drawImage(this._maskCanvasElement, 0, 0);
         if(this.imageLoaded) {
             for (var i = 0; i < height * width; ++i) {
