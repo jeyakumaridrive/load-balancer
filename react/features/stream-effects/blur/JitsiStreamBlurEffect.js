@@ -71,7 +71,7 @@ export default class JitsiStreamBlurEffect {
      * @returns {void}
      */
     async _renderMask() {
-        console.log('#100 _renderMask')
+        console.log('#100 _renderMask true')
         this._maskInProgress = true;
         this._segmentationData = await this._bpModel.segmentPerson(this._inputVideoElement, {
             internalResolution: 'medium', // resized to 0.5 times of the original resolution before inference
@@ -79,6 +79,7 @@ export default class JitsiStreamBlurEffect {
             segmentationThreshold: 0.7 // represents probability that a pixel belongs to a person
         });
         this._maskInProgress = false;
+        console.log('#100 _renderMask false')
         bodyPix.drawBokehEffect(
             this._outputCanvasElement,
             this._inputVideoElement,
