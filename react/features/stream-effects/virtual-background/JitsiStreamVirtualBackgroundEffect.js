@@ -88,14 +88,14 @@ export default class JitsiStreamVirtualBackgroundEffect {
             flipHorizontal:true,
             internalResolution:'medium',
             maxDetections: 1,
-            segmentationThreshold:0.9
+            segmentationThreshold:0.7
         });
         this._maskInProgress = false;
         
-        
+        /*
         var background = new Image();
         background.src = "https://remotepc3.codertc.com/images/waterfall.jpg";
-        // let contextPerson =  this._outputCanvasElement.getContext('2d');
+        let contextPerson =  this._outputCanvasElement.getContext('2d');
         // background.onload = function(){
         //     contextPerson.drawImage(background,0,0);   
         // }
@@ -115,7 +115,7 @@ export default class JitsiStreamVirtualBackgroundEffect {
         contextPerson.putImageData(imageData,0,0);
         $('#localVideoWrapper').addClass('container1');
         $('#largeVideoWrapper').addClass('container1');
-        
+        */
        
        
         // virtual bg code
@@ -123,7 +123,7 @@ export default class JitsiStreamVirtualBackgroundEffect {
         var height = this._segmentationData.height;
         var data = this._segmentationData.data;
         this._maskCanvasContext.drawImage(this._inputVideoElement, 0, 0, width, height);
-        // let contextPerson =  this._outputCanvasElement.getContext('2d');
+        let contextPerson =  this._outputCanvasElement.getContext('2d');
         this._secCanvasContext.drawImage(this._maskCanvasElement, 0, 0);
         if(this.imageLoaded) {
             for (var i = 0; i < height * width; ++i) {
@@ -135,7 +135,7 @@ export default class JitsiStreamVirtualBackgroundEffect {
         contextPerson.drawImage(this._secCanvasElement, 0, 0);
         contextPerson.restore();
        
-        
+        /*
         const imageElement = document.getElementById('remoteimage');
 
         //const net = await bodyPix.load();
@@ -152,15 +152,15 @@ export default class JitsiStreamVirtualBackgroundEffect {
         
         bodyPix.drawMask(
         this._outputCanvasElement, this._inputVideoElement, backgroundDarkeningMask, opacity);
-        
+        */
 
-        bodyPix.drawBokehEffect(
-            contextPerson,
-            this._inputVideoElement,
-            this._segmentationData,
-            1, // Constant for background blur, integer values between 0-20
-            1 // Constant for edge blur, integer values between 0-20
-        );
+        // bodyPix.drawBokehEffect(
+        //     contextPerson,
+        //     this._inputVideoElement,
+        //     this._segmentationData,
+        //     1, // Constant for background blur, integer values between 0-20
+        //     1 // Constant for edge blur, integer values between 0-20
+        // );
     }
 
     /**
