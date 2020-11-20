@@ -34,6 +34,7 @@ export default class JitsiStreamBlurEffect {
      * @param {BodyPix} bpModel - BodyPix model.
      */
     constructor(bpModel: Object) {
+        console.log("#100 constructor called")
         this._bpModel = bpModel;
 
         // Bind event handler so it is only bound once for every instance.
@@ -47,7 +48,7 @@ export default class JitsiStreamBlurEffect {
         this._maskFrameTimerWorker = new Worker(timerWorkerScript, { name: 'Blur effect worker' });
         this._maskFrameTimerWorker.onmessage = this._onMaskFrameTimer;
 
-        this._segmentationData = await this._bpModel.segmentPerson(this._inputVideoElement, {
+        this._bpModel.segmentPerson(this._inputVideoElement, {
             internalResolution: 'medium', // resized to 0.5 times of the original resolution before inference
             maxDetections: 1, // max. number of person poses to detect per image
             segmentationThreshold: 0.7 // represents probability that a pixel belongs to a person
