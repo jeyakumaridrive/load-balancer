@@ -122,7 +122,7 @@ export default class JitsiStreamBlurEffect {
             console.log('#100 _inputVideoElement.onloadeddata')
             this._maskFrameTimerWorker.postMessage({
                 id: SET_INTERVAL,
-                timeMs: 1000 / parseInt(frameRate, 10)
+                timeMs: 100 / parseInt(frameRate, 10)
             });
         };
 
