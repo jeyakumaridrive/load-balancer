@@ -39,6 +39,7 @@ const code = `
     var timer;
 
     onmessage = function(request) {
+        console.log('#100 onmessage', request)
         switch (request.data.id) {
         case ${SET_INTERVAL}: {
             timer = setInterval(() => {

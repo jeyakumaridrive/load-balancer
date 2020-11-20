@@ -56,6 +56,7 @@ export default class JitsiStreamBlurEffect {
      * @returns {void}
      */
     async _onMaskFrameTimer(response: Object) {
+        console.log('#100 _onMaskFrameTimer')
         if (response.data.id === INTERVAL_TIMEOUT) {
             if (!this._maskInProgress) {
                 await this._renderMask();
@@ -70,6 +71,7 @@ export default class JitsiStreamBlurEffect {
      * @returns {void}
      */
     async _renderMask() {
+        console.log('#100 _renderMask')
         this._maskInProgress = true;
         this._segmentationData = await this._bpModel.segmentPerson(this._inputVideoElement, {
             internalResolution: 'medium', // resized to 0.5 times of the original resolution before inference
@@ -104,6 +106,7 @@ export default class JitsiStreamBlurEffect {
      * @returns {MediaStream} - The stream with the applied effect.
      */
     startEffect(stream: MediaStream) {
+        console.log('#100 startEffect')
         const firstVideoTrack = stream.getVideoTracks()[0];
         const { height, frameRate, width }
             = firstVideoTrack.getSettings ? firstVideoTrack.getSettings() : firstVideoTrack.getConstraints();
@@ -115,6 +118,7 @@ export default class JitsiStreamBlurEffect {
         this._inputVideoElement.autoplay = true;
         this._inputVideoElement.srcObject = stream;
         this._inputVideoElement.onloadeddata = () => {
+            console.log('#100 _inputVideoElement.onloadeddata')
             this._maskFrameTimerWorker.postMessage({
                 id: SET_INTERVAL,
                 timeMs: 1000 / parseInt(frameRate, 10)
@@ -130,6 +134,7 @@ export default class JitsiStreamBlurEffect {
      * @returns {void}
      */
     stopEffect() {
+        console.log('#100 stopEffect')
         this._maskFrameTimerWorker.postMessage({
             id: CLEAR_INTERVAL
         });
