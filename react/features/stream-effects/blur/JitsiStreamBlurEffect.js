@@ -46,6 +46,12 @@ export default class JitsiStreamBlurEffect {
 
         this._maskFrameTimerWorker = new Worker(timerWorkerScript, { name: 'Blur effect worker' });
         this._maskFrameTimerWorker.onmessage = this._onMaskFrameTimer;
+
+        this._segmentationData = await this._bpModel.segmentPerson(this._inputVideoElement, {
+            internalResolution: 'medium', // resized to 0.5 times of the original resolution before inference
+            maxDetections: 1, // max. number of person poses to detect per image
+            segmentationThreshold: 0.7 // represents probability that a pixel belongs to a person
+        });
     }
 
     /**
@@ -122,7 +128,7 @@ export default class JitsiStreamBlurEffect {
             console.log('#100 _inputVideoElement.onloadeddata')
             this._maskFrameTimerWorker.postMessage({
                 id: SET_INTERVAL,
-                timeMs: 100 / parseInt(frameRate, 10)
+                timeMs: 1000 / parseInt(frameRate, 10)
             });
         };
 
