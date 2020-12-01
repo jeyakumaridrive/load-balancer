@@ -74,7 +74,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
             );
         }
 
-        if (initials) {
+        if (initials || url) {
             return (
                 <div
                     className = { `${this._getAvatarClassName()} ${this._getBadgeClassName()}` }
@@ -88,7 +88,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
                         xmlnsXlink = 'http://www.w3.org/1999/xlink'>
                         <text
                             dominantBaseline = 'central'
-                            fill = 'rgba(255,255,255,.6)'
+                            fill = 'rgba(255,255,255)'
                             fontSize = '40pt'
                             textAnchor = 'middle'
                             x = '50'
@@ -124,7 +124,7 @@ export default class StatelessAvatar extends AbstractStatelessAvatar<Props> {
 
         return {
             backgroundColor: color || undefined,
-            fontSize: size ? size * 0.5 : '180%',
+            fontSize: size ? size * 0.5 : '225%',
             height: size || '100%',
             width: size || '100%'
         };
