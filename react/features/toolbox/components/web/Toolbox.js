@@ -1802,7 +1802,7 @@ class Toolbox extends Component<Props, State> {
                                 <VideoBlurButton
                                 key = 'videobackgroundblur'
                                 showLabel = { true }
-                                visible = { true } />
+                                visible = { JitsiMeetJS.util.browser._name != 'safari' } />
                             </a>
                         </li>
                         <li>
@@ -1810,7 +1810,7 @@ class Toolbox extends Component<Props, State> {
                                 <VideoVirtualBackgroundButton 
                                 key = 'virtualbackground'
                                 showLabel = { true }
-                                visible = { true } />
+                                visible = { JitsiMeetJS.util.browser._name != 'safari' } />
                             </a>
                         </li>
 
