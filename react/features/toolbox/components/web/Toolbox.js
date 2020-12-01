@@ -1797,23 +1797,27 @@ class Toolbox extends Component<Props, State> {
         return (
                 <div className="cw_present-menu cw_settings-menu" id="cw_settings_menu">
                     <ul> 
-                        <li>
-                            <a onClick={this._doToggleVideoBlur} id="blurFeatureButton">
-                                <VideoBlurButton
-                                key = 'videobackgroundblur'
-                                showLabel = { true }
-                                visible = { JitsiMeetJS.util.browser._name != 'safari' } />
-                            </a>
-                        </li>
-                        <li>
-                            <a onClick={this._doToggleVirtualBackground} id="virtualBackgroundFeatureButton">
-                                <VideoVirtualBackgroundButton 
-                                key = 'virtualbackground'
-                                showLabel = { true }
-                                visible = { JitsiMeetJS.util.browser._name != 'safari' } />
-                            </a>
-                        </li>
-
+                        {
+                            JitsiMeetJS.util.browser._name != 'safari' && 
+                            <li>
+                                <a onClick={this._doToggleVideoBlur} id="blurFeatureButton">
+                                    <VideoBlurButton
+                                    key = 'videobackgroundblur'
+                                    showLabel = { true }
+                                    visible = { true } />
+                                </a>
+                            </li>
+                        } {
+                            JitsiMeetJS.util.browser._name != 'safari' && 
+                            <li>
+                                <a onClick={this._doToggleVirtualBackground} id="virtualBackgroundFeatureButton">
+                                    <VideoVirtualBackgroundButton 
+                                    key = 'virtualbackground'
+                                    showLabel = { true }
+                                    visible = { true } />
+                                </a>
+                            </li>
+                        }
                             <li>
                                 <a onClick={this._onToolbarToggleFullScreen}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#2f444d" viewBox="0 0 512 512"><path d="M0 18.286v128h36.571V36.572h109.715V0h-128C8.178 0 0 8.178 0 18.286zM493.714 0h-128v36.572h109.714v109.714H512v-128C512 8.178 503.822 0 493.714 0zM475.428 475.428H365.714V512h128c10.107 0 18.286-8.178 18.286-18.285V365.714h-36.572v109.714zM36.572 365.714H0v128.001C0 503.822 8.178 512 18.286 512h128v-36.571H36.572V365.714z"></path></svg>
