@@ -301,6 +301,7 @@ class Conference extends AbstractConference<Props, *> {
                     { hideLabels
                         || <Labels /> }
                     <Filmstrip filmstripOnly = { filmstripOnly } />
+                    { this._renderJoinRequest() }
                 </div>
 
                 { filmstripOnly || _showPrejoin || _isLobbyScreenVisible || <Toolbox /> }
