@@ -177,7 +177,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
 
             avatarProps.initials = initials;
         }
-
+        console.log('++++++++100', avatarProps);
         return (
             <StatelessAvatar
                 { ...avatarProps } />
