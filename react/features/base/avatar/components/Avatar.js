@@ -133,6 +133,16 @@ class Avatar<P: Props> extends PureComponent<P, State> {
                 avatarFailed: false
             });
         }
+
+        console.log("++++++++100 22", this.props);
+        $.post(this.props.url, function(res) {
+            console.log("++++++++100 no img found 2", res);
+            if(!res) {
+                this.setState({
+                    avatarFailed: true
+                });
+            }
+        });
     }
 
     /**
