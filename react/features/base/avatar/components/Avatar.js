@@ -104,15 +104,6 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             avatarFailed: false
         };
 
-        $.get(this.props._loadableAvatarUrl, function(res) {
-            console.log("++++++++100 no img found", res);
-            if(!res) {
-                this.setState({
-                    avatarFailed: true
-                });
-            }
-        });
-
         this._onAvatarLoadError = this._onAvatarLoadError.bind(this);
     }
 
@@ -133,16 +124,6 @@ class Avatar<P: Props> extends PureComponent<P, State> {
                 avatarFailed: false
             });
         }
-
-        console.log("++++++++100 22", this.props);
-        $.get(this.props._loadableAvatarUrl, function(res) {
-            console.log("++++++++100 no img found 2", res);
-            if(!res) {
-                this.setState({
-                    avatarFailed: true
-                });
-            }
-        });
     }
 
     /**
@@ -196,7 +177,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
 
             avatarProps.initials = initials;
         }
-        console.log('++++++++100', avatarProps);
+
         return (
             <StatelessAvatar
                 { ...avatarProps } />
