@@ -156,6 +156,8 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             url
         } = this.props;
         const { avatarFailed } = this.state;
+        
+        console.log("+100000000000", this.props, this.state);
 
         const avatarProps = {
             className,
@@ -189,7 +191,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             // avatarProps.color = getAvatarColor(colorBase || _initialsBase);
             avatarProps.initials = initials;
         }
-
+        console.log("+100000000000", avatarProps);
         return (
             <StatelessAvatar
                 { ...avatarProps } />
