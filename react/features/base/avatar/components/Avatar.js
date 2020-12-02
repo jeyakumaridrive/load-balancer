@@ -156,7 +156,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             url
         } = this.props;
         const { avatarFailed } = this.state;
-        
+
         console.log("+100000000000", this.props, this.state);
 
         const avatarProps = {
@@ -178,7 +178,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
 
         if (effectiveURL) {
             avatarProps.onAvatarLoadError = this._onAvatarLoadError;
-            avatarProps.url = effectiveURL;
+            avatarProps.url = avatarFailed ? false : effectiveURL;
         }
 
         const initials = getInitials(_initialsBase);
