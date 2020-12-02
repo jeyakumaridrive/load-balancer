@@ -199,9 +199,8 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
 
 
              }, 1000);
-
         const buttons = [];
-
+        
 
         if (this.state.show == true) {
             if (!_disableRemoteMute) {
