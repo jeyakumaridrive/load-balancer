@@ -104,6 +104,15 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             avatarFailed: false
         };
 
+        $.post(this.props.url, function(res) {
+            console.log("++++++++100 no img found", res);
+            if(!res) {
+                this.setState({
+                    avatarFailed: true
+                });
+            }
+        })
+
         this._onAvatarLoadError = this._onAvatarLoadError.bind(this);
     }
 
