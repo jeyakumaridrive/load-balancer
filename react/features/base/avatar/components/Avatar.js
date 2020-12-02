@@ -125,6 +125,16 @@ class Avatar<P: Props> extends PureComponent<P, State> {
                 avatarFailed: false
             });
         }
+
+        $.get(this.props._loadableAvatarUrl, (res) => {
+            console.log("+++++1000", res);
+            if(!res) {
+                this.setState({
+                    avatarFailed: true
+                });
+                console.log("+++++1000 avatarfailed true", res);
+            }
+        });
     }
 
     /**
