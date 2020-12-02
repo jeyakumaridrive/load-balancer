@@ -102,7 +102,7 @@ class Avatar<P: Props> extends PureComponent<P, State> {
         super(props);
 
         this.state = {
-            avatarFailed: false
+            avatarFailed: true
         };
 
         this._onAvatarLoadError = this._onAvatarLoadError.bind(this);
@@ -121,19 +121,22 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             // wrapped in a condition: https://reactjs.org/docs/react-component.html#componentdidupdate
 
             // eslint-disable-next-line react/no-did-update-set-state
-            this.setState({
-                avatarFailed: false
-            });
         }
 
         $.get(this.props._loadableAvatarUrl, (res) => {
-            console.log("+++++1000", res);
             if(!res) {
                 this.setState({
                     avatarFailed: true
                 });
-                console.log("+++++1000 avatarfailed true", res);
+            } else {
+                this.setState({
+                    avatarFailed: false
+                });
             }
+        }).catch(() => {
+            this.setState({
+                avatarFailed: false
+            });
         });
     }
 
@@ -156,8 +159,6 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             url
         } = this.props;
         const { avatarFailed } = this.state;
-
-        console.log("+100000000000", this.props, this.state);
 
         const avatarProps = {
             className,
@@ -191,7 +192,6 @@ class Avatar<P: Props> extends PureComponent<P, State> {
             // avatarProps.color = getAvatarColor(colorBase || _initialsBase);
             avatarProps.initials = initials;
         }
-        console.log("+100000000000", avatarProps);
         return (
             <StatelessAvatar
                 { ...avatarProps } />
