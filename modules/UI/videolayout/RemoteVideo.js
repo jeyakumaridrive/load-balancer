@@ -155,8 +155,6 @@ export default class RemoteVideo extends SmallVideo {
      * @private
      */
     _generatePopupContent() {
-        console.log("+++++++++++++10", "generate popup content")
-
         if (interfaceConfig.filmStripOnly) {
             return;
         }
@@ -202,8 +200,6 @@ export default class RemoteVideo extends SmallVideo {
         } else {
             remoteMenuPosition = 'top center';
         }
-
-        console.log("+++++++++++++10", "before render", participantID)
 
         ReactDOM.render(
             <Provider store = { APP.store }>

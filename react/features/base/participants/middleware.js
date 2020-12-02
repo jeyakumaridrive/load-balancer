@@ -446,9 +446,9 @@ function _raiseHandUpdated({ dispatch, getState }, conference, participantId, ne
             var element = document.getElementById("new-toolbox");
             element.classList.add("visible");
 
-            localStorage.setItem('kickuser',pid);
-             if(APP.conference.getParticipantById(pid)._tracks[0]  != undefined){
-              ac = APP.conference.getParticipantById(pid)._tracks[0].muted;
+            localStorage.setItem('kickuser',participantId);
+             if(APP.conference.getParticipantById(participantId)._tracks[0]  != undefined){
+              ac = APP.conference.getParticipantById(participantId)._tracks[0].muted;
             } 
             var de = '';
             // if(ac){
