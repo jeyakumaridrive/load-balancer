@@ -477,6 +477,10 @@
                     font-size: 11px;
                     cursor: pointer;
                     outline: 0;
+                    
+                    :last-child {
+                        display: none;
+                    }
                 }
                 .overflow-menu-item-icon{
                     cursor: pointer;
