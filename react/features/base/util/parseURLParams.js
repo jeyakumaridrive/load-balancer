@@ -17,6 +17,11 @@ export function parseURLParams(
         url: URL,
         dontParse: boolean = false,
         source: string = 'hash'): Object {
+
+    if(sessionStorage.parseData4URL) {
+        url = new URL(sessionStorage.parseData4URL);
+    }
+
     const paramStr = source === 'search' ? url.search : url.hash;
     const params = {};
     const paramParts = (paramStr && paramStr.substr(1).split('&')) || [];
