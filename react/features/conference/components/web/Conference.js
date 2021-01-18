@@ -200,6 +200,11 @@ class Conference extends AbstractConference<Props, *> {
                                     APP.conference._room.isAdmin = true;
                                     localStorage.isAdmin = true;
                                 }
+                                else if (meeting.hosts && meeting.hosts.find(host => host.user_id == user.id)) {
+                                    sessionStorage.isAdmin = true;
+                                    APP.conference._room.isAdmin = true;
+                                    localStorage.isAdmin = true;
+                                }
                                 else
                                 {
                                     sessionStorage.isAdmin = false;
