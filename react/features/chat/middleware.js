@@ -302,6 +302,9 @@ function _handleReceivedMessage({ dispatch, getState }, { id, message, nick, pri
         ? new Date(timestamp) : new Date();
     const millisecondsTimestamp = timestampToDate.getTime();
     let messageObj = parseJSONSafely(message);
+    if(Number(message) == message) {
+        messageObj = 'false'
+    }
     if(messageObj=='false')
     {
         if(localStorage.muteNotifications == 'false')

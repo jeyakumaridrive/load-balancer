@@ -2301,10 +2301,10 @@ export default {
             var pp = room.getParticipants().length + 1;
             // alert(pp)
             // setTimeout(function () {
-                if (pp == 2) {
-                    localStorage.tileViewWasEnabled = true;
-                    APP.store.dispatch(setTileView(true));
-                }
+            if (pp == 2) {
+                localStorage.tileViewWasEnabled = true;
+                APP.store.dispatch(setTileView(true));
+            }
             // }, 3400);
             logger.log(`USER ${id} connnected:`, user);
             APP.UI.addUser(user);
@@ -2511,7 +2511,9 @@ export default {
         });
         room.on(JitsiConferenceEvents.MESSAGE_RECEIVED, (id, text, ts) => {
             let messageCheck = parseJSONSafely(text);
-
+            if(Number(text) == text) {
+                messageCheck = 'false'
+            }
             if (messageCheck != 'false') {
                 let messageObj = JSON.parse(text);
 
