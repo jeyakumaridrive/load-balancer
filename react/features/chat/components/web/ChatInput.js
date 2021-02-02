@@ -257,6 +257,7 @@ class ChatInput extends Component<Props, State> {
             return;
         }
         this.setState({sendingMessage: false});
+        this.state.message = this.state.message.toString();
         let trimmed = this.state.message.trim();
         if(this.state.uploaded) {
             trimmed = trimmed + '::attachment:' + this.state.uploaded.key + ':attachment::';
