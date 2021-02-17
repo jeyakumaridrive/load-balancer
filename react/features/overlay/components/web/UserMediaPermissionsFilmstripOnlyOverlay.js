@@ -36,7 +36,7 @@ class UserMediaPermissionsFilmstripOnlyOverlay
                     <div className = 'inlay-filmstrip-only__title'>
                         {
                             t('startupoverlay.title',
-                                { app: (location.hostname == 'meeting.remotepc.com' ? 'RemotePC Meeting' : 'Epyc Meeting') })
+                                { app: interfaceConfig.APP_NAME })
                         }
                     </div>
                     <div className = 'inlay-filmstrip-only__text'>

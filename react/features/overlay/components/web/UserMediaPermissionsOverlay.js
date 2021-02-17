@@ -33,7 +33,7 @@ class UserMediaPermissionsOverlay extends AbstractUserMediaPermissionsOverlay {
                     <h3 className = 'inlay__title'>
                         {
                             t('startupoverlay.title',
-                                { app: interfaceConfig.APP_NAME })
+                                { app: (location.hostname == 'meeting.remotepc.com' ? 'RemotePC Meeting' : 'Epyc Meeting') })
                         }
                     </h3>
                     <span className = 'inlay__text'>
