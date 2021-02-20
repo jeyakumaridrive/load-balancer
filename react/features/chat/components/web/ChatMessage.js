@@ -56,7 +56,7 @@ class ChatMessage extends AbstractChatMessage<Props> {
                                 { processedMessage[0].key.indexOf("::attachment:") >= 0 &&
                                     <div>
                                         { processedMessage[0].key.split("::attachment:")[0] }
-                                        <a onClick={ () => { this.download(processedMessage[0]) } } style={{display:"block", color:"#2473bd", cursor: "pointer"}} >{processedMessage[0].key.split("::attachment:")[1].split(":attachment::")[0].slice(12)}</a>
+                                        <a onClick={ () => { this.download(processedMessage[0]) } } style={{display:"block", color:"#2473bd", cursor: "pointer"}} >{processedMessage[0].key.split("::attachment:")[1].split(":attachment::")[0].slice(11)}</a>
                                     </div>
                                 }
                                 { processedMessage[0].key.indexOf("::attachment:") == -1 &&
